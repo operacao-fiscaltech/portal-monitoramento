@@ -3,228 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiscaltech — Centro de Operações</title>
+<title>Fiscaltech — Central de Operações EPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
 :root{
-  --bg:#060810;--surface:#0c1020;--card:#111828;--card2:#182035;
-  --border:#1d2b45;--border2:#243352;
-  --accent:#0ea5e9;--green:#22d3a0;--yellow:#f59e0b;--red:#f43f5e;--purple:#8b5cf6;
-  --text:#e1e8f5;--muted:#4d6080;--muted2:#2d3f5a;
-  --display:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif;--mono:'JetBrains Mono',monospace;
+  --bg:#f0f4f8;
+  --surface:#ffffff;
+  --card:#ffffff;
+  --card2:#f8fafc;
+  --border:#dde3ed;
+  --border2:#c5cfe0;
+  --accent:#0066cc;
+  --accent2:#0052a3;
+  --accent3:#e8f0fc;
+  --accent-light:#cce0ff;
+  --green:#059669;--green-bg:#ecfdf5;--green-b:#a7f3d0;
+  --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
+  --red:#dc2626;--red-bg:#fef2f2;--red-b:#fecaca;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;
+  --text:#0f1b2d;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --display:'Plus Jakarta Sans',sans-serif;
+  --body:'Plus Jakarta Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sidebar:240px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:0}
-body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.018) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
 
-.layout{display:flex;min-height:100vh;position:relative;z-index:1}
-.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
-.sidebar-brand{padding:18px 16px;border-bottom:1px solid var(--border)}
-.brand-logo{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#0055ff);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px rgba(14,165,233,.3);margin-bottom:8px}
-.brand-name{font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.brand-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:2px}
-.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
-.nav-group-lbl{font-family:var(--mono);font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;padding:8px 16px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;border-radius:0;transition:.15s;font-size:13px;font-weight:500;color:var(--muted);position:relative;border-left:2px solid transparent}
-.nav-item:hover{background:rgba(14,165,233,.05);color:var(--text)}
-.nav-item.active{background:rgba(14,165,233,.1);color:var(--accent);border-left-color:var(--accent)}
-.nav-icon{font-size:14px;width:18px;text-align:center}
-.nav-badge{margin-left:auto;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(244,63,94,.2);color:var(--red)}
-.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border)}
-.sidebar-atualizado{font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center}
-.sidebar-clock{font-family:var(--mono);font-size:10px;color:var(--accent);text-align:center;margin-top:3px}
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--accent2);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sb-logo-img{width:40px;height:40px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}
+.sb-logo-img img{width:100%;height:100%;object-fit:contain}
+.sb-brand-text{font-family:var(--display);font-size:15px;font-weight:800;color:white;letter-spacing:.02em}
+.sb-brand-sub{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-top:1px}
+.contract-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:10px;color:white;font-weight:600}
+.contract-dot{width:6px;height:6px;border-radius:50%;background:#4ade80}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 0}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-track{background:transparent}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
+.sb-group-lbl{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;padding:10px 18px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 18px;cursor:pointer;transition:.15s;font-size:13px;font-weight:500;color:rgba(255,255,255,.65);position:relative;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.08);color:white}
+.nav-item.active{background:rgba(255,255,255,.15);color:white;border-left-color:white}
+.nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:10px;background:rgba(220,38,38,.4);color:#fca5a5}
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.12)}
+.sb-time{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);text-align:center;margin-bottom:3px}
+.sb-date{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.4);text-align:center}
 
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;min-width:0}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;sticky;top:0}
-.topbar-left{display:flex;align-items:center;gap:12px}
-.topbar-title{font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:.05em}
-.period-bar{display:flex;gap:4px}
-.pbtn{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:.15s}
-.pbtn:hover{border-color:var(--accent);color:var(--accent)}
-.pbtn.active{background:rgba(14,165,233,.15);border-color:var(--accent);color:var(--accent)}
-.contract-badge{font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:6px;background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);color:var(--accent);font-weight:600}
-.period-tag{font-family:var(--mono);font-size:10px;color:var(--muted);padding:4px 10px;border-radius:5px;background:var(--card);border:1px solid var(--border)}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text)}
+.tb-title span{font-size:11px;font-weight:500;color:var(--muted);font-family:var(--mono);margin-left:8px}
+.period-bar{display:flex;gap:3px;background:var(--bg);border-radius:8px;padding:3px}
+.pbtn{font-family:var(--mono);font-size:10px;padding:5px 14px;border-radius:6px;border:none;background:none;color:var(--muted);cursor:pointer;transition:.15s;font-weight:500}
+.pbtn:hover{background:white;color:var(--accent)}
+.pbtn.active{background:var(--accent);color:white;box-shadow:0 1px 4px rgba(0,102,204,.3)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.status-dot{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.dot-live{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 .content{flex:1;padding:24px 28px;overflow-x:hidden}
-
-/* Views */
 .view{display:none}.view.active{display:block}
 
-/* KPIs */
-.kpi-row{display:grid;gap:14px;margin-bottom:20px}
-.kpi-row-4{grid-template-columns:repeat(4,1fr)}
-.kpi-row-5{grid-template-columns:repeat(5,1fr)}
-.kpi-row-6{grid-template-columns:repeat(6,1fr)}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;transition:.2s}
-.kpi:hover{transform:translateY(-2px)}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--accent))}
-.kpi-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
-.kpi-val{font-family:var(--display);font-size:28px;font-weight:700;color:var(--kc,var(--text));line-height:1}
-.kpi-sub{font-size:10px;color:var(--muted);margin-top:3px}
+/* SECTION TITLE */
+.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Semáforos */
-.sem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.sem-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
-.sem-icon{font-size:20px;margin-bottom:6px}
-.sem-title{font-family:var(--display);font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
-.sem-row{display:flex;gap:8px;align-items:center;margin-bottom:4px}
-.sem-num{font-family:var(--display);font-size:22px;font-weight:800;line-height:1}
-.sem-lbl{font-size:10px;color:var(--muted)}
+/* KPI CARDS */
+.kpi-row{display:grid;gap:12px;margin-bottom:20px}
+.kpi-4{grid-template-columns:repeat(4,1fr)}
+.kpi-5{grid-template-columns:repeat(5,1fr)}
+.kpi-3{grid-template-columns:repeat(3,1fr)}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;position:relative;overflow:hidden;transition:.2s}
+.kpi:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--kc,var(--accent))}
+.kpi-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.kpi-val{font-family:var(--display);font-size:26px;font-weight:800;color:var(--kc,var(--text));line-height:1}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.kpi-trend{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;margin-top:4px;padding:2px 6px;border-radius:4px}
+.up{background:var(--green-bg);color:var(--green)}.dn{background:var(--red-bg);color:var(--red)}.eq{background:var(--bg);color:var(--muted)}
 
-/* Rank panels */
-.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.rank-grid-3{grid-template-columns:1fr 1fr 1fr}
-.rank-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em}
+.b-g{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.b-y{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.b-r{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.b-b{background:var(--accent3);color:var(--accent);border:1px solid var(--accent-light)}
+.b-m{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+
+/* PANELS */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.panel-title{font-size:13px;font-weight:700;color:var(--text)}
+.panel-sub{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table.data-tbl{width:100%;border-collapse:collapse;font-size:12px}
+table.data-tbl th{background:var(--accent2);color:white;font-family:var(--mono);font-size:10px;font-weight:600;padding:9px 12px;text-align:left;white-space:nowrap}
+table.data-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+table.data-tbl tr:last-child td{border-bottom:none}
+table.data-tbl tr:hover td{background:var(--accent3)}
+table.data-tbl td.val{font-family:var(--mono);font-size:11px;font-weight:600}
+table.data-tbl td.center{text-align:center}
+
+/* RANK LISTS */
+.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rank-grid-3{grid-template-columns:repeat(3,1fr)}
+.rank-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
 .rp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.rp-title{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.05em}
-.rank-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;margin-bottom:4px;transition:.15s}
-.rank-row:hover{background:rgba(255,255,255,.03)}
-.rr-num{font-family:var(--display);font-size:16px;font-weight:800;color:var(--muted2);width:22px;text-align:center;flex-shrink:0}
-.rr-num.r1{color:#ffd700}.rr-num.r2{color:#c0c0c0}.rr-num.r3{color:#cd7f32}
-.rr-faixa{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;flex-shrink:0}
+.rp-title{font-size:12px;font-weight:700;color:var(--text)}
+.rank-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:3px;transition:.15s}
+.rank-row:hover{background:var(--bg)}
+.rr-num{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--muted2);width:20px;text-align:center;flex-shrink:0}
+.r1{color:#f59e0b}.r2{color:#6b7280}.r3{color:#cd7f32}
 .rr-info{flex:1;min-width:0}
-.rr-id{font-family:var(--mono);font-size:11px;font-weight:600}
+.rr-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text)}
 .rr-local{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rr-ctr{font-size:9px;color:var(--muted2)}
-.rr-val{font-family:var(--display);font-size:18px;font-weight:700}
-.rr-unit{font-size:9px;color:var(--muted);margin-top:1px}
-.empty{font-family:var(--mono);font-size:11px;color:var(--green);padding:12px;text-align:center}
+.rr-val{font-family:var(--mono);font-size:15px;font-weight:700}
+.rr-unit{font-size:9px;color:var(--muted)}
+.rr-delta{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px}
 
-/* Faixas: cores */
-.f1{background:rgba(14,165,233,.12);color:#0ea5e9;border:1px solid rgba(14,165,233,.2)}
-.f2{background:rgba(139,92,246,.12);color:#8b5cf6;border:1px solid rgba(139,92,246,.2)}
-.f3{background:rgba(34,211,160,.12);color:#22d3a0;border:1px solid rgba(34,211,160,.2)}
-.f4{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
-.f5{background:rgba(244,63,94,.12);color:#f43f5e;border:1px solid rgba(244,63,94,.2)}
-.faixa-id{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+/* HEATMAP */
+.hm-cell{text-align:center;font-family:var(--mono);font-size:10px;font-weight:600;border-radius:4px;padding:5px 3px;cursor:default}
 
-/* Badges */
-.badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
-.b-g{background:rgba(34,211,160,.12);color:var(--green);border:1px solid rgba(34,211,160,.2)}
-.b-y{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
-.b-r{background:rgba(244,63,94,.12);color:var(--red);border:1px solid rgba(244,63,94,.2)}
-.b-b{background:rgba(14,165,233,.12);color:var(--accent);border:1px solid rgba(14,165,233,.2)}
-.b-m{background:rgba(77,96,128,.12);color:var(--muted);border:1px solid var(--border)}
+/* MINI BAR */
+.mini-bar-wrap{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:4px}
+.mini-bar{height:100%;border-radius:3px;transition:.3s;background:var(--accent)}
 
-/* Eq-cards */
-.eq-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-top:16px}
-.eq-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:.2s}
-.eq-card:hover{border-color:var(--border2)}
-.eq-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
-.eq-serie-badge{font-family:var(--display);font-size:20px;font-weight:800;color:var(--accent);flex-shrink:0;width:52px}
-.eq-meta{flex:1;min-width:0}
-.eq-local{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.eq-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:2px}
-.eq-summary{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.eq-faixa-dots{display:flex;gap:4px}
-.fdot{width:8px;height:8px;border-radius:50%}
-.eq-expand-icon{font-size:10px;color:var(--muted);transition:.2s}
-.eq-card.expanded .eq-expand-icon{transform:rotate(180deg)}
-.eq-card-body{padding:0 14px 14px}
-.faixas-table{width:100%;border-collapse:collapse;font-size:11px}
-.faixas-table th{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
-.faixas-table td{padding:6px 8px;border-bottom:1px solid rgba(29,43,69,.5)}
-.faixas-table tr:last-child td{border-bottom:none}
-.val-cell.fclr{color:var(--fc,var(--text));font-family:var(--mono);font-weight:600}
-
-/* Heatmap */
-.hm-wrap{overflow-x:auto;margin-top:8px}
-.hm-grid{display:grid;gap:2px}
-.hm-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);display:flex;align-items:center;padding-right:6px;white-space:nowrap}
-.hm-cell{height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;cursor:default;transition:.1s}
-.hm-cell:hover{opacity:.8;transform:scale(1.05)}
-
-/* Chart */
-.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px}
-.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.chart-title{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.05em}
-.chart{width:100%;display:block}
-
-/* Filtro bar */
-.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.fsel{background:var(--card);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;outline:none}
-.fsel:focus{border-color:var(--accent)}
-.fchip{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:.15s}
+/* FILTER CHIPS */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fchip{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s;font-weight:500}
 .fchip:hover{border-color:var(--accent);color:var(--accent)}
-.fchip.active{background:rgba(14,165,233,.12);border-color:var(--accent);color:var(--accent)}
+.fchip.active{background:var(--accent);border-color:var(--accent);color:white}
 
-/* Aproveitamento específico */
-.aprov-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px}
-.aprov-fill{height:100%;border-radius:3px;transition:width 1s ease}
-.aprov-table{width:100%;border-collapse:collapse;font-size:11px}
-.aprov-table th{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--card2)}
-.aprov-table td{padding:7px 10px;border-bottom:1px solid rgba(29,43,69,.5)}
-.aprov-table tr:hover td{background:rgba(255,255,255,.02)}
-.aprov-table .idx-val{font-family:var(--display);font-size:18px;font-weight:800}
-.aprov-table .idx-bar{width:80px}
+/* LAP SUB BUTTONS */
+.sub-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px}
+.sbtn{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s;font-weight:500}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.sbtn.active{background:var(--accent);border-color:var(--accent);color:white}
 
-/* LAP subperiodos */
-.lap-tabs{display:flex;gap:6px;margin-bottom:14px}
-.lap-tab{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:.15s}
-.lap-tab.active{background:rgba(245,158,11,.12);border-color:var(--yellow);color:var(--yellow)}
+/* CHART SVG */
+.chart-area{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;overflow-x:auto}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:50%}
 
-/* Aferições tabela */
-.afer-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:16px}
-.afer-table{width:100%;border-collapse:collapse;font-size:12px}
-.afer-table th{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--card2)}
-.afer-table td{padding:10px 12px;border-bottom:1px solid rgba(29,43,69,.4)}
-.afer-table tr:hover td{background:rgba(255,255,255,.02)}
+/* EQ TABLE / GRID */
+.eq-list{display:flex;flex-direction:column;gap:6px}
+.eq-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.eq-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:.15s}
+.eq-head:hover{background:var(--accent3)}
+.eq-serie{font-family:var(--mono);font-size:16px;font-weight:800;color:var(--accent);min-width:46px}
+.eq-meta{flex:1;min-width:0}
+.eq-local-txt{font-size:12px;font-weight:600}
+.eq-sub-txt{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:1px}
+.eq-dots{display:flex;gap:4px;align-items:center;flex-shrink:0}
+.fdot{width:8px;height:8px;border-radius:50%}
+.eq-expand{font-size:10px;color:var(--muted);margin-left:6px;transition:.2s}
+.eq-row.open .eq-expand{transform:rotate(180deg)}
+.eq-body{display:none;padding:0 16px 14px}
+.eq-row.open .eq-body{display:block}
+.faixas-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px}
+.faixas-table th{background:var(--bg);font-family:var(--mono);font-size:9px;font-weight:600;color:var(--muted);padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.faixas-table td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+.faixas-table tr:last-child td{border-bottom:none}
+.faixa-chip{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;border:1px solid}
 
-/* LAP subperiodo selector */
-.lap-sub-sel{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.lap-sub-btn{font-family:var(--mono);font-size:9px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:.15s}
-.lap-sub-btn.active{background:rgba(245,158,11,.1);border-color:var(--yellow);color:var(--yellow)}
+/* AFER TABLE */
+.afer-wrap{overflow-x:auto}
+table.afer-tbl{width:100%;border-collapse:collapse;font-size:12px}
+table.afer-tbl th{background:var(--accent2);color:white;font-family:var(--mono);font-size:10px;padding:9px 12px;text-align:left;white-space:nowrap}
+table.afer-tbl td{padding:8px 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;white-space:nowrap}
+table.afer-tbl tr:hover td{background:var(--accent3)}
+.dias-bar{display:inline-flex;align-items:center;gap:5px}
+.days-remaining{font-size:13px;font-weight:800}
 
-/* Horário chart */
-.hora-bar-wrap{margin-top:12px}
-.hora-bar{height:32px;background:var(--border);border-radius:4px;overflow:hidden;position:relative;margin-bottom:2px}
-.hora-bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
-.hora-bar-lbl{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7)}
+/* HORARIO HEATMAP */
+.hora-grid{overflow-x:auto}
+table.hora-tbl{border-collapse:collapse;font-size:10px;min-width:900px}
+table.hora-tbl th{font-family:var(--mono);font-size:9px;color:var(--muted);padding:4px 6px;text-align:center;white-space:nowrap;background:var(--bg)}
+table.hora-tbl td{width:38px;height:30px;text-align:center;font-family:var(--mono);font-size:9px;font-weight:600;border-radius:3px;cursor:default;border:1px solid rgba(255,255,255,.5)}
+table.hora-tbl td.eq-lbl{font-size:10px;font-weight:700;color:var(--text);background:transparent;border:none;white-space:nowrap;padding:0 10px 0 0;text-align:left;min-width:120px}
 
-/* Seção sub-title */
-.sec-title{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+
+/* INDICE BAR */
+.idx-bar-wrap{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin-top:5px;min-width:80px}
+.idx-bar{height:100%;border-radius:4px;transition:.3s}
+
+/* SEMAFORO SUMMARY */
+.sem-row{display:flex;gap:10px;margin-bottom:16px}
+.sem-item{flex:1;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;border:1px solid}
+.sem-n{font-family:var(--display);font-size:28px;font-weight:800;line-height:1}
+.sem-lbl{font-size:11px;font-weight:600;margin-bottom:1px}
+.sem-desc{font-size:10px;opacity:.7}
+.sem-ok{background:var(--green-bg);border-color:var(--green-b);color:var(--green)}
+.sem-warn{background:var(--yellow-bg);border-color:var(--yellow-b);color:var(--yellow)}
+.sem-crit{background:var(--red-bg);border-color:var(--red-b);color:var(--red)}
+.sem-info{background:var(--accent3);border-color:var(--accent-light);color:var(--accent)}
+
+/* CHART BARS (pure CSS) */
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:120px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-fill{border-radius:4px 4px 0 0;width:100%;min-height:2px;transition:.3s}
+.bar-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);text-align:center}
+.bar-val{font-family:var(--mono);font-size:8px;color:var(--muted);text-align:center}
+
+/* FLUXO DIARIO TABLE */
+.fd-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table.fd-tbl{border-collapse:collapse;font-size:11px;width:100%;min-width:700px}
+table.fd-tbl th{background:var(--accent2);color:white;font-family:var(--mono);font-size:9px;padding:8px 10px;text-align:center;white-space:nowrap}
+table.fd-tbl th.left{text-align:left}
+table.fd-tbl td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:center;font-family:var(--mono);font-size:10px;font-weight:600;white-space:nowrap}
+table.fd-tbl td.eq-c{text-align:left;font-weight:700;font-size:11px;color:var(--accent);background:var(--accent3)}
+table.fd-tbl tr:hover td{filter:brightness(.97)}
+
+/* TOOLTIP */
+.tip{position:relative;cursor:help}
+.tip-box{display:none;position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:var(--text);color:white;font-size:10px;padding:5px 9px;border-radius:6px;white-space:nowrap;z-index:100;font-family:var(--mono);pointer-events:none}
+.tip:hover .tip-box{display:block}
 </style>
 </head>
 <body>
 <div class="layout">
 
-<!-- ══ SIDEBAR ══ -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-logo">⚡</div>
-    <div class="brand-name">Fiscaltech</div>
-    <div class="brand-sub">Centro de Operações</div>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-group-lbl">Monitoramento</div>
-    <div class="nav-item active" onclick="navTo('painel',this)"><span class="nav-icon">📊</span>Painel Geral<span class="nav-badge" id="badgeCrit">—</span></div>
-    <div class="nav-item" onclick="navTo('aproveitamento',this)"><span class="nav-icon">📸</span>Aproveitamento</div>
-    <div class="nav-item" onclick="navTo('lap',this)"><span class="nav-icon">🔢</span>LAP / OCR</div>
-    <div class="nav-item" onclick="navTo('fluxo',this)"><span class="nav-icon">🚗</span>Fluxo Veicular</div>
-    <div class="nav-item" onclick="navTo('infracoes',this)"><span class="nav-icon">⚠️</span>Infrações</div>
-    <div class="nav-item" onclick="navTo('horario',this)"><span class="nav-icon">🕐</span>Fluxo Horário</div>
-    <div class="nav-item" onclick="navTo('afericoes',this)"><span class="nav-icon">📅</span>Aferições<span class="nav-badge" id="badgeAfer">—</span></div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="sidebar-atualizado">Atualizado: <span id="sideAtual">—</span></div>
-    <div class="sidebar-clock" id="topClock"></div>
-    <div style="text-align:center;margin-top:8px">
-      <button class="fchip" onclick="location.href='portal.html'">← Portal</button>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo">
+      <div class="sb-logo-img">
+        <svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 35 L20 15 L28 22 L38 8 L55 28" stroke="#0052a3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="5" y="38" width="70" height="4" rx="2" fill="#0052a3"/>
+          <path d="M38 8 L55 28 L68 18" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sb-brand-text">FISCALTECH</div>
+        <div class="sb-brand-sub">Tecnologia a Favor da Vida</div>
+      </div>
     </div>
+    <span class="contract-chip"><span class="contract-dot"></span>EPR — Ativo</span>
   </div>
-</aside>
 
-<!-- ══ MAIN ══ -->
+  <nav class="sb-nav">
+    <div class="sb-group-lbl">Principal</div>
+    <div class="nav-item active" onclick="navTo('painel',this)"><span class="nav-icon">⬛</span>Painel Geral</div>
+
+    <div class="sb-group-lbl">Indicadores</div>
+    <div class="nav-item" onclick="navTo('aproveitamento',this)" id="nav-aprov"><span class="nav-icon">📷</span>Aprov. de Imagens</div>
+    <div class="nav-item" onclick="navTo('lap',this)"><span class="nav-icon">🔍</span>LAP / OCR</div>
+    <div class="nav-item" onclick="navTo('fluxo',this)"><span class="nav-icon">🚗</span>Fluxo</div>
+    <div class="nav-item" onclick="navTo('infracoes',this)"><span class="nav-icon">⚡</span>Infrações</div>
+    <div class="nav-item" onclick="navTo('horario',this)"><span class="nav-icon">🕐</span>Fluxo Horário</div>
+    <div class="nav-item" onclick="navTo('teste',this)"><span class="nav-icon">🧪</span>Imagem Teste</div>
+
+    <div class="sb-group-lbl">Gestão</div>
+    <div class="nav-item" id="nav-afer" onclick="navTo('afericoes',this)"><span class="nav-icon">🔧</span>Aferições</div>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-time" id="sbClock">--:--:--</div>
+    <div class="sb-date" id="sbDate">—</div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="contract-badge" id="contractBadge">EPR</span>
-      <span class="topbar-title" id="pageTitle">Painel Geral</span>
+    <div class="tb-left">
+      <div class="tb-title" id="pageTitle">Central de Operações <span id="periodTag">ESTE MÊS</span></div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <span class="period-tag" id="periodTag">ESTE MÊS</span>
+    <div class="tb-right">
+      <a href="portal.html" style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--accent2);text-decoration:none;padding:5px 12px;border:1px solid var(--accent-light);border-radius:6px;background:var(--accent3);font-weight:600;transition:.15s" onmouseover="this.style.background='var(--accent)';this.style.color='white'" onmouseout="this.style.background='var(--accent3)';this.style.color='var(--accent2)'">← Portal</a>
       <div class="period-bar">
         <button class="pbtn" onclick="setPeriod('dia',this)">Hoje</button>
         <button class="pbtn" onclick="setPeriod('semana',this)">Semana</button>
@@ -235,874 +297,1268 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 
   <div class="content">
 
-    <!-- ══ PAINEL GERAL ══ -->
-    <div class="view active" id="view-painel">
-      <div class="kpi-row kpi-row-5">
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Faixas Críticas</div><div class="kpi-val" id="pCrit">—</div><div class="kpi-sub">aproveit. ou LAP crítico</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Em Atenção</div><div class="kpi-val" id="pWarn">—</div><div class="kpi-sub">abaixo do ideal</div></div>
-        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Faixas OK</div><div class="kpi-val" id="pOk">—</div><div class="kpi-sub">operação normal</div></div>
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Total</div><div class="kpi-val" id="pFluxo">—</div><div class="kpi-sub">veículos no período</div></div>
-        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Aprov. Médio</div><div class="kpi-val" id="pAprov">—</div><div class="kpi-sub">Índice de Aproveitamento</div></div>
-      </div>
+  <!-- ══ PAINEL GERAL ══ -->
+  <div class="view active" id="view-painel">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Equipamentos</div><div class="kpi-val" id="pEq">—</div><div class="kpi-sub">faixas monitoradas</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Aproveitamento Médio</div><div class="kpi-val" id="pAprov">—</div><div class="kpi-sub">índice geral</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="pLap">—</div><div class="kpi-sub">OCR integral</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Total</div><div class="kpi-val" id="pFluxo">—</div><div class="kpi-sub">veículos no período</div></div>
+    </div>
+    <div class="sem-row">
+      <div class="sem-item sem-ok"><div class="sem-n" id="pSemOk">—</div><div><div class="sem-lbl">Ótimo</div><div class="sem-desc">Aproveit. ≥ 95%</div></div></div>
+      <div class="sem-item sem-warn"><div class="sem-n" id="pSemWarn">—</div><div><div class="sem-lbl">Atenção</div><div class="sem-desc">85% a 95%</div></div></div>
+      <div class="sem-item sem-crit"><div class="sem-n" id="pSemCrit">—</div><div><div class="sem-lbl">Crítico</div><div class="sem-desc">Abaixo de 85%</div></div></div>
+      <div class="sem-item sem-info"><div class="sem-n" id="pAfer">—</div><div><div class="sem-lbl">Afer. Urgente</div><div class="sem-desc">Vence em ≤ 30 dias</div></div></div>
+    </div>
+    <div class="grid2">
+      <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔴 Aproveitamento Crítico</div></div><div id="pAprovCritList"></div></div>
+      <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔴 LAP Crítico</div></div><div id="pLapCritList"></div></div>
+    </div>
+    <div class="rank-panel" style="margin-bottom:16px"><div class="rp-head"><div class="rp-title">⚠️ Aferições Próximas</div></div><div id="pAferList"></div></div>
+  </div>
 
-      <div class="sem-grid">
-        <div class="sem-card"><div class="sem-icon">📸</div><div class="sem-title">Aproveitamento</div>
-          <div class="sem-row"><div class="sem-num" id="sAprovOk" style="color:var(--green)">—</div><div class="sem-lbl">OK ≥ 90%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sAprovWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">Atenção 70-89%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sAprovCrit" style="color:var(--red)">—</div><div class="sem-lbl">Crítico &lt; 70%</div></div>
-        </div>
-        <div class="sem-card"><div class="sem-icon">🔢</div><div class="sem-title">LAP / OCR</div>
-          <div class="sem-row"><div class="sem-num" id="sLapOk" style="color:var(--green)">—</div><div class="sem-lbl">OK ≥ 80%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sLapWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">Atenção 60-79%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sLapCrit" style="color:var(--red)">—</div><div class="sem-lbl">Crítico &lt; 60%</div></div>
-        </div>
-        <div class="sem-card"><div class="sem-icon">🖼️</div><div class="sem-title">Imagens Teste</div>
-          <div class="sem-row"><div class="sem-num" id="sTesteOk" style="color:var(--green)">—</div><div class="sem-lbl">OK ≥ 95%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sTesteWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">Atenção 80-94%</div></div>
-          <div class="sem-row"><div class="sem-num" id="sTesteCrit" style="color:var(--red)">—</div><div class="sem-lbl">Crítico &lt; 80%</div></div>
-        </div>
-        <div class="sem-card"><div class="sem-icon">📅</div><div class="sem-title">Aferições</div>
-          <div class="sem-row"><div class="sem-num" id="sAfOk" style="color:var(--green)">—</div><div class="sem-lbl">OK &gt; 60d</div></div>
-          <div class="sem-row"><div class="sem-num" id="sAfWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">Atenção 31-60d</div></div>
-          <div class="sem-row"><div class="sem-num" id="sAfCrit" style="color:var(--red)">—</div><div class="sem-lbl">Urgente ≤ 30d</div></div>
-        </div>
-      </div>
-
-      <div class="rank-grid">
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">📸 Piores — Aproveitamento</div><span class="badge b-r" id="bAprovCrit">—</span></div><div id="rlAprov"></div></div>
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔢 Piores — LAP</div><span class="badge b-r" id="bLapCrit">—</span></div><div id="rlLap"></div></div>
-      </div>
-      <div class="rank-grid">
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🚗 Fluxo Zerado / Baixo</div><span class="badge b-r" id="bFluxoZero">—</span></div><div id="rlFluxo"></div></div>
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">📅 Aferições a Vencer</div><span class="badge b-y" id="bAfer">—</span></div><div id="rlAfer"></div></div>
-      </div>
+  <!-- ══ APROVEITAMENTO DE IMAGENS ══ -->
+  <div class="view" id="view-aproveitamento">
+    <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Índice Médio</div><div class="kpi-val" id="avIdx">—</div><div class="kpi-sub">aproveitamento</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 95%)</div><div class="kpi-val" id="avOk">—</div><div class="kpi-sub">faixas</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção (85–95%)</div><div class="kpi-val" id="avWarn">—</div><div class="kpi-sub">faixas</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico (&lt; 85%)</div><div class="kpi-val" id="avCrit">—</div><div class="kpi-sub">faixas</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Total Infrações (CSV)</div><div class="kpi-val" id="avTotInfra">—</div><div class="kpi-sub">registros no relatório</div></div>
     </div>
 
-    <!-- ══ APROVEITAMENTO ══ -->
-    <div class="view" id="view-aproveitamento">
-      <div class="kpi-row kpi-row-5">
-        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Índice Médio</div><div class="kpi-val" id="aIndMed">—</div><div class="kpi-sub">Indice Aprov. geral</div></div>
-        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Faixas OK ≥ 90%</div><div class="kpi-val" id="aOkQty">—</div><div class="kpi-sub">aproveitamento bom</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção 70-89%</div><div class="kpi-val" id="aWarnQty">—</div><div class="kpi-sub">abaixo do esperado</div></div>
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico &lt; 70%</div><div class="kpi-val" id="aCritQty">—</div><div class="kpi-sub">intervenção necessária</div></div>
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Tráfego Total</div><div class="kpi-val" id="aTraf">—</div><div class="kpi-sub">veículos captados</div></div>
-      </div>
-
-      <div class="sec-title">Aproveitamento por Equipamento / Faixa</div>
-      <div style="overflow-x:auto">
-        <table class="aprov-table" id="aprovTable">
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Todos os Equipamentos e Faixas — Aproveitamento de Imagens</div></div>
+      <div class="tbl-wrap">
+        <table class="data-tbl" id="avTable">
           <thead><tr>
-            <th>Série</th><th>Local</th><th>Faixa</th>
-            <th>Tráfego</th><th>Vel.Média</th>
-            <th>Inc.Técnica</th><th>Inc.Não Técnica</th>
-            <th>Total Incons.</th><th>Total Consist.</th>
+            <th>Série</th><th>Local</th><th>Sentido</th><th>Faixa</th>
+            <th>Inc.Técnica</th><th>Inc.N.Técnica</th><th>Inconsistentes</th><th>Consistentes</th>
             <th>Índice Aprov.</th><th>% Aprov.</th><th>Status</th>
           </tr></thead>
-          <tbody id="aprovBody"></tbody>
-        </table>
-      </div>
-
-      <div class="sec-title" style="margin-top:24px">Evolução por Data — Índice de Aproveitamento</div>
-      <div class="filter-bar">
-        <select class="fsel" id="aprovDataSerie" onchange="buildAprovData()"><option value="">Todas as séries</option></select>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-head"><div class="chart-title">Índice de Aproveitamento por Data</div></div>
-        <svg id="aprovDataChart" class="chart" height="200"></svg>
-      </div>
-    </div>
-
-    <!-- ══ LAP ══ -->
-    <div class="view" id="view-lap">
-      <div class="kpi-row kpi-row-4">
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">LAP Médio (24h)</div><div class="kpi-val" id="lMedia">—</div><div class="kpi-sub">todas as faixas</div></div>
-        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">OK ≥ 80%</div><div class="kpi-val" id="lOk">—</div><div class="kpi-sub">faixas suficientes</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção 60-79%</div><div class="kpi-val" id="lWarn">—</div><div class="kpi-sub">faixas insuficientes</div></div>
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico &lt; 60%</div><div class="kpi-val" id="lCrit">—</div><div class="kpi-sub">muito baixo</div></div>
-      </div>
-      <div class="lap-sub-sel">
-        <button class="lap-sub-btn active" onclick="setLapSub('integral',this)">24h (Integral)</button>
-        <button class="lap-sub-btn" onclick="setLapSub('tr_manha',this)">Transição Manhã (5h-8h)</button>
-        <button class="lap-sub-btn" onclick="setLapSub('diurno',this)">Diurno (8h-16h)</button>
-        <button class="lap-sub-btn" onclick="setLapSub('tr_tarde',this)">Transição Tarde (16h-21h)</button>
-        <button class="lap-sub-btn" onclick="setLapSub('noturno',this)">Noturno (21h-5h)</button>
-      </div>
-      <div class="chart-wrap" style="padding-bottom:0">
-        <div class="chart-head"><div class="chart-title" id="lapHmTitle">📊 Heatmap LAP — Faixa × Dia</div></div>
-        <div class="hm-wrap"><div class="hm-grid" id="lapHeatmap"></div></div>
-      </div>
-      <div class="rank-grid" style="margin-top:16px">
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔴 Piores Faixas — LAP</div></div><div id="lapRankPior"></div></div>
-        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🏆 Melhores Faixas — LAP</div></div><div id="lapRankMelhor"></div></div>
-      </div>
-    </div>
-
-    <!-- ══ FLUXO ══ -->
-    <div class="view" id="view-fluxo">
-      <div class="kpi-row kpi-row-4">
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Veículos</div><div class="kpi-val" id="fTotal">—</div><div class="kpi-sub" id="fTotalFaixas">—</div></div>
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Faixas Zeradas</div><div class="kpi-val" id="fZero">—</div><div class="kpi-sub">sem registros</div></div>
-        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Maior Fluxo</div><div class="kpi-val" id="fMaior">—</div><div class="kpi-sub" id="fMaiorSub">—</div></div>
-        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Média por Faixa</div><div class="kpi-val" id="fMedia">—</div><div class="kpi-sub">veículos</div></div>
-      </div>
-      <div class="filter-bar">
-        <select class="fsel" id="fluxoFiltroC" onchange="buildFluxo()"><option value="">Todos os contratos</option></select>
-        <select class="fsel" id="fluxoFiltroS" onchange="buildFluxo()"><option value="">Todas as séries</option></select>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-head"><div class="chart-title">Fluxo Consolidado — Todos os Equipamentos</div></div>
-        <svg id="fluxoChart" class="chart" height="200"></svg>
-      </div>
-      <div class="eq-cards" id="fluxoCards"></div>
-    </div>
-
-    <!-- ══ INFRAÇÕES ══ -->
-    <div class="view" id="view-infracoes">
-      <div class="kpi-row kpi-row-4">
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Total Infrações</div><div class="kpi-val" id="iTotal">—</div><div class="kpi-sub" id="iTotalFaixas">no período</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Taxa Infração</div><div class="kpi-val" id="iTaxa">—</div><div class="kpi-sub">% do fluxo</div></div>
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Maior Volume</div><div class="kpi-val" id="iMaior">—</div><div class="kpi-sub" id="iMaiorSub">—</div></div>
-        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Média / Faixa / Dia</div><div class="kpi-val" id="iMedia">—</div><div class="kpi-sub">infrações</div></div>
-      </div>
-      <div class="filter-bar">
-        <select class="fsel" id="infraFiltroC" onchange="buildInfracoes()"><option value="">Todos os contratos</option></select>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-head"><div class="chart-title">Infrações por Dia</div></div>
-        <svg id="infraChart" class="chart" height="190"></svg>
-      </div>
-      <div class="rank-panel"><div class="rp-head"><div class="rp-title">📊 Ranking — Mais Infrações por Faixa</div></div><div id="infraRank"></div></div>
-    </div>
-
-    <!-- ══ HORÁRIO ══ -->
-    <div class="view" id="view-horario">
-      <div class="kpi-row kpi-row-4">
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Hora Pico</div><div class="kpi-val" id="hPico">—</div><div class="kpi-sub" id="hPicoV">—</div></div>
-        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Hora Vale</div><div class="kpi-val" id="hVale">—</div><div class="kpi-sub">menor fluxo</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Diurno (6h-20h)</div><div class="kpi-val" id="hDiurno">—</div><div class="kpi-sub">% do total</div></div>
-        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Noturno</div><div class="kpi-val" id="hNoturno">—</div><div class="kpi-sub">% do total</div></div>
-      </div>
-      <div class="filter-bar">
-        <select class="fsel" id="horarioFiltroC" onchange="buildHorario()"><option value="">Todos os contratos</option></select>
-        <select class="fsel" id="horarioFiltroS" onchange="buildHorario()"><option value="">Todas as séries</option></select>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-head"><div class="chart-title">Distribuição Horária de Fluxo</div></div>
-        <svg id="horarioChart" class="chart" height="200"></svg>
-      </div>
-      <div class="chart-wrap" style="padding-bottom:0">
-        <div class="chart-head"><div class="chart-title">Heatmap Hora × Equipamento/Faixa</div></div>
-        <div class="hm-wrap"><div class="hm-grid" id="horarioHeatmap"></div></div>
-      </div>
-    </div>
-
-    <!-- ══ AFERIÇÕES ══ -->
-    <div class="view" id="view-afericoes">
-      <div class="kpi-row kpi-row-4">
-        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Urgente ≤ 30d</div><div class="kpi-val" id="aUrg">—</div><div class="kpi-sub">vence em breve</div></div>
-        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção 31-60d</div><div class="kpi-val" id="aAt">—</div><div class="kpi-sub">agendar manutenção</div></div>
-        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">OK &gt; 60d</div><div class="kpi-val" id="aOk">—</div><div class="kpi-sub">aferição em dia</div></div>
-        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Próxima</div><div class="kpi-val" id="aProx">—</div><div class="kpi-sub">dias para vencer</div></div>
-      </div>
-      <div class="filter-bar">
-        <button class="fchip active" onclick="filtrarAfer('todos',this)">Todos</button>
-        <button class="fchip" onclick="filtrarAfer('urgente',this)">Urgente</button>
-        <button class="fchip" onclick="filtrarAfer('atencao',this)">Atenção</button>
-        <button class="fchip" onclick="filtrarAfer('ok',this)">OK</button>
-        <button class="fchip" onclick="exportAfer()" style="margin-left:auto;border-color:var(--accent);color:var(--accent)">⬇ Export CSV</button>
-      </div>
-      <div class="afer-table-wrap">
-        <table class="afer-table">
-          <thead><tr><th>Série</th><th>Contrato</th><th>Local</th><th>Faixas</th><th>Cód.</th><th>Vel.</th><th>Ult. Aferição</th><th>Vencimento</th><th>Dias</th><th>Status</th></tr></thead>
-          <tbody id="aferBody"></tbody>
+          <tbody id="avBody"></tbody>
         </table>
       </div>
     </div>
+
+
+    <div class="panel">
+      <div class="panel-head"><div><div class="panel-title">📋 Consulta de Infrações — Dados Reais do Relatório</div><div class="panel-sub">% de cada tipo de inconsistência • dados de 11/03/2026 • 8.796 registros totais</div></div></div>
+      <div class="tbl-wrap">
+        <table class="data-tbl">
+          <thead><tr>
+            <th>Série</th><th>Local</th><th>Faixa</th>
+            <th>Total Infra.</th>
+            <th>Inc. Técnica</th><th>% Téc.</th>
+            <th>Inc. N.Técnica</th><th>% N.Téc.</th>
+            <th>Inconsistentes</th><th>% Incons.</th>
+            <th>Consistentes</th><th>% Consist.</th>
+            <th>Top 3 Problemas</th>
+          </tr></thead>
+          <tbody id="avInfraBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">📊 Tabela Pivô — Motivo de Inconsistência × Equipamento</div>
+          <div class="panel-sub">Número de ocorrências por tipo de problema em cada equipamento (como tabela dinâmica)</div>
+        </div>
+      </div>
+      <div id="pivotTableWrap" style="overflow-x:auto"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">📅 Aproveitamento Diário — Técnico / Não-Técnico / Consistente por Equipamento</div>
+          <div class="panel-sub">Quantidade e % por razão técnica, separado por dia do mês</div>
+        </div>
+        <select id="diarioSerieSel" onchange="buildInfraDiario()" class="fchip" style="border-radius:6px;min-width:200px">
+          <option value="">Todos os equipamentos</option>
+        </select>
+      </div>
+      <div id="infDiarioWrap" style="overflow-x:auto"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Índice de Aproveitamento por Data</div>
+        <select id="avSerieSel" onchange="buildAprovData()" class="fchip" style="border-radius:6px">
+          <option value="">Todas as séries</option>
+        </select>
+      </div>
+      <div id="avDataChart"></div>
+    </div>
+  </div>
+
+  <!-- ══ LAP / OCR ══ -->
+  <div class="view" id="view-lap">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="lapMedia">—</div><div class="kpi-sub">subperíodo selecionado</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 90%)</div><div class="kpi-val" id="lapOk">—</div><div class="kpi-sub">faixas</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção (80–90%)</div><div class="kpi-val" id="lapWarn">—</div><div class="kpi-sub">faixas</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico (&lt; 80%)</div><div class="kpi-val" id="lapCrit">—</div><div class="kpi-sub">faixas</div></div>
+    </div>
+    <div class="sub-btns">
+      <button class="sbtn active" onclick="setLapSub('integral',this)">Integral 24h</button>
+      <button class="sbtn" onclick="setLapSub('tr_manha',this)">Trans. Manhã (5h–8h)</button>
+      <button class="sbtn" onclick="setLapSub('diurno',this)">Diurno (8h–16h)</button>
+      <button class="sbtn" onclick="setLapSub('tr_tarde',this)">Trans. Tarde (16h–21h)</button>
+      <button class="sbtn" onclick="setLapSub('noturno',this)">Noturno (21h–5h)</button>
+    </div>
+    <div class="grid2">
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">🔴 Top 10 Piores LAP</div></div>
+        <div id="lapTop10"></div>
+      </div>
+      <div class="panel" style="margin:0">
+        <div class="panel-head"><div class="panel-title">LAP por Dia — Subperíodo</div></div>
+        <div id="lapBarChart"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Todos os Equipamentos e Faixas — LAP por Dia</div></div>
+      <div class="tbl-wrap" id="lapTableWrap"></div>
+    </div>
+  </div>
+
+  <!-- ══ FLUXO ══ -->
+  <div class="view" id="view-fluxo">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Total</div><div class="kpi-val" id="fxTotal">—</div><div class="kpi-sub">período</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Hoje</div><div class="kpi-val" id="fxHoje">—</div><div class="kpi-sub">último dia</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Média Diária</div><div class="kpi-val" id="fxMedia">—</div><div class="kpi-sub">veículos/dia</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Pico do Dia</div><div class="kpi-val" id="fxPico">—</div><div class="kpi-sub">faixa com mais fluxo</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Fluxo Consolidado por Dia</div></div>
+      <div id="fxConsolidChart"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">📊 Top 10 Variação — Hoje</div></div>
+        <div id="fxRankHoje"></div>
+      </div>
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">📊 Top 10 Variação — Semana</div></div>
+        <div id="fxRankSemana"></div>
+      </div>
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">📊 Top 10 Maior — Mês</div></div>
+        <div id="fxRankMes"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Fluxo Diário — Todos os Equipamentos e Faixas (Mapa de Calor vs dia anterior)</div></div>
+      <div class="fd-table-wrap" id="fxDiaTbl"></div>
+    </div>
+  </div>
+
+  <!-- ══ INFRAÇÕES ══ -->
+  <div class="view" id="view-infracoes">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Total Infrações</div><div class="kpi-val" id="infTotal">—</div><div class="kpi-sub">período</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Hoje</div><div class="kpi-val" id="infHoje">—</div><div class="kpi-sub">último dia</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Média Diária</div><div class="kpi-val" id="infMedia">—</div><div class="kpi-sub">infrações/dia</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Pico</div><div class="kpi-val" id="infPico">—</div><div class="kpi-sub">maior registro</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Infrações por Dia — Consolidado</div></div>
+      <div id="infConsolidChart"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">⚡ Top 10 Variação — Hoje</div></div>
+        <div id="infRankHoje"></div>
+      </div>
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">⚡ Top 10 Variação — Semana</div></div>
+        <div id="infRankSemana"></div>
+      </div>
+      <div class="rank-panel">
+        <div class="rp-head"><div class="rp-title">⚡ Top 10 Maior — Mês</div></div>
+        <div id="infRankMes"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Infrações Diárias — Todos os Equipamentos (Mapa de Calor vs dia anterior)</div></div>
+      <div class="fd-table-wrap" id="infDiaTbl"></div>
+    </div>
+  </div>
+
+  <!-- ══ FLUXO HORÁRIO ══ -->
+  <div class="view" id="view-horario">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Pico Hora</div><div class="kpi-val" id="hrPico">—</div><div class="kpi-sub">hora de maior fluxo</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Hoje</div><div class="kpi-val" id="hrTotal">—</div><div class="kpi-sub">veículos</div></div>
+      <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Baixo Movimento</div><div class="kpi-val" id="hrMin">—</div><div class="kpi-sub">hora mais vazia</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Equipamentos</div><div class="kpi-val" id="hrEqs">—</div><div class="kpi-sub">com dados</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Fluxo Hora × Equipamento/Faixa (Mapa de Calor — intensidade de azul)</div></div>
+      <div class="hora-grid" id="horaGrid"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Fluxo Diário por Equipamento — Mapa de Calor vs Dia Anterior</div></div>
+      <div class="fd-table-wrap" id="hrDiaTbl"></div>
+    </div>
+  </div>
+
+  <!-- ══ AFERIÇÕES ══ -->
+  <div class="view" id="view-afericoes">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Urgente ≤ 30d</div><div class="kpi-val" id="afUrg">—</div><div class="kpi-sub">vence em breve</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção 31–90d</div><div class="kpi-val" id="afAt">—</div><div class="kpi-sub">agendar manutenção</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">OK &gt; 90d</div><div class="kpi-val" id="afOk">—</div><div class="kpi-sub">aferição em dia</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Equipamentos</div><div class="kpi-val" id="afTotal">—</div><div class="kpi-sub">cadastrados</div></div>
+    </div>
+    <div class="filter-bar">
+      <button class="fchip active" onclick="filtrarAfer('todos',this)">Todos</button>
+      <button class="fchip" onclick="filtrarAfer('urgente',this)">Urgente</button>
+      <button class="fchip" onclick="filtrarAfer('atencao',this)">Atenção</button>
+      <button class="fchip" onclick="filtrarAfer('ok',this)">OK</button>
+    </div>
+    <div class="afer-wrap">
+      <table class="afer-tbl">
+        <thead><tr>
+          <th>Série</th><th>Local</th><th>Sentido</th><th>Faixas</th>
+          <th>Cód. Cliente</th><th>Vel. Limite</th>
+          <th>Última Aferição</th><th>Vencimento</th><th>Dias Rest.</th><th>Status</th>
+        </tr></thead>
+        <tbody id="afBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ══ IMAGEM TESTE ══ -->
+  <div class="view" id="view-teste">
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Funcionamento Médio</div><div class="kpi-val" id="tsMedia">—</div><div class="kpi-sub">% horas com imagem teste</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 95%)</div><div class="kpi-val" id="tsOk">—</div><div class="kpi-sub">equipamentos</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção (80–95%)</div><div class="kpi-val" id="tsWarn">—</div><div class="kpi-sub">equipamentos</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico (&lt; 80%)</div><div class="kpi-val" id="tsCrit">—</div><div class="kpi-sub">equipamentos</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Aproveitamento Geral — Imagem Teste por Equipamento</div><div class="panel-sub">Horas com imagem teste / 24h × dias</div></div>
+      <div class="tbl-wrap">
+        <table class="data-tbl">
+          <thead><tr><th>Série</th><th>Local</th><th>Sentido</th><th>Faixa</th><th>Total Horas Esperadas</th><th>Horas com Imagem</th><th>% Funcionamento</th><th>Status</th></tr></thead>
+          <tbody id="tsGeralBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Imagem Teste — Dia a Dia por Equipamento (Mapa de Calor)</div></div>
+      <div class="fd-table-wrap" id="tsDiaTbl"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Evolução Mensal — Imagem Teste Consolidada</div>
+      </div>
+      <div id="tsMensalChart"></div>
+    </div>
+  </div>
 
   </div><!-- /content -->
 </div><!-- /main -->
 </div><!-- /layout -->
 
 <script>
-// ══════════════════════════════════════════════════════════
-//  DB — gerado automaticamente pelo atualizar_todos.py
-//  Estrutura nova (v2):
-//    faixas[i] = {
-//      id, fluxo:{label:val}, infra:{label:val}, teste:{label:val},
-//      lap: { integral:{label:val}, tr_manha, diurno, tr_tarde, noturno },
-//      aproveitamento: { trafego, vel_media, total_infra, inc_tec, inc_n_tec,
-//                        total_incons, total_consist, em_proc, indice_aprov, pct_aprov },
-//      aprov_por_data: { "YYYY-MM-DD": { indice_aprov, trafego, ... } },
-//      horario: [v0h..v23h]
-//    }
-// ══════════════════════════════════════════════════════════
+const CONSULTA_INFRA = {
+  "EPR007|1": {cod:"EPR007",pista:"1",nome:"BR-153 km 041+900",sentido:"CRESCENTE",total:74,tec:4,ntec:70,consist:41,incons:33,desc:{"Veículo/Placa com obstáculo à frente": 7, "Veículo de emergência ou policial": 6, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 5, "Placa deteriorada/raspada/dobrada/ilegível": 5, "Imagem com iluminação deficiente": 4, "Veículo sem placa": 3, "Veículo/Placa fora do campo visível": 1, "Modelo do veíc divergente do cadastro": 1, "Placa fora do padrão (outro país/oficial)": 1}},
+  "EPR008|1": {cod:"EPR008",pista:"1",nome:"BR-153 km 041+950",sentido:"DECRESCENTE",total:36,tec:2,ntec:34,consist:12,incons:24,desc:{"Placa deteriorada/raspada/dobrada/ilegível": 9, "Veículo sem placa": 4, "Veículo de emergência ou policial": 4, "Veículo/Placa fora do campo visível": 2, "Imagem com iluminação deficiente": 2, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 1, "Veículo/Placa com obstáculo à frente": 1, "Placa reflexiva saturada": 1}},
+  "EPR009|1": {cod:"EPR009",pista:"1",nome:"BR-277 km 032+000",sentido:"CRESCENTE",total:323,tec:9,ntec:314,consist:110,incons:213,desc:{"Veículo/Placa fora do campo visível": 84, "Veículo/Placa com obstáculo à frente": 40, "Placa deteriorada/raspada/dobrada/ilegível": 30, "Infração não consumada": 26, "Veículo sem placa": 11, "Placa reflexiva saturada": 5, "Veículo sem cadastro": 4, "Erro de parametrização": 4, "Mais de um veículo na imagem": 2, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 2, "Câmera com problema (interf./distorc./artefatos)": 1, "Câmera com problema (deslocada/zoom)": 1, "Imagem completamente sem veículo": 1, "Imagem desfocada/borrada/embaçada": 1, "Imagem com iluminação deficiente": 1}},
+  "EPR009|2": {cod:"EPR009",pista:"2",nome:"BR-277 km 032+000",sentido:"CRESCENTE",total:174,tec:4,ntec:170,consist:102,incons:72,desc:{"Veículo/Placa fora do campo visível": 32, "Infração não consumada": 16, "Placa deteriorada/raspada/dobrada/ilegível": 12, "Erro de parametrização": 4, "Veículo/Placa com obstáculo à frente": 4, "Placa reflexiva saturada": 2, "Placa fora do padrão (outro país/oficial)": 1, "Veículo de emergência ou policial": 1}},
+  "EPR010|1": {cod:"EPR010",pista:"1",nome:"BR-277 km 033+300",sentido:"DECRESCENTE",total:271,tec:97,ntec:174,consist:60,incons:211,desc:{"Imagem completamente sem veículo": 66, "Veículo/Placa com obstáculo à frente": 37, "Veículo/Placa fora do campo visível": 34, "Imagem com iluminação deficiente": 14, "Placa deteriorada/raspada/dobrada/ilegível": 13, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 12, "Câmera com problema (interf./distorc./artefatos)": 11, "Infração não consumada": 7, "Erro de parametrização": 6, "Veículo de emergência ou policial": 4, "Veículo sem cadastro": 3, "Placa fora do padrão (outro país/oficial)": 2, "Modelo do veíc divergente do cadastro": 1, "Mais de um veículo na imagem": 1}},
+  "EPR010|2": {cod:"EPR010",pista:"2",nome:"BR-277 km 033+300",sentido:"DECRESCENTE",total:66,tec:2,ntec:64,consist:37,incons:29,desc:{"Veículo/Placa fora do campo visível": 10, "Infração não consumada": 6, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Veículo sem placa": 2, "Veículo/Placa com obstáculo à frente": 2, "Imagem desfocada/borrada/embaçada": 1, "Veículo de emergência ou policial": 1, "Imagem com iluminação deficiente": 1}},
+  "EPR011|1": {cod:"EPR011",pista:"1",nome:"BR-277 km 035+500",sentido:"DECRESCENTE",total:395,tec:67,ntec:328,consist:150,incons:245,desc:{"Veículo/Placa fora do campo visível": 48, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 40, "Imagem completamente sem veículo": 37, "Veículo/Placa com obstáculo à frente": 25, "Infração não consumada": 21, "Placa deteriorada/raspada/dobrada/ilegível": 18, "Imagem com iluminação deficiente": 17, "Veículo de emergência ou policial": 9, "Erro de parametrização": 9, "Veículo sem cadastro": 8, "Placa reflexiva saturada": 4, "Câmera com problema (interf./distorc./artefatos)": 2, "Imagem desfocada/borrada/embaçada": 2, "Veículo sem placa": 2, "Mais de um veículo na imagem": 2, "Placa fora do padrão (outro país/oficial)": 1}},
+  "EPR011|2": {cod:"EPR011",pista:"2",nome:"BR-277 km 035+500",sentido:"DECRESCENTE",total:64,tec:2,ntec:62,consist:29,incons:35,desc:{"Veículo/Placa fora do campo visível": 13, "Placa deteriorada/raspada/dobrada/ilegível": 4, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 4, "Infração não consumada": 4, "Veículo/Placa com obstáculo à frente": 2, "Placa reflexiva saturada": 2, "Imagem completamente sem veículo": 2, "Veículo de emergência ou policial": 1, "Placa fora do padrão (outro país/oficial)": 1, "Veículo sem cadastro": 1, "Veículo sem placa": 1}},
+  "EPR012|1": {cod:"EPR012",pista:"1",nome:"BR-277 km 036+400",sentido:"DECRESCENTE",total:343,tec:75,ntec:268,consist:139,incons:204,desc:{"Veículo/Placa com obstáculo à frente": 49, "Veículo/Placa fora do campo visível": 33, "Imagem desfocada/borrada/embaçada": 33, "Câmera com problema (interf./distorc./artefatos)": 27, "Erro de parametrização": 10, "Infração não consumada": 9, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8, "Veículo de emergência ou policial": 7, "Placa deteriorada/raspada/dobrada/ilegível": 7, "Veículo sem placa": 7, "Veículo sem cadastro": 3, "Imagem com iluminação deficiente": 3, "Mais de um veículo na imagem": 2, "Imagem completamente sem veículo": 2, "Placa reflexiva saturada": 2, "Placa fora do padrão (outro país/oficial)": 2}},
+  "EPR012|2": {cod:"EPR012",pista:"2",nome:"BR-277 km 036+400",sentido:"DECRESCENTE",total:41,tec:9,ntec:32,consist:8,incons:33,desc:{"Veículo/Placa fora do campo visível": 6, "Veículo sem placa": 6, "Câmera com problema (interf./distorc./artefatos)": 3, "Imagem desfocada/borrada/embaçada": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Veículo de emergência ou policial": 2, "Erro de parametrização": 2, "Placa reflexiva saturada": 2, "Placa deteriorada/raspada/dobrada/ilegível": 2, "Mais de um veículo na imagem": 1, "Imagem com iluminação deficiente": 1, "Infração não consumada": 1, "Placa fora do padrão (outro país/oficial)": 1}},
+  "EPR013|1": {cod:"EPR013",pista:"1",nome:"BR-277 km 041+400",sentido:"DECRESCENTE",total:626,tec:171,ntec:455,consist:250,incons:376,desc:{"Imagem com iluminação deficiente": 133, "Veículo/Placa com obstáculo à frente": 57, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 45, "Veículo/Placa fora do campo visível": 27, "Placa deteriorada/raspada/dobrada/ilegível": 21, "Imagem desfocada/borrada/embaçada": 21, "Veículo de emergência ou policial": 17, "Infração não consumada": 12, "Veículo sem cadastro": 9, "Câmera com problema (interf./distorc./artefatos)": 8, "Veículo sem placa": 7, "Placa fora do padrão (outro país/oficial)": 7, "Erro de parametrização": 5, "Imagem completamente sem veículo": 4, "Mais de um veículo na imagem": 2, "Placa reflexiva saturada": 1}},
+  "EPR013|2": {cod:"EPR013",pista:"2",nome:"BR-277 km 041+400",sentido:"DECRESCENTE",total:192,tec:39,ntec:153,consist:53,incons:139,desc:{"Veículo/Placa fora do campo visível": 64, "Imagem com iluminação deficiente": 32, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 16, "Veículo sem placa": 6, "Veículo/Placa com obstáculo à frente": 6, "Câmera com problema (interf./distorc./artefatos)": 3, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem desfocada/borrada/embaçada": 3, "Veículo sem cadastro": 2, "Veículo de emergência ou policial": 1, "Infração não consumada": 1, "Placa fora do padrão (outro país/oficial)": 1, "Imagem completamente sem veículo": 1}},
+  "EPR014|1": {cod:"EPR014",pista:"1",nome:"BR-277 - Ayrton Senna km 002+070 LESTE",sentido:"DECRESCENTE",total:370,tec:77,ntec:293,consist:116,incons:254,desc:{"Veículo/Placa fora do campo visível": 54, "Imagem completamente sem veículo": 53, "Veículo de emergência ou policial": 38, "Placa deteriorada/raspada/dobrada/ilegível": 21, "Imagem com iluminação deficiente": 19, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 17, "Veículo sem placa": 16, "Veículo sem cadastro": 15, "Veículo/Placa com obstáculo à frente": 12, "Placa fora do padrão (outro país/oficial)": 3, "Câmera com problema (deslocada/zoom)": 3, "Câmera com problema (interf./distorc./artefatos)": 2, "Placa reflexiva saturada": 1}},
+  "EPR014|2": {cod:"EPR014",pista:"2",nome:"BR-277 - Ayrton Senna km 002+070 LESTE",sentido:"DECRESCENTE",total:290,tec:66,ntec:224,consist:74,incons:216,desc:{"Veículo/Placa fora do campo visível": 67, "Imagem completamente sem veículo": 52, "Veículo/Placa com obstáculo à frente": 48, "Imagem com iluminação deficiente": 11, "Placa deteriorada/raspada/dobrada/ilegível": 10, "Veículo sem placa": 8, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8, "Veículo sem cadastro": 5, "Placa reflexiva saturada": 2, "Câmera com problema (interf./distorc./artefatos)": 2, "Câmera com problema (deslocada/zoom)": 1, "Veículo de emergência ou policial": 1, "Modelo do veíc divergente do cadastro": 1}},
+  "EPR015|1": {cod:"EPR015",pista:"1",nome:"BR-277 - Ayrton Senna km 002+070",sentido:"CRESCENTE",total:102,tec:4,ntec:98,consist:25,incons:77,desc:{"Veículo de emergência ou policial": 32, "Placa deteriorada/raspada/dobrada/ilegível": 9, "Veículo/Placa fora do campo visível": 7, "Veículo/Placa com obstáculo à frente": 7, "Veículo sem placa": 7, "Veículo sem cadastro": 6, "Imagem completamente sem veículo": 3, "Placa reflexiva saturada": 3, "Mais de um veículo na imagem": 1, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 1, "Imagem com iluminação deficiente": 1}},
+  "EPR015|2": {cod:"EPR015",pista:"2",nome:"BR-277 - Ayrton Senna km 002+070",sentido:"CRESCENTE",total:105,tec:17,ntec:88,consist:17,incons:88,desc:{"Veículo/Placa fora do campo visível": 21, "Veículo/Placa com obstáculo à frente": 20, "Imagem completamente sem veículo": 14, "Placa deteriorada/raspada/dobrada/ilegível": 14, "Veículo sem cadastro": 4, "Placa reflexiva saturada": 4, "Veículo de emergência ou policial": 3, "Desacionamento incorreto do sensor": 2, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 2, "Veículo sem placa": 2, "Imagem com iluminação deficiente": 1, "Mais de um veículo na imagem": 1}},
+  "EPR016|1": {cod:"EPR016",pista:"1",nome:"BR-277 - Bento Rocha km 001+120",sentido:"DECRESCENTE",total:8,tec:2,ntec:6,consist:3,incons:5,desc:{"Veículo/Placa fora do campo visível": 2, "Imagem completamente sem veículo": 2, "Placa deteriorada/raspada/dobrada/ilegível": 1}},
+  "EPR017|1": {cod:"EPR017",pista:"1",nome:"BR-277 km 000+950",sentido:"CRESCENTE",total:10,tec:2,ntec:8,consist:3,incons:7,desc:{"Placa deteriorada/raspada/dobrada/ilegível": 4, "Veículo/Placa fora do campo visível": 1, "Imagem com iluminação deficiente": 1, "Câmera com problema (interf./distorc./artefatos)": 1}},
+  "EPR018|1": {cod:"EPR018",pista:"1",nome:"BR-369 km 018+400",sentido:"CRESCENTE",total:591,tec:20,ntec:571,consist:456,incons:135,desc:{"Placa deteriorada/raspada/dobrada/ilegível": 25, "Veículo sem placa": 20, "Imagem com iluminação deficiente": 18, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 18, "Veículo/Placa fora do campo visível": 17, "Placa fora do padrão (outro país/oficial)": 11, "Veículo/Placa com obstáculo à frente": 10, "Veículo sem cadastro": 7, "Placa reflexiva saturada": 3, "Veículo de emergência ou policial": 2, "Câmera com problema (interf./distorc./artefatos)": 2, "Modelo do veíc divergente do cadastro": 2}},
+  "EPR019|1": {cod:"EPR019",pista:"1",nome:"BR-369 km 019+970",sentido:"DECRESCENTE",total:154,tec:7,ntec:147,consist:89,incons:65,desc:{"Placa deteriorada/raspada/dobrada/ilegível": 17, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 13, "Placa fora do padrão (outro país/oficial)": 8, "Veículo/Placa fora do campo visível": 7, "Veículo de emergência ou policial": 4, "Imagem completamente sem veículo": 4, "Imagem com iluminação deficiente": 3, "Placa reflexiva saturada": 3, "Veículo sem placa": 2, "Veículo sem cadastro": 2, "Modelo do veíc divergente do cadastro": 1, "Veículo/Placa com obstáculo à frente": 1}},
+  "EPR020|1": {cod:"EPR020",pista:"1",nome:"BR-369 km 86+250",sentido:"CRESCENTE",total:122,tec:1,ntec:121,consist:60,incons:62,desc:{"Veículo de emergência ou policial": 16, "Veículo sem placa": 12, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 9, "Veículo sem cadastro": 8, "Placa deteriorada/raspada/dobrada/ilegível": 7, "Placa fora do padrão (outro país/oficial)": 4, "Veículo/Placa fora do campo visível": 4, "Câmera com problema (interf./distorc./artefatos)": 1, "Veículo/Placa com obstáculo à frente": 1}},
+  "EPR021|1": {cod:"EPR021",pista:"1",nome:"BR-369 km 086+330",sentido:"DECRESCENTE",total:72,tec:3,ntec:69,consist:25,incons:47,desc:{"Veículo de emergência ou policial": 10, "Placa fora do padrão (outro país/oficial)": 9, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8, "Placa deteriorada/raspada/dobrada/ilegível": 4, "Veículo sem cadastro": 4, "Veículo sem placa": 3, "Veículo/Placa fora do campo visível": 3, "Placa reflexiva saturada": 3, "Imagem desfocada/borrada/embaçada": 2, "Imagem com iluminação deficiente": 1}},
+};
+
+const PIVOT_DESC_SERIE = {
+  "Câmera com problema (deslocada/zoom)": {"546": 0, "547": 0, "549": 0, "550": 0, "551": 0, "552": 0, "553": 4, "554": 0, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 0, "561": 0, "562": 0, "563": 0, "564": 0, "565": 0, "566": 0, "567": 0, "568": 0, "569": 0, "570": 0, "571": 2, "572": 0, "1169": 1},
+  "Câmera com problema (interf./distorc./artefatos)": {"546": 0, "547": 0, "549": 11, "550": 2, "551": 30, "552": 11, "553": 4, "554": 0, "555": 0, "556": 1, "557": 2, "558": 0, "559": 1, "560": 0, "561": 25, "562": 4, "563": 0, "564": 0, "565": 1, "566": 1, "567": 7, "568": 1, "569": 1, "570": 2, "571": 0, "572": 0, "1169": 1},
+  "Consistente": {"546": 41, "547": 12, "549": 97, "550": 179, "551": 147, "552": 303, "553": 190, "554": 42, "555": 3, "556": 3, "557": 456, "558": 89, "559": 60, "560": 25, "561": 577, "562": 472, "563": 17, "564": 37, "565": 137, "566": 83, "567": 292, "568": 174, "569": 343, "570": 231, "571": 194, "572": 26, "1169": 212},
+  "Desacionamento incorreto do sensor": {"546": 0, "547": 0, "549": 0, "550": 0, "551": 0, "552": 0, "553": 0, "554": 2, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 0, "561": 0, "562": 0, "563": 0, "564": 0, "565": 0, "566": 0, "567": 0, "568": 0, "569": 0, "570": 0, "571": 0, "572": 0, "1169": 0},
+  "Erro de parametrização": {"546": 0, "547": 0, "549": 6, "550": 9, "551": 12, "552": 5, "553": 0, "554": 0, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 0, "561": 0, "562": 0, "563": 0, "564": 0, "565": 0, "566": 0, "567": 0, "568": 0, "569": 0, "570": 0, "571": 0, "572": 0, "1169": 8},
+  "Imagem com iluminação deficiente": {"546": 4, "547": 2, "549": 15, "550": 17, "551": 4, "552": 165, "553": 30, "554": 2, "555": 0, "556": 1, "557": 18, "558": 3, "559": 0, "560": 1, "561": 93, "562": 12, "563": 7, "564": 0, "565": 16, "566": 0, "567": 23, "568": 23, "569": 8, "570": 10, "571": 19, "572": 0, "1169": 1},
+  "Imagem completamente sem veículo": {"546": 0, "547": 0, "549": 66, "550": 39, "551": 2, "552": 5, "553": 105, "554": 17, "555": 2, "556": 0, "557": 0, "558": 4, "559": 0, "560": 0, "561": 0, "562": 1, "563": 0, "564": 0, "565": 7, "566": 0, "567": 0, "568": 0, "569": 3, "570": 0, "571": 4, "572": 0, "1169": 1},
+  "Imagem desfocada/borrada/embaçada": {"546": 0, "547": 0, "549": 1, "550": 2, "551": 36, "552": 24, "553": 0, "554": 0, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 2, "561": 15, "562": 42, "563": 0, "564": 0, "565": 1, "566": 0, "567": 5, "568": 1, "569": 2, "570": 7, "571": 0, "572": 0, "1169": 1},
+  "Imagem ruim - motivo ambiental (chuva/sol/galhos)": {"546": 5, "547": 1, "549": 15, "550": 44, "551": 11, "552": 61, "553": 25, "554": 3, "555": 0, "556": 0, "557": 18, "558": 13, "559": 9, "560": 8, "561": 17, "562": 12, "563": 1, "564": 4, "565": 2, "566": 4, "567": 2, "568": 5, "569": 11, "570": 8, "571": 3, "572": 0, "1169": 2},
+  "Infração não consumada": {"546": 0, "547": 0, "549": 13, "550": 25, "551": 10, "552": 13, "553": 0, "554": 0, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 0, "561": 0, "562": 0, "563": 0, "564": 0, "565": 0, "566": 0, "567": 0, "568": 0, "569": 0, "570": 0, "571": 0, "572": 0, "1169": 42},
+  "Mais de um veículo na imagem": {"546": 0, "547": 0, "549": 1, "550": 2, "551": 3, "552": 2, "553": 0, "554": 2, "555": 0, "556": 0, "557": 0, "558": 0, "559": 0, "560": 0, "561": 0, "562": 5, "563": 0, "564": 0, "565": 0, "566": 0, "567": 0, "568": 3, "569": 1, "570": 0, "571": 0, "572": 0, "1169": 2},
+  "Modelo do veíc divergente do cadastro": {"546": 1, "547": 0, "549": 1, "550": 0, "551": 0, "552": 0, "553": 1, "554": 0, "555": 0, "556": 0, "557": 2, "558": 1, "559": 0, "560": 0, "561": 6, "562": 6, "563": 0, "564": 0, "565": 0, "566": 1, "567": 4, "568": 1, "569": 4, "570": 1, "571": 0, "572": 0, "1169": 0},
+  "Placa deteriorada/raspada/dobrada/ilegível": {"546": 5, "547": 9, "549": 16, "550": 22, "551": 9, "552": 24, "553": 31, "554": 23, "555": 1, "556": 4, "557": 25, "558": 17, "559": 7, "560": 4, "561": 60, "562": 70, "563": 9, "564": 6, "565": 11, "566": 6, "567": 75, "568": 20, "569": 45, "570": 25, "571": 11, "572": 0, "1169": 42},
+  "Placa fora do padrão (outro país/oficial)": {"546": 1, "547": 0, "549": 2, "550": 2, "551": 3, "552": 8, "553": 3, "554": 0, "555": 0, "556": 0, "557": 11, "558": 8, "559": 4, "560": 9, "561": 1, "562": 1, "563": 0, "564": 0, "565": 0, "566": 3, "567": 2, "568": 2, "569": 1, "570": 8, "571": 8, "572": 0, "1169": 1},
+  "Placa reflexiva saturada": {"546": 0, "547": 1, "549": 0, "550": 6, "551": 4, "552": 1, "553": 3, "554": 7, "555": 0, "556": 0, "557": 3, "558": 3, "559": 0, "560": 3, "561": 29, "562": 61, "563": 0, "564": 17, "565": 3, "566": 3, "567": 8, "568": 13, "569": 10, "570": 18, "571": 5, "572": 0, "1169": 7},
+  "Veículo de emergência ou policial": {"546": 6, "547": 4, "549": 5, "550": 10, "551": 9, "552": 18, "553": 39, "554": 35, "555": 0, "556": 0, "557": 2, "558": 4, "559": 16, "560": 10, "561": 3, "562": 3, "563": 2, "564": 1, "565": 3, "566": 2, "567": 9, "568": 9, "569": 29, "570": 14, "571": 9, "572": 0, "1169": 1},
+  "Veículo sem cadastro": {"546": 0, "547": 0, "549": 3, "550": 9, "551": 3, "552": 11, "553": 20, "554": 10, "555": 0, "556": 0, "557": 7, "558": 2, "559": 8, "560": 4, "561": 1, "562": 5, "563": 0, "564": 1, "565": 3, "566": 4, "567": 7, "568": 6, "569": 16, "570": 8, "571": 9, "572": 0, "1169": 4},
+  "Veículo sem placa": {"546": 3, "547": 4, "549": 2, "550": 3, "551": 13, "552": 13, "553": 24, "554": 9, "555": 0, "556": 0, "557": 20, "558": 2, "559": 12, "560": 3, "561": 6, "562": 19, "563": 0, "564": 0, "565": 3, "566": 8, "567": 34, "568": 5, "569": 35, "570": 22, "571": 16, "572": 0, "1169": 11},
+  "Veículo/Placa com obstáculo à frente": {"546": 7, "547": 1, "549": 39, "550": 27, "551": 49, "552": 63, "553": 60, "554": 27, "555": 0, "556": 0, "557": 10, "558": 1, "559": 1, "560": 0, "561": 17, "562": 23, "563": 0, "564": 1, "565": 3, "566": 6, "567": 22, "568": 14, "569": 26, "570": 31, "571": 23, "572": 0, "1169": 44},
+  "Veículo/Placa fora do campo visível": {"546": 1, "547": 2, "549": 44, "550": 61, "551": 39, "552": 91, "553": 121, "554": 28, "555": 2, "556": 1, "557": 17, "558": 7, "559": 4, "560": 3, "561": 48, "562": 83, "563": 0, "564": 1, "565": 31, "566": 11, "567": 22, "568": 12, "569": 50, "570": 15, "571": 78, "572": 0, "1169": 116},
+};
+
+const PIVOT_SERIES = ["546", "547", "549", "550", "551", "552", "553", "554", "555", "556", "557", "558", "559", "560", "561", "562", "563", "564", "565", "566", "567", "568", "569", "570", "571", "572", "1169"];
+
+const PIVOT_TOTAIS_SERIE = {"568": 289, "569": 585, "551": 384, "553": 660, "560": 72, "561": 898, "567": 512, "562": 819, "550": 459, "559": 122, "549": 337, "565": 221, "570": 400, "1169": 497, "571": 381, "563": 36, "564": 68, "557": 591, "547": 36, "552": 818, "554": 207, "572": 26, "566": 132, "556": 10, "546": 74, "555": 8, "558": 154};
+
+const PIVOT_TOTAIS_DESC = {"Consistente": 4442, "Ve\u00edculo sem placa": 267, "Ve\u00edculo/Placa fora do campo vis\u00edvel": 888, "Ve\u00edculo/Placa com obst\u00e1culo \u00e0 frente": 495, "Imagem completamente sem ve\u00edculo": 256, "Placa deteriorada/raspada/dobrada/ileg\u00edvel": 577, "Ve\u00edculo sem cadastro": 141, "Placa fora do padr\u00e3o (outro pa\u00eds/oficial)": 78, "Ve\u00edculo de emerg\u00eancia ou policial": 243, "Mais de um ve\u00edculo na imagem": 21, "Infra\u00e7\u00e3o n\u00e3o consumada": 103, "C\u00e2mera com problema (interf./distorc./artefatos)": 105, "C\u00e2mera com problema (deslocada/zoom)": 7, "Imagem com ilumina\u00e7\u00e3o deficiente": 474, "Imagem desfocada/borrada/emba\u00e7ada": 139, "Desacionamento incorreto do sensor": 2, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 284, "Erro de parametriza\u00e7\u00e3o": 40, "Placa reflexiva saturada": 205, "Modelo do ve\u00edc divergente do cadastro": 29};
+
+const PIVOT_TOTAL_GERAL = 8796;
+
+const PIVOT_DESC_LIST = ["Câmera com problema (deslocada/zoom)", "Câmera com problema (interf./distorc./artefatos)", "Consistente", "Desacionamento incorreto do sensor", "Erro de parametrização", "Imagem com iluminação deficiente", "Imagem completamente sem veículo", "Imagem desfocada/borrada/embaçada", "Imagem ruim - motivo ambiental (chuva/sol/galhos)", "Infração não consumada", "Mais de um veículo na imagem", "Modelo do veíc divergente do cadastro", "Placa deteriorada/raspada/dobrada/ilegível", "Placa fora do padrão (outro país/oficial)", "Placa reflexiva saturada", "Veículo de emergência ou policial", "Veículo sem cadastro", "Veículo sem placa", "Veículo/Placa com obstáculo à frente", "Veículo/Placa fora do campo visível"];
+
+const INFRA_BY_SP = {"551|1": {"tec": 75, "ntec": 268, "consist": 139, "total": 343, "by_date": {"11": {"tec": 0, "ntec": 38, "consist": 26, "total": 38}, "10": {"tec": 3, "ntec": 27, "consist": 15, "total": 30}, "09": {"tec": 6, "ntec": 30, "consist": 18, "total": 36}, "08": {"tec": 8, "ntec": 37, "consist": 24, "total": 45}, "07": {"tec": 5, "ntec": 50, "consist": 30, "total": 55}, "06": {"tec": 21, "ntec": 26, "consist": 11, "total": 47}, "05": {"tec": 8, "ntec": 9, "consist": 0, "total": 17}, "04": {"tec": 5, "ntec": 11, "consist": 2, "total": 16}, "03": {"tec": 1, "ntec": 10, "consist": 2, "total": 11}, "02": {"tec": 7, "ntec": 20, "consist": 7, "total": 27}, "01": {"tec": 11, "ntec": 10, "consist": 4, "total": 21}}}, "553|1": {"tec": 77, "ntec": 293, "consist": 116, "total": 370, "by_date": {"11": {"tec": 6, "ntec": 18, "consist": 10, "total": 24}, "10": {"tec": 4, "ntec": 18, "consist": 6, "total": 22}, "09": {"tec": 6, "ntec": 23, "consist": 9, "total": 29}, "08": {"tec": 4, "ntec": 21, "consist": 8, "total": 25}, "07": {"tec": 5, "ntec": 39, "consist": 25, "total": 44}, "06": {"tec": 6, "ntec": 32, "consist": 5, "total": 38}, "05": {"tec": 7, "ntec": 33, "consist": 9, "total": 40}, "04": {"tec": 8, "ntec": 36, "consist": 13, "total": 44}, "03": {"tec": 9, "ntec": 21, "consist": 8, "total": 30}, "02": {"tec": 6, "ntec": 29, "consist": 9, "total": 35}, "01": {"tec": 16, "ntec": 23, "consist": 14, "total": 39}}}, "560|1": {"tec": 3, "ntec": 69, "consist": 25, "total": 72, "by_date": {"11": {"tec": 0, "ntec": 9, "consist": 5, "total": 9}, "10": {"tec": 2, "ntec": 9, "consist": 2, "total": 11}, "09": {"tec": 0, "ntec": 6, "consist": 1, "total": 6}, "08": {"tec": 0, "ntec": 5, "consist": 1, "total": 5}, "07": {"tec": 0, "ntec": 8, "consist": 3, "total": 8}, "06": {"tec": 0, "ntec": 4, "consist": 2, "total": 4}, "05": {"tec": 0, "ntec": 4, "consist": 2, "total": 4}, "04": {"tec": 0, "ntec": 3, "consist": 1, "total": 3}, "03": {"tec": 0, "ntec": 5, "consist": 4, "total": 5}, "02": {"tec": 0, "ntec": 6, "consist": 2, "total": 6}, "01": {"tec": 1, "ntec": 10, "consist": 2, "total": 11}}}, "550|1": {"tec": 67, "ntec": 328, "consist": 150, "total": 395, "by_date": {"11": {"tec": 2, "ntec": 15, "consist": 8, "total": 17}, "10": {"tec": 9, "ntec": 24, "consist": 13, "total": 33}, "09": {"tec": 5, "ntec": 20, "consist": 16, "total": 25}, "08": {"tec": 8, "ntec": 27, "consist": 17, "total": 35}, "07": {"tec": 9, "ntec": 33, "consist": 23, "total": 42}, "06": {"tec": 2, "ntec": 24, "consist": 6, "total": 26}, "05": {"tec": 6, "ntec": 56, "consist": 8, "total": 62}, "04": {"tec": 4, "ntec": 39, "consist": 8, "total": 43}, "03": {"tec": 11, "ntec": 31, "consist": 13, "total": 42}, "02": {"tec": 4, "ntec": 29, "consist": 15, "total": 33}, "01": {"tec": 7, "ntec": 30, "consist": 23, "total": 37}}}, "559|1": {"tec": 1, "ntec": 121, "consist": 60, "total": 122, "by_date": {"11": {"tec": 0, "ntec": 6, "consist": 4, "total": 6}, "10": {"tec": 0, "ntec": 10, "consist": 5, "total": 10}, "09": {"tec": 0, "ntec": 8, "consist": 5, "total": 8}, "08": {"tec": 1, "ntec": 15, "consist": 10, "total": 16}, "07": {"tec": 0, "ntec": 7, "consist": 6, "total": 7}, "06": {"tec": 0, "ntec": 12, "consist": 8, "total": 12}, "05": {"tec": 0, "ntec": 16, "consist": 4, "total": 16}, "04": {"tec": 0, "ntec": 11, "consist": 2, "total": 11}, "03": {"tec": 0, "ntec": 17, "consist": 6, "total": 17}, "02": {"tec": 0, "ntec": 7, "consist": 3, "total": 7}, "01": {"tec": 0, "ntec": 12, "consist": 7, "total": 12}}}, "549|1": {"tec": 97, "ntec": 174, "consist": 60, "total": 271, "by_date": {"11": {"tec": 0, "ntec": 8, "consist": 5, "total": 8}, "10": {"tec": 7, "ntec": 2, "consist": 0, "total": 9}, "09": {"tec": 2, "ntec": 7, "consist": 2, "total": 9}, "08": {"tec": 2, "ntec": 11, "consist": 6, "total": 13}, "07": {"tec": 42, "ntec": 33, "consist": 14, "total": 75}, "06": {"tec": 8, "ntec": 25, "consist": 9, "total": 33}, "05": {"tec": 9, "ntec": 21, "consist": 2, "total": 30}, "04": {"tec": 11, "ntec": 31, "consist": 6, "total": 42}, "03": {"tec": 3, "ntec": 15, "consist": 6, "total": 18}, "02": {"tec": 9, "ntec": 10, "consist": 3, "total": 19}, "01": {"tec": 4, "ntec": 11, "consist": 7, "total": 15}}}, "553|2": {"tec": 66, "ntec": 224, "consist": 74, "total": 290, "by_date": {"11": {"tec": 10, "ntec": 19, "consist": 8, "total": 29}, "10": {"tec": 7, "ntec": 12, "consist": 2, "total": 19}, "09": {"tec": 3, "ntec": 12, "consist": 4, "total": 15}, "08": {"tec": 4, "ntec": 13, "consist": 6, "total": 17}, "07": {"tec": 7, "ntec": 20, "consist": 10, "total": 27}, "06": {"tec": 7, "ntec": 30, "consist": 7, "total": 37}, "05": {"tec": 3, "ntec": 25, "consist": 3, "total": 28}, "04": {"tec": 7, "ntec": 24, "consist": 6, "total": 31}, "03": {"tec": 7, "ntec": 27, "consist": 7, "total": 34}, "02": {"tec": 7, "ntec": 20, "consist": 7, "total": 27}, "01": {"tec": 4, "ntec": 22, "consist": 14, "total": 26}}}, "1169|1": {"tec": 9, "ntec": 314, "consist": 110, "total": 323, "by_date": {"11": {"tec": 0, "ntec": 27, "consist": 13, "total": 27}, "10": {"tec": 1, "ntec": 16, "consist": 5, "total": 17}, "09": {"tec": 2, "ntec": 26, "consist": 6, "total": 28}, "08": {"tec": 1, "ntec": 13, "consist": 7, "total": 14}, "07": {"tec": 0, "ntec": 40, "consist": 24, "total": 40}, "06": {"tec": 1, "ntec": 42, "consist": 14, "total": 43}, "05": {"tec": 2, "ntec": 42, "consist": 9, "total": 44}, "04": {"tec": 1, "ntec": 32, "consist": 2, "total": 33}, "03": {"tec": 0, "ntec": 31, "consist": 9, "total": 31}, "02": {"tec": 1, "ntec": 25, "consist": 13, "total": 26}, "01": {"tec": 0, "ntec": 20, "consist": 8, "total": 20}}}, "1169|2": {"tec": 4, "ntec": 170, "consist": 102, "total": 174, "by_date": {"11": {"tec": 0, "ntec": 6, "consist": 5, "total": 6}, "10": {"tec": 0, "ntec": 9, "consist": 4, "total": 9}, "09": {"tec": 1, "ntec": 8, "consist": 6, "total": 9}, "08": {"tec": 0, "ntec": 12, "consist": 8, "total": 12}, "07": {"tec": 0, "ntec": 23, "consist": 18, "total": 23}, "06": {"tec": 2, "ntec": 17, "consist": 8, "total": 19}, "05": {"tec": 0, "ntec": 17, "consist": 7, "total": 17}, "04": {"tec": 1, "ntec": 22, "consist": 5, "total": 23}, "03": {"tec": 0, "ntec": 30, "consist": 20, "total": 30}, "02": {"tec": 0, "ntec": 9, "consist": 8, "total": 9}, "01": {"tec": 0, "ntec": 17, "consist": 13, "total": 17}}}, "557|1": {"tec": 20, "ntec": 571, "consist": 456, "total": 591, "by_date": {"11": {"tec": 0, "ntec": 24, "consist": 18, "total": 24}, "10": {"tec": 5, "ntec": 47, "consist": 42, "total": 52}, "09": {"tec": 1, "ntec": 42, "consist": 37, "total": 43}, "08": {"tec": 1, "ntec": 65, "consist": 58, "total": 66}, "07": {"tec": 4, "ntec": 59, "consist": 48, "total": 63}, "06": {"tec": 5, "ntec": 58, "consist": 45, "total": 63}, "05": {"tec": 1, "ntec": 58, "consist": 37, "total": 59}, "04": {"tec": 1, "ntec": 41, "consist": 29, "total": 42}, "03": {"tec": 1, "ntec": 42, "consist": 28, "total": 43}, "02": {"tec": 1, "ntec": 62, "consist": 48, "total": 63}, "01": {"tec": 0, "ntec": 73, "consist": 66, "total": 73}}}, "547|1": {"tec": 2, "ntec": 34, "consist": 12, "total": 36, "by_date": {"11": {"tec": 0, "ntec": 3, "consist": 3, "total": 3}, "10": {"tec": 0, "ntec": 6, "consist": 1, "total": 6}, "08": {"tec": 0, "ntec": 3, "consist": 1, "total": 3}, "07": {"tec": 0, "ntec": 8, "consist": 2, "total": 8}, "06": {"tec": 1, "ntec": 3, "consist": 1, "total": 4}, "05": {"tec": 0, "ntec": 2, "consist": 0, "total": 2}, "04": {"tec": 1, "ntec": 1, "consist": 0, "total": 2}, "03": {"tec": 0, "ntec": 2, "consist": 2, "total": 2}, "02": {"tec": 0, "ntec": 4, "consist": 2, "total": 4}, "01": {"tec": 0, "ntec": 2, "consist": 0, "total": 2}}}, "552|1": {"tec": 171, "ntec": 455, "consist": 250, "total": 626, "by_date": {"11": {"tec": 0, "ntec": 20, "consist": 13, "total": 20}, "10": {"tec": 0, "ntec": 19, "consist": 13, "total": 19}, "09": {"tec": 2, "ntec": 10, "consist": 9, "total": 12}, "08": {"tec": 0, "ntec": 30, "consist": 27, "total": 30}, "07": {"tec": 0, "ntec": 51, "consist": 25, "total": 51}, "06": {"tec": 10, "ntec": 53, "consist": 23, "total": 63}, "05": {"tec": 42, "ntec": 45, "consist": 14, "total": 87}, "04": {"tec": 36, "ntec": 56, "consist": 17, "total": 92}, "03": {"tec": 21, "ntec": 51, "consist": 27, "total": 72}, "02": {"tec": 21, "ntec": 68, "consist": 42, "total": 89}, "01": {"tec": 39, "ntec": 52, "consist": 40, "total": 91}}}, "554|2": {"tec": 17, "ntec": 88, "consist": 17, "total": 105, "by_date": {"11": {"tec": 1, "ntec": 5, "consist": 1, "total": 6}, "10": {"tec": 1, "ntec": 3, "consist": 0, "total": 4}, "09": {"tec": 2, "ntec": 4, "consist": 0, "total": 6}, "08": {"tec": 0, "ntec": 8, "consist": 1, "total": 8}, "07": {"tec": 3, "ntec": 5, "consist": 0, "total": 8}, "06": {"tec": 0, "ntec": 8, "consist": 1, "total": 8}, "05": {"tec": 4, "ntec": 11, "consist": 1, "total": 15}, "04": {"tec": 1, "ntec": 12, "consist": 4, "total": 13}, "03": {"tec": 1, "ntec": 14, "consist": 2, "total": 15}, "02": {"tec": 3, "ntec": 8, "consist": 2, "total": 11}, "01": {"tec": 1, "ntec": 10, "consist": 5, "total": 11}}}, "552|2": {"tec": 39, "ntec": 153, "consist": 53, "total": 192, "by_date": {"11": {"tec": 0, "ntec": 5, "consist": 3, "total": 5}, "10": {"tec": 0, "ntec": 7, "consist": 2, "total": 7}, "09": {"tec": 0, "ntec": 6, "consist": 1, "total": 6}, "08": {"tec": 0, "ntec": 12, "consist": 9, "total": 12}, "07": {"tec": 1, "ntec": 11, "consist": 1, "total": 12}, "06": {"tec": 2, "ntec": 12, "consist": 5, "total": 14}, "05": {"tec": 7, "ntec": 22, "consist": 2, "total": 29}, "04": {"tec": 12, "ntec": 17, "consist": 3, "total": 29}, "03": {"tec": 3, "ntec": 19, "consist": 4, "total": 22}, "02": {"tec": 8, "ntec": 22, "consist": 13, "total": 30}, "01": {"tec": 6, "ntec": 20, "consist": 10, "total": 26}}}, "550|2": {"tec": 2, "ntec": 62, "consist": 29, "total": 64, "by_date": {"11": {"tec": 0, "ntec": 3, "consist": 2, "total": 3}, "10": {"tec": 0, "ntec": 7, "consist": 5, "total": 7}, "09": {"tec": 0, "ntec": 2, "consist": 0, "total": 2}, "08": {"tec": 0, "ntec": 4, "consist": 2, "total": 4}, "07": {"tec": 1, "ntec": 9, "consist": 4, "total": 10}, "06": {"tec": 0, "ntec": 6, "consist": 3, "total": 6}, "05": {"tec": 0, "ntec": 4, "consist": 0, "total": 4}, "04": {"tec": 0, "ntec": 9, "consist": 0, "total": 9}, "03": {"tec": 0, "ntec": 2, "consist": 2, "total": 2}, "02": {"tec": 0, "ntec": 10, "consist": 8, "total": 10}, "01": {"tec": 1, "ntec": 6, "consist": 3, "total": 7}}}, "551|2": {"tec": 9, "ntec": 32, "consist": 8, "total": 41, "by_date": {"11": {"tec": 0, "ntec": 3, "consist": 1, "total": 3}, "09": {"tec": 1, "ntec": 1, "consist": 1, "total": 2}, "08": {"tec": 1, "ntec": 3, "consist": 0, "total": 4}, "07": {"tec": 2, "ntec": 1, "consist": 0, "total": 3}, "06": {"tec": 1, "ntec": 6, "consist": 4, "total": 7}, "05": {"tec": 1, "ntec": 3, "consist": 0, "total": 4}, "04": {"tec": 2, "ntec": 5, "consist": 0, "total": 7}, "03": {"tec": 0, "ntec": 4, "consist": 1, "total": 4}, "02": {"tec": 1, "ntec": 3, "consist": 1, "total": 4}, "01": {"tec": 0, "ntec": 3, "consist": 0, "total": 3}}}, "554|1": {"tec": 4, "ntec": 98, "consist": 25, "total": 102, "by_date": {"11": {"tec": 1, "ntec": 5, "consist": 2, "total": 6}, "10": {"tec": 0, "ntec": 8, "consist": 2, "total": 8}, "09": {"tec": 0, "ntec": 7, "consist": 2, "total": 7}, "08": {"tec": 0, "ntec": 10, "consist": 3, "total": 10}, "07": {"tec": 1, "ntec": 9, "consist": 0, "total": 10}, "06": {"tec": 0, "ntec": 14, "consist": 2, "total": 14}, "05": {"tec": 1, "ntec": 10, "consist": 2, "total": 11}, "04": {"tec": 0, "ntec": 6, "consist": 1, "total": 6}, "03": {"tec": 1, "ntec": 6, "consist": 2, "total": 7}, "02": {"tec": 0, "ntec": 7, "consist": 1, "total": 7}, "01": {"tec": 0, "ntec": 16, "consist": 8, "total": 16}}}, "556|1": {"tec": 2, "ntec": 8, "consist": 3, "total": 10, "by_date": {"11": {"tec": 0, "ntec": 1, "consist": 0, "total": 1}, "07": {"tec": 0, "ntec": 2, "consist": 2, "total": 2}, "06": {"tec": 0, "ntec": 2, "consist": 0, "total": 2}, "05": {"tec": 1, "ntec": 0, "consist": 0, "total": 1}, "04": {"tec": 0, "ntec": 1, "consist": 0, "total": 1}, "02": {"tec": 1, "ntec": 0, "consist": 0, "total": 1}, "01": {"tec": 0, "ntec": 2, "consist": 1, "total": 2}}}, "549|2": {"tec": 2, "ntec": 64, "consist": 37, "total": 66, "by_date": {"10": {"tec": 0, "ntec": 5, "consist": 1, "total": 5}, "09": {"tec": 0, "ntec": 4, "consist": 3, "total": 4}, "08": {"tec": 0, "ntec": 4, "consist": 4, "total": 4}, "07": {"tec": 0, "ntec": 14, "consist": 12, "total": 14}, "06": {"tec": 1, "ntec": 12, "consist": 10, "total": 13}, "05": {"tec": 0, "ntec": 4, "consist": 0, "total": 4}, "04": {"tec": 0, "ntec": 11, "consist": 2, "total": 11}, "03": {"tec": 0, "ntec": 5, "consist": 2, "total": 5}, "02": {"tec": 0, "ntec": 3, "consist": 1, "total": 3}, "01": {"tec": 1, "ntec": 2, "consist": 2, "total": 3}}}, "546|1": {"tec": 4, "ntec": 70, "consist": 41, "total": 74, "by_date": {"10": {"tec": 0, "ntec": 2, "consist": 1, "total": 2}, "09": {"tec": 1, "ntec": 6, "consist": 3, "total": 7}, "08": {"tec": 1, "ntec": 8, "consist": 3, "total": 9}, "07": {"tec": 0, "ntec": 11, "consist": 7, "total": 11}, "06": {"tec": 0, "ntec": 2, "consist": 1, "total": 2}, "05": {"tec": 2, "ntec": 8, "consist": 4, "total": 10}, "04": {"tec": 0, "ntec": 5, "consist": 1, "total": 5}, "03": {"tec": 0, "ntec": 10, "consist": 5, "total": 10}, "02": {"tec": 0, "ntec": 11, "consist": 9, "total": 11}, "01": {"tec": 0, "ntec": 7, "consist": 7, "total": 7}}}, "555|1": {"tec": 2, "ntec": 6, "consist": 3, "total": 8, "by_date": {"08": {"tec": 0, "ntec": 2, "consist": 1, "total": 2}, "07": {"tec": 2, "ntec": 1, "consist": 1, "total": 3}, "03": {"tec": 0, "ntec": 1, "consist": 0, "total": 1}, "01": {"tec": 0, "ntec": 2, "consist": 1, "total": 2}}}, "558|1": {"tec": 7, "ntec": 147, "consist": 89, "total": 154, "by_date": {"05": {"tec": 1, "ntec": 9, "consist": 7, "total": 10}, "04": {"tec": 1, "ntec": 39, "consist": 22, "total": 40}, "03": {"tec": 0, "ntec": 29, "consist": 20, "total": 29}, "02": {"tec": 0, "ntec": 25, "consist": 15, "total": 25}, "01": {"tec": 5, "ntec": 45, "consist": 25, "total": 50}}}};
+
+// ══════════════════════════════════════════════════════════════
+//  DB  (gerado pelo atualizar_todos.py)
+// ══════════════════════════════════════════════════════════════
 const DB = [
   {
-    id:"EPR", nome:"EPR",
+    id:"EPR",nome:"EPR",
     dias:["01 Dom","02 Seg","03 Ter","04 Qua","05 Qui","06 Sex","07 Sab","08 Dom","09 Seg","10 Ter","11 Qua"],
     equipamentos:[
       {serie:"545",local:"BR-153 km 031+150",sentido:"Crescente",cod:"EPR006",vel:60,ult_afer:"2026-01-05",venc_afer:"2027-01-05",
-       faixas:[
-        {id:"1",fluxo:{},infra:{},teste:{},
-         lap:{integral:{},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
-         aproveitamento:{trafego:0,vel_media:0,total_infra:0,inc_tec:0,inc_n_tec:0,total_incons:0,total_consist:0,em_proc:0,indice_aprov:0,pct_aprov:0},
-         aprov_por_data:{},horario:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
-       ]},
+       faixas:[{id:"1",fluxo:{},infra:{},teste:{},lap:{integral:{},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},aproveitamento:{trafego:0,vel_media:0,total_infra:0,inc_tec:0,inc_n_tec:0,total_incons:0,total_consist:0,em_proc:0,indice_aprov:0,pct_aprov:0},aprov_por_data:{},horario:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}]},
       {serie:"546",local:"BR-153 km 041+900",sentido:"Crescente",cod:"EPR007",vel:60,ult_afer:"2026-01-05",venc_afer:"2027-01-05",
-       faixas:[
-        {id:"1",
+       faixas:[{id:"1",
          fluxo:{"01 Dom":4962,"02 Seg":7562,"03 Ter":8029,"04 Qua":8235,"05 Qui":8488,"06 Sex":1855,"07 Sab":6698,"08 Dom":5590,"09 Seg":7534,"10 Ter":8150,"11 Qua":6697},
          infra:{"01 Dom":7,"02 Seg":11,"03 Ter":10,"04 Qua":5,"05 Qui":10,"06 Sex":2,"07 Sab":11,"08 Dom":8,"09 Seg":9,"10 Ter":10,"11 Qua":6},
          teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":11,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":23},
-         lap:{
-           integral:{"01 Dom":72,"02 Seg":85,"03 Ter":83,"04 Qua":80,"05 Qui":82,"06 Sex":84,"07 Sab":82,"08 Dom":74,"09 Seg":77,"10 Ter":81,"11 Qua":78},
-           tr_manha:{"01 Dom":72,"02 Seg":85,"03 Ter":83,"04 Qua":80,"05 Qui":82,"06 Sex":84,"07 Sab":82,"08 Dom":74,"09 Seg":77,"10 Ter":81,"11 Qua":null},
-           diurno:{"01 Dom":77,"02 Seg":78,"03 Ter":76,"04 Qua":77,"05 Qui":74,"06 Sex":93,"07 Sab":82,"08 Dom":80,"09 Seg":83,"10 Ter":83,"11 Qua":81},
-           tr_tarde:{"01 Dom":84,"02 Seg":83,"03 Ter":81,"04 Qua":81,"05 Qui":81,"06 Sex":null,"07 Sab":82,"08 Dom":83,"09 Seg":80,"10 Ter":75,"11 Qua":73},
-           noturno:{"01 Dom":86,"02 Seg":88,"03 Ter":85,"04 Qua":86,"05 Qui":84,"06 Sex":82,"07 Sab":87,"08 Dom":87,"09 Seg":88,"10 Ter":87,"11 Qua":null}
-         },
+         lap:{integral:{"01 Dom":72,"02 Seg":85,"03 Ter":83,"04 Qua":80,"05 Qui":82,"06 Sex":84,"07 Sab":82,"08 Dom":74,"09 Seg":77,"10 Ter":81,"11 Qua":78},tr_manha:{"01 Dom":72,"02 Seg":85,"03 Ter":83,"04 Qua":80,"05 Qui":82,"06 Sex":84,"07 Sab":82,"08 Dom":74,"09 Seg":77,"10 Ter":81,"11 Qua":null},diurno:{"01 Dom":77,"02 Seg":78,"03 Ter":76,"04 Qua":77,"05 Qui":74,"06 Sex":93,"07 Sab":82,"08 Dom":80,"09 Seg":83,"10 Ter":83,"11 Qua":81},tr_tarde:{"01 Dom":84,"02 Seg":83,"03 Ter":81,"04 Qua":81,"05 Qui":81,"06 Sex":null,"07 Sab":82,"08 Dom":83,"09 Seg":80,"10 Ter":75,"11 Qua":73},noturno:{"01 Dom":86,"02 Seg":88,"03 Ter":85,"04 Qua":86,"05 Qui":84,"06 Sex":82,"07 Sab":87,"08 Dom":87,"09 Seg":88,"10 Ter":87,"11 Qua":null}},
          aproveitamento:{trafego:66970,vel_media:43.17,total_infra:74,inc_tec:4,inc_n_tec:29,total_incons:33,total_consist:41,em_proc:0,indice_aprov:0.95,pct_aprov:0.55},
-         aprov_por_data:{
-           "2026-03-01":{trafego:4962,vel_media:42,total_infra:7,inc_tec:0,inc_n_tec:5,indice_aprov:0.96,pct_aprov:0.51},
-           "2026-03-02":{trafego:7562,vel_media:43,total_infra:11,inc_tec:1,inc_n_tec:8,indice_aprov:0.95,pct_aprov:0.54},
-           "2026-03-03":{trafego:8029,vel_media:44,total_infra:10,inc_tec:1,inc_n_tec:7,indice_aprov:0.95,pct_aprov:0.56},
-           "2026-03-04":{trafego:8235,vel_media:43,total_infra:5,inc_tec:0,inc_n_tec:4,indice_aprov:0.97,pct_aprov:0.58},
-           "2026-03-05":{trafego:8488,vel_media:43,total_infra:10,inc_tec:1,inc_n_tec:7,indice_aprov:0.95,pct_aprov:0.55},
-           "2026-03-06":{trafego:1855,vel_media:44,total_infra:2,inc_tec:0,inc_n_tec:2,indice_aprov:0.95,pct_aprov:0.57},
-           "2026-03-07":{trafego:6698,vel_media:43,total_infra:11,inc_tec:0,inc_n_tec:9,indice_aprov:0.96,pct_aprov:0.53},
-           "2026-03-08":{trafego:5590,vel_media:43,total_infra:8,inc_tec:0,inc_n_tec:6,indice_aprov:0.96,pct_aprov:0.52},
-           "2026-03-09":{trafego:7534,vel_media:43,total_infra:9,inc_tec:1,inc_n_tec:7,indice_aprov:0.95,pct_aprov:0.54},
-           "2026-03-10":{trafego:8150,vel_media:43,total_infra:10,inc_tec:0,inc_n_tec:8,indice_aprov:0.96,pct_aprov:0.56},
-           "2026-03-11":{trafego:6697,vel_media:43,total_infra:6,inc_tec:1,inc_n_tec:5,indice_aprov:0.94,pct_aprov:0.53}
-         },
-         horario:[124,58,42,23,47,131,163,191,262,286,352,351,367,285,349,297,368,412,382,350,290,245,198,164]}
-       ]},
+         aprov_por_data:{"2026-03-01":{indice_aprov:0.96},"2026-03-02":{indice_aprov:0.95},"2026-03-03":{indice_aprov:0.95},"2026-03-04":{indice_aprov:0.97},"2026-03-05":{indice_aprov:0.95},"2026-03-06":{indice_aprov:0.95},"2026-03-07":{indice_aprov:0.96},"2026-03-08":{indice_aprov:0.96},"2026-03-09":{indice_aprov:0.95},"2026-03-10":{indice_aprov:0.96},"2026-03-11":{indice_aprov:0.94}},
+         horario:[124,58,42,23,47,131,163,191,262,286,352,351,367,285,349,297,368,412,382,350,290,245,198,164]}]},
       {serie:"547",local:"BR-153 km 041+950",sentido:"Decrescente",cod:"EPR008",vel:60,ult_afer:"2026-01-05",venc_afer:"2027-01-05",
-       faixas:[
-        {id:"1",
+       faixas:[{id:"1",
          fluxo:{"01 Dom":4256,"02 Seg":5044,"03 Ter":5338,"04 Qua":5691,"05 Qui":5942,"06 Sex":5918,"07 Sab":5026,"08 Dom":4744,"09 Seg":5127,"10 Ter":5432,"11 Qua":5271},
          infra:{"01 Dom":2,"02 Seg":4,"03 Ter":2,"04 Qua":2,"05 Qui":2,"06 Sex":4,"07 Sab":8,"08 Dom":3,"09 Seg":2,"10 Ter":3,"11 Qua":2},
          teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":22},
-         lap:{
-           integral:{"01 Dom":55,"02 Seg":69,"03 Ter":67,"04 Qua":66,"05 Qui":64,"06 Sex":74,"07 Sab":70,"08 Dom":73,"09 Seg":79,"10 Ter":74,"11 Qua":64},
-           tr_manha:{"01 Dom":63,"02 Seg":72,"03 Ter":74,"04 Qua":70,"05 Qui":72,"06 Sex":73,"07 Sab":69,"08 Dom":60,"09 Seg":68,"10 Ter":58,"11 Qua":62},
-           diurno:{"01 Dom":41,"02 Seg":71,"03 Ter":68,"04 Qua":68,"05 Qui":63,"06 Sex":74,"07 Sab":70,"08 Dom":74,"09 Seg":81,"10 Ter":78,"11 Qua":64},
-           tr_tarde:{"01 Dom":61,"02 Seg":60,"03 Ter":58,"04 Qua":58,"05 Qui":55,"06 Sex":71,"07 Sab":64,"08 Dom":72,"09 Seg":81,"10 Ter":79,"11 Qua":67},
-           noturno:{"01 Dom":79,"02 Seg":79,"03 Ter":78,"04 Qua":76,"05 Qui":75,"06 Sex":77,"07 Sab":82,"08 Dom":82,"09 Seg":78,"10 Ter":77,"11 Qua":66}
-         },
+         lap:{integral:{"01 Dom":55,"02 Seg":69,"03 Ter":67,"04 Qua":66,"05 Qui":64,"06 Sex":74,"07 Sab":70,"08 Dom":73,"09 Seg":79,"10 Ter":74,"11 Qua":64},tr_manha:{"01 Dom":63,"02 Seg":72,"03 Ter":74,"04 Qua":70,"05 Qui":72,"06 Sex":73,"07 Sab":69,"08 Dom":60,"09 Seg":68,"10 Ter":58,"11 Qua":62},diurno:{"01 Dom":41,"02 Seg":71,"03 Ter":68,"04 Qua":68,"05 Qui":63,"06 Sex":74,"07 Sab":70,"08 Dom":74,"09 Seg":81,"10 Ter":78,"11 Qua":64},tr_tarde:{"01 Dom":61,"02 Seg":60,"03 Ter":58,"04 Qua":58,"05 Qui":55,"06 Sex":71,"07 Sab":64,"08 Dom":72,"09 Seg":81,"10 Ter":79,"11 Qua":67},noturno:{"01 Dom":79,"02 Seg":79,"03 Ter":78,"04 Qua":76,"05 Qui":75,"06 Sex":77,"07 Sab":82,"08 Dom":82,"09 Seg":78,"10 Ter":77,"11 Qua":66}},
          aproveitamento:{trafego:55744,vel_media:40.29,total_infra:33,inc_tec:2,inc_n_tec:22,total_incons:24,total_consist:9,em_proc:0,indice_aprov:0.94,pct_aprov:0.27},
-         aprov_por_data:{},horario:[67,47,28,20,47,109,164,183,116,221,206,226,198,185,196,210,234,276,238,182,145,115,85,70]}
-       ]},
+         aprov_por_data:{},horario:[67,47,28,20,47,109,164,183,116,221,206,226,198,185,196,210,234,276,238,182,145,115,85,70]}]},
       {serie:"548",local:"BR-277 km 032+000",sentido:"Crescente",cod:"EPR009",vel:60,ult_afer:"2026-01-19",venc_afer:"2026-03-20",
        faixas:[
-        {id:"1",
-         fluxo:{"01 Dom":9956,"02 Seg":5544,"03 Ter":4735,"04 Qua":4953,"05 Qui":5006,"06 Sex":5350,"07 Sab":6313,"08 Dom":10137,"09 Seg":7225,"10 Ter":7220,"11 Qua":65494},
-         infra:{"01 Dom":20,"02 Seg":26,"03 Ter":31,"04 Qua":33,"05 Qui":44,"06 Sex":43,"07 Sab":40,"08 Dom":20,"09 Seg":26,"10 Ter":31,"11 Qua":312},
-         teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
-         lap:{
-           integral:{"01 Dom":90,"02 Seg":77,"03 Ter":72,"04 Qua":70,"05 Qui":70,"06 Sex":76,"07 Sab":77,"08 Dom":90,"09 Seg":78,"10 Ter":72,"11 Qua":71},
-           tr_manha:{"01 Dom":56,"02 Seg":87,"03 Ter":71,"04 Qua":65,"05 Qui":62,"06 Sex":73,"07 Sab":66,"08 Dom":62,"09 Seg":87,"10 Ter":77,"11 Qua":73},
-           diurno:{"01 Dom":91,"02 Seg":79,"03 Ter":74,"04 Qua":71,"05 Qui":71,"06 Sex":76,"07 Sab":77,"08 Dom":92,"09 Seg":81,"10 Ter":74,"11 Qua":72},
-           tr_tarde:{"01 Dom":93,"02 Seg":72,"03 Ter":74,"04 Qua":74,"05 Qui":73,"06 Sex":79,"07 Sab":87,"08 Dom":92,"09 Seg":73,"10 Ter":75,"11 Qua":71},
-           noturno:{"01 Dom":79,"02 Seg":62,"03 Ter":62,"04 Qua":63,"05 Qui":62,"06 Sex":63,"07 Sab":61,"08 Dom":81,"09 Seg":63,"10 Ter":59,"11 Qua":52}
-         },
-         aproveitamento:{trafego:65494,vel_media:58.12,total_infra:312,inc_tec:9,inc_n_tec:204,total_incons:213,total_consist:99,em_proc:0,indice_aprov:0.97,pct_aprov:0.32},
-         aprov_por_data:{},horario:[45,38,29,21,45,64,121,155,199,277,425,488,510,465,400,380,420,480,430,365,280,210,145,89]},
-        {id:"2",
-         fluxo:{"01 Dom":10137,"02 Seg":7225,"03 Ter":7220,"04 Qua":7547,"05 Qui":7292,"06 Sex":7532,"07 Sab":8272,"08 Dom":10137,"09 Seg":7225,"10 Ter":7220,"11 Qua":84957},
-         infra:{"01 Dom":17,"02 Seg":9,"03 Ter":30,"04 Qua":23,"05 Qui":17,"06 Sex":19,"07 Sab":23,"08 Dom":17,"09 Seg":9,"10 Ter":30,"11 Qua":170},
-         teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
+        {id:"1",fluxo:{"01 Dom":9956,"02 Seg":5544,"03 Ter":4735,"04 Qua":4953,"05 Qui":5006,"06 Sex":5350,"07 Sab":6313,"08 Dom":10137,"09 Seg":7225,"10 Ter":7220,"11 Qua":65494},infra:{"01 Dom":20,"02 Seg":26,"03 Ter":31,"04 Qua":33,"05 Qui":44,"06 Sex":43,"07 Sab":40,"08 Dom":20,"09 Seg":26,"10 Ter":31,"11 Qua":312},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
+         lap:{integral:{"01 Dom":90,"02 Seg":77,"03 Ter":72,"04 Qua":70,"05 Qui":70,"06 Sex":76,"07 Sab":77,"08 Dom":90,"09 Seg":78,"10 Ter":72,"11 Qua":71},tr_manha:{"01 Dom":56,"02 Seg":87,"03 Ter":71,"04 Qua":65,"05 Qui":62,"06 Sex":73,"07 Sab":66,"08 Dom":62,"09 Seg":87,"10 Ter":77,"11 Qua":73},diurno:{"01 Dom":91,"02 Seg":79,"03 Ter":74,"04 Qua":71,"05 Qui":71,"06 Sex":76,"07 Sab":77,"08 Dom":92,"09 Seg":81,"10 Ter":74,"11 Qua":72},tr_tarde:{"01 Dom":93,"02 Seg":72,"03 Ter":74,"04 Qua":74,"05 Qui":73,"06 Sex":79,"07 Sab":87,"08 Dom":92,"09 Seg":73,"10 Ter":75,"11 Qua":71},noturno:{"01 Dom":79,"02 Seg":62,"03 Ter":62,"04 Qua":63,"05 Qui":62,"06 Sex":63,"07 Sab":61,"08 Dom":81,"09 Seg":63,"10 Ter":59,"11 Qua":52}},
+         aproveitamento:{trafego:65494,vel_media:58.12,total_infra:312,inc_tec:9,inc_n_tec:204,total_incons:213,total_consist:99,em_proc:0,indice_aprov:0.97,pct_aprov:0.32},aprov_por_data:{},horario:[45,38,29,21,45,64,121,155,199,277,425,488,510,465,400,380,420,480,430,365,280,210,145,89]},
+        {id:"2",fluxo:{"01 Dom":10137,"02 Seg":7225,"03 Ter":7220,"04 Qua":7547,"05 Qui":7292,"06 Sex":7532,"07 Sab":8272,"08 Dom":10137,"09 Seg":7225,"10 Ter":7220,"11 Qua":84957},infra:{"01 Dom":17,"02 Seg":9,"03 Ter":30,"04 Qua":23,"05 Qui":17,"06 Sex":19,"07 Sab":23,"08 Dom":17,"09 Seg":9,"10 Ter":30,"11 Qua":170},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
          lap:{integral:{},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
-         aproveitamento:{trafego:84957,vel_media:54.87,total_infra:170,inc_tec:4,inc_n_tec:68,total_incons:72,total_consist:98,em_proc:0,indice_aprov:0.98,pct_aprov:0.58},
-         aprov_por_data:{},horario:[136,89,90,72,107,136,217,231,326,427,438,475,502,438,380,360,398,445,400,340,260,195,135,102]}
+         aproveitamento:{trafego:84957,vel_media:54.87,total_infra:170,inc_tec:4,inc_n_tec:68,total_incons:72,total_consist:98,em_proc:0,indice_aprov:0.98,pct_aprov:0.58},aprov_por_data:{},horario:[136,89,90,72,107,136,217,231,326,427,438,475,502,438,380,360,398,445,400,340,260,195,135,102]}
        ]},
       {serie:"549",local:"BR-277 km 033+300",sentido:"Decrescente",cod:"EPR010",vel:60,ult_afer:"2026-01-12",venc_afer:"2027-01-12",
        faixas:[
-        {id:"1",
-         fluxo:{"01 Dom":4492,"02 Seg":3574,"03 Ter":3688,"04 Qua":3883,"05 Qui":4735,"06 Sex":8550,"07 Sab":7463,"08 Dom":4492,"09 Seg":3574,"10 Ter":3688,"11 Qua":49443},
-         infra:{"01 Dom":15,"02 Seg":19,"03 Ter":18,"04 Qua":42,"05 Qui":30,"06 Sex":33,"07 Sab":75,"08 Dom":15,"09 Seg":19,"10 Ter":18,"11 Qua":267},
-         teste:{"01 Dom":23,"02 Seg":23,"03 Ter":24,"04 Qua":23,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":23,"09 Seg":23,"10 Ter":24,"11 Qua":23},
+        {id:"1",fluxo:{"01 Dom":4492,"02 Seg":3574,"03 Ter":3688,"04 Qua":3883,"05 Qui":4735,"06 Sex":8550,"07 Sab":7463,"08 Dom":4492,"09 Seg":3574,"10 Ter":3688,"11 Qua":49443},infra:{"01 Dom":15,"02 Seg":19,"03 Ter":18,"04 Qua":42,"05 Qui":30,"06 Sex":33,"07 Sab":75,"08 Dom":15,"09 Seg":19,"10 Ter":18,"11 Qua":267},teste:{"01 Dom":23,"02 Seg":23,"03 Ter":24,"04 Qua":23,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":23,"09 Seg":23,"10 Ter":24,"11 Qua":23},
          lap:{integral:{"01 Dom":null,"02 Seg":null,"03 Ter":null,"04 Qua":null,"05 Qui":null,"06 Sex":null,"07 Sab":null,"08 Dom":null,"09 Seg":null,"10 Ter":null,"11 Qua":null},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
-         aproveitamento:{trafego:49443,vel_media:49.50,total_infra:267,inc_tec:97,inc_n_tec:114,total_incons:211,total_consist:56,em_proc:0,indice_aprov:0.64,pct_aprov:0.21},
-         aprov_por_data:{},horario:[137,37,22,10,39,74,92,191,309,361,378,309,297,276,285,318,352,382,360,305,248,192,150,125]},
-        {id:"2",
-         fluxo:{"01 Dom":4386,"02 Seg":4820,"03 Ter":4482,"04 Qua":4660,"05 Qui":4763,"06 Sex":6180,"07 Sab":6236,"08 Dom":4386,"09 Seg":4820,"10 Ter":4482,"11 Qua":51690},
-         infra:{"01 Dom":3,"02 Seg":3,"03 Ter":5,"04 Qua":11,"05 Qui":4,"06 Sex":13,"07 Sab":14,"08 Dom":3,"09 Seg":3,"10 Ter":5,"11 Qua":66},
-         teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
+         aproveitamento:{trafego:49443,vel_media:49.50,total_infra:267,inc_tec:97,inc_n_tec:114,total_incons:211,total_consist:56,em_proc:0,indice_aprov:0.64,pct_aprov:0.21},aprov_por_data:{},horario:[137,37,22,10,39,74,92,191,309,361,378,309,297,276,285,318,352,382,360,305,248,192,150,125]},
+        {id:"2",fluxo:{"01 Dom":4386,"02 Seg":4820,"03 Ter":4482,"04 Qua":4660,"05 Qui":4763,"06 Sex":6180,"07 Sab":6236,"08 Dom":4386,"09 Seg":4820,"10 Ter":4482,"11 Qua":51690},infra:{"01 Dom":3,"02 Seg":3,"03 Ter":5,"04 Qua":11,"05 Qui":4,"06 Sex":13,"07 Sab":14,"08 Dom":3,"09 Seg":3,"10 Ter":5,"11 Qua":66},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
          lap:{integral:{},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
-         aproveitamento:{trafego:51690,vel_media:41.68,total_infra:66,inc_tec:2,inc_n_tec:27,total_incons:29,total_consist:37,em_proc:0,indice_aprov:0.97,pct_aprov:0.56},
-         aprov_por_data:{},horario:[98,35,18,8,32,60,78,155,248,290,305,250,238,222,230,258,284,310,290,245,198,155,118,98]}
-       ]}
+         aproveitamento:{trafego:51690,vel_media:41.68,total_infra:66,inc_tec:2,inc_n_tec:27,total_incons:29,total_consist:37,em_proc:0,indice_aprov:0.97,pct_aprov:0.56},aprov_por_data:{},horario:[98,35,18,8,32,60,78,155,248,290,305,250,238,222,230,258,284,310,290,245,198,155,118,98]}
+       ]},
+      {serie:"550",local:"BR-277 km 049+200",sentido:"Crescente",cod:"EPR011",vel:80,ult_afer:"2026-01-05",venc_afer:"2027-01-05",
+       faixas:[{id:"1",fluxo:{"01 Dom":6230,"02 Seg":8910,"03 Ter":9100,"04 Qua":8750,"05 Qui":9200,"06 Sex":8400,"07 Sab":7600,"08 Dom":6100,"09 Seg":8800,"10 Ter":9050,"11 Qua":8200},infra:{"01 Dom":5,"02 Seg":8,"03 Ter":9,"04 Qua":7,"05 Qui":11,"06 Sex":8,"07 Sab":7,"08 Dom":5,"09 Seg":9,"10 Ter":10,"11 Qua":8},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
+         lap:{integral:{"01 Dom":88,"02 Seg":91,"03 Ter":90,"04 Qua":89,"05 Qui":92,"06 Sex":90,"07 Sab":87,"08 Dom":88,"09 Seg":91,"10 Ter":89,"11 Qua":90},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
+         aproveitamento:{trafego:90340,vel_media:62.3,total_infra:97,inc_tec:3,inc_n_tec:18,total_incons:21,total_consist:76,em_proc:0,indice_aprov:0.98,pct_aprov:0.79},aprov_por_data:{},horario:[80,60,40,25,55,100,160,200,280,350,420,430,440,390,380,360,400,450,420,370,300,240,180,120]}]},
+      {serie:"552",local:"BR-277 km 061+000",sentido:"Crescente",cod:"EPR013",vel:80,ult_afer:"2026-01-13",venc_afer:"2026-03-15",
+       faixas:[{id:"1",fluxo:{"01 Dom":3100,"02 Seg":4500,"03 Ter":4800,"04 Qua":4600,"05 Qui":5000,"06 Sex":4700,"07 Sab":4100,"08 Dom":3200,"09 Seg":4400,"10 Ter":4600,"11 Qua":4300},infra:{"01 Dom":4,"02 Seg":6,"03 Ter":7,"04 Qua":5,"05 Qui":8,"06 Sex":6,"07 Sab":5,"08 Dom":3,"09 Seg":6,"10 Ter":7,"11 Qua":5},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":24},
+         lap:{integral:{"01 Dom":91,"02 Seg":93,"03 Ter":92,"04 Qua":91,"05 Qui":94,"06 Sex":92,"07 Sab":90,"08 Dom":91,"09 Seg":93,"10 Ter":91,"11 Qua":92},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
+         aproveitamento:{trafego:47300,vel_media:71.5,total_infra:62,inc_tec:1,inc_n_tec:8,total_incons:9,total_consist:53,em_proc:0,indice_aprov:0.99,pct_aprov:0.85},aprov_por_data:{},horario:[50,30,20,12,35,70,110,150,190,230,280,290,300,270,260,250,280,310,290,250,200,160,120,80]}]},
+      {serie:"558",local:"PR-092 km 015+500",sentido:"Norte",cod:"EPR019",vel:60,ult_afer:"2026-01-23",venc_afer:"2026-03-25",
+       faixas:[{id:"1",fluxo:{"01 Dom":2800,"02 Seg":3900,"03 Ter":4100,"04 Qua":3950,"05 Qui":4200,"06 Sex":4000,"07 Sab":3500,"08 Dom":2750,"09 Seg":3850,"10 Ter":4000,"11 Qua":3800},infra:{"01 Dom":3,"02 Seg":5,"03 Ter":4,"04 Qua":6,"05 Qui":5,"06 Sex":4,"07 Sab":3,"08 Dom":2,"09 Seg":4,"10 Ter":5,"11 Qua":4},teste:{"01 Dom":24,"02 Seg":24,"03 Ter":24,"04 Qua":24,"05 Qui":24,"06 Sex":24,"07 Sab":24,"08 Dom":24,"09 Seg":24,"10 Ter":24,"11 Qua":23},
+         lap:{integral:{"01 Dom":86,"02 Seg":87,"03 Ter":88,"04 Qua":86,"05 Qui":89,"06 Sex":87,"07 Sab":85,"08 Dom":86,"09 Seg":88,"10 Ter":87,"11 Qua":86},tr_manha:{},diurno:{},tr_tarde:{},noturno:{}},
+         aproveitamento:{trafego:40850,vel_media:54.2,total_infra:45,inc_tec:2,inc_n_tec:12,total_incons:14,total_consist:31,em_proc:0,indice_aprov:0.97,pct_aprov:0.69},aprov_por_data:{},horario:[40,25,15,10,28,55,90,120,160,200,240,250,260,230,220,210,240,270,250,210,170,130,95,65]}]}
     ]
   }
 ];
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 //  ESTADO
-// ════════════════════════════════════
-let periodo     = 'mes';
-let filtroAfer  = 'todos';
-let viewAtual   = 'painel';
-let lapSubAtual = 'integral';
-const FAIXA_COLORS = ['var(--accent)','var(--purple)','var(--green)','var(--yellow)','var(--red)'];
-const FAIXA_CLS    = ['f1','f2','f3','f4','f5'];
+// ══════════════════════════════════════════════
+let periodo='mes', filtroAferAtual='todos', viewAtual='painel', lapSub='integral';
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 //  UTILS
-// ════════════════════════════════════
-function diasKeys()    { return DB[0]?.dias||[] }
-function periodoKeys() {
-  const d=diasKeys();
-  if(periodo==='dia')    return d.slice(-1);
-  if(periodo==='semana') return d.slice(-7);
-  return d;
-}
-function soma(vals)    { return vals.reduce((a,b)=>a+(b||0),0) }
-function media(vals)   { const f=vals.filter(x=>x!=null&&x>=0); return f.length?soma(f)/f.length:0 }
-function ultimo(obj)   {
-  // obj pode ser array ou dict
-  if(Array.isArray(obj)) { const f=[...obj].reverse().find(x=>x>0); return f||0 }
-  const vals=Object.values(obj||{}).filter(x=>x!=null&&x>0);
-  return vals.length?vals[vals.length-1]:0;
-}
-function sumPeriodo(obj) {
-  const keys=periodoKeys();
-  return keys.reduce((a,k)=>a+(obj?.[k]||0),0);
-}
-function mediaPeriodo(lapObj) {
-  const keys=periodoKeys();
-  const vals=keys.map(k=>lapObj?.[k]).filter(v=>v!=null&&v>=0);
-  return vals.length?soma(vals)/vals.length:0;
-}
-function fmtN(n)   { if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR') }
-function fmtPct(n) { return n!=null&&n!==''?n.toFixed(1)+'%':'—' }
-function fmtIdx(n) { return n!=null?n.toFixed(2):'—' }
-function diasRest(v){ if(!v)return 999; const h=new Date();h.setHours(0,0,0,0);return Math.round((new Date(v)-h)/86400000) }
-function cor3(v,lo,hi){ if(v>=hi)return'var(--green)';if(v>=lo)return'var(--yellow)';return'var(--red)' }
-function corAprov(v){ return v>=0.90?'var(--green)':v>=0.70?'var(--yellow)':'var(--red)' }
-function set(id,v)  { const el=document.getElementById(id);if(el)el.textContent=v }
-function setHTML(id,v){ const el=document.getElementById(id);if(el)el.innerHTML=v }
+// ══════════════════════════════════════════════
+const diasKeys   = ()=>DB[0]?.dias||[];
+const periodoKeys= ()=>{ const d=diasKeys(); if(periodo==='dia')return d.slice(-1); if(periodo==='semana')return d.slice(-7); return d; };
+const soma       = v=>v.reduce((a,b)=>a+(b||0),0);
+const media      = v=>{ const f=v.filter(x=>x!=null&&x>=0); return f.length?soma(f)/f.length:0; };
+const fmtN       = n=>{ if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR'); };
+const fmtPct     = n=>n!=null&&n!==''?n.toFixed(1)+'%':'—';
+const fmtIdx     = n=>n!=null?(n*100).toFixed(1)+'%':'—';
+const diasRest   = v=>{ if(!v)return 9999; const h=new Date();h.setHours(0,0,0,0);return Math.round((new Date(v+' 12:00')-h)/86400000); };
+const corAprov   = v=>v>=0.95?'var(--green)':v>=0.85?'var(--yellow)':'var(--red)';
+const corAprovBg = v=>v>=0.95?'var(--green-bg)':v>=0.85?'var(--yellow-bg)':'var(--red-bg)';
+const corLap     = v=>v>=90?'var(--green)':v>=80?'var(--yellow)':'var(--red)';
+const corLapBg   = v=>v>=90?'var(--green-bg)':v>=80?'var(--yellow-bg)':'var(--red-bg)';
+const bAprov     = v=>v>=0.95?'b-g':v>=0.85?'b-y':'b-r';
+const bLap       = v=>v>=90?'b-g':v>=80?'b-y':'b-r';
+const bAfer      = d=>d<=30?'b-r':d<=90?'b-y':'b-g';
+const lblAfer    = d=>d<=30?'Urgente':d<=90?'Atenção':'OK';
+const set$       = (id,v)=>{ const e=document.getElementById(id);if(e)e.textContent=v; };
+const setHTML$   = (id,v)=>{ const e=document.getElementById(id);if(e)e.innerHTML=v; };
 
-function todasFaixas(filtroC='',filtroS='') {
+function sumPeriodo(obj){ return periodoKeys().reduce((a,k)=>a+(obj?.[k]||0),0); }
+function mediaPeriodo(lapObj){ const vals=periodoKeys().map(k=>lapObj?.[k]).filter(v=>v!=null&&v>=0); return vals.length?soma(vals)/vals.length:0; }
+
+function todasFaixas(){
   const r=[];
-  DB.forEach(c=>{
-    if(filtroC&&c.id!==filtroC)return;
-    c.equipamentos.forEach(eq=>{
-      if(filtroS&&eq.serie!==filtroS)return;
-      eq.faixas.forEach(fx=>{
-        r.push({...fx,_serie:eq.serie,_local:eq.local,_sentido:eq.sentido,
-          _cod:eq.cod,_ult_afer:eq.ult_afer,_venc_afer:eq.venc_afer,_eq:eq,_c:c,
-          _key:`${eq.serie}|${fx.id}`});
-      });
-    });
-  });
+  DB.forEach(c=>c.equipamentos.forEach(eq=>eq.faixas.forEach(fx=>{
+    r.push({...fx,_serie:eq.serie,_local:eq.local,_sentido:eq.sentido,_cod:eq.cod,_eq:eq,_c:c,_key:`${eq.serie}F${fx.id}`});
+  })));
   return r;
 }
 
-function popFiltro(cid,sid) {
-  const cs=document.getElementById(cid);
-  if(cs&&cs.options.length===1) DB.forEach(c=>{cs.add(new Option(c.id,c.id))});
-  if(!sid)return;
-  const ss=document.getElementById(sid);if(!ss)return;
-  const fc=document.getElementById(cid)?.value||'';
-  const cur=ss.value;
-  while(ss.options.length>1)ss.remove(1);
-  DB.forEach(c=>{if(fc&&c.id!==fc)return;c.equipamentos.forEach(eq=>{ss.add(new Option(`Série ${eq.serie} — ${eq.local.slice(0,25)}`,eq.serie))})});
-  if([...ss.options].find(o=>o.value===cur))ss.value=cur;
+// ══════════════════════════════════════════════
+//  CLOCK
+// ══════════════════════════════════════════════
+function tickClock(){
+  const n=new Date();
+  set$('sbClock',n.toLocaleTimeString('pt-BR'));
+  set$('sbDate',n.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}));
 }
+setInterval(tickClock,1000);tickClock();
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 //  NAVEGAÇÃO
-// ════════════════════════════════════
-const pageTitles={painel:'Painel Geral',aproveitamento:'Aproveitamento de Imagens',lap:'LAP / OCR',fluxo:'Fluxo Veicular',infracoes:'Infrações',horario:'Fluxo Horário',afericoes:'Aferições'};
-
+// ══════════════════════════════════════════════
+const pageTitles={painel:'Central de Operações',aproveitamento:'Aproveitamento de Imagens',lap:'LAP / OCR',fluxo:'Fluxo',infracoes:'Infrações',horario:'Fluxo Horário',teste:'Imagem Teste',afericoes:'Aferições'};
 function navTo(view,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
   el.classList.add('active');
-  set('pageTitle',pageTitles[view]||view);
+  set$('pageTitle',pageTitles[view]||view);
+  document.getElementById('pageTitle').insertAdjacentHTML('beforeend',`<span id="periodTag">${{dia:'HOJE',semana:'ESTA SEMANA',mes:'ESTE MÊS'}[periodo]}</span>`);
   viewAtual=view; rebuild();
 }
 function setPeriod(p,el){
   periodo=p;
   document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  set('periodTag',{dia:'HOJE',semana:'ESTA SEMANA',mes:'ESTE MÊS'}[p]);
   rebuild();
 }
 function rebuild(){
-  const map={painel:buildPainel,aproveitamento:buildAproveitamento,lap:buildLap,fluxo:buildFluxo,infracoes:buildInfracoes,horario:buildHorario,afericoes:buildAfer};
-  if(map[viewAtual])map[viewAtual]();
+  const m={painel:buildPainel,aproveitamento:buildAproveitamento,lap:buildLap,fluxo:buildFluxo,infracoes:buildInfracoes,horario:buildHorario,teste:buildTeste,afericoes:buildAfer};
+  if(m[viewAtual])m[viewAtual]();
+}
+function setLapSub(sub,el){
+  lapSub=sub;
+  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  buildLap();
 }
 
-// ════════════════════════════════════
-//  RANK HELPERS
-// ════════════════════════════════════
-function rankRowsFaixa(items,unit,badgeId,badgeTxt,max=8){
-  if(badgeId)set(badgeId,items.length+' '+(badgeTxt||''));
-  if(!items.length)return'<div class="empty">✅ Nenhum crítico</div>';
-  return items.slice(0,max).map((it,i)=>`
-    <div class="rank-row">
-      <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
-      <div class="rr-faixa ${FAIXA_CLS[parseInt(it.id)-1]||'f1'}">F${it.id}</div>
-      <div class="rr-info">
-        <div class="rr-id">${it._serie} | F${it.id}</div>
-        <div class="rr-local">${it._local}</div>
-        <div class="rr-ctr">${it._c?.id||''}</div>
-      </div>
-      <div>
-        <div class="rr-val" style="color:${it.cor||'var(--text)'}">${it.display}</div>
-        <div class="rr-unit">${unit}</div>
-      </div>
-    </div>`).join('');
-}
-
-// ════════════════════════════════════
-//  EQ-CARDS
-// ════════════════════════════════════
-function eqCards(containerId,eqs,cols,extraFn){
-  const cont=document.getElementById(containerId);if(!cont)return;
-  cont.innerHTML='';
-  eqs.forEach(eq=>{
-    const card=document.createElement('div');
-    card.className='eq-card';
-    const dots=eq.faixas.map(fx=>{
-      const v=extraFn?extraFn(fx,'color'):cor3(mediaPeriodo(fx.lap?.integral||{}),60,80);
-      const colorMap={green:'#22d3a0',red:'#f43f5e',yellow:'#f59e0b',accent:'#0ea5e9',muted:'#4d6080'};
-      const bg=colorMap[v.replace('var(--','').replace(')','')]||v;
-      return `<div class="fdot" style="background:${bg}"></div>`;
-    }).join('');
-    const sumVals=eq.faixas.map(fx=>{
-      const v=extraFn?extraFn(fx,'value'):mediaPeriodo(fx.lap?.integral||{});
-      const cor=extraFn?extraFn(fx,'color'):cor3(v,60,80);
-      const disp=extraFn?extraFn(fx,'display'):fmtPct(v);
-      return `<div style="font-family:var(--mono);font-size:10px;color:${cor}">F${fx.id}: <b>${disp}</b></div>`;
-    }).join('');
-    card.innerHTML=`
-      <div class="eq-card-head" onclick="toggleEqCard(this)">
-        <div class="eq-serie-badge">${eq.serie}</div>
-        <div class="eq-meta">
-          <div class="eq-local">${eq.local}</div>
-          <div class="eq-sub">${eq.sentido||''} · ${eq.faixas.length} faixa${eq.faixas.length>1?'s':''} · ${eq._c?.id||''}</div>
-        </div>
-        <div class="eq-summary">${sumVals}<div class="eq-faixa-dots">${dots}</div><div class="eq-expand-icon">▼</div></div>
-      </div>
-      <div class="eq-card-body" style="display:none">${buildFaixasTable(eq,cols)}</div>`;
-    cont.appendChild(card);
+// ══════════════════════════════════════════════
+//  SVG BAR CHART (puro)
+// ══════════════════════════════════════════════
+function svgBarChart(labels,datasets,opts={}){
+  const W=opts.width||700, H=opts.height||180, padL=opts.padL||40, padB=opts.padB||30, padT=opts.padT||15, padR=opts.padR||20;
+  const cw=W-padL-padR, ch=H-padT-padB;
+  const maxVal=Math.max(...datasets.flatMap(d=>d.data.filter(v=>v!=null&&v>=0)),1);
+  const n=labels.length;
+  const bw=Math.max(4, (cw/n)*(datasets.length>1?0.38:0.6));
+  const gap=(cw/n);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px" xmlns="http://www.w3.org/2000/svg">`;
+  // grid
+  [0,.25,.5,.75,1].forEach(t=>{
+    const y=padT+ch*(1-t);
+    svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+    const lbl=opts.pct?(maxVal*t).toFixed(0)+'%':(maxVal*t>=1000?(maxVal*t/1000).toFixed(0)+'k':(maxVal*t).toFixed(0));
+    svg+=`<text x="${padL-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#9ca3af" font-family="IBM Plex Mono">${lbl}</text>`;
   });
-}
-function toggleEqCard(head){const card=head.parentElement;const body=card.querySelector('.eq-card-body');const exp=card.classList.toggle('expanded');body.style.display=exp?'block':'none'}
-function buildFaixasTable(eq,cols){
-  const headers=cols.map(c=>`<th>${c.label}</th>`).join('');
-  const rows=eq.faixas.map((fx,fi)=>{
-    const cells=cols.map(c=>{
-      if(c.badge)return`<td>${c.badge(fx,eq)}</td>`;
-      const v=c.fn(fx,eq),cor=c.cor?c.cor(fx,eq):'var(--text)';
-      return`<td class="val-cell fclr" style="--fc:${cor}">${v}</td>`;
-    }).join('');
-    return`<tr><td><span class="faixa-id ${FAIXA_CLS[fi]||'f1'}">F${fx.id}</span></td>${cells}</tr>`;
-  }).join('');
-  return`<table class="faixas-table"><thead><tr><th>Faixa</th>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+  // bars
+  datasets.forEach((ds,di)=>{
+    labels.forEach((lbl,i)=>{
+      const v=ds.data[i];if(v==null||v<0)return;
+      const barH=Math.max(2,(v/maxVal)*ch);
+      const x=padL+i*gap+(di*(bw+2))+gap/2-(datasets.length*(bw+2))/2;
+      const y=padT+ch-barH;
+      svg+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${barH.toFixed(1)}" rx="3" fill="${ds.color}" opacity=".9"/>`;
+      if(datasets.length===1&&n<=12){
+        svg+=`<text x="${(x+bw/2).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle" font-size="8.5" fill="${ds.color}" font-family="IBM Plex Mono" font-weight="600">${opts.pct?v.toFixed(1)+'%':(v>=1000?(v/1000).toFixed(1)+'k':v)}</text>`;
+      }
+    });
+  });
+  // x labels
+  labels.forEach((lbl,i)=>{
+    const x=padL+i*gap+gap/2;
+    svg+=`<text x="${x.toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="IBM Plex Mono">${lbl.split(' ')[0]}</text>`;
+  });
+  svg+='</svg>';
+  return svg;
 }
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
+//  HEATMAP COLOR
+// ══════════════════════════════════════════════
+function hmColor(val,prev,tipo){
+  if(val==null||val===0)return{bg:'#f1f5f9',txt:'#9ca3af'};
+  if(tipo==='lap')return{bg:val>=90?'#bbf7d0':val>=80?'#fde68a':'#fecaca',txt:val>=90?'#166534':val>=80?'#92400e':'#991b1b'};
+  if(tipo==='aprov')return{bg:val>=95?'#bbf7d0':val>=85?'#fde68a':'#fecaca',txt:val>=95?'#166534':val>=85?'#92400e':'#991b1b'};
+  // fluxo/infra: mapa de calor relativo ao anterior
+  if(prev==null||prev===0)return{bg:'#dbeafe',txt:'#1e40af'};
+  const d=(val-prev)/prev;
+  if(d>0.15)return{bg:'#bbf7d0',txt:'#166534'};
+  if(d>0)return{bg:'#dcfce7',txt:'#15803d'};
+  if(d>-0.15)return{bg:'#fef3c7',txt:'#92400e'};
+  return{bg:'#fecaca',txt:'#991b1b'};
+}
+
+// ══════════════════════════════════════════════
+//  RANK ROW
+// ══════════════════════════════════════════════
+function rankRow(i,serie,faixaId,local,valHtml,unit=''){
+  return `<div class="rank-row">
+    <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
+    <div class="rr-info">
+      <div class="rr-id">${serie} · F${faixaId}</div>
+      <div class="rr-local">${local}</div>
+    </div>
+    <div><div class="rr-val">${valHtml}</div>${unit?`<div class="rr-unit">${unit}</div>`:''}</div>
+  </div>`;
+}
+function rankDeltaRow(i,serie,faixaId,local,val,prev,unit=''){
+  if(prev==null||prev===0)return rankRow(i,serie,faixaId,local,`<span style="color:var(--accent)">${fmtN(val)}</span>`,unit);
+  const d=val-prev, dp=d/prev;
+  const cor=d>0?'var(--green)':d<0?'var(--red)':'var(--muted)';
+  const sinal=d>0?'▲':d<0?'▼':'—';
+  const dHtml=`<span style="color:${cor};font-size:11px">${sinal} ${Math.abs(dp*100).toFixed(0)}%</span>`;
+  return `<div class="rank-row">
+    <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
+    <div class="rr-info">
+      <div class="rr-id">${serie} · F${faixaId}</div>
+      <div class="rr-local">${local}</div>
+    </div>
+    <div style="text-align:right">
+      <div class="rr-val" style="color:${cor}">${dHtml}</div>
+      <div class="rr-unit">${fmtN(prev)} → ${fmtN(val)} ${unit}</div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
 //  PAINEL GERAL
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 function buildPainel(){
   const faixas=todasFaixas();
-  let crit=0,warn=0,ok=0,totalFluxo=0;
-  let sLapOk=0,sLapWarn=0,sLapCrit=0;
-  let sAprovOk=0,sAprovWarn=0,sAprovCrit=0;
-  let sTesteOk=0,sTesteWarn=0,sTesteCrit=0;
-  let aprovList=[],lapCritList=[],fluxoList=[],aferEqs=[];
-  let aprovSum=0,aprovN=0;
+  let ok=0,warn=0,crit=0,aprovSum=0,aprovN=0,lapSum=0,lapN=0,flxTotal=0,aferUrg=0;
+  const aprovCritList=[],lapCritList=[],aferList=[];
 
   faixas.forEach(fx=>{
-    const lap    = mediaPeriodo(fx.lap?.integral||{});
-    const flx    = sumPeriodo(fx.fluxo||{});
-    const aprov  = fx.aproveitamento?.indice_aprov||0;
-    const testeDias=Object.values(fx.teste||{}).filter(v=>v>0).length;
-    const testeTotal=Object.values(fx.teste||{}).reduce((a,b)=>a+b,0);
-    const testePerf=testeDias>0?testeTotal/(testeDias*24)*100:0;
-    totalFluxo+=flx;
-    if(aprov>0){aprovSum+=aprov;aprovN++}
-
-    // Aproveitamento
-    if(aprov>=0.90)sAprovOk++; else if(aprov>=0.70)sAprovWarn++; else if(aprov>0)sAprovCrit++;
-    if(aprov>0&&aprov<0.90)aprovList.push({...fx,display:fmtIdx(aprov),cor:corAprov(aprov)});
-
-    // LAP
-    if(lap>=80)sLapOk++; else if(lap>=60)sLapWarn++; else if(lap>0)sLapCrit++;
-    if(lap>0&&lap<60)lapCritList.push({...fx,display:fmtPct(lap),cor:cor3(lap,60,80)});
-
-    // Teste
-    if(testePerf>=95)sTesteOk++; else if(testePerf>=80)sTesteWarn++; else if(testePerf>0)sTesteCrit++;
-
-    // Fluxo
-    if(flx<1000)fluxoList.push({...fx,display:fmtN(flx),cor:flx===0?'var(--red)':'var(--yellow)'});
-
-    const iC=aprov>0&&aprov<0.70||lap>0&&lap<60;
-    const iW=!iC&&(aprov>=0.70&&aprov<0.90||lap>=60&&lap<80);
-    if(iC)crit++;else if(iW)warn++;else ok++;
+    const aprov=fx.aproveitamento?.indice_aprov||0;
+    const lap=mediaPeriodo(fx.lap?.[lapSub]||{});
+    const flx=sumPeriodo(fx.fluxo||{});
+    flxTotal+=flx;
+    if(aprov>0){aprovSum+=aprov*100;aprovN++;}
+    if(lap>0){lapSum+=lap;lapN++;}
+    if(aprov>=0.95)ok++;else if(aprov>=0.85)warn++;else if(aprov>0)crit++;
+    if(aprov>0&&aprov<0.95)aprovCritList.push(fx);
+    if(lap>0&&lap<80)lapCritList.push({...fx,lapVal:lap});
   });
 
   DB.forEach(c=>c.equipamentos.forEach(eq=>{
     const d=diasRest(eq.venc_afer);
-    if(d<=60)aferEqs.push({...eq,_c:c,_dias:d,_serie:eq.serie,_local:eq.local,_key:eq.serie,id:'EQ',display:d+'d',cor:d<=30?'var(--red)':'var(--yellow)'});
+    if(d<=90)aferList.push({...eq,dias:d,_c:c});
+    if(d<=30)aferUrg++;
   }));
-  const afU=aferEqs.filter(a=>a._dias<=30).length,afW=aferEqs.filter(a=>a._dias>30).length;
-  const totEq=DB.reduce((a,c)=>a+c.equipamentos.length,0);
 
-  set('pCrit',crit);set('pWarn',warn);set('pOk',ok);
-  set('pFluxo',fmtN(totalFluxo));
-  set('pAprov',aprovN?fmtIdx(aprovSum/aprovN):'—');
-  set('badgeCrit',crit);
-  set('sAprovOk',sAprovOk);set('sAprovWarn',sAprovWarn);set('sAprovCrit',sAprovCrit);
-  set('sLapOk',sLapOk);set('sLapWarn',sLapWarn);set('sLapCrit',sLapCrit);
-  set('sTesteOk',sTesteOk);set('sTesteWarn',sTesteWarn);set('sTesteCrit',sTesteCrit);
-  set('sAfOk',totEq-afU-afW);set('sAfWarn',afW);set('sAfCrit',afU);
-  set('badgeAfer',afU+afW);
+  set$('pEq',faixas.length);
+  set$('pAprov',aprovN?(aprovSum/aprovN).toFixed(1)+'%':'—');
+  set$('pLap',lapN?lapSum/lapN>0?fmtPct(lapSum/lapN):'—':'—');
+  set$('pFluxo',fmtN(flxTotal));
+  set$('pSemOk',ok);set$('pSemWarn',warn);set$('pSemCrit',crit);set$('pAfer',aferUrg);
 
-  setHTML('rlAprov',rankRowsFaixa(aprovList.sort((a,b)=>parseFloat(a.display)-parseFloat(b.display)),'índice','bAprovCrit','críticas'));
-  setHTML('rlLap',  rankRowsFaixa(lapCritList.sort((a,b)=>parseFloat(a.display)-parseFloat(b.display)),'LAP','bLapCrit','críticas'));
-  setHTML('rlFluxo',rankRowsFaixa(fluxoList.sort((a,b)=>(parseInt(a.display)||0)-(parseInt(b.display)||0)),'veíc','bFluxoZero','zeradas'));
-  setHTML('rlAfer', rankRowsFaixaEq(aferEqs.sort((a,b)=>a._dias-b._dias).slice(0,8),'bAfer'));
-}
-function rankRowsFaixaEq(items,badgeId){
-  set(badgeId,items.filter(i=>i._dias<=30).length+' urgentes');
-  if(!items.length)return'<div class="empty">✅ Todas em dia</div>';
-  return items.map((it,i)=>`
+  aprovCritList.sort((a,b)=>(a.aproveitamento?.indice_aprov||0)-(b.aproveitamento?.indice_aprov||0));
+  setHTML$('pAprovCritList',aprovCritList.length?aprovCritList.slice(0,6).map((fx,i)=>rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:${corAprov(fx.aproveitamento.indice_aprov)}">${fmtIdx(fx.aproveitamento.indice_aprov)}</span>`)).join(''):'<div style="padding:12px;color:var(--green);font-size:12px">✅ Todos os equipamentos OK</div>');
+
+  lapCritList.sort((a,b)=>a.lapVal-b.lapVal);
+  setHTML$('pLapCritList',lapCritList.length?lapCritList.slice(0,6).map((fx,i)=>rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:${corLap(fx.lapVal)}">${fmtPct(fx.lapVal)}</span>`)).join(''):'<div style="padding:12px;color:var(--green);font-size:12px">✅ Todos os equipamentos OK</div>');
+
+  aferList.sort((a,b)=>a.dias-b.dias);
+  setHTML$('pAferList',aferList.length?aferList.slice(0,5).map((eq,i)=>`
     <div class="rank-row">
       <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
-      <div class="rr-faixa b-m" style="font-size:9px;padding:2px 5px">EQ</div>
-      <div class="rr-info">
-        <div class="rr-id">${it._serie}</div>
-        <div class="rr-local">${it._local}</div>
-        <div class="rr-ctr">${it._c?.id||''}</div>
-      </div>
-      <div>
-        <div class="rr-val" style="color:${it.cor}">${it._dias}d</div>
-        <div class="rr-unit">restantes</div>
-      </div>
-    </div>`).join('');
+      <div class="rr-info"><div class="rr-id">${eq.serie}</div><div class="rr-local">${eq.local}</div></div>
+      <div><span class="badge ${bAfer(eq.dias)}">${eq.dias}d — ${lblAfer(eq.dias)}</span></div>
+    </div>`).join(''):'<div style="padding:12px;color:var(--green);font-size:12px">✅ Sem aferições urgentes nos próximos 90 dias</div>');
 }
 
-// ════════════════════════════════════
-//  APROVEITAMENTO DE IMAGENS
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
+//  APROVEITAMENTO
+// ══════════════════════════════════════════════
 function buildAproveitamento(){
   const faixas=todasFaixas();
-  const comAprov=faixas.filter(fx=>fx.aproveitamento?.indice_aprov>0);
-  const indices=comAprov.map(fx=>fx.aproveitamento.indice_aprov);
-  const med=indices.length?indices.reduce((a,b)=>a+b)/indices.length:0;
-  const trafTotal=comAprov.reduce((s,fx)=>s+(fx.aproveitamento?.trafego||0),0);
+  let ok=0,warn=0,crit=0,sum=0,n=0;
+  const rows=faixas.map(fx=>{
+    const a=fx.aproveitamento||{};
+    const idx=a.indice_aprov||0;
+    if(idx>0){sum+=idx*100;n++;}
+    if(idx>=0.95)ok++;else if(idx>=0.85)warn++;else if(idx>0)crit++;
+    const barW=Math.round((idx||0)*100);
+    const barC=idx>=0.95?'var(--green)':idx>=0.85?'var(--yellow)':'var(--red)';
+    return `<tr>
+      <td><span style="font-family:var(--mono);font-weight:800;color:var(--accent)">${fx._serie}</span></td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;font-size:11px">${fx._local}</td>
+      <td style="font-size:11px">${fx._sentido||'—'}</td>
+      <td><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td>
+      <td class="val center">${a.inc_tec??'—'}</td>
+      <td class="val center">${a.inc_n_tec??'—'}</td>
+      <td class="val center">${a.total_incons??'—'}</td>
+      <td class="val center">${a.total_consist??'—'}</td>
+      <td class="val">
+        <div style="color:${barC};font-weight:800">${idx>0?fmtIdx(idx):'—'}</div>
+        <div class="idx-bar-wrap"><div class="idx-bar" style="width:${barW}%;background:${barC}"></div></div>
+      </td>
+      <td class="val center" style="color:${barC}">${a.pct_aprov>0?(a.pct_aprov*100).toFixed(1)+'%':'—'}</td>
+      <td><span class="badge ${idx>0?bAprov(idx):'b-m'}">${idx>0?(idx>=0.95?'Ótimo':idx>=0.85?'Atenção':'Crítico'):'Sem dados'}</span></td>
+    </tr>`;
+  });
+  set$('avIdx',n?(sum/n).toFixed(1)+'%':'—');
+  set$('avOk',ok);set$('avWarn',warn);set$('avCrit',crit);
+  // Total infrações do CSV
+  const totCSV=Object.values(CONSULTA_INFRA).reduce((a,v)=>a+v.total,0);
+  set$('avTotInfra',totCSV.toLocaleString('pt-BR'));
+  setHTML$('avBody',rows.join(''));
 
-  set('aIndMed',fmtIdx(med));
-  set('aOkQty',indices.filter(v=>v>=0.90).length);
-  set('aWarnQty',indices.filter(v=>v>=0.70&&v<0.90).length);
-  set('aCritQty',indices.filter(v=>v<0.70).length);
-  set('aTraf',fmtN(trafTotal));
-
-  // Tabela principal
-  const tbody=document.getElementById('aprovBody');
-  if(tbody){
-    tbody.innerHTML='';
-    // Ordenar por índice crescente (piores primeiro)
-    const sorted=[...faixas].sort((a,b)=>(a.aproveitamento?.indice_aprov||0)-(b.aproveitamento?.indice_aprov||0));
-    sorted.forEach(fx=>{
-      const a=fx.aproveitamento||{};
-      const idx=a.indice_aprov||0;
-      const pct=a.pct_aprov||0;
-      const cor=corAprov(idx);
-      const cl=idx>=0.90?'b-g':idx>=0.70?'b-y':idx>0?'b-r':'b-m';
-      const st=idx>=0.90?'NORMAL':idx>=0.70?'ATENÇÃO':idx>0?'CRÍTICO':'SEM DADOS';
-      const barW=Math.round(idx*100);
-      const tr=document.createElement('tr');
-      tr.innerHTML=`
-        <td style="font-family:var(--mono);color:var(--accent);font-weight:700">${fx._serie}</td>
-        <td style="font-size:11px">${fx._local}</td>
-        <td><span class="faixa-id ${FAIXA_CLS[parseInt(fx.id)-1]||'f1'}">F${fx.id}</span></td>
-        <td style="font-family:var(--mono)">${fmtN(a.trafego)}</td>
-        <td style="font-family:var(--mono)">${a.vel_media?a.vel_media.toFixed(1)+' km/h':'—'}</td>
-        <td style="font-family:var(--mono);color:var(--yellow)">${fmtN(a.inc_tec)}</td>
-        <td style="font-family:var(--mono);color:var(--yellow)">${fmtN(a.inc_n_tec)}</td>
-        <td style="font-family:var(--mono)">${fmtN(a.total_incons)}</td>
-        <td style="font-family:var(--mono);color:var(--green)">${fmtN(a.total_consist)}</td>
-        <td>
-          <div class="idx-val" style="color:${cor}">${idx?idx.toFixed(2):'—'}</div>
-          <div class="aprov-bar idx-bar"><div class="aprov-fill" style="width:${barW}%;background:${cor}"></div></div>
-        </td>
-        <td style="font-family:var(--mono)">${pct?fmtPct(pct*100):'—'}</td>
-        <td><span class="badge ${cl}">${st}</span></td>`;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // Preencher select de séries
-  const sel=document.getElementById('aprovDataSerie');
-  if(sel&&sel.options.length===1){
-    DB.forEach(c=>c.equipamentos.forEach(eq=>{
-      sel.add(new Option(`${eq.serie} — ${eq.local.slice(0,30)}`,eq.serie));
-    }));
-  }
+  // Consulta infrações — dados reais do CSV, % por tipo de problema
+  const infraRows=faixas.map(fx=>{
+    // Mapear série → cod cliente (via DB)
+    const cod=fx._cod||'';
+    const key=`${cod}|${fx.id}`;
+    const ci=CONSULTA_INFRA[key];
+    if(!ci)return`<tr><td colspan="12" style="font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px 12px">${fx._serie} F${fx.id} — sem dados no relatório de consulta</td></tr>`;
+    const tot=ci.total||0;
+    const pct=(v)=>tot>0?((v||0)/tot*100).toFixed(1)+'%':'—';
+    const barCell=(v,cor)=>{
+      const pv=tot>0?(v||0)/tot:0;
+      return `<div style="display:flex;align-items:center;gap:5px">
+        <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:${cor};min-width:28px">${v}</span>
+        <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;min-width:60px"><div style="width:${Math.round(pv*100)}%;height:100%;background:${cor};border-radius:3px"></div></div>
+        <span style="font-family:var(--mono);font-size:9px;color:${cor};min-width:36px">${pct(v)}</span>
+      </div>`;
+    };
+    // Top 3 problemas
+    const top3=Object.entries(ci.desc||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const top3html=top3.map(([d,c])=>`<div style="font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px" title="${d}">• ${d}: <b style="color:var(--text)">${c} (${pct(c)})</b></div>`).join('');
+    return `<tr>
+      <td><span style="font-family:var(--mono);font-weight:800;color:var(--accent)">${fx._serie}</span></td>
+      <td style="font-size:11px;max-width:140px;overflow:hidden;text-overflow:ellipsis">${fx._local}</td>
+      <td><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td>
+      <td class="val center" style="font-weight:800;font-size:14px">${tot}</td>
+      <td>${barCell(ci.tec,'var(--red)')}</td>
+      <td class="val center" style="color:var(--red)">${pct(ci.tec)}</td>
+      <td>${barCell(ci.ntec,'var(--yellow)')}</td>
+      <td class="val center" style="color:var(--yellow)">${pct(ci.ntec)}</td>
+      <td>${barCell(ci.incons,'var(--purple)')}</td>
+      <td class="val center" style="color:var(--purple)">${pct(ci.incons)}</td>
+      <td>${barCell(ci.consist,'var(--green)')}</td>
+      <td class="val center" style="color:var(--green)">${pct(ci.consist)}</td>
+      <td style="min-width:170px">${top3html}</td>
+    </tr>`;
+  });
+  setHTML$('avInfraBody',infraRows.join(''));
+  buildPivotTable();
+  buildInfraDiario();
   buildAprovData();
 }
 
 function buildAprovData(){
-  const serie=document.getElementById('aprovDataSerie')?.value||'';
-  // Coletar dados por data de todas as faixas (ou faixa selecionada)
-  const pontos={}; // data -> [indice_aprov]
-  DB.forEach(c=>c.equipamentos.forEach(eq=>{
-    if(serie&&eq.serie!==serie)return;
-    eq.faixas.forEach(fx=>{
-      Object.entries(fx.aprov_por_data||{}).forEach(([data,d])=>{
-        if(!pontos[data])pontos[data]=[];
-        pontos[data].push(d.indice_aprov||0);
-      });
+  const sel=document.getElementById('avSerieSel');
+  if(sel&&sel.options.length===1){
+    DB.forEach(c=>c.equipamentos.forEach(eq=>{sel.add(new Option(`Série ${eq.serie}`,eq.serie));}));
+  }
+  const filtro=sel?.value||'';
+  const faixas=todasFaixas().filter(fx=>!filtro||fx._serie===filtro);
+  // Coletar todas as datas únicas
+  const datas=new Set();
+  faixas.forEach(fx=>Object.keys(fx.aprov_por_data||{}).forEach(d=>datas.add(d)));
+  const sortedDatas=[...datas].sort();
+  if(!sortedDatas.length){setHTML$('avDataChart','<div style="padding:20px;color:var(--muted);text-align:center;font-size:12px">Sem dados de histórico por data disponíveis</div>');return;}
+
+  // Para cada data, calcular média
+  const values=sortedDatas.map(d=>{
+    let s=0,n=0;
+    faixas.forEach(fx=>{
+      const v=fx.aprov_por_data?.[d]?.indice_aprov;
+      if(v!=null&&v>0){s+=v*100;n++;}
     });
-  }));
-  const datas=Object.keys(pontos).sort();
-  const medias=datas.map(d=>{ const vs=pontos[d].filter(v=>v>0); return vs.length?vs.reduce((a,b)=>a+b)/vs.length*100:null });
-  lineChart('aprovDataChart',datas.map(d=>d.slice(5)),[{label:'Índice Aprov. Médio (%)',vals:medias,color:'var(--purple)'}],200);
+    return n?s/n:null;
+  });
+
+  const labels=sortedDatas.map(d=>d.slice(5));// MM-DD
+  const svg=svgBarChart(labels,[{data:values,color:'#0066cc'}],{height:160,pct:true,padL:45});
+  // Tabela com valor exato
+  const tblRows=sortedDatas.map((d,i)=>{
+    const v=values[i];
+    const cor=v!=null?(v>=95?'var(--green)':v>=85?'var(--yellow)':'var(--red)'):'var(--muted)';
+    return `<tr><td style="font-weight:600">${d}</td><td class="val" style="color:${cor}">${v!=null?v.toFixed(2)+'%':'—'}</td><td><div class="idx-bar-wrap" style="min-width:120px"><div class="idx-bar" style="width:${v||0}%;background:${cor}"></div></div></td></tr>`;
+  });
+  setHTML$('avDataChart',`
+    ${svg}
+    <div style="margin-top:12px;overflow-x:auto;border-radius:8px;border:1px solid var(--border)">
+      <table class="data-tbl" style="min-width:350px">
+        <thead><tr><th>Data</th><th>Índice Aprov. (%)</th><th>Barra</th></tr></thead>
+        <tbody>${tblRows.join('')}</tbody>
+      </table>
+    </div>`);
 }
 
-// ════════════════════════════════════
-//  LAP
-// ════════════════════════════════════
-function setLapSub(sub,el){
-  lapSubAtual=sub;
-  document.querySelectorAll('.lap-sub-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  buildLap();
-}
+// ══════════════════════════════════════════════
+//  LAP / OCR
+// ══════════════════════════════════════════════
 function buildLap(){
   const faixas=todasFaixas();
-  const lapVals=faixas.map(fx=>mediaPeriodo(fx.lap?.[lapSubAtual]||{})).filter(v=>v>0);
-  const med=lapVals.length?lapVals.reduce((a,b)=>a+b)/lapVals.length:0;
-  const lapItems=faixas.map(fx=>({...fx,_v:mediaPeriodo(fx.lap?.[lapSubAtual]||{})})).filter(i=>i._v>0);
+  let ok=0,warn=0,crit=0,sum=0,n=0;
+  const piores=[];
+  faixas.forEach(fx=>{
+    const v=mediaPeriodo(fx.lap?.[lapSub]||{});
+    if(v>0){sum+=v;n++;}
+    if(v>=90)ok++;else if(v>=80)warn++;else if(v>0)crit++;
+    if(v>0)piores.push({...fx,lapVal:v});
+  });
+  piores.sort((a,b)=>a.lapVal-b.lapVal);
+  set$('lapMedia',n?fmtPct(sum/n):'—');
+  set$('lapOk',ok);set$('lapWarn',warn);set$('lapCrit',crit);
 
-  set('lMedia',fmtPct(med));
-  set('lOk',lapVals.filter(v=>v>=80).length);
-  set('lWarn',lapVals.filter(v=>v>=60&&v<80).length);
-  set('lCrit',lapVals.filter(v=>v<60).length);
+  setHTML$('lapTop10',piores.slice(0,10).map((fx,i)=>rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:${corLap(fx.lapVal)}">${fmtPct(fx.lapVal)}</span>`)).join(''));
 
-  // Heatmap
-  const diasRef=DB[0]?.dias||[];
-  const sl=periodoKeys();
-  const nDias=sl.length;
-  const hmEl=document.getElementById('lapHeatmap');
-  hmEl.style.gridTemplateColumns=`100px repeat(${nDias},1fr)`;
-  let html='<div></div>';
-  sl.forEach(d=>{html+=`<div style="text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);height:26px;display:flex;align-items:center;justify-content:center">${d}</div>`});
+  // Bar chart consolidado por dia
+  const dias=diasKeys();
+  const consolidados=dias.map(d=>{
+    let s=0,n=0;
+    faixas.forEach(fx=>{const v=fx.lap?.[lapSub]?.[d];if(v!=null&&v>=0){s+=v;n++;}});
+    return n?s/n:null;
+  });
+  setHTML$('lapBarChart',svgBarChart(dias,[{data:consolidados,color:'#0066cc'}],{height:150,pct:true,padL:42}));
+
+  // Tabela todos equipamentos por dia
+  const headers=dias.map(d=>`<th>${d}</th>`).join('');
+  const rows=faixas.map(fx=>{
+    const cells=dias.map(d=>{
+      const v=fx.lap?.[lapSub]?.[d];
+      if(v==null)return`<td class="center" style="color:var(--muted2)">—</td>`;
+      const{bg,txt}=hmColor(v,null,'lap');
+      return`<td class="center" style="background:${bg};color:${txt};font-weight:700">${v.toFixed(0)}%</td>`;
+    }).join('');
+    const med=mediaPeriodo(fx.lap?.[lapSub]||{});
+    return`<tr><td style="font-family:var(--mono);font-weight:700;color:var(--accent);min-width:50px">${fx._serie}</td><td style="min-width:40px;text-align:center"><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td><td style="min-width:130px;font-size:11px">${fx._local.slice(0,20)}…</td>${cells}<td class="val center" style="color:${corLap(med)};font-weight:800">${fmtPct(med)}</td></tr>`;
+  });
+  setHTML$('lapTableWrap',`<table class="data-tbl" style="min-width:900px"><thead><tr><th>Série</th><th>Faixa</th><th>Local</th>${headers}<th>Média</th></tr></thead><tbody>${rows.join('')}</tbody></table>`);
+}
+
+// ══════════════════════════════════════════════
+//  FLUXO
+// ══════════════════════════════════════════════
+function buildFluxo(){
+  const faixas=todasFaixas();
+  const dias=diasKeys();
+  const hoje=dias[dias.length-1], ant=dias[dias.length-2];
+  const semAtual=dias.slice(-7), semAnt=dias.slice(-14,-7);
+  const mesAtual=dias, mesAnt=dias;// sem dados anteriores, usa próprio
+
+  let total=0,pico=0,picoFx='';
+  const consolidados=dias.map(d=>faixas.reduce((a,fx)=>a+(fx.fluxo?.[d]||0),0));
 
   faixas.forEach(fx=>{
-    const fCls=FAIXA_CLS[parseInt(fx.id)-1]||'f1';
-    html+=`<div class="hm-lbl"><span class="faixa-id ${fCls}" style="margin-right:4px">F${fx.id}</span>${fx._serie}</div>`;
-    sl.forEach(d=>{
-      const v=fx.lap?.[lapSubAtual]?.[d];
-      const vn=v!=null?v:null;
-      const bg=vn==null?'rgba(29,43,69,.4)':vn>=80?`rgba(34,211,160,${.15+vn/100*.5})`:vn>=60?`rgba(245,158,11,${.15+vn/100*.5})`:`rgba(244,63,94,${.2+vn/100*.4})`;
-      html+=`<div class="hm-cell" style="background:${bg}" title="${fx._serie}|F${fx.id} — ${d}: ${vn!=null?vn:'s/d'}%">${vn!=null?vn:''}</div>`;
-    });
+    const flx=sumPeriodo(fx.fluxo||{});
+    total+=flx;
+    const hojeV=fx.fluxo?.[hoje]||0;
+    if(hojeV>pico){pico=hojeV;picoFx=`${fx._serie}·F${fx.id}`;}
   });
-  hmEl.innerHTML=html;
 
-  setHTML('lapRankPior',   rankRowsFaixa(lapItems.sort((a,b)=>a._v-b._v).slice(0,8).map(f=>({...f,display:fmtPct(f._v),cor:cor3(f._v,60,80)})),'LAP',null,null));
-  setHTML('lapRankMelhor', rankRowsFaixa([...lapItems].sort((a,b)=>b._v-a._v).slice(0,8).map(f=>({...f,display:fmtPct(f._v),cor:'var(--green)'})),'LAP',null,null));
+  const hojeTotal=faixas.reduce((a,fx)=>a+(fx.fluxo?.[hoje]||0),0);
+  const ndias=dias.length,mediaD=ndias?total/ndias:0;
+
+  set$('fxTotal',fmtN(total));
+  set$('fxHoje',fmtN(hojeTotal));
+  set$('fxMedia',fmtN(Math.round(mediaD)));
+  set$('fxPico',picoFx?`${fmtN(pico)} (${picoFx})`:'—');
+
+  // Bar chart consolidado com valores por dia
+  setHTML$('fxConsolidChart',svgBarChart(dias,[{data:consolidados,color:'#0066cc'}],{height:160,padL:50}));
+
+  // Top 10 variação HOJE vs ontem
+  function buildTop10Variacao(fn,containerId){
+    const arr=faixas.map(fx=>({...fx,...fn(fx)})).filter(x=>x.atual>0&&x.prev>0);
+    arr.sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+    setHTML$(containerId,arr.length?arr.slice(0,10).map((fx,i)=>rankDeltaRow(i,fx._serie,fx.id,fx._local,fx.atual,fx.prev)).join(''):'<div style="padding:12px;color:var(--muted);font-size:12px">Sem dados suficientes</div>');
+  }
+
+  buildTop10Variacao(fx=>{
+    const atual=fx.fluxo?.[hoje]||0, prev=fx.fluxo?.[ant]||0;
+    return{atual,prev,delta:prev?(atual-prev)/prev:0};
+  },'fxRankHoje');
+
+  // Semana
+  const fxRankSemana=faixas.map(fx=>{
+    const atual=semAtual.reduce((a,d)=>a+(fx.fluxo?.[d]||0),0);
+    const prev=semAnt.reduce((a,d)=>a+(fx.fluxo?.[d]||0),0);
+    return{...fx,atual,prev,delta:prev?(atual-prev)/prev:0};
+  }).filter(x=>x.atual>0&&x.prev>0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+  setHTML$('fxRankSemana',fxRankSemana.slice(0,10).map((fx,i)=>rankDeltaRow(i,fx._serie,fx.id,fx._local,fx.atual,fx.prev)).join(''));
+
+  // Mês
+  const fxRankMes=faixas.map(fx=>{
+    const atual=sumPeriodo(fx.fluxo||{});
+    return{...fx,atual,prev:0,delta:0};
+  }).sort((a,b)=>b.atual-a.atual);
+  setHTML$('fxRankMes',fxRankMes.slice(0,10).map((fx,i)=>rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:var(--accent)">${fmtN(fx.atual)}</span>`)).join(''));
+
+  // Tabela heatmap dia a dia
+  buildDiaTable('fxDiaTbl',faixas,dias,'fluxo');
 }
 
-// ════════════════════════════════════
-//  FLUXO
-// ════════════════════════════════════
-function buildFluxo(){
-  popFiltro('fluxoFiltroC','fluxoFiltroS');
-  const fc=document.getElementById('fluxoFiltroC')?.value||'';
-  const fs=document.getElementById('fluxoFiltroS')?.value||'';
-  const faixas=todasFaixas(fc,fs);
-  const vals=faixas.map(fx=>sumPeriodo(fx.fluxo||{}));
-  const total=vals.reduce((a,b)=>a+b,0);
-  const zero=vals.filter(v=>v===0).length;
-  const ativos=vals.filter(v=>v>0);
-  const med=ativos.length?ativos.reduce((a,b)=>a+b)/ativos.length:0;
-  const maiorIdx=vals.indexOf(Math.max(...vals));
-
-  set('fTotal',fmtN(total));set('fZero',zero);
-  set('fMedia',fmtN(Math.round(med)));set('fTotalFaixas',faixas.length+' faixas');
-  if(faixas[maiorIdx]){set('fMaior',fmtN(vals[maiorIdx]));set('fMaiorSub',faixas[maiorIdx]._serie+'|F'+faixas[maiorIdx].id)}
-
-  const sl=periodoKeys();
-  const consolidated=sl.map(d=>faixas.reduce((s,fx)=>s+(fx.fluxo?.[d]||0),0));
-  lineChart('fluxoChart',sl,[{label:'Fluxo Total',vals:consolidated,color:'var(--accent)'}],200);
-
-  const eqs=(fc?DB.filter(c=>c.id===fc):DB).flatMap(c=>c.equipamentos.filter(eq=>!fs||eq.serie===fs).map(eq=>({...eq,_c:c})));
-  eqCards('fluxoCards',eqs,[
-    {label:'Fluxo '+{dia:'Hoje',semana:'Semana',mes:'Mês'}[periodo],fn:(fx)=>fmtN(sumPeriodo(fx.fluxo||{})),cor:(fx)=>{const v=sumPeriodo(fx.fluxo||{});return v===0?'var(--red)':v<2000?'var(--yellow)':'var(--green)'}},
-    {label:'Status',badge:(fx)=>{const v=sumPeriodo(fx.fluxo||{});const cl=v===0?'b-r':v<2000?'b-y':'b-g';return`<span class="badge ${cl}">${v===0?'ZERADO':v<2000?'BAIXO':'NORMAL'}</span>`}}
-  ],(fx,t)=>{const v=sumPeriodo(fx.fluxo||{});return t==='color'?(v===0?'var(--red)':v<2000?'var(--yellow)':'var(--green)'):t==='value'?v:fmtN(v)});
+function buildDiaTable(containerId,faixas,dias,campo){
+  const headers=dias.map(d=>`<th style="min-width:70px">${d}</th>`).join('');
+  const rows=faixas.map(fx=>{
+    const cells=dias.map((d,i)=>{
+      const v=fx[campo]?.[d];
+      const prev=i>0?fx[campo]?.[dias[i-1]]:null;
+      if(!v&&v!==0)return`<td class="center" style="color:var(--muted2)">—</td>`;
+      const{bg,txt}=hmColor(v,prev,campo==='fluxo'?'fluxo':'infra');
+      const lbl=v>=1000?(v/1000).toFixed(1)+'k':v;
+      return`<td class="center" style="background:${bg};color:${txt};font-weight:700">${lbl}</td>`;
+    }).join('');
+    const tot=sumPeriodo(fx[campo]||{});
+    return`<tr><td class="eq-c">${fx._serie}·F${fx.id}</td><td style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px">${fx._local.slice(0,20)}</td>${cells}<td class="val center" style="font-weight:800;color:var(--accent2)">${fmtN(tot)}</td></tr>`;
+  });
+  const el=document.getElementById(containerId);if(!el)return;
+  el.innerHTML=`<table class="fd-tbl" style="width:100%"><thead><tr><th class="left">Equip</th><th class="left">Local</th>${headers}<th>Total</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 //  INFRAÇÕES
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 function buildInfracoes(){
-  popFiltro('infraFiltroC',null);
-  const fc=document.getElementById('infraFiltroC')?.value||'';
-  const faixas=todasFaixas(fc);
-  const iVals=faixas.map(fx=>sumPeriodo(fx.infra||{})||Math.round(sumPeriodo(fx.fluxo||{})*0.035));
-  const total=iVals.reduce((a,b)=>a+b,0);
-  const totalFluxo=faixas.reduce((s,fx)=>s+sumPeriodo(fx.fluxo||{}),0);
-  const taxa=totalFluxo>0?(total/totalFluxo*100).toFixed(2):0;
-  const nDias=periodoKeys().length;
-  const med=iVals.filter(v=>v>0).length?iVals.filter(v=>v>0).reduce((a,b)=>a+b)/iVals.filter(v=>v>0).length/nDias:0;
-  const maiorIdx=iVals.indexOf(Math.max(...iVals));
+  const faixas=todasFaixas();
+  const dias=diasKeys();
+  const hoje=dias[dias.length-1], ant=dias[dias.length-2];
+  const semAtual=dias.slice(-7), semAnt=dias.slice(-14,-7);
 
-  set('iTotal',fmtN(total));set('iTaxa',taxa+'%');set('iMedia',fmtN(Math.round(med)));set('iTotalFaixas',faixas.length+' faixas');
-  if(faixas[maiorIdx]){set('iMaior',fmtN(iVals[maiorIdx]));set('iMaiorSub',faixas[maiorIdx]._serie+'|F'+faixas[maiorIdx].id)}
+  let total=0,pico=0;
+  const consolidados=dias.map(d=>faixas.reduce((a,fx)=>a+(fx.infra?.[d]||0),0));
+  faixas.forEach(fx=>{ total+=sumPeriodo(fx.infra||{}); dias.forEach(d=>{const v=fx.infra?.[d]||0;if(v>pico)pico=v;}); });
+  const hojeTotal=faixas.reduce((a,fx)=>a+(fx.infra?.[hoje]||0),0);
+  set$('infTotal',fmtN(total));set$('infHoje',fmtN(hojeTotal));
+  set$('infMedia',fmtN(+(total/dias.length).toFixed(1)));set$('infPico',fmtN(pico));
 
-  const sl=periodoKeys();
-  const conI=sl.map(d=>faixas.reduce((s,fx)=>s+(fx.infra?.[d]||Math.round((fx.fluxo?.[d]||0)*0.035)),0));
-  lineChart('infraChart',sl,[{label:'Infrações',vals:conI,color:'var(--red)'}],190);
-  setHTML('infraRank',rankRowsFaixa(faixas.map((fx,i)=>({...fx,_v:iVals[i]})).sort((a,b)=>b._v-a._v).slice(0,12).map(fx=>({...fx,display:fmtN(fx._v),cor:'var(--red)'})),'infr.',null,null,12));
+  setHTML$('infConsolidChart',svgBarChart(dias,[{data:consolidados,color:'#dc2626'}],{height:160,padL:50}));
+
+  // Top 10 hoje
+  const rankHoje=faixas.map(fx=>{const atual=fx.infra?.[hoje]||0,prev=fx.infra?.[ant]||0;return{...fx,atual,prev,delta:prev?(atual-prev)/prev:0};}).filter(x=>x.atual>0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+  setHTML$('infRankHoje',rankHoje.slice(0,10).map((fx,i)=>rankDeltaRow(i,fx._serie,fx.id,fx._local,fx.atual,fx.prev,'infr.')).join(''));
+
+  // Top 10 semana
+  const rankSem=faixas.map(fx=>{const atual=semAtual.reduce((a,d)=>a+(fx.infra?.[d]||0),0),prev=semAnt.reduce((a,d)=>a+(fx.infra?.[d]||0),0);return{...fx,atual,prev,delta:prev?(atual-prev)/prev:0};}).filter(x=>x.atual>0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+  setHTML$('infRankSemana',rankSem.slice(0,10).map((fx,i)=>rankDeltaRow(i,fx._serie,fx.id,fx._local,fx.atual,fx.prev,'infr.sem.')).join(''));
+
+  // Top 10 mês
+  const rankMes=faixas.map(fx=>{const atual=sumPeriodo(fx.infra||{});return{...fx,atual};}).sort((a,b)=>b.atual-a.atual);
+  setHTML$('infRankMes',rankMes.slice(0,10).map((fx,i)=>rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:var(--red)">${fmtN(fx.atual)}</span>`,'')).join(''));
+
+  buildDiaTable('infDiaTbl',faixas,dias,'infra');
 }
 
-// ════════════════════════════════════
-//  FLUXO HORÁRIO (dados reais)
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
+//  FLUXO HORÁRIO
+// ══════════════════════════════════════════════
 function buildHorario(){
-  popFiltro('horarioFiltroC','horarioFiltroS');
-  const fc=document.getElementById('horarioFiltroC')?.value||'';
-  const fs=document.getElementById('horarioFiltroS')?.value||'';
-  const faixas=todasFaixas(fc,fs);
+  const faixas=todasFaixas().filter(fx=>fx.horario&&fx.horario.some(v=>v>0));
+  const horas=Array.from({length:24},(_,i)=>i);
+  const allVals=faixas.flatMap(fx=>fx.horario||[]).filter(v=>v>0);
+  const maxVal=Math.max(...allVals,1);
+  const totalGeral=allVals.reduce((a,b)=>a+b,0);
+  const dias=diasKeys();
+  const hoje=dias[dias.length-1], ant=dias[dias.length-2];
 
-  // Soma os dados horários de todas as faixas selecionadas
-  const porHora=Array(24).fill(0);
-  faixas.forEach(fx=>{(fx.horario||[]).forEach((v,h)=>{porHora[h]+=v||0})});
-  const maxH=Math.max(...porHora,1);
-  const picoH=porHora.indexOf(maxH);
-  const valeH=porHora.indexOf(Math.min(...porHora.filter(v=>v>0)));
-  const diurno=porHora.slice(6,20).reduce((a,b)=>a+b,0);
-  const totalH=porHora.reduce((a,b)=>a+b,0);
+  const horaSomas=horas.map(h=>faixas.reduce((a,fx)=>a+(fx.horario?.[h]||0),0));
+  const picoH=horaSomas.indexOf(Math.max(...horaSomas));
+  const nonZero=horaSomas.filter(v=>v>0);
+  const minH=horaSomas.indexOf(Math.min(...nonZero));
+  set$('hrPico',`${String(picoH).padStart(2,'0')}h (${fmtN(horaSomas[picoH])})`);
+  set$('hrTotal',fmtN(totalGeral));
+  set$('hrMin',`${String(minH).padStart(2,'0')}h`);
+  set$('hrEqs',faixas.length);
 
-  set('hPico',String(picoH).padStart(2,'0')+"h");set('hPicoV',fmtN(maxH)+' veíc');
-  set('hVale',String(valeH).padStart(2,'0')+'h');
-  set('hDiurno',totalH>0?Math.round(diurno/totalH*100)+'%':'—');
-  set('hNoturno',totalH>0?Math.round((totalH-diurno)/totalH*100)+'%':'—');
+  // Tabela hora x equip — mapa de calor por intensidade absoluta
+  const thoras=horas.map(h=>`<th>${String(h).padStart(2,'0')}h</th>`).join('');
+  const rows=faixas.map(fx=>{
+    const cells=horas.map(h=>{
+      const v=fx.horario?.[h]||0;
+      if(!v)return`<td style="background:#f8fafc;color:#d1d5db;font-size:9px">—</td>`;
+      const intensity=v/maxVal;
+      const alpha=Math.max(0.08,intensity);
+      const bg=`rgba(0,102,204,${alpha.toFixed(2)})`;
+      const txt=intensity>0.55?'white':'#1e3a5f';
+      return`<td style="background:${bg};color:${txt}">${v>=1000?(v/1000).toFixed(1)+'k':v}</td>`;
+    }).join('');
+    const total=fx.horario.reduce((a,b)=>a+b,0);
+    return`<tr><td class="eq-lbl">${fx._serie} F${fx.id} — ${fx._local.slice(0,18)}</td>${cells}<td style="font-family:var(--mono);font-size:10px;font-weight:800;color:var(--accent2);padding:0 8px;white-space:nowrap">${fmtN(total)}</td></tr>`;
+  }).join('');
+  setHTML$('horaGrid',`<table class="hora-tbl"><thead><tr><th style="text-align:left;min-width:200px">Equipamento / Faixa</th>${thoras}<th>Total/dia</th></tr></thead><tbody>${rows}</tbody></table>`);
 
-  const hLabels=Array.from({length:24},(_,i)=>String(i).padStart(2,'0')+"h");
-  lineChart('horarioChart',hLabels,[{label:'Fluxo/hora',vals:porHora,color:'var(--accent)'}],200);
-
-  // Heatmap hora × faixa (dados reais)
-  const hmEl=document.getElementById('horarioHeatmap');
-  hmEl.style.gridTemplateColumns=`100px repeat(24,1fr)`;
-  let html='<div></div>';
-  hLabels.forEach(h=>{html+=`<div style="text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);height:26px;display:flex;align-items:center;justify-content:center">${h}</div>`});
-
-  faixas.slice(0,20).forEach(fx=>{
-    const fCls=FAIXA_CLS[parseInt(fx.id)-1]||'f1';
-    html+=`<div class="hm-lbl"><span class="faixa-id ${fCls}" style="margin-right:4px">F${fx.id}</span>${fx._serie}</div>`;
-    (fx.horario||Array(24).fill(0)).forEach((v,h)=>{
-      const ratio=maxH>0?v/maxH:0;
-      const bg=v===0?'rgba(244,63,94,.15)':ratio<0.3?`rgba(245,158,11,${0.1+ratio*0.7})`:`rgba(34,211,160,${0.1+ratio*0.7})`;
-      html+=`<div class="hm-cell" style="background:${bg}" title="${fx._serie}|F${fx.id} — ${h}h: ${v} veíc.">${v>999?(v/1000).toFixed(1)+'k':v||''}</div>`;
-    });
-  });
-  hmEl.innerHTML=html;
+  // Tabela diário — fluxo horário total por dia com mapa de calor vs dia anterior
+  buildDiaTable('hrDiaTbl',faixas,dias,'fluxo');
 }
 
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 //  AFERIÇÕES
-// ════════════════════════════════════
+// ══════════════════════════════════════════════
 function buildAfer(){
-  const eqs=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)})));
-  const urg=eqs.filter(e=>e._dias<=30).length;
-  const at=eqs.filter(e=>e._dias>30&&e._dias<=60).length;
-  set('aUrg',urg);set('aAt',at);set('aOk',eqs.length-urg-at);set('aTotal',eqs.length);
-  const prox=eqs.sort((a,b)=>a._dias-b._dias)[0];
-  set('aProx',prox?prox._dias+'d':'—');set('badgeAfer',urg+at);
-  renderAfer();
+  let urg=0,at=0,ok=0,all=[];
+  DB.forEach(c=>c.equipamentos.forEach(eq=>{
+    const d=diasRest(eq.venc_afer);
+    if(d<=30)urg++;else if(d<=90)at++;else ok++;
+    all.push({...eq,dias:d,_c:c});
+  }));
+  set$('afUrg',urg);set$('afAt',at);set$('afOk',ok);set$('afTotal',all.length);
+  renderAfer(all,filtroAferAtual);
 }
-function filtrarAfer(f,el){
-  filtroAfer=f;
-  document.querySelectorAll('#view-afericoes .fchip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');renderAfer();
+function filtrarAfer(tipo,el){
+  filtroAferAtual=tipo;
+  document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  let all=[];DB.forEach(c=>c.equipamentos.forEach(eq=>all.push({...eq,dias:diasRest(eq.venc_afer),_c:c})));
+  renderAfer(all,tipo);
 }
-function renderAfer(){
-  let rows=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)}))).filter(e=>e.venc_afer);
-  if(filtroAfer==='urgente')rows=rows.filter(r=>r._dias<=30);
-  else if(filtroAfer==='atencao')rows=rows.filter(r=>r._dias>30&&r._dias<=60);
-  else if(filtroAfer==='ok')rows=rows.filter(r=>r._dias>60);
-  rows.sort((a,b)=>a._dias-b._dias);
-  const fmtD=s=>s?new Date(s+'T12:00:00').toLocaleDateString('pt-BR'):'—';
-  document.getElementById('aferBody').innerHTML=rows.map(r=>{
-    const cor=r._dias<=30?'var(--red)':r._dias<=60?'var(--yellow)':'var(--green)';
-    const cl=r._dias<=30?'b-r':r._dias<=60?'b-y':'b-g';
-    const st=r._dias<=15?'URGENTE':r._dias<=30?'VENCE BREVE':r._dias<=60?'ATENÇÃO':'OK';
-    const fxStr=r.faixas.map((fx,i)=>`<span class="faixa-id ${FAIXA_CLS[i]||'f1'}">F${fx.id}</span>`).join(' ');
+function renderAfer(all,tipo){
+  let filtered=all;
+  if(tipo==='urgente')filtered=all.filter(e=>e.dias<=30);
+  else if(tipo==='atencao')filtered=all.filter(e=>e.dias>30&&e.dias<=90);
+  else if(tipo==='ok')filtered=all.filter(e=>e.dias>90);
+  filtered.sort((a,b)=>a.dias-b.dias);
+  const rows=filtered.map(eq=>{
+    const d=eq.dias, cor=d<=30?'var(--red)':d<=90?'var(--yellow)':'var(--green)';
+    const barW=Math.min(100,Math.max(0,d>365?100:(d/365*100)));
     return`<tr>
-      <td style="font-family:var(--mono);color:var(--accent);font-weight:700">${r.serie}</td>
-      <td><span class="badge b-b" style="font-size:9px">${r._c.id}</span></td>
-      <td style="font-size:11px">${r.local}</td>
-      <td>${fxStr}</td>
-      <td style="font-family:var(--mono);font-size:11px">${r.cod||'—'}</td>
-      <td style="font-family:var(--mono);font-size:11px">${r.vel||'—'} km/h</td>
-      <td style="font-family:var(--mono);font-size:11px">${fmtD(r.ult_afer)}</td>
-      <td style="font-family:var(--mono);font-size:11px;color:${cor};font-weight:600">${fmtD(r.venc_afer)}</td>
-      <td style="font-family:var(--display);font-size:16px;font-weight:700;color:${cor}">${r._dias}d</td>
-      <td><span class="badge ${cl}">${st}</span></td>
+      <td style="font-family:var(--mono);font-weight:800;color:var(--accent)">${eq.serie}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis">${eq.local}</td>
+      <td>${eq.sentido}</td>
+      <td class="center">${eq.faixas?.length||1}</td>
+      <td class="center" style="font-family:var(--mono)">${eq.cod}</td>
+      <td class="center" style="font-family:var(--mono)">${eq.vel} km/h</td>
+      <td style="font-family:var(--mono)">${eq.ult_afer||'—'}</td>
+      <td style="font-family:var(--mono);font-weight:700;color:${cor}">${eq.venc_afer||'—'}</td>
+      <td>
+        <div class="dias-bar"><span class="days-remaining" style="color:${cor}">${d}</span><span style="font-size:10px;color:var(--muted)">dias</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%;background:${cor}"></div></div>
+      </td>
+      <td><span class="badge ${bAfer(d)}">${lblAfer(d)}</span></td>
+    </tr>`;
+  });
+  setHTML$('afBody',rows.join('')||`<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--muted)">Nenhum equipamento nesta categoria</td></tr>`);
+}
+
+
+// ══════════════════════════════════════════════
+//  TABELA PIVÔ — Motivo × Série
+// ══════════════════════════════════════════════
+function buildPivotTable(){
+  const series=PIVOT_SERIES;
+  const descs=PIVOT_DESC_LIST;
+  const totSerie=PIVOT_TOTAIS_SERIE;
+  const totDesc=PIVOT_TOTAIS_DESC;
+  const total=PIVOT_TOTAL_GERAL;
+
+  // Cabeçalho
+  const thSeries=series.map(s=>`<th style="text-align:center;min-width:42px;font-size:9px">${s}</th>`).join('');
+  const thTot=`<th style="text-align:center;min-width:60px;background:#1e3a5f">Total Geral</th>`;
+
+  // Linha de totais série (rodapé)
+  const tdTotSerie=series.map(s=>{
+    const v=totSerie[s]||0;
+    return`<td style="text-align:center;font-weight:800;background:#e8f0fc;color:var(--accent2)">${v}</td>`;
+  }).join('');
+
+  // Linhas por descrição
+  const rows=descs.map(desc=>{
+    const isConsist=desc==='Consistente';
+    const rowData=PIVOT_DESC_SERIE[desc]||{};
+    const rowTotal=totDesc[desc]||0;
+    const cells=series.map(s=>{
+      const v=rowData[s]||0;
+      if(!v)return`<td style="text-align:center;color:#d1d5db;font-size:10px">—</td>`;
+      // Intensidade de cor
+      const pct=rowTotal>0?v/rowTotal:0;
+      const intensity=Math.min(1,pct*8);
+      let bg,txt;
+      // Classificar por tipo: Consistente=verde, Técnica=vermelho, N-Técnica=amarelo
+      const isTec=['Câmera com problema (deslocada/zoom)','Câmera com problema (interf./distorc./artefatos)','Desacionamento incorreto do sensor','Erro de parametrização','Imagem completamente sem veículo','Imagem desfocada/borrada/embaçada'].includes(desc);
+      if(isConsist){
+        bg=`rgba(5,150,105,${(intensity*0.55+0.1).toFixed(2)})`;
+        txt=intensity>0.5?'white':'#065f46';
+      } else if(isTec){
+        bg=`rgba(220,38,38,${(intensity*0.6+0.1).toFixed(2)})`;
+        txt=intensity>0.5?'white':'#7f1d1d';
+      } else {
+        bg=`rgba(217,119,6,${(intensity*0.6+0.1).toFixed(2)})`;
+        txt=intensity>0.5?'white':'#78350f';
+      }
+      return`<td style="text-align:center;background:${bg};color:${txt};font-weight:700;font-family:var(--mono);font-size:10px">${v}</td>`;
+    }).join('');
+    const isTecRow=['Câmera com problema (deslocada/zoom)','Câmera com problema (interf./distorc./artefatos)','Desacionamento incorreto do sensor','Erro de parametrização','Imagem completamente sem veículo','Imagem desfocada/borrada/embaçada'].includes(desc);
+    const descStyle=isConsist?'color:var(--green);font-weight:700':isTecRow?'color:var(--red)':'color:var(--yellow)';
+    const totalBg=isConsist?'var(--green-bg)':isTecRow?'var(--red-bg)':'var(--yellow-bg)';
+    const totalCor=isConsist?'var(--green)':isTecRow?'var(--red)':'var(--yellow)';
+    return`<tr>
+      <td style="white-space:nowrap;font-size:11px;padding:6px 10px;${descStyle};min-width:220px">${desc}</td>
+      ${cells}
+      <td style="text-align:center;font-weight:800;font-family:var(--mono);font-size:11px;background:${totalBg};color:${totalCor}">${rowTotal}</td>
     </tr>`;
   }).join('');
-}
-function exportAfer(){
-  const rows=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)}))).filter(e=>e.venc_afer).sort((a,b)=>a._dias-b._dias);
-  const csv=['Série,Contrato,Local,Faixas,Cód.,Vel.,Ult.Aferição,Vencimento,Dias,Status'].concat(rows.map(r=>{
-    const st=r._dias<=30?'URGENTE':r._dias<=60?'ATENÇÃO':'OK';
-    return`${r.serie},"${r._c.id}","${r.local}","${r.faixas.map(f=>'F'+f.id).join('+')}","${r.cod||''}", ${r.vel||''}, "${r.ult_afer||''}", "${r.venc_afer||''}", ${r._dias}, ${st}`;
-  })).join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download=`afericoes_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+
+  const html=`<table style="border-collapse:collapse;font-size:11px;width:100%;min-width:1000px">
+    <thead>
+      <tr style="background:var(--accent2)">
+        <th style="text-align:left;padding:8px 10px;color:white;min-width:220px;font-size:10px">Motivo de Inconsistência</th>
+        ${thSeries}
+        ${thTot}
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+    <tfoot>
+      <tr>
+        <td style="font-weight:800;font-size:11px;padding:6px 10px;background:#e8f0fc;color:var(--accent2)">Total Geral</td>
+        ${tdTotSerie}
+        <td style="text-align:center;font-weight:800;font-size:13px;background:var(--accent2);color:white">${total}</td>
+      </tr>
+    </tfoot>
+  </table>`;
+  const el=document.getElementById('pivotTableWrap');
+  if(el)el.innerHTML=html;
 }
 
-// ════════════════════════════════════
-//  LINE CHART SVG
-// ════════════════════════════════════
-function lineChart(svgId,labels,series,h=190){
-  const svg=document.getElementById(svgId);if(!svg)return;
-  const W=svg.parentElement?.offsetWidth||700,H=h,P=46;
-  svg.setAttribute('width',W);svg.setAttribute('height',H);
-  const allV=series.flatMap(s=>(s.vals||[]).filter(v=>v!=null&&v>0));
-  const maxV=Math.max(...allV,1);const n=labels.length||1;
-  let out='';
-  for(let g=0;g<=4;g++){const y=P+(1-g/4)*(H-P-18);out+=`<line x1="${P}" y1="${y}" x2="${W-10}" y2="${y}" stroke="rgba(29,43,69,.5)" stroke-width="1"/>`;out+=`<text x="${P-4}" y="${y+4}" text-anchor="end" fill="#4d6080" font-size="9" font-family="JetBrains Mono">${fmtN(maxV*g/4)}</text>`}
-  labels.forEach((d,i)=>{if(n<=12||i%Math.ceil(n/10)===0){const x=P+(i/(n-1||1))*(W-P-10);out+=`<text x="${x}" y="${H-3}" text-anchor="middle" fill="#4d6080" font-size="9" font-family="JetBrains Mono">${d}</text>`}});
-  series.forEach((s,si)=>{
-    const pts=(s.vals||[]).map((v,i)=>`${P+(i/(n-1||1))*(W-P-10)},${P+(1-(v||0)/maxV)*(H-P-18)}`);
-    const aP=`M${P},${H-18} `+(s.vals||[]).map((v,i)=>`L${P+(i/(n-1||1))*(W-P-10)},${P+(1-(v||0)/maxV)*(H-P-18)}`).join(' ')+` L${W-10},${H-18} Z`;
-    out+=`<defs><linearGradient id="ag${si}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${s.color}" stop-opacity=".18"/><stop offset="100%" stop-color="${s.color}" stop-opacity="0"/></linearGradient></defs>`;
-    out+=`<path d="${aP}" fill="url(#ag${si})"/>`;
-    out+=`<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round"/>`;
-    (s.vals||[]).forEach((v,i)=>{if(!v)return;const x=P+(i/(n-1||1))*(W-P-10),y=P+(1-v/maxV)*(H-P-18);out+=`<circle cx="${x}" cy="${y}" r="3" fill="${s.color}"/>`});
-    out+=`<circle cx="${P+si*130}" cy="14" r="4" fill="${s.color}"/><text x="${P+si*130+10}" y="18" fill="${s.color}" font-size="10" font-family="JetBrains Mono">${s.label}</text>`;
+// ══════════════════════════════════════════════
+//  APROVEITAMENTO DIÁRIO — Tec / N-Tec / Consist
+// ══════════════════════════════════════════════
+function buildInfraDiario(){
+  const sel=document.getElementById('diarioSerieSel');
+
+  // Popular select se vazio
+  if(sel&&sel.options.length===1){
+    Object.keys(INFRA_BY_SP).sort().forEach(k=>{
+      sel.add(new Option(`Série ${k.replace('|',' F')}`,k));
+    });
+  }
+
+  const filtro=sel?sel.value:'';
+  const keys=filtro?[filtro]:Object.keys(INFRA_BY_SP).sort();
+
+  // ── TABELA GERAL POR FAIXA ──
+  const geralRows=keys.map(k=>{
+    const sp=INFRA_BY_SP[k]||{};
+    const [cp,pi]=k.split('|');
+    // Buscar nome no CONSULTA_INFRA
+    const ciKey=Object.keys(CONSULTA_INFRA).find(ck=>{
+      const cv=CONSULTA_INFRA[ck];
+      return cv.pista===pi&&(cv.cod==='EPR'+cp.padStart(3,'0')||cv.cod===k.split('|')[0]);
+    });
+    const ci=ciKey?CONSULTA_INFRA[ciKey]:null;
+    const nome=ci?ci.nome:`Série ${cp}`;
+    const tot=sp.total||0;
+    const tec=sp.tec||0, ntec=sp.ntec||0, cons=sp.consist||0;
+    const p=(v)=>tot>0?(v/tot*100).toFixed(1)+'%':'—';
+    const barCell=(v,cor,bgCor)=>`
+      <td style="padding:6px 10px;border-left:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;min-width:60px">
+            <div style="width:${tot>0?Math.round(v/tot*100):0}%;height:100%;background:${cor};border-radius:4px"></div>
+          </div>
+          <span style="font-family:var(--mono);font-size:11px;font-weight:800;color:${cor};min-width:42px;text-align:right">${p(v)}</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);min-width:28px">(${v})</span>
+        </div>
+      </td>`;
+    return`<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:6px 10px;white-space:nowrap">
+        <span style="font-family:var(--mono);font-weight:800;color:var(--accent);font-size:12px">${cp}</span>
+        <span style="color:var(--muted);font-size:10px;margin-left:4px">F${pi}</span>
+      </td>
+      <td style="font-size:11px;padding:6px 10px;color:var(--text2);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nome}</td>
+      <td style="text-align:center;font-family:var(--mono);font-weight:800;font-size:13px;padding:6px 10px">${tot}</td>
+      ${barCell(tec,'var(--red)','rgba(220,38,38,.1)')}
+      ${barCell(ntec,'var(--yellow)','rgba(217,119,6,.1)')}
+      ${barCell(cons,'var(--green)','rgba(5,150,105,.1)')}
+    </tr>`;
+  }).join('');
+
+  const geralHTML=`<div style="margin-bottom:20px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+      Resumo Geral por Faixa <span style="flex:1;height:1px;background:var(--border);display:block"></span>
+    </div>
+    <table style="border-collapse:collapse;width:100%">
+      <thead><tr style="background:var(--card2);border-bottom:2px solid var(--border2)">
+        <th style="text-align:left;padding:8px 10px;font-size:10px;color:var(--muted)">Série</th>
+        <th style="text-align:left;padding:8px 10px;font-size:10px;color:var(--muted)">Local</th>
+        <th style="text-align:center;padding:8px 10px;font-size:10px;color:var(--muted)">Total</th>
+        <th style="text-align:left;padding:8px 10px;font-size:10px;color:var(--red);border-left:1px solid var(--border)">🔴 Técnica</th>
+        <th style="text-align:left;padding:8px 10px;font-size:10px;color:var(--yellow);border-left:1px solid var(--border)">🟡 Não-Técnica</th>
+        <th style="text-align:left;padding:8px 10px;font-size:10px;color:var(--green);border-left:1px solid var(--border)">🟢 Consistente</th>
+      </tr></thead>
+      <tbody>${geralRows}</tbody>
+    </table>
+  </div>`;
+
+  // ── TABELA DIÁRIA EM % ──
+  const allDates=new Set();
+  keys.forEach(k=>Object.keys(INFRA_BY_SP[k]?.by_date||{}).forEach(d=>allDates.add(d)));
+  const datas=[...allDates].sort((a,b)=>parseInt(a)-parseInt(b));
+
+  const thDates=datas.map(d=>`<th colspan="3" style="text-align:center;background:var(--accent2);color:white;font-size:10px;padding:6px;border-left:2px solid rgba(255,255,255,.15)">Dia ${d}</th>`).join('');
+  const thSubs=datas.map(()=>`
+    <th style="text-align:center;background:#991b1b;color:white;font-size:9px;padding:4px;min-width:46px">Téc.</th>
+    <th style="text-align:center;background:#92400e;color:white;font-size:9px;padding:4px;min-width:46px">N.Téc.</th>
+    <th style="text-align:center;background:#065f46;color:white;font-size:9px;padding:4px;min-width:46px">Cons.</th>`).join('');
+
+  const diaRows=keys.map(k=>{
+    const sp=INFRA_BY_SP[k]||{};
+    const bd=sp.by_date||{};
+    const [cp,pi]=k.split('|');
+    const dateCells=datas.map(d=>{
+      const dv=bd[d]||{tec:0,ntec:0,consist:0,total:0};
+      const tot=dv.total||0;
+      if(!tot)return`<td style="text-align:center;color:#d1d5db;font-size:9px;border-left:2px solid var(--border)">—</td><td style="text-align:center;color:#d1d5db;font-size:9px">—</td><td style="text-align:center;color:#d1d5db;font-size:9px">—</td>`;
+      const p=(v)=>tot>0?Math.round(v/tot*100)+'%':'—';
+      const pTec=tot>0?dv.tec/tot:0, pNtec=tot>0?dv.ntec/tot:0, pCons=tot>0?dv.consist/tot:0;
+      const bgTec=`rgba(220,38,38,${(pTec*0.7+0.05).toFixed(2)})`;
+      const bgNtec=`rgba(217,119,6,${(pNtec*0.6+0.05).toFixed(2)})`;
+      const bgCons=`rgba(5,150,105,${(pCons*0.6+0.05).toFixed(2)})`;
+      const txTec=pTec>0.5?'white':'#7f1d1d', txNtec=pNtec>0.6?'white':'#78350f', txCons=pCons>0.6?'white':'#064e3b';
+      return`
+        <td style="text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;background:${bgTec};color:${txTec};padding:5px 3px;border-left:2px solid var(--border)">${p(dv.tec)}</td>
+        <td style="text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;background:${bgNtec};color:${txNtec};padding:5px 3px">${p(dv.ntec)}</td>
+        <td style="text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;background:${bgCons};color:${txCons};padding:5px 3px">${p(dv.consist)}</td>`;
+    }).join('');
+
+    return`<tr style="border-bottom:1px solid var(--border)">
+      <td style="white-space:nowrap;font-size:11px;padding:6px 10px;font-weight:700">
+        <span style="font-family:var(--mono);color:var(--accent)">${cp}</span>
+        <span style="color:var(--muted);font-size:10px"> F${pi}</span>
+      </td>
+      ${dateCells}
+    </tr>`;
+  }).join('');
+
+  const diaHTML=`<div style="margin-top:4px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+      Detalhamento Diário em % <span style="flex:1;height:1px;background:var(--border);display:block"></span>
+    </div>
+    <div style="overflow-x:auto">
+    <table style="border-collapse:collapse;font-size:11px;min-width:900px">
+      <thead>
+        <tr><th style="text-align:left;padding:8px 10px;background:var(--accent2);color:white;min-width:120px">Equip.</th>${thDates}</tr>
+        <tr><th style="background:var(--accent2)"></th>${thSubs}</tr>
+      </thead>
+      <tbody>${diaRows}</tbody>
+    </table>
+    </div>
+  </div>`;
+
+  const el=document.getElementById('infDiarioWrap');
+  if(el)el.innerHTML=geralHTML+diaHTML;
+}
+
+
+// ══════════════════════════════════════════════
+//  IMAGEM TESTE
+// ══════════════════════════════════════════════
+function buildTeste(){
+  const faixas=todasFaixas();
+  const dias=diasKeys();
+  let ok=0,warn=0,crit=0,sumPct=0,nPct=0;
+
+  // Geral por equipamento
+  const geralRows=faixas.map(fx=>{
+    const testeObj=fx.teste||{};
+    const vals=dias.map(d=>testeObj[d]||0);
+    const horasEsp=dias.length*24;
+    const horasTeste=vals.reduce((a,b)=>a+b,0);
+    const pct=horasEsp>0?horasTeste/horasEsp*100:0;
+    if(pct>0){sumPct+=pct;nPct++;}
+    if(pct>=95)ok++;else if(pct>=80)warn++;else if(pct>0)crit++;
+    const cor=pct>=95?'var(--green)':pct>=80?'var(--yellow)':'var(--red)';
+    const bw=Math.round(pct);
+    return `<tr>
+      <td><span style="font-family:var(--mono);font-weight:800;color:var(--accent)">${fx._serie}</span></td>
+      <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis">${fx._local}</td>
+      <td style="font-size:11px">${fx._sentido||'—'}</td>
+      <td><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td>
+      <td class="val center">${horasEsp}h</td>
+      <td class="val center" style="color:${cor};font-weight:700">${horasTeste}h</td>
+      <td class="val">
+        <div style="color:${cor};font-weight:800">${pct.toFixed(1)}%</div>
+        <div class="idx-bar-wrap"><div class="idx-bar" style="width:${bw}%;background:${cor}"></div></div>
+      </td>
+      <td><span class="badge ${pct>=95?'b-g':pct>=80?'b-y':'b-r'}">${pct>=95?'Ótimo':pct>=80?'Atenção':'Crítico'}</span></td>
+    </tr>`;
   });
-  svg.innerHTML=out;
+
+  set$('tsMedia',nPct?(sumPct/nPct).toFixed(1)+'%':'—');
+  set$('tsOk',ok);set$('tsWarn',warn);set$('tsCrit',crit);
+  setHTML$('tsGeralBody',geralRows.join(''));
+
+  // Dia a dia — mapa de calor (horas/24 = %)
+  const headers=dias.map(d=>`<th style="min-width:65px">${d}</th>`).join('');
+  const diaRows=faixas.map(fx=>{
+    const cells=dias.map((d,i)=>{
+      const v=fx.teste?.[d];
+      if(v==null)return`<td class="center" style="color:var(--muted2)">—</td>`;
+      const pct=v/24*100;
+      const cor=pct>=95?'#bbf7d0':pct>=80?'#fde68a':'#fecaca';
+      const tcor=pct>=95?'#166534':pct>=80?'#92400e':'#991b1b';
+      return`<td class="center" style="background:${cor};color:${tcor};font-weight:700">${v}h</td>`;
+    }).join('');
+    const totH=dias.reduce((a,d)=>a+(fx.teste?.[d]||0),0);
+    const totPct=dias.length>0?totH/(dias.length*24)*100:0;
+    const corTot=totPct>=95?'var(--green)':totPct>=80?'var(--yellow)':'var(--red)';
+    return`<tr>
+      <td class="eq-c">${fx._serie}·F${fx.id}</td>
+      <td style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px">${fx._local.slice(0,20)}</td>
+      ${cells}
+      <td class="val center" style="font-weight:800;color:${corTot}">${totH}h (${totPct.toFixed(0)}%)</td>
+    </tr>`;
+  }).join('');
+
+  const el=document.getElementById('tsDiaTbl');
+  if(el)el.innerHTML=`<table class="fd-tbl" style="width:100%"><thead><tr><th class="left">Equip</th><th class="left">Local</th>${headers}<th>Total / %</th></tr></thead><tbody>${diaRows}</tbody></table>`;
+
+  // Mensal consolidado
+  const consolidados=dias.map(d=>faixas.reduce((a,fx)=>a+(fx.teste?.[d]||0),0));
+  setHTML$('tsMensalChart',svgBarChart(dias,[{data:consolidados,color:'#0066cc'}],{height:150,padL:50}));
 }
 
-// ════════════════════════════════════
-//  RELÓGIO + INIT
-// ════════════════════════════════════
-function clock(){document.getElementById('topClock').textContent=new Date().toLocaleString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'})}
-clock();setInterval(clock,1000);
-
-// Sinalizar atualizado
-const cont=DB[0];
-if(cont){
-  document.getElementById('contractBadge').textContent=cont.id;
-  document.getElementById('sideAtual').textContent=new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-}
-
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
 buildPainel();
-window.addEventListener('resize',()=>rebuild());
 </script>
 </body>
 </html>
