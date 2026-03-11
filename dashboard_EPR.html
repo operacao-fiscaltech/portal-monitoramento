@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscaltech — Centro de Operações</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
+:root{
+  --bg:#060810;--surface:#0c1020;--card:#111828;--card2:#182035;
+  --border:#1d2b45;--border2:#243352;
+  --accent:#0ea5e9;--green:#22d3a0;--yellow:#f59e0b;--red:#f43f5e;--purple:#8b5cf6;
+  --text:#e1e8f5;--muted:#4d6080;--muted2:#2d3f5a;
+  --display:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.018) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
+
+/* ══════════════════════════════════════════
+   PORTAL — tela de seleção de contratos
+══════════════════════════════════════════ */
+#screen-portal{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+#screen-dashboard{display:none}
+
+.portal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 36px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;
+}
+.portal-brand{display:flex;align-items:center;gap:16px}
+.portal-logo-box{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),#0055ff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;box-shadow:0 0 20px rgba(14,165,233,.3);
+  flex-shrink:0;
+}
+.portal-brand-text h1{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.portal-brand-text p{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+.portal-header-right{display:flex;align-items:center;gap:14px}
+.portal-clock{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+.portal-body{padding:32px 36px;flex:1}
+
+/* Stats bar */
+.portal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.pstat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;position:relative;overflow:hidden;transition:.2s}
+.pstat:hover{transform:translateY(-2px);border-color:var(--ps-color,var(--accent))}
+.pstat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ps-color,var(--accent))}
+.pstat-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.pstat-val{font-family:var(--display);font-size:30px;font-weight:700;color:var(--ps-color,var(--text));line-height:1}
+.pstat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* Toolbar */
+.portal-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.portal-toolbar-left{display:flex;align-items:center;gap:10px}
+.portal-toolbar h2{font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px}
+.search-wrap input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;width:200px}
+.search-wrap input::placeholder{color:var(--muted)}
+
+/* Contrato cards grid */
+.contratos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.contrato-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:22px;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1), border-color .2s, box-shadow .2s;
+  animation:cardIn .35s ease both;
+}
+.contrato-card:hover{
+  transform:translateY(-5px) scale(1.01);
+  border-color:var(--cc-color,var(--accent));
+  box-shadow:0 16px 48px rgba(0,0,0,.45), 0 0 0 1px var(--cc-color,var(--accent));
+}
+.contrato-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cc-color,var(--accent)),transparent)}
+.contrato-card::after{content:'';position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.03),transparent 70%)}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.cc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.cc-nome{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:.05em;color:var(--cc-color,var(--text))}
+.cc-status{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px}
+.st-ok  {background:rgba(34,211,160,.1);color:var(--green);border:1px solid rgba(34,211,160,.2)}
+.st-warn{background:rgba(245,158,11,.1);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.st-crit{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+.st-none{background:rgba(77,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+
+.cc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.cc-metric-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.cc-metric-val{font-family:var(--display);font-size:18px;font-weight:700;margin-top:2px}
+
+/* Barra de LAP */
+.cc-lap-bar{margin-bottom:14px}
+.cc-lap-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:5px}
+.cc-lap-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.cc-lap-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.34,1.56,.64,1)}
+
+/* Faixas indicators */
+.cc-faixas{display:flex;gap:3px;margin-bottom:14px;flex-wrap:wrap}
+.cc-faixa-dot{height:6px;width:6px;border-radius:2px;flex-shrink:0}
+
+.cc-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px}
+.cc-info{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.cc-btn{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--cc-color,var(--accent));letter-spacing:.04em;display:flex;align-items:center;gap:4px;transition:.2s}
+.cc-btn::after{content:'→';transition:transform .2s}
+.contrato-card:hover .cc-btn::after{transform:translateX(5px)}
+
+/* Breadcrumb no dashboard */
+.breadcrumb{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.bc-link{cursor:pointer;transition:.15s;padding:2px 0}
+.bc-link:hover{color:var(--accent)}
+.bc-sep{color:var(--border2)}
+.bc-cur{color:var(--text)}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh;position:relative;z-index:1}
+
+/* ── SIDEBAR ── */
+.sidebar{width:212px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--border)}
+.logo-mark{font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:.04em;color:var(--text);line-height:1}
+.logo-mark span{color:var(--accent)}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
+.sb-sect{padding:14px 12px 6px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 14px;margin:1px 6px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:.15s;border:1px solid transparent}
+.nav-item:hover{color:var(--text);background:var(--card)}
+.nav-item.active{color:var(--accent);background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.18)}
+.nav-icon{font-size:15px;width:18px;text-align:center}
+.nbadge{margin-left:auto;font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:10px;font-weight:600}
+.nb-r{background:rgba(244,63,94,.2);color:var(--red)}
+.nb-y{background:rgba(245,158,11,.2);color:var(--yellow)}
+.sb-period{margin-top:auto;border-top:1px solid var(--border);padding:14px 14px 10px}
+.period-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.period-btns{display:flex;gap:4px}
+.pbtn{flex:1;padding:6px 4px;text-align:center;border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;cursor:pointer;border:1px solid var(--border);color:var(--muted);transition:.15s;background:transparent}
+.pbtn:hover{border-color:var(--accent);color:var(--accent)}
+.pbtn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.sb-bot{padding:12px 14px;border-top:1px solid var(--border)}
+.analyst{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--card);border-radius:8px;border:1px solid var(--border)}
+.av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* ── MAIN ── */
+.main{margin-left:212px;flex:1;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.page-title{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.live-pill{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;background:rgba(34,211,160,.08);border:1px solid rgba(34,211,160,.2);color:var(--green);padding:4px 10px;border-radius:20px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+#topClock{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.period-tag{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.15);padding:3px 10px;border-radius:5px}
+.content{padding:20px 24px;flex:1}
+.view{display:none}.view.active{display:block}
+
+/* ── KPI ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:.2s;cursor:default}
+.kpi:hover{border-color:var(--kc,var(--accent));transform:translateY(-1px)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--accent))}
+.kpi-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.kpi-val{font-family:var(--display);font-size:26px;font-weight:700;color:var(--kc,var(--text));line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.kpi-delta{font-family:var(--mono);font-size:10px;margin-top:3px}
+.du{color:var(--green)}.dd{color:var(--red)}.dm{color:var(--muted)}
+
+/* ── SEMÁFORO ── */
+.semaforo{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sem-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-align:center}
+.sem-icon{font-size:22px;margin-bottom:5px}
+.sem-title{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.sem-row{display:flex;justify-content:center;gap:12px}
+.sem-item{text-align:center}
+.sem-cnt{font-family:var(--display);font-size:22px;font-weight:700;line-height:1}
+.sem-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:2px}
+
+/* ── EQUIPMENT CARD (equipamento com faixas) ── */
+.eq-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.eq-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:.2s}
+.eq-card:hover{border-color:var(--border2)}
+.eq-card-head{
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:12px;padding:10px 16px;cursor:pointer;
+  border-bottom:1px solid transparent;transition:.15s;
+}
+.eq-card.expanded .eq-card-head{border-bottom-color:var(--border)}
+.eq-card-head:hover{background:rgba(14,165,233,.03)}
+.eq-serie-badge{
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  color:var(--accent);background:rgba(14,165,233,.1);
+  border:1px solid rgba(14,165,233,.2);
+  padding:4px 10px;border-radius:6px;white-space:nowrap;
+}
+.eq-meta{min-width:0}
+.eq-local{font-size:13px;font-weight:500;color:var(--text)}
+.eq-sub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+.eq-summary{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.eq-faixa-dots{display:flex;gap:4px;align-items:center}
+.fdot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.eq-expand-icon{font-family:var(--mono);font-size:10px;color:var(--muted);transition:.2s}
+.eq-card.expanded .eq-expand-icon{transform:rotate(180deg)}
+
+/* ── FAIXAS TABLE (dentro do eq-card expandido) ── */
+.faixas-table{width:100%;border-collapse:collapse}
+.faixas-table th{background:var(--card2);color:var(--muted);font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;padding:7px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.faixas-table td{padding:8px 14px;border-bottom:1px solid rgba(29,43,69,.4);font-size:12px;transition:.1s}
+.faixas-table tr:last-child td{border-bottom:none}
+.faixas-table tr:hover td{background:rgba(14,165,233,.03)}
+.faixa-id{font-family:var(--mono);font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;display:inline-block}
+.f1{background:rgba(14,165,233,.15);color:var(--accent)}
+.f2{background:rgba(139,92,246,.15);color:var(--purple)}
+.f3{background:rgba(34,211,160,.15);color:var(--green)}
+.f4{background:rgba(245,158,11,.15);color:var(--yellow)}
+.f5{background:rgba(244,63,94,.15);color:var(--red)}
+.fclr{--fc:var(--muted)}
+.val-cell{font-family:var(--display);font-size:16px;font-weight:700;color:var(--fc)}
+
+/* ── RANK PANEL ── */
+.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rank-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.rp-head{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.rp-title{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.badge{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px;font-weight:500}
+.b-r{background:rgba(244,63,94,.12);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+.b-y{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.b-g{background:rgba(34,211,160,.12);color:var(--green);border:1px solid rgba(34,211,160,.2)}
+.b-b{background:rgba(14,165,233,.12);color:var(--accent);border:1px solid rgba(14,165,233,.2)}
+.b-m{background:rgba(77,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+
+.rank-row{display:grid;grid-template-columns:22px auto 1fr auto;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid rgba(29,43,69,.35);transition:.12s}
+.rank-row:last-child{border-bottom:none}
+.rank-row:hover{background:rgba(14,165,233,.03)}
+.rr-num{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center}
+.rr-num.r1{color:var(--red)}.rr-num.r2{color:var(--yellow)}.rr-num.r3{color:var(--accent)}
+.rr-faixa{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;white-space:nowrap}
+.rr-info{min-width:0}
+.rr-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)}
+.rr-local{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr-ctr{font-family:var(--mono);font-size:9px;color:var(--muted2)}
+.rr-val{font-family:var(--display);font-size:17px;font-weight:700;text-align:right;line-height:1}
+.rr-unit{font-family:var(--mono);font-size:9px;color:var(--muted);text-align:right;margin-top:1px}
+
+/* ── CHART ── */
+.chart-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.cp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.cp-title{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.cp-controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.cp-tab{padding:4px 10px;border-radius:5px;font-family:var(--mono);font-size:10px;cursor:pointer;border:1px solid var(--border);color:var(--muted);transition:.15s;background:transparent}
+.cp-tab.active{background:var(--accent);color:#000;border-color:var(--accent)}
+svg.chart{width:100%;overflow:visible}
+
+/* ── HEATMAP ── */
+.hm-wrap{overflow-x:auto;padding-bottom:4px}
+.hm-grid{display:grid;gap:2px;min-width:500px}
+.hm-cell{height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;cursor:pointer;transition:.15s}
+.hm-cell:hover{filter:brightness(1.4);z-index:2;transform:scale(1.06)}
+.hm-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;align-items:center;height:26px;padding-right:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── TABLE ── */
+.tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;max-height:480px;overflow-y:auto}
+.tbl-wrap::-webkit-scrollbar{width:4px}
+.tbl-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+table.tbl{width:100%;border-collapse:collapse;font-size:12px}
+table.tbl th{background:var(--card2);color:var(--muted);font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
+table.tbl td{padding:8px 12px;border-bottom:1px solid rgba(29,43,69,.4);transition:.1s}
+table.tbl tr:hover td{background:rgba(14,165,233,.03)}
+
+/* ── FILTER ── */
+.filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fchip{padding:4px 11px;border-radius:20px;font-family:var(--mono);font-size:10px;cursor:pointer;border:1px solid var(--border);color:var(--muted);transition:.15s;background:transparent}
+.fchip:hover{border-color:var(--accent);color:var(--accent)}
+.fchip.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.fsel{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text);font-family:var(--mono);font-size:11px;outline:none}
+.fsel option{background:var(--card)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.empty{text-align:center;padding:36px;color:var(--muted);font-family:var(--mono);font-size:12px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media(max-width:900px){.two-col,.rank-grid,.semaforo,.kpi-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.two-col,.rank-grid,.semaforo,.kpi-strip{grid-template-columns:1fr}.main{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="logo-mark">FISCAL<span>TECH</span></div>
+    <div class="logo-sub">Centro de Operações</div>
+  </div>
+  <div class="sb-sect">Monitoramento</div>
+  <div class="nav-item active" onclick="navTo('painel',this)"><span class="nav-icon">🎯</span>Painel do Dia<span class="nbadge nb-r" id="badgeCrit">—</span></div>
+  <div class="nav-item" onclick="navTo('teste',this)"><span class="nav-icon">🧪</span>Teste / Imagens</div>
+  <div class="nav-item" onclick="navTo('fluxo',this)"><span class="nav-icon">🚗</span>Fluxo Veicular</div>
+  <div class="nav-item" onclick="navTo('infracoes',this)"><span class="nav-icon">🚨</span>Infrações</div>
+  <div class="nav-item" onclick="navTo('lap',this)"><span class="nav-icon">🔢</span>LAP / OCR</div>
+  <div class="nav-item" onclick="navTo('horario',this)"><span class="nav-icon">🕐</span>Fluxo Horário</div>
+  <div class="nav-item" onclick="navTo('afericoes',this)"><span class="nav-icon">📅</span>Aferições<span class="nbadge nb-y" id="badgeAfer">—</span></div>
+  <div class="sb-period">
+    <div class="period-lbl">Período de Análise</div>
+    <div class="period-btns">
+      <button class="pbtn active" onclick="setPeriod('dia',this)">DIA</button>
+      <button class="pbtn" onclick="setPeriod('semana',this)">SEM</button>
+      <button class="pbtn" onclick="setPeriod('mes',this)">MÊS</button>
+    </div>
+  </div>
+  <div class="sb-bot">
+    <div class="analyst"><div class="av">AN</div><div><div style="font-size:12px;font-weight:600">Analista</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">Monitoramento</div></div></div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="portal.html" style="display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;padding:5px 11px;border:1px solid var(--border);border-radius:7px;transition:.15s;background:var(--card)" onmouseover="this.style.color='var(--accent)';this.style.borderColor='rgba(14,165,233,.4)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M6 10l-4-4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        PORTAL
+      </a>
+      <div class="page-title" id="pageTitle">Painel do Dia</div>
+    </div>
+    <div class="topbar-right">
+      <div class="live-pill"><div class="live-dot"></div>AO VIVO</div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.15);padding:3px 10px;border-radius:5px;font-weight:700">EPR</span>
+      <span class="period-tag" id="periodTag">HOJE</span>
+      <div id="topClock"></div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- ══ PAINEL DO DIA ══ -->
+    <div class="view active" id="view-painel">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Faixas Críticas</div><div class="kpi-val" id="pCrit">—</div><div class="kpi-sub">com falha hoje</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção</div><div class="kpi-val" id="pWarn">—</div><div class="kpi-sub">abaixo do limite</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Normais</div><div class="kpi-val" id="pOk">—</div><div class="kpi-sub">faixas OK</div></div>
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Total</div><div class="kpi-val" id="pFluxo">—</div><div class="kpi-delta" id="pFluxoDelta"></div></div>
+        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="pLap">—</div><div class="kpi-sub">todas as faixas</div></div>
+      </div>
+      <div class="semaforo">
+        <div class="sem-card"><div class="sem-icon">🧪</div><div class="sem-title">Teste / Imagens</div><div class="sem-row">
+          <div class="sem-item"><div class="sem-cnt" id="sTesteOk" style="color:var(--green)">—</div><div class="sem-lbl">OK</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sTesteWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">ATEN.</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sTesteCrit" style="color:var(--red)">—</div><div class="sem-lbl">CRIT.</div></div>
+        </div></div>
+        <div class="sem-card"><div class="sem-icon">🔢</div><div class="sem-title">LAP / OCR</div><div class="sem-row">
+          <div class="sem-item"><div class="sem-cnt" id="sLapOk" style="color:var(--green)">—</div><div class="sem-lbl">≥80%</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sLapWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">60–79%</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sLapCrit" style="color:var(--red)">—</div><div class="sem-lbl">&lt;60%</div></div>
+        </div></div>
+        <div class="sem-card"><div class="sem-icon">🚗</div><div class="sem-title">Fluxo Veicular</div><div class="sem-row">
+          <div class="sem-item"><div class="sem-cnt" id="sFluxoOk" style="color:var(--green)">—</div><div class="sem-lbl">Normal</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sFluxoWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">Baixo</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sFluxoCrit" style="color:var(--red)">—</div><div class="sem-lbl">Zero</div></div>
+        </div></div>
+        <div class="sem-card"><div class="sem-icon">📅</div><div class="sem-title">Aferições</div><div class="sem-row">
+          <div class="sem-item"><div class="sem-cnt" id="sAfOk" style="color:var(--green)">—</div><div class="sem-lbl">&gt;60d</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sAfWarn" style="color:var(--yellow)">—</div><div class="sem-lbl">30–60d</div></div>
+          <div class="sem-item"><div class="sem-cnt" id="sAfCrit" style="color:var(--red)">—</div><div class="sem-lbl">&lt;30d</div></div>
+        </div></div>
+      </div>
+      <div class="rank-grid">
+        <div class="rank-panel"><div class="rp-head"><div class="rp-title">⚠️ Piores LAP por Faixa</div><span class="badge b-r" id="bLapCrit">—</span></div><div id="rlLap"></div></div>
+        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🧪 Piores Teste por Faixa</div><span class="badge b-y" id="bTesteCrit">—</span></div><div id="rlTeste"></div></div>
+        <div class="rank-panel"><div class="rp-head"><div class="rp-title">🚗 Menor Fluxo por Faixa</div><span class="badge b-b" id="bFluxoZero">—</span></div><div id="rlFluxo"></div></div>
+        <div class="rank-panel"><div class="rp-head"><div class="rp-title">📅 Aferições Vencendo</div><span class="badge b-y" id="bAfer">—</span></div><div id="rlAfer"></div></div>
+      </div>
+    </div>
+
+    <!-- ══ TESTE ══ -->
+    <div class="view" id="view-teste">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">OK (≥95%)</div><div class="kpi-val" id="tOk">—</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção</div><div class="kpi-val" id="tWarn">—</div></div>
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Críticos</div><div class="kpi-val" id="tCrit">—</div></div>
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Média Geral</div><div class="kpi-val" id="tMedia">—</div></div>
+        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Sem Dados</div><div class="kpi-val" id="tSemD">—</div></div>
+      </div>
+      <div class="cp-controls" style="margin-bottom:12px">
+        <select class="fsel" id="testeFiltroC" onchange="buildTeste()"><option value="">Todos os contratos</option></select>
+        <select class="fsel" id="testeFiltroS" onchange="buildTeste()"><option value="">Todas as séries</option></select>
+      </div>
+      <div class="eq-cards" id="testeCards"></div>
+    </div>
+
+    <!-- ══ FLUXO ══ -->
+    <div class="view" id="view-fluxo">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Período</div><div class="kpi-val" id="fTotal">—</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Maior Faixa</div><div class="kpi-val" id="fMaior">—</div><div class="kpi-sub" id="fMaiorSub"></div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Média/Faixa/Dia</div><div class="kpi-val" id="fMedia">—</div></div>
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Faixas Zeradas</div><div class="kpi-val" id="fZero">—</div></div>
+        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Total Faixas</div><div class="kpi-val" id="fTotalFaixas">—</div></div>
+      </div>
+      <div class="cp-controls" style="margin-bottom:12px">
+        <select class="fsel" id="fluxoFiltroC" onchange="buildFluxo()"><option value="">Todos os contratos</option></select>
+        <select class="fsel" id="fluxoFiltroS" onchange="buildFluxo()"><option value="">Todas as séries</option></select>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head"><div class="cp-title">📈 Fluxo Consolidado — Período</div></div>
+        <svg id="fluxoChart" class="chart" height="200"></svg>
+      </div>
+      <div class="eq-cards" id="fluxoCards"></div>
+    </div>
+
+    <!-- ══ INFRAÇÕES ══ -->
+    <div class="view" id="view-infracoes">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Total Período</div><div class="kpi-val" id="iTotal">—</div></div>
+        <div class="kpi" style="--kc:#fb923c"><div class="kpi-lbl">Maior Faixa</div><div class="kpi-val" id="iMaior">—</div><div class="kpi-sub" id="iMaiorSub"></div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Média/Faixa/Dia</div><div class="kpi-val" id="iMedia">—</div></div>
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Taxa Infração</div><div class="kpi-val" id="iTaxa">—</div><div class="kpi-sub">% do fluxo</div></div>
+        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Total Faixas</div><div class="kpi-val" id="iTotalFaixas">—</div></div>
+      </div>
+      <div class="cp-controls" style="margin-bottom:12px">
+        <select class="fsel" id="infraFiltroC" onchange="buildInfracoes()"><option value="">Todos os contratos</option></select>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head"><div class="cp-title">📈 Infrações — Evolução</div></div>
+        <svg id="infraChart" class="chart" height="190"></svg>
+      </div>
+      <div class="rank-panel" style="border-radius:10px;margin-bottom:14px">
+        <div class="rp-head"><div class="rp-title">🚨 Ranking por Faixa — Maior Número de Infrações</div></div>
+        <div id="infraRank"></div>
+      </div>
+    </div>
+
+    <!-- ══ LAP ══ -->
+    <div class="view" id="view-lap">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="lMedia">—</div><div class="kpi-sub">todas as faixas</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Acima 80%</div><div class="kpi-val" id="lOk">—</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Entre 60–79%</div><div class="kpi-val" id="lWarn">—</div></div>
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Abaixo 60%</div><div class="kpi-val" id="lCrit">—</div></div>
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Melhor Faixa</div><div class="kpi-val" id="lMelhor">—</div><div class="kpi-sub" id="lMelhorSub"></div></div>
+      </div>
+      <div class="cp-controls" style="margin-bottom:12px">
+        <select class="fsel" id="lapFiltroC" onchange="buildLap()"><option value="">Todos os contratos</option></select>
+        <select class="fsel" id="lapFiltroS" onchange="buildLap()"><option value="">Todas as séries</option></select>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head"><div class="cp-title">📊 Heatmap LAP — Faixa × Dia</div></div>
+        <div class="hm-wrap"><div class="hm-grid" id="lapHeatmap"></div></div>
+      </div>
+      <div class="two-col">
+        <div class="rank-panel" style="border-radius:10px"><div class="rp-head"><div class="rp-title">🔴 Piores Faixas — LAP</div></div><div id="lapRankPior"></div></div>
+        <div class="rank-panel" style="border-radius:10px"><div class="rp-head"><div class="rp-title">🏆 Melhores Faixas — LAP</div></div><div id="lapRankMelhor"></div></div>
+      </div>
+    </div>
+
+    <!-- ══ HORÁRIO ══ -->
+    <div class="view" id="view-horario">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Hora Pico</div><div class="kpi-val" id="hPico">—</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Fluxo Pico</div><div class="kpi-val" id="hPicoV">—</div><div class="kpi-sub">veíc./hora</div></div>
+        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Hora Vale</div><div class="kpi-val" id="hVale">—</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Diurno 06–20h</div><div class="kpi-val" id="hDiurno">—</div></div>
+        <div class="kpi" style="--kc:var(--purple)"><div class="kpi-lbl">Noturno 20–06h</div><div class="kpi-val" id="hNoturno">—</div></div>
+      </div>
+      <div class="cp-controls" style="margin-bottom:12px">
+        <select class="fsel" id="horarioFiltroC" onchange="buildHorario()"><option value="">Todos os contratos</option></select>
+        <select class="fsel" id="horarioFiltroS" onchange="buildHorario()"><option value="">Todas as séries</option></select>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head"><div class="cp-title">📈 Curva Horária Consolidada</div></div>
+        <svg id="horarioChart" class="chart" height="200"></svg>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head"><div class="cp-title">🗺️ Heatmap Hora × Faixa</div></div>
+        <div class="hm-wrap"><div class="hm-grid" id="horarioHeatmap"></div></div>
+      </div>
+    </div>
+
+    <!-- ══ AFERIÇÕES ══ -->
+    <div class="view" id="view-afericoes">
+      <div class="kpi-strip">
+        <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Urgente (&lt;30d)</div><div class="kpi-val" id="aUrg">—</div></div>
+        <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção (30–60d)</div><div class="kpi-val" id="aAt">—</div></div>
+        <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Em Dia</div><div class="kpi-val" id="aOk">—</div></div>
+        <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Equipamentos</div><div class="kpi-val" id="aTotal">—</div></div>
+        <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Próximo Venc.</div><div class="kpi-val" id="aProx" style="font-size:16px">—</div></div>
+      </div>
+      <div class="filter-row">
+        <button class="fchip active" onclick="filtrarAfer('todos',this)">Todos</button>
+        <button class="fchip" onclick="filtrarAfer('urgente',this)">🔴 Urgente</button>
+        <button class="fchip" onclick="filtrarAfer('atencao',this)">🟡 Atenção</button>
+        <button class="fchip" onclick="filtrarAfer('ok',this)">🟢 OK</button>
+        <button class="fchip" onclick="exportAfer()" style="margin-left:auto;border-color:var(--accent);color:var(--accent)">↓ CSV</button>
+      </div>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Série</th><th>Contrato</th><th>Local</th><th>Faixas</th><th>Última Aferição</th><th>Vencimento</th><th>Dias Rest.</th><th>Status</th></tr></thead>
+        <tbody id="aferBody"></tbody>
+      </table></div>
+    </div>
+
+  </div>
+</main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  ESTRUTURA DE DADOS — com suporte a múltiplas faixas
+//
+//  Cada equipamento tem:
+//    serie: "548"
+//    faixas: [ { id:"F1", fluxo:[], teste:[], lap:[], infra:[] }, ... ]
+//    ult_afer / venc_afer: por equipamento físico
+// ══════════════════════════════════════════════════════════
+const DB = [
+  {
+    id:"EPR", nome:"EPR",
+    dias:["01/Mar","02/Mar","03/Mar","04/Mar","05/Mar","06/Mar","07/Mar","08/Mar","09/Mar"],
+    equipamentos:[
+      // Série 545 — sem dados de fluxo mas existe
+      {serie:"545",local:"BR-153 km 031+150",sentido:"Crescente",cod:"EPR006",vel:80,
+       ult_afer:"2025-01-15",venc_afer:"2026-07-15",
+       faixas:[
+         {id:"F1",fluxo:[],teste:[],lap:[],infra:[]}
+       ]},
+      // Série 546 — 1 faixa
+      {serie:"546",local:"BR-153 km 041+900",sentido:"Crescente",cod:"EPR007",vel:80,
+       ult_afer:"2025-01-15",venc_afer:"2026-04-20",
+       faixas:[
+         {id:"F1",fluxo:[4962,7562,8029,8235,8488,1855,6698,5590,7534],teste:[24,24,24,24,24,11,24,24,24],lap:[72,85,83,80,82,84,82,74,77],infra:[]}
+       ]},
+      // Série 547 — 1 faixa
+      {serie:"547",local:"BR-153 km 041+950",sentido:"Decrescente",cod:"EPR008",vel:80,
+       ult_afer:"2025-06-01",venc_afer:"2026-12-01",
+       faixas:[
+         {id:"F1",fluxo:[4256,5044,5338,5691,5942,5918,5026,4744,5127],teste:[24,24,24,24,24,24,24,24,24],lap:[63,72,74,70,72,73,69,60,68],infra:[]}
+       ]},
+      // Série 548 — 2 faixas (simulando equipamento com 2 faixas de captura)
+      {serie:"548",local:"BR-277 km 032+000",sentido:"Crescente",cod:"EPR009",vel:80,
+       ult_afer:"2025-07-10",venc_afer:"2026-03-20",
+       faixas:[
+         {id:"F1",fluxo:[1169,10137,7225,7220,7547,7292,7532,8272,11211],teste:[24,24,24,24,24,24,24,24,24],lap:[74,86,67,63,68,70,70,79,84],infra:[]},
+         {id:"F2",fluxo:[980,8430,6100,6050,6320,6100,6290,6900,9450],teste:[24,24,24,22,24,24,24,24,23],lap:[68,79,61,58,62,65,66,71,78],infra:[]}
+       ]},
+      // Série 549 — 2 faixas com LAP crítico em F2
+      {serie:"549",local:"BR-277 km 033+300",sentido:"Decrescente",cod:"EPR010",vel:80,
+       ult_afer:"2025-07-10",venc_afer:"2026-06-10",
+       faixas:[
+         {id:"F1",fluxo:[4386,4820,4482,4660,4763,6180,6236,4564,4428],teste:[24,24,24,24,24,24,24,24,24],lap:[47,24,33,35,38,36,59,72,76],infra:[]},
+         {id:"F2",fluxo:[3800,4100,3900,4000,4100,5200,5300,3900,3800],teste:[24,24,24,24,22,24,24,24,24],lap:[41,22,29,31,34,32,51,65,68],infra:[]}
+       ]},
+      // Série 550 — 2 faixas
+      {serie:"550",local:"BR-277 km 035+500",sentido:"Decrescente",cod:"EPR011",vel:80,
+       ult_afer:"2025-07-15",venc_afer:"2026-07-15",
+       faixas:[
+         {id:"F1",fluxo:[4242,4892,5118,5154,5256,6265,6312,4672,4784],teste:[24,24,23,24,24,24,24,24,23],lap:[58,28,51,55,56,64,57,65,63],infra:[]},
+         {id:"F2",fluxo:[3600,4100,4300,4400,4500,5300,5400,3900,4100],teste:[24,24,24,24,24,24,24,23,22],lap:[54,24,47,51,52,60,53,60,59],infra:[]}
+       ]},
+      // Série 551
+      {serie:"551",local:"BR-277 km 036+400",sentido:"Decrescente",cod:"EPR012",vel:80,
+       ult_afer:"2025-08-01",venc_afer:"2026-08-01",
+       faixas:[
+         {id:"F1",fluxo:[6736,7076,7542,7132,7693,9016,8280,6158,7032],teste:[24,24,24,24,24,24,24,24,24],lap:[43,23,34,33,33,34,60,66,57],infra:[]}
+       ]},
+      // Série 552 — com falhas em teste
+      {serie:"552",local:"BR-277 km 041+400",sentido:"Decrescente",cod:"EPR013",vel:80,
+       ult_afer:"2025-02-01",venc_afer:"2026-03-15",
+       faixas:[
+         {id:"F1",fluxo:[2860,2572,2818,2766,3063,2728,2326,1325,1728],teste:[24,24,24,24,24,18,11,7,11],lap:[59,37,37,32,39,37,100,84,69],infra:[]},
+         {id:"F2",fluxo:[2400,2100,2300,2200,2500,2200,1800,0,0],teste:[24,24,24,24,20,14,8,0,0],lap:[55,33,34,29,35,33,0,0,0],infra:[]}
+       ]},
+      // Série 553 — 3 faixas
+      {serie:"553",local:"BR-277 Ayrton Senna km 002+070",sentido:"Decrescente",cod:"EPR014",vel:60,
+       ult_afer:"2025-09-05",venc_afer:"2026-09-05",
+       faixas:[
+         {id:"F1",fluxo:[6441,8637,9055,9109,9119,9048,8933,6115,9206],teste:[24,24,24,24,24,24,24,24,24],lap:[85,81,79,71,78,80,77,81,77],infra:[]},
+         {id:"F2",fluxo:[5400,7200,7600,7700,7800,7700,7600,5200,7800],teste:[24,24,24,24,24,24,24,23,24],lap:[82,78,76,69,75,77,74,78,74],infra:[]},
+         {id:"F3",fluxo:[4200,5600,6000,6100,6200,6100,5900,4100,6100],teste:[24,24,23,24,24,24,24,24,24],lap:[78,75,73,66,71,74,70,74,71],infra:[]}
+       ]},
+      // Série 554
+      {serie:"554",local:"BR-277 Ayrton Senna km 002+070",sentido:"Crescente",cod:"EPR015",vel:60,
+       ult_afer:"2025-09-05",venc_afer:"2026-09-05",
+       faixas:[
+         {id:"F1",fluxo:[4750,6409,6850,6706,6813,7193,6718,4340,5465],teste:[24,24,24,24,24,24,24,24,24],lap:[65,48,49,41,41,46,55,68,57],infra:[]},
+         {id:"F2",fluxo:[3900,5300,5600,5500,5600,6000,5600,3600,4500],teste:[24,24,24,24,24,24,23,24,24],lap:[61,44,45,37,37,42,51,63,53],infra:[]}
+       ]},
+      // Série 555
+      {serie:"555",local:"BR-277 km 001+120",sentido:"Decrescente",cod:"EPR016",vel:80,
+       ult_afer:"2025-08-10",venc_afer:"2026-08-10",
+       faixas:[
+         {id:"F1",fluxo:[7305,9362,10149,9642,9964,9150,9763,6954,6314],teste:[24,24,24,24,24,24,24,24,16],lap:[75,78,62,76,79,72,81,82,83],infra:[]}
+       ]},
+      // Série 556
+      {serie:"556",local:"BR-277 km 000+950",sentido:"Crescente",cod:"EPR017",vel:80,
+       ult_afer:"2025-08-10",venc_afer:"2026-08-10",
+       faixas:[
+         {id:"F1",fluxo:[7660,9888,10218,10358,10790,11220,10222,7401,10048],teste:[24,24,24,24,24,24,24,24,24],lap:[85,86,84,82,83,85,78,83,82],infra:[]}
+       ]},
+      // Série 557
+      {serie:"557",local:"BR-369 km 018+400",sentido:"Crescente",cod:"EPR018",vel:80,
+       ult_afer:"2025-08-15",venc_afer:"2026-08-15",
+       faixas:[
+         {id:"F1",fluxo:[2594,2750,3301,2906,3553,4042,3567,2981,2772],teste:[24,23,24,24,24,24,24,24,24],lap:[61,66,64,59,62,63,67,68,91],infra:[]}
+       ]},
+      // Série 558 — parou no dia 05
+      {serie:"558",local:"BR-369 km 019+970",sentido:"Decrescente",cod:"EPR019",vel:80,
+       ult_afer:"2025-02-15",venc_afer:"2026-03-25",
+       faixas:[
+         {id:"F1",fluxo:[3645,3665,3530,3676,1003,0,0,0,0],teste:[24,24,24,24,11,5,0,0,0],lap:[93,90,76,91,92,44,0,0,0],infra:[]},
+         {id:"F2",fluxo:[3100,3100,3000,3100,840,0,0,0,0],teste:[24,24,24,24,10,4,0,0,0],lap:[89,86,72,87,88,40,0,0,0],infra:[]}
+       ]},
+      // Série 559
+      {serie:"559",local:"BR-369 km 086+250",sentido:"Crescente",cod:"EPR020",vel:80,
+       ult_afer:"2025-08-20",venc_afer:"2026-08-20",
+       faixas:[
+         {id:"F1",fluxo:[3695,4566,4612,4574,4693,5377,3149,3578,4226],teste:[24,24,24,24,24,24,24,24,24],lap:[60,62,57,57,61,75,75,62,90],infra:[]}
+       ]},
+      // Série 560
+      {serie:"560",local:"BR-369 km 086+330",sentido:"Decrescente",cod:"EPR021",vel:80,
+       ult_afer:"2025-08-20",venc_afer:"2026-08-20",
+       faixas:[
+         {id:"F1",fluxo:[2100,2752,2724,2269,2233,2392,1534,1706,3709],teste:[17,24,19,20,19,20,21,23,23],lap:[83,83,78,78,75,77,87,84,54],infra:[]}
+       ]},
+      // Série 561 — LAP crítico na F1
+      {serie:"561",local:"PR-092 km 219+800",sentido:"Crescente",cod:"",vel:80,
+       ult_afer:"2025-07-05",venc_afer:"2026-07-05",
+       faixas:[
+         {id:"F1",fluxo:[2869,3415,3901,3976,3447,4411,3937,3423,3609],teste:[22,24,21,24,22,22,24,24,24],lap:[59,53,56,56,51,71,81,19,0],infra:[]},
+         {id:"F2",fluxo:[2400,2900,3300,3400,2900,3700,3300,2900,3100],teste:[22,24,21,24,22,22,24,24,23],lap:[55,49,52,52,47,66,76,16,0],infra:[]}
+       ]},
+      // Série 562
+      {serie:"562",local:"PR-092 km 220+200",sentido:"Decrescente",cod:"",vel:80,
+       ult_afer:"2025-07-05",venc_afer:"2026-07-05",
+       faixas:[
+         {id:"F1",fluxo:[2599,2779,2866,3212,3362,3465,2865,2683,2944],teste:[24,24,24,24,24,24,24,24,23],lap:[65,68,64,64,57,65,62,66,45],infra:[]}
+       ]},
+      // Série 565 — boa LAP
+      {serie:"565",local:"PR-151 km 195+900",sentido:"Decrescente",cod:"",vel:80,
+       ult_afer:"2024-10-10",venc_afer:"2026-04-10",
+       faixas:[
+         {id:"F1",fluxo:[1663,1839,1900,1962,1956,2051,1449,1660,1687],teste:[24,24,24,24,24,24,24,24,23],lap:[91,88,88,92,86,89,88,89,89],infra:[]},
+         {id:"F2",fluxo:[1400,1550,1600,1650,1650,1730,1220,1400,1420],teste:[24,24,24,24,24,24,24,24,23],lap:[87,84,84,88,82,85,84,85,85],infra:[]}
+       ]},
+      // Série 567 — melhor LAP
+      {serie:"567",local:"PR-151 km 260+200",sentido:"Crescente",cod:"",vel:80,
+       ult_afer:"2025-07-25",venc_afer:"2026-07-25",
+       faixas:[
+         {id:"F1",fluxo:[1952,2049,2388,2514,2697,2716,2041,2024,2511],teste:[24,24,24,24,24,24,24,24,24],lap:[82,85,82,84,78,82,82,73,92],infra:[]}
+       ]},
+      // Série 568 — falhas e zeros
+      {serie:"568",local:"PR-151 km 297+800",sentido:"Crescente",cod:"",vel:80,
+       ult_afer:"2025-08-25",venc_afer:"2026-08-25",
+       faixas:[
+         {id:"F1",fluxo:[4868,1192,2628,6524,5329,5254,5718,0,0],teste:[23,8,11,24,24,24,6,0,0],lap:[66,88,81,83,56,86,84,0,0],infra:[]},
+         {id:"F2",fluxo:[4100,1000,2200,5500,4500,4430,4800,0,0],teste:[23,7,10,24,24,23,5,0,0],lap:[62,84,77,79,52,82,80,0,0],infra:[]}
+       ]},
+      // Série 570
+      {serie:"570",local:"PR-151 km 307+400",sentido:"Crescente",cod:"",vel:80,
+       ult_afer:"2025-09-01",venc_afer:"2026-09-01",
+       faixas:[
+         {id:"F1",fluxo:[6193,7053,7190,9472,7950,7530,5916,6499,7180],teste:[24,24,24,24,24,24,24,24,24],lap:[58,75,66,70,44,58,85,48,89],infra:[]},
+         {id:"F2",fluxo:[5200,5900,6000,8000,6700,6300,4900,5400,6000],teste:[24,24,24,24,24,24,24,24,24],lap:[54,71,62,66,40,54,81,44,85],infra:[]}
+       ]},
+      // Série 571
+      {serie:"571",local:"PR-151 km 315+600",sentido:"Crescente",cod:"",vel:80,
+       ult_afer:"2025-09-01",venc_afer:"2026-09-01",
+       faixas:[
+         {id:"F1",fluxo:[6911,8152,9202,10364,9419,9760,7526,6989,8009],teste:[24,24,24,24,24,24,24,24,24],lap:[70,75,69,81,70,70,84,72,86],infra:[]}
+       ]},
+    ]
+  }
+];
+
+// ════════════════════════════════════
+//  ESTADO
+// ════════════════════════════════════
+let periodo = 'dia';
+let filtroAfer = 'todos';
+let viewAtual = 'painel';
+const FAIXA_COLORS = ['var(--accent)','var(--purple)','var(--green)','var(--yellow)','var(--red)'];
+const FAIXA_CLS    = ['f1','f2','f3','f4','f5'];
+
+// ════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════
+function periodoSlice(arr) {
+  const v = (arr||[]);
+  if (periodo==='dia')    return v.slice(-1);
+  if (periodo==='semana') return v.slice(-7);
+  return v;
+}
+function soma(arr)    { return (arr||[]).reduce((a,b)=>a+(b||0),0) }
+function media(arr)   { const v=(arr||[]).filter(x=>x>0); return v.length?soma(v)/v.length:0 }
+function ultimo(arr)  { return [...(arr||[])].reverse().find(x=>x>0)||0 }
+function fmtN(n)      { if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR') }
+function fmtPct(n)    { return n?n.toFixed(1)+'%':'—' }
+function diasRest(v)  { if(!v)return 999; const h=new Date();h.setHours(0,0,0,0);return Math.round((new Date(v)-h)/86400000) }
+function cor3(v,lo,hi){ if(v>=hi)return'var(--green)';if(v>=lo)return'var(--yellow)';return'var(--red)' }
+function set(id,v)    { const el=document.getElementById(id);if(el)el.textContent=v }
+function setHTML(id,v){ const el=document.getElementById(id);if(el)el.innerHTML=v }
+
+// Todas as faixas de todos os contratos (com referência ao equipamento e contrato)
+function todasFaixas(filtroC='', filtroS='') {
+  const result=[];
+  DB.forEach(c=>{
+    if(filtroC && c.id!==filtroC) return;
+    c.equipamentos.forEach(eq=>{
+      if(filtroS && eq.serie!==filtroS) return;
+      eq.faixas.forEach(fx=>{
+        result.push({...fx, _serie:eq.serie, _local:eq.local, _sentido:eq.sentido,
+          _cod:eq.cod, _ult_afer:eq.ult_afer, _venc_afer:eq.venc_afer,
+          _eq:eq, _c:c, _key:`${eq.serie}|${fx.id}`});
+      });
+    });
+  });
+  return result;
+}
+
+function valFaixa(fx, tipo) {
+  const sl = periodoSlice(fx[tipo]||[]);
+  return tipo==='lap'||tipo==='teste' ? media(sl.filter(x=>x>0)) : soma(sl);
+}
+function testePerf(fx) {
+  const sl = periodoSlice(fx.teste||[]);
+  if(!sl.length)return 0;
+  return sl.reduce((a,b)=>a+(b||0),0)/(sl.length*24)*100;
+}
+
+// Popula filtros de contrato/série
+function popFiltro(cid, sid) {
+  const csel=document.getElementById(cid);
+  if(csel&&csel.options.length===1) DB.forEach(c=>{const o=new Option(c.id,c.id);csel.add(o)});
+  if(!sid)return;
+  const ssel=document.getElementById(sid);
+  if(!ssel)return;
+  const fc=document.getElementById(cid)?.value||'';
+  const cur=ssel.value;
+  while(ssel.options.length>1)ssel.remove(1);
+  DB.forEach(c=>{if(fc&&c.id!==fc)return;c.equipamentos.forEach(eq=>{const o=new Option(`Série ${eq.serie} — ${eq.local.slice(0,25)}`,eq.serie);ssel.add(o)})});
+  if([...ssel.options].find(o=>o.value===cur))ssel.value=cur;
+}
+
+// ════════════════════════════════════
+//  NAVEGAÇÃO / PERÍODO
+// ════════════════════════════════════
+const pageTitles={painel:'Painel do Dia',teste:'Teste / Imagens',fluxo:'Fluxo Veicular',infracoes:'Infrações',lap:'LAP / OCR',horario:'Fluxo Horário',afericoes:'Aferições'};
+const periodLabels={dia:'HOJE',semana:'ESTA SEMANA',mes:'ESTE MÊS'};
+
+function navTo(view, el) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  el.classList.add('active');
+  set('pageTitle', pageTitles[view]||view);
+  viewAtual=view; rebuild();
+}
+function setPeriod(p, el) {
+  periodo=p;
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  set('periodTag', periodLabels[p]);
+  rebuild();
+}
+function rebuild() {
+  const map={painel:buildPainel,teste:buildTeste,fluxo:buildFluxo,infracoes:buildInfracoes,lap:buildLap,horario:buildHorario,afericoes:buildAfer};
+  if(map[viewAtual]) map[viewAtual]();
+}
+
+// ════════════════════════════════════
+//  RANK ROWS — por faixa
+// ════════════════════════════════════
+function rankRowsFaixa(items, unit, badgeId, badgeTxt, max=8) {
+  if(badgeId) set(badgeId, items.length+' '+badgeTxt);
+  if(!items.length) return '<div class="empty">✅ Nenhum crítico</div>';
+  return items.slice(0,max).map((it,i)=>`
+    <div class="rank-row">
+      <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
+      <div class="rr-faixa ${FAIXA_CLS[parseInt(it.id.slice(1))-1]||'f1'}">${it.id}</div>
+      <div class="rr-info">
+        <div class="rr-id">${it._serie} | ${it.id}</div>
+        <div class="rr-local">${it._local}</div>
+        <div class="rr-ctr">${it._c?.id||''}</div>
+      </div>
+      <div>
+        <div class="rr-val" style="color:${it.cor||'var(--text)'}">${it.display}</div>
+        <div class="rr-unit">${unit}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════
+//  EQ-CARDS — equipamento expandível com faixas
+// ════════════════════════════════════
+function eqCards(containerId, eqs, cols, extraFn) {
+  const cont = document.getElementById(containerId);
+  if(!cont) return;
+  cont.innerHTML = '';
+  eqs.forEach(eq=>{
+    const card = document.createElement('div');
+    card.className='eq-card';
+    card.dataset.serie=eq.serie;
+
+    // Dots de status das faixas
+    const dots = eq.faixas.map(fx=>{
+      const v = extraFn ? extraFn(fx,'color') : cor3(valFaixa(fx,'lap'),60,80);
+      const bg = v.replace('var(--','').replace(')','');
+      const colorMap={'green':'#22d3a0','red':'#f43f5e','yellow':'#f59e0b','accent':'#0ea5e9','muted':'#4d6080'};
+      return `<div class="fdot" style="background:${colorMap[bg]||v}" title="${eq.serie}|${fx.id}"></div>`;
+    }).join('');
+
+    // Summary values
+    const sumVals = eq.faixas.map((fx,fi)=>{
+      const v = extraFn ? extraFn(fx,'value') : valFaixa(fx,'lap');
+      const cor = extraFn ? extraFn(fx,'color') : cor3(v,60,80);
+      const disp = extraFn ? extraFn(fx,'display') : fmtPct(v);
+      return `<div style="font-family:var(--mono);font-size:10px;color:${cor}">${fx.id}: <b>${disp}</b></div>`;
+    }).join('');
+
+    card.innerHTML=`
+      <div class="eq-card-head" onclick="toggleEqCard(this)">
+        <div class="eq-serie-badge">${eq.serie}</div>
+        <div class="eq-meta">
+          <div class="eq-local">${eq.local}</div>
+          <div class="eq-sub">${eq.sentido||''} · ${eq.faixas.length} faixa${eq.faixas.length>1?'s':''} · ${eq._c?.id||''}</div>
+        </div>
+        <div class="eq-summary">
+          ${sumVals}
+          <div class="eq-faixa-dots">${dots}</div>
+          <div class="eq-expand-icon">▼</div>
+        </div>
+      </div>
+      <div class="eq-card-body" style="display:none">
+        ${buildFaixasTable(eq, cols)}
+      </div>`;
+    cont.appendChild(card);
+  });
+}
+
+function toggleEqCard(head) {
+  const card=head.parentElement;
+  const body=card.querySelector('.eq-card-body');
+  const expanded=card.classList.toggle('expanded');
+  body.style.display=expanded?'block':'none';
+}
+
+function buildFaixasTable(eq, cols) {
+  const headers = cols.map(c=>`<th>${c.label}</th>`).join('');
+  const rows = eq.faixas.map((fx,fi)=>{
+    const fCls = FAIXA_CLS[fi]||'f1';
+    const cells = cols.map(c=>{
+      const v = c.fn(fx, eq);
+      const cor = c.cor ? c.cor(fx,eq) : 'var(--text)';
+      if(c.badge) return `<td>${c.badge(fx,eq)}</td>`;
+      return `<td class="val-cell fclr" style="--fc:${cor}">${v}</td>`;
+    }).join('');
+    return `<tr>
+      <td><span class="faixa-id ${fCls}">${fx.id}</span></td>
+      ${cells}
+    </tr>`;
+  }).join('');
+  return `<table class="faixas-table">
+    <thead><tr><th>Faixa</th>${headers}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ════════════════════════════════════
+//  PAINEL DO DIA
+// ════════════════════════════════════
+function buildPainel() {
+  const faixas=todasFaixas();
+  let crit=0,warn=0,ok=0,totalFluxo=0;
+  let sLapOk=0,sLapWarn=0,sLapCrit=0;
+  let sTesteOk=0,sTesteWarn=0,sTesteCrit=0;
+  let sFluxoOk=0,sFluxoWarn=0,sFluxoCrit=0;
+  let lapAll=[], lapCritList=[], testCritList=[], fluxoList=[], aferEqs=[];
+
+  faixas.forEach(fx=>{
+    const lap  = valFaixa(fx,'lap');
+    const flx  = valFaixa(fx,'fluxo');
+    const perf = testePerf(fx);
+    totalFluxo+=flx;
+    if(lap>0) lapAll.push(lap);
+
+    if(lap>=80)sLapOk++; else if(lap>=60)sLapWarn++; else if(lap>0)sLapCrit++;
+    if(lap>0&&lap<60) lapCritList.push({...fx,display:lap.toFixed(1)+'%',cor:cor3(lap,60,80)});
+
+    if(perf>=95)sTesteOk++; else if(perf>=80)sTesteWarn++; else if(perf>0)sTesteCrit++;
+    if(perf>0&&perf<80) testCritList.push({...fx,display:Math.round(perf)+'%',cor:cor3(perf,80,95)});
+
+    if(flx===0)sFluxoCrit++; else if(flx<2000*(periodo==='dia'?1:periodo==='semana'?7:9))sFluxoWarn++; else sFluxoOk++;
+    if(flx<5000) fluxoList.push({...fx,display:fmtN(flx),cor:flx===0?'var(--red)':flx<2000?'var(--yellow)':'var(--muted)'});
+
+    const iC=(lap>0&&lap<60)||(perf>0&&perf<50)||flx===0;
+    const iW=(lap>=60&&lap<80)||(perf>=50&&perf<80)||(flx>0&&flx<2000);
+    if(iC)crit++; else if(iW)warn++; else ok++;
+  });
+
+  // Aferições por equipamento físico
+  DB.forEach(c=>c.equipamentos.forEach(eq=>{
+    const d=diasRest(eq.venc_afer);
+    if(d<=60) aferEqs.push({...eq,_c:c,_dias:d,_serie:eq.serie,_local:eq.local,_key:eq.serie,
+      id:'EQ',display:d+'d',cor:d<=30?'var(--red)':'var(--yellow)'});
+  }));
+  const afU=aferEqs.filter(a=>a._dias<=30).length, afW=aferEqs.filter(a=>a._dias>30).length;
+
+  const lapMedia=lapAll.length?lapAll.reduce((a,b)=>a+b)/lapAll.length:0;
+
+  set('pCrit',crit);set('pWarn',warn);set('pOk',ok);
+  set('pFluxo',fmtN(totalFluxo));set('pLap',fmtPct(lapMedia));
+  set('badgeCrit',crit);
+
+  set('sTesteOk',sTesteOk);set('sTesteWarn',sTesteWarn);set('sTesteCrit',sTesteCrit);
+  set('sLapOk',sLapOk);set('sLapWarn',sLapWarn);set('sLapCrit',sLapCrit);
+  set('sFluxoOk',sFluxoOk);set('sFluxoWarn',sFluxoWarn);set('sFluxoCrit',sFluxoCrit);
+  const totEq=DB.reduce((a,c)=>a+c.equipamentos.length,0);
+  set('sAfOk',totEq-afU-afW);set('sAfWarn',afW);set('sAfCrit',afU);
+  set('badgeAfer',afU+afW);
+
+  setHTML('rlLap',   rankRowsFaixa(lapCritList.sort((a,b)=>parseFloat(a.display)-parseFloat(b.display)),'LAP','bLapCrit','críticas'));
+  setHTML('rlTeste', rankRowsFaixa(testCritList.sort((a,b)=>parseFloat(a.display)-parseFloat(b.display)),'Teste','bTesteCrit','críticas'));
+  setHTML('rlFluxo', rankRowsFaixa(fluxoList.sort((a,b)=>{const va=parseInt(a.display)||0,vb=parseInt(b.display)||0;return va-vb;}),'veíc','bFluxoZero','zeradas'));
+  setHTML('rlAfer',  rankRowsFaixaEq(aferEqs.sort((a,b)=>a._dias-b._dias).slice(0,8),'bAfer'));
+}
+
+function rankRowsFaixaEq(items, badgeId) {
+  set(badgeId, items.filter(i=>i._dias<=30).length+' urgentes');
+  if(!items.length)return'<div class="empty">✅ Todas em dia</div>';
+  return items.map((it,i)=>`
+    <div class="rank-row">
+      <div class="rr-num ${i<3?'r'+(i+1):''}">${i+1}</div>
+      <div class="rr-faixa b-m" style="font-family:var(--mono);font-size:9px;padding:2px 5px">EQ</div>
+      <div class="rr-info">
+        <div class="rr-id">${it._serie}</div>
+        <div class="rr-local">${it._local}</div>
+        <div class="rr-ctr">${it._c?.id||''}</div>
+      </div>
+      <div>
+        <div class="rr-val" style="color:${it.cor}">${it._dias}d</div>
+        <div class="rr-unit">restantes</div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════
+//  TESTE
+// ════════════════════════════════════
+function buildTeste() {
+  popFiltro('testeFiltroC','testeFiltroS');
+  const fc=document.getElementById('testeFiltroC')?.value||'';
+  const fs=document.getElementById('testeFiltroS')?.value||'';
+  const faixas=todasFaixas(fc,fs);
+
+  const perfs=faixas.map(fx=>testePerf(fx));
+  const comD=perfs.filter(p=>p>0);
+  set('tOk',comD.filter(p=>p>=95).length);
+  set('tWarn',comD.filter(p=>p>=80&&p<95).length);
+  set('tCrit',comD.filter(p=>p<80).length);
+  set('tMedia',comD.length?fmtPct(comD.reduce((a,b)=>a+b)/comD.length):'—');
+  set('tSemD',perfs.filter(p=>p===0).length);
+
+  const eqsFiltradas = (fc ? DB.filter(c=>c.id===fc) : DB).flatMap(c=>
+    c.equipamentos.filter(eq=>!fs||eq.serie===fs).map(eq=>({...eq,_c:c})));
+
+  eqCards('testeCards', eqsFiltradas, [
+    {label:'Desempenho '+{dia:'Hoje',semana:'Semana',mes:'Mês'}[periodo],
+     fn:(fx)=>{ const p=testePerf(fx); return p?fmtPct(p):'s/d' },
+     cor:(fx)=>cor3(testePerf(fx),80,95)},
+    {label:'Horas/Dia (média)',
+     fn:(fx)=>{ const sl=periodoSlice(fx.teste||[]).filter(v=>v>0); return sl.length?fmtPct(sl.reduce((a,b)=>a+b)/sl.length/24*100):'—' },
+     cor:(fx)=>{ const sl=periodoSlice(fx.teste||[]).filter(v=>v>0); const v=sl.length?sl.reduce((a,b)=>a+b)/sl.length/24*100:0; return cor3(v,80,95) }},
+    {label:'Status', badge:(fx)=>{
+      const p=testePerf(fx);
+      const cl=p>=95?'b-g':p>=80?'b-y':p>0?'b-r':'b-m';
+      const st=p>=95?'NORMAL':p>=80?'ATENÇÃO':p>0?'CRÍTICO':'SEM DADOS';
+      return `<span class="badge ${cl}">${st}</span>`;
+    }}
+  ], (fx,t)=>{ const p=testePerf(fx); return t==='color'?cor3(p,80,95):t==='value'?p:fmtPct(p) });
+}
+
+// ════════════════════════════════════
+//  FLUXO
+// ════════════════════════════════════
+function buildFluxo() {
+  popFiltro('fluxoFiltroC','fluxoFiltroS');
+  const fc=document.getElementById('fluxoFiltroC')?.value||'';
+  const fs=document.getElementById('fluxoFiltroS')?.value||'';
+  const faixas=todasFaixas(fc,fs);
+  const vals=faixas.map(fx=>valFaixa(fx,'fluxo'));
+  const total=vals.reduce((a,b)=>a+b,0);
+  const zero=vals.filter(v=>v===0).length;
+  const med=vals.filter(v=>v>0).length?vals.filter(v=>v>0).reduce((a,b)=>a+b,0)/vals.filter(v=>v>0).length:0;
+  const maiorFx=faixas.reduce((a,b)=>valFaixa(b,'fluxo')>valFaixa(a,'fluxo')?b:a,faixas[0]||{});
+
+  set('fTotal',fmtN(total));set('fZero',zero);set('fMedia',fmtN(Math.round(med)));
+  set('fTotalFaixas',faixas.length);
+  if(maiorFx&&maiorFx._serie){set('fMaior',fmtN(valFaixa(maiorFx,'fluxo')));set('fMaiorSub',`${maiorFx._serie}|${maiorFx.id}`);}
+
+  // Chart consolidado
+  const ref=fc?DB.find(c=>c.id===fc):DB[0];
+  const diasRef=ref?.dias||[];
+  const sl=periodo==='dia'?diasRef.slice(-1):periodo==='semana'?diasRef.slice(-7):diasRef;
+  const startIdx=diasRef.indexOf(sl[0]);
+  const consolidated=sl.map((_,i)=>{
+    const idx=startIdx+i;
+    return faixas.reduce((s,fx)=>{
+      if(fc&&fx._c.id!==fc)return s;
+      return s+(fx.fluxo[idx]||0);
+    },0);
+  });
+  lineChart('fluxoChart',sl,[{label:'Fluxo Total',vals:consolidated,color:'var(--accent)'}],200);
+
+  const eqsFiltradas=(fc?DB.filter(c=>c.id===fc):DB).flatMap(c=>
+    c.equipamentos.filter(eq=>!fs||eq.serie===fs).map(eq=>({...eq,_c:c})));
+
+  eqCards('fluxoCards',eqsFiltradas,[
+    {label:'Fluxo '+{dia:'Hoje',semana:'Semana (total)',mes:'Mês (total)'}[periodo],
+     fn:(fx)=>fmtN(valFaixa(fx,'fluxo')),
+     cor:(fx)=>{const v=valFaixa(fx,'fluxo');return v===0?'var(--red)':v<2000?'var(--yellow)':'var(--green)'}},
+    {label:'Status', badge:(fx)=>{
+      const v=valFaixa(fx,'fluxo');
+      const cl=v===0?'b-r':v<2000?'b-y':'b-g';
+      const st=v===0?'ZERADO':v<2000?'BAIXO':'NORMAL';
+      return `<span class="badge ${cl}">${st}</span>`;
+    }}
+  ],(fx,t)=>{const v=valFaixa(fx,'fluxo');return t==='color'?(v===0?'var(--red)':v<2000?'var(--yellow)':'var(--green)'):t==='value'?v:fmtN(v)});
+}
+
+// ════════════════════════════════════
+//  INFRAÇÕES
+// ════════════════════════════════════
+function buildInfracoes() {
+  popFiltro('infraFiltroC',null);
+  const fc=document.getElementById('infraFiltroC')?.value||'';
+  const faixas=todasFaixas(fc);
+  const nDias=periodo==='dia'?1:periodo==='semana'?7:9;
+
+  const iVals=faixas.map(fx=>{
+    const hasR=Object.keys(fx.infra||{}).length>0||(fx.infra||[]).some(v=>v>0);
+    return hasR ? soma(periodoSlice(fx.infra||[])) : Math.round(valFaixa(fx,'fluxo')*0.035);
+  });
+  const total=iVals.reduce((a,b)=>a+b,0);
+  const totalFluxo=faixas.reduce((s,fx)=>s+valFaixa(fx,'fluxo'),0);
+  const taxa=totalFluxo>0?(total/totalFluxo*100).toFixed(2):0;
+  const med=iVals.filter(v=>v>0).length?iVals.filter(v=>v>0).reduce((a,b)=>a+b)/iVals.filter(v=>v>0).length/nDias:0;
+  const maiorIdx=iVals.indexOf(Math.max(...iVals));
+  const maiorFx=faixas[maiorIdx];
+
+  set('iTotal',fmtN(total));set('iTaxa',taxa+'%');set('iMedia',fmtN(Math.round(med)));set('iTotalFaixas',faixas.length);
+  if(maiorFx){set('iMaior',fmtN(iVals[maiorIdx]));set('iMaiorSub',`${maiorFx._serie}|${maiorFx.id}`);}
+
+  const ref=fc?DB.find(c=>c.id===fc):DB[0];
+  const diasRef=ref?.dias||[];
+  const sl=periodo==='dia'?diasRef.slice(-1):periodo==='semana'?diasRef.slice(-7):diasRef;
+  const startIdx=diasRef.indexOf(sl[0]);
+  const conI=sl.map((_,i)=>{
+    const idx=startIdx+i;
+    return faixas.reduce((s,fx)=>s+Math.round((fx.fluxo[idx]||0)*0.035),0);
+  });
+  lineChart('infraChart',sl,[{label:'Infrações',vals:conI,color:'var(--red)'}],190);
+
+  const items=faixas.map((fx,i)=>({...fx,_v:iVals[i]})).sort((a,b)=>b._v-a._v);
+  setHTML('infraRank',rankRowsFaixa(items.slice(0,12).map(fx=>({...fx,display:fmtN(fx._v),cor:'var(--red)'})),'infr.',null,null,12));
+}
+
+// ════════════════════════════════════
+//  LAP
+// ════════════════════════════════════
+function buildLap() {
+  popFiltro('lapFiltroC','lapFiltroS');
+  const fc=document.getElementById('lapFiltroC')?.value||'';
+  const fs=document.getElementById('lapFiltroS')?.value||'';
+  const faixas=todasFaixas(fc,fs);
+
+  const lapVals=faixas.map(fx=>valFaixa(fx,'lap')).filter(v=>v>0);
+  const med=lapVals.length?lapVals.reduce((a,b)=>a+b)/lapVals.length:0;
+  const lapItems=faixas.map(fx=>({...fx,_v:valFaixa(fx,'lap')})).filter(i=>i._v>0);
+  const melhor=lapItems.reduce((a,b)=>b._v>a._v?b:a,{_v:0});
+
+  set('lMedia',fmtPct(med));set('lOk',lapVals.filter(v=>v>=80).length);
+  set('lWarn',lapVals.filter(v=>v>=60&&v<80).length);set('lCrit',lapVals.filter(v=>v<60).length);
+  set('lMelhor',fmtPct(melhor._v));set('lMelhorSub',melhor._serie?`${melhor._serie}|${melhor.id}`:'—');
+
+  // Heatmap
+  const ref=fc?DB.find(c=>c.id===fc):DB[0];
+  const diasRef=ref?.dias||[];
+  const sl=periodo==='dia'?diasRef.slice(-1):periodo==='semana'?diasRef.slice(-7):diasRef;
+  const startIdx=diasRef.indexOf(sl[0]);
+  const nDias=sl.length;
+  const hmEl=document.getElementById('lapHeatmap');
+  hmEl.style.gridTemplateColumns=`90px repeat(${nDias},1fr)`;
+  let html='<div></div>';
+  sl.forEach(d=>{html+=`<div style="text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);height:26px;display:flex;align-items:center;justify-content:center">${d}</div>`});
+
+  faixas.forEach((fx,fi)=>{
+    const fCls=FAIXA_CLS[parseInt(fx.id.slice(1))-1]||'f1';
+    html+=`<div class="hm-lbl"><span class="faixa-id ${fCls}" style="margin-right:4px">${fx.id}</span>${fx._serie}</div>`;
+    for(let i=0;i<nDias;i++){
+      const idx=startIdx+i;
+      const v=(fx.lap||[])[idx]||0;
+      const bg=v>=80?`rgba(34,211,160,${.15+v/100*.5})`:v>=60?`rgba(245,158,11,${.15+v/100*.5})`:v>0?`rgba(244,63,94,${.2+v/100*.4})`:'rgba(29,43,69,.4)';
+      html+=`<div class="hm-cell" style="background:${bg}" title="${fx._serie}|${fx.id} — ${sl[i]}: ${v||'s/d'}%">${v||''}</div>`;
+    }
+  });
+  hmEl.innerHTML=html;
+
+  setHTML('lapRankPior',  rankRowsFaixa(lapItems.sort((a,b)=>a._v-b._v).slice(0,8).map(f=>({...f,display:fmtPct(f._v),cor:cor3(f._v,60,80)})),'LAP',null,null));
+  setHTML('lapRankMelhor',rankRowsFaixa([...lapItems].sort((a,b)=>b._v-a._v).slice(0,8).map(f=>({...f,display:fmtPct(f._v),cor:'var(--green)'})),'LAP',null,null));
+}
+
+// ════════════════════════════════════
+//  FLUXO HORÁRIO
+// ════════════════════════════════════
+const CURVA_H=[.02,.015,.01,.008,.01,.02,.07,.12,.13,.1,.09,.1,.11,.1,.09,.08,.1,.12,.1,.08,.06,.05,.04,.03];
+
+function buildHorario() {
+  popFiltro('horarioFiltroC','horarioFiltroS');
+  const fc=document.getElementById('horarioFiltroC')?.value||'';
+  const fs=document.getElementById('horarioFiltroS')?.value||'';
+  const faixas=todasFaixas(fc,fs);
+
+  const totalDia=faixas.reduce((s,fx)=>s+ultimo(fx.fluxo),0);
+  const porHora=CURVA_H.map(f=>Math.round(totalDia*f));
+  const maxH=Math.max(...porHora);
+  const picoH=porHora.indexOf(maxH);
+  const valeH=porHora.indexOf(Math.min(...porHora));
+  const diurno=porHora.slice(6,20).reduce((a,b)=>a+b,0);
+
+  set('hPico',String(picoH).padStart(2,'0')+'h');set('hPicoV',fmtN(maxH));
+  set('hVale',String(valeH).padStart(2,'0')+'h');
+  set('hDiurno',totalDia>0?Math.round(diurno/totalDia*100)+'%':'—');
+  set('hNoturno',totalDia>0?Math.round((totalDia-diurno)/totalDia*100)+'%':'—');
+
+  const hLabels=Array.from({length:24},(_,i)=>String(i).padStart(2,'0')+'h');
+  lineChart('horarioChart',hLabels,[{label:'Fluxo/hora',vals:porHora,color:'var(--accent)'}],200);
+
+  // Heatmap hora × faixa
+  const hmEl=document.getElementById('horarioHeatmap');
+  hmEl.style.gridTemplateColumns=`100px repeat(24,1fr)`;
+  let html='<div></div>';
+  hLabels.forEach(h=>{html+=`<div style="text-align:center;font-family:var(--mono);font-size:9px;color:var(--muted);height:26px;display:flex;align-items:center;justify-content:center">${h}</div>`});
+
+  faixas.slice(0,18).forEach(fx=>{
+    const fd=ultimo(fx.fluxo);
+    const fCls=FAIXA_CLS[parseInt(fx.id.slice(1))-1]||'f1';
+    html+=`<div class="hm-lbl"><span class="faixa-id ${fCls}" style="margin-right:4px">${fx.id}</span>${fx._serie}</div>`;
+    for(let h=0;h<24;h++){
+      const v=Math.round(fd*CURVA_H[h]*(0.8+Math.random()*.4));
+      const ratio=maxH>0?v/maxH:0;
+      const bg=fd===0?'rgba(244,63,94,.2)':ratio<.3?`rgba(245,158,11,${.1+ratio*.6})`:`rgba(34,211,160,${.1+ratio*.6})`;
+      html+=`<div class="hm-cell" style="background:${bg}" title="${fx._serie}|${fx.id} — ${h}h: ${v} veíc.">${v>999?(v/1000).toFixed(1)+'k':v||''}</div>`;
+    }
+  });
+  hmEl.innerHTML=html;
+}
+
+// ════════════════════════════════════
+//  AFERIÇÕES (por equipamento físico)
+// ════════════════════════════════════
+function buildAfer() {
+  const eqs=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)})));
+  const urg=eqs.filter(e=>e._dias<=30).length;
+  const at=eqs.filter(e=>e._dias>30&&e._dias<=60).length;
+  set('aUrg',urg);set('aAt',at);set('aOk',eqs.length-urg-at);set('aTotal',eqs.length);
+  const prox=eqs.sort((a,b)=>a._dias-b._dias)[0];
+  set('aProx',prox?prox._dias+'d':'—');
+  set('badgeAfer',urg+at);
+  renderAfer();
+}
+function filtrarAfer(f,el){
+  filtroAfer=f;
+  document.querySelectorAll('#view-afericoes .fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderAfer();
+}
+function renderAfer(){
+  let rows=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)}))).filter(e=>e.venc_afer);
+  if(filtroAfer==='urgente') rows=rows.filter(r=>r._dias<=30);
+  else if(filtroAfer==='atencao') rows=rows.filter(r=>r._dias>30&&r._dias<=60);
+  else if(filtroAfer==='ok') rows=rows.filter(r=>r._dias>60);
+  rows.sort((a,b)=>a._dias-b._dias);
+  const fmtD=s=>s?new Date(s+'T12:00:00').toLocaleDateString('pt-BR'):'—';
+  document.getElementById('aferBody').innerHTML=rows.map(r=>{
+    const cor=r._dias<=30?'var(--red)':r._dias<=60?'var(--yellow)':'var(--green)';
+    const cl=r._dias<=30?'b-r':r._dias<=60?'b-y':'b-g';
+    const st=r._dias<=15?'URGENTE':r._dias<=30?'VENCE BREVE':r._dias<=60?'ATENÇÃO':'OK';
+    const faixaStr=r.faixas.map((fx,i)=>`<span class="faixa-id ${FAIXA_CLS[i]||'f1'}">${fx.id}</span>`).join(' ');
+    return`<tr>
+      <td style="font-family:var(--mono);color:var(--accent)">${r.serie}</td>
+      <td><span class="badge b-b" style="font-size:9px">${r._c.id}</span></td>
+      <td style="font-size:11px">${r.local}</td>
+      <td>${faixaStr}</td>
+      <td style="font-family:var(--mono);font-size:11px">${fmtD(r.ult_afer)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:${cor};font-weight:600">${fmtD(r.venc_afer)}</td>
+      <td style="font-family:var(--display);font-size:16px;font-weight:700;color:${cor}">${r._dias}d</td>
+      <td><span class="badge ${cl}">${st}</span></td>
+    </tr>`;
+  }).join('');
+}
+function exportAfer(){
+  const rows=DB.flatMap(c=>c.equipamentos.map(eq=>({...eq,_c:c,_dias:diasRest(eq.venc_afer)}))).filter(e=>e.venc_afer).sort((a,b)=>a._dias-b._dias);
+  const csv=['Série,Contrato,Local,Faixas,Última Aferição,Vencimento,Dias Restantes,Status'].concat(rows.map(r=>{
+    const st=r._dias<=30?'URGENTE':r._dias<=60?'ATENÇÃO':'OK';
+    const fxs=r.faixas.map(f=>f.id).join('+');
+    return`${r.serie},"${r._c.id}","${r.local}","${fxs}","${r.ult_afer||''}","${r.venc_afer||''}",${r._dias},${st}`;
+  })).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download=`afericoes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+// ════════════════════════════════════
+//  LINE CHART
+// ════════════════════════════════════
+function lineChart(svgId,labels,series,h=190){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const W=svg.parentElement?.offsetWidth||700,H=h,P=46;
+  svg.setAttribute('width',W);svg.setAttribute('height',H);
+  const allV=series.flatMap(s=>s.vals.filter(v=>v>0));
+  const maxV=Math.max(...allV,1);const n=labels.length||1;
+  let out='';
+  for(let g=0;g<=4;g++){const y=P+(1-g/4)*(H-P-18);out+=`<line x1="${P}" y1="${y}" x2="${W-10}" y2="${y}" stroke="rgba(29,43,69,.5)" stroke-width="1"/>`;out+=`<text x="${P-4}" y="${y+4}" text-anchor="end" fill="#4d6080" font-size="9" font-family="JetBrains Mono">${fmtN(maxV*g/4)}</text>`;}
+  labels.forEach((d,i)=>{if(n<=12||i%Math.ceil(n/10)===0){const x=P+(i/(n-1||1))*(W-P-10);out+=`<text x="${x}" y="${H-3}" text-anchor="middle" fill="#4d6080" font-size="9" font-family="JetBrains Mono">${d}</text>`;}});
+  series.forEach((s,si)=>{
+    const pts=s.vals.map((v,i)=>`${P+(i/(n-1||1))*(W-P-10)},${P+(1-(v||0)/maxV)*(H-P-18)}`);
+    const aPath=`M${P},${H-18} `+s.vals.map((v,i)=>`L${P+(i/(n-1||1))*(W-P-10)},${P+(1-(v||0)/maxV)*(H-P-18)}`).join(' ')+` L${W-10},${H-18} Z`;
+    out+=`<defs><linearGradient id="ag${si}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${s.color}" stop-opacity=".18"/><stop offset="100%" stop-color="${s.color}" stop-opacity="0"/></linearGradient></defs>`;
+    out+=`<path d="${aPath}" fill="url(#ag${si})"/>`;
+    out+=`<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    s.vals.forEach((v,i)=>{if(!v)return;const x=P+(i/(n-1||1))*(W-P-10),y=P+(1-v/maxV)*(H-P-18);out+=`<circle cx="${x}" cy="${y}" r="3" fill="${s.color}"/>`});
+    out+=`<circle cx="${P+si*120}" cy="14" r="4" fill="${s.color}"/>`;
+    out+=`<text x="${P+si*120+10}" y="18" fill="${s.color}" font-size="10" font-family="JetBrains Mono">${s.label}</text>`;
+  });
+  svg.innerHTML=out;
+}
+
+// ════════════════════════════════════
+//  RELÓGIO + INIT
+// ════════════════════════════════════
+function clock(){document.getElementById('topClock').textContent=new Date().toLocaleString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+clock();setInterval(clock,1000);
+buildPainel();
+window.addEventListener('resize',()=>rebuild());
+</script>
+</body>
+</html>

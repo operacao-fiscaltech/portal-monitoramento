@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscaltech — Portal de Monitoramento</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap');
+:root{
+  --bg:#060810;--surface:#0c1020;--card:#111828;--card2:#182035;
+  --border:#1d2b45;--border2:#243352;
+  --accent:#0ea5e9;--green:#22d3a0;--yellow:#f59e0b;--red:#f43f5e;--purple:#8b5cf6;
+  --text:#e1e8f5;--muted:#4d6080;--muted2:#2d3f5a;
+  --display:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.018) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(12,16,32,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:60px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-icon{width:38px;height:38px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),#0055ff);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 18px rgba(14,165,233,.35)}
+.brand-name{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.brand-name span{color:var(--accent)}
+.brand-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.live-pill{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;background:rgba(34,211,160,.08);border:1px solid rgba(34,211,160,.2);color:var(--green);padding:4px 11px;border-radius:20px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+#pclock{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(180deg,rgba(14,165,233,.06) 0%,transparent 100%);border-bottom:1px solid var(--border);padding:32px 36px 28px;position:relative;z-index:1}
+.hero h2{font-family:var(--display);font-size:28px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.hero p{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:24px}
+.consol-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.ckpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:.2s}
+.ckpi:hover{border-color:var(--kc,var(--accent));transform:translateY(-1px)}
+.ckpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--accent))}
+.ckpi-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px}
+.ckpi-val{font-family:var(--display);font-size:26px;font-weight:700;color:var(--kc,var(--text));line-height:1}
+.ckpi-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* ── MAIN ── */
+.content{padding:28px 36px;position:relative;z-index:1}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+.toolbar-left{display:flex;align-items:center;gap:12px}
+.sec-title{font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 14px}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;width:180px}
+.search-box input::placeholder{color:var(--muted)}
+.filter-chips{display:flex;gap:6px}
+.fchip{padding:5px 12px;border-radius:20px;font-family:var(--mono);font-size:10px;cursor:pointer;border:1px solid var(--border);color:var(--muted);transition:.15s;background:transparent}
+.fchip:hover{border-color:var(--accent);color:var(--accent)}
+.fchip.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.ccard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .25s;animation:fadeUp .35s ease both;text-decoration:none;display:block;color:inherit}
+.ccard:hover{transform:translateY(-6px) scale(1.01);border-color:var(--cc,var(--accent));box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px var(--cc,var(--accent))}
+.ccard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cc,var(--accent)),transparent 80%)}
+.ccard::after{content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.025),transparent 70%)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ccard:nth-child(2){animation-delay:.06s}.ccard:nth-child(3){animation-delay:.12s}.ccard:nth-child(4){animation-delay:.18s}.ccard:nth-child(5){animation-delay:.24s}.ccard:nth-child(6){animation-delay:.30s}
+
+.cc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.cc-nome{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:.06em;color:var(--cc,var(--text))}
+.cc-badge{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:5px;font-weight:600}
+.b-ok  {background:rgba(34,211,160,.1);color:var(--green);border:1px solid rgba(34,211,160,.2)}
+.b-warn{background:rgba(245,158,11,.1);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.b-crit{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+.cc-sub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:18px}
+
+.cc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-bottom:16px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.cc-met{padding:10px 14px;border-right:1px solid var(--border)}
+.cc-met:last-child{border-right:none}
+.cc-met-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.cc-met-val{font-family:var(--display);font-size:22px;font-weight:700;margin-top:2px;line-height:1}
+
+.cc-lap{margin-bottom:14px}
+.cc-lap-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.cc-lap-lbl{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.cc-lap-pct{font-family:var(--mono);font-size:10px;font-weight:600}
+.cc-lap-track{height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.cc-lap-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.34,1.56,.64,1) .3s}
+
+.cc-faixas-row{display:flex;align-items:center;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.fchip2{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px;font-weight:600;display:flex;align-items:center;gap:3px}
+.fchip2-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.fc-ok  {background:rgba(34,211,160,.12);color:var(--green);border:1px solid rgba(34,211,160,.2)}
+.fc-warn{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.fc-crit{background:rgba(244,63,94,.12);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+.fc-off {background:rgba(77,96,128,.1);color:var(--muted);border:1px solid var(--border)}
+
+.cc-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:14px}
+.cc-foot-info{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.cc-arrow{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--cc,var(--accent));background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.15);padding:6px 14px;border-radius:6px;transition:.2s}
+.ccard:hover .cc-arrow{background:var(--cc,var(--accent));color:#000;border-color:var(--cc,var(--accent))}
+.cc-arrow svg{transition:transform .2s}
+.ccard:hover .cc-arrow svg{transform:translateX(4px)}
+.no-results{text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media(max-width:900px){.consol-grid{grid-template-columns:repeat(3,1fr)}.cards-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.consol-grid{grid-template-columns:repeat(2,1fr)}.cards-grid{grid-template-columns:1fr}.topbar,.hero,.content{padding-left:18px;padding-right:18px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🛣️</div>
+    <div>
+      <div class="brand-name">FISCAL<span>TECH</span></div>
+      <div class="brand-sub">Portal de Monitoramento</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-pill"><div class="live-dot"></div>AO VIVO</div>
+    <div id="pclock"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <h2>Visão Geral — Todos os Contratos</h2>
+  <p id="heroSub">Carregando…</p>
+  <div class="consol-grid">
+    <div class="ckpi" style="--kc:var(--accent)"><div class="ckpi-lbl">Total Faixas</div><div class="ckpi-val" id="cFaixas">—</div><div class="ckpi-sub">monitoradas</div></div>
+    <div class="ckpi" style="--kc:var(--red)"><div class="ckpi-lbl">Faixas Críticas</div><div class="ckpi-val" id="cCrit">—</div><div class="ckpi-sub">com falha hoje</div></div>
+    <div class="ckpi" style="--kc:var(--yellow)"><div class="ckpi-lbl">Faixas Atenção</div><div class="ckpi-val" id="cWarn">—</div><div class="ckpi-sub">abaixo do limite</div></div>
+    <div class="ckpi" style="--kc:var(--green)"><div class="ckpi-lbl">Fluxo Hoje</div><div class="ckpi-val" id="cFluxo">—</div><div class="ckpi-sub">total veículos</div></div>
+    <div class="ckpi" style="--kc:var(--purple)"><div class="ckpi-lbl">LAP Médio</div><div class="ckpi-val" id="cLap">—</div><div class="ckpi-sub">todas as faixas</div></div>
+    <div class="ckpi" style="--kc:var(--yellow)"><div class="ckpi-lbl">Aferições</div><div class="ckpi-val" id="cAfer">—</div><div class="ckpi-sub">vencendo em 60d</div></div>
+  </div>
+</section>
+
+<main class="content">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="sec-title">Contratos</div>
+      <div class="search-box">
+        <span style="color:var(--muted);font-size:13px">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar contrato…" oninput="renderCards()">
+      </div>
+    </div>
+    <div class="filter-chips">
+      <button class="fchip active" onclick="setFiltro('todos',this)">Todos</button>
+      <button class="fchip" onclick="setFiltro('crit',this)">🔴 Crítico</button>
+      <button class="fchip" onclick="setFiltro('warn',this)">🟡 Atenção</button>
+      <button class="fchip" onclick="setFiltro('ok',this)">🟢 Normal</button>
+    </div>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  DADOS — gerado por atualizar_todos.py
+//  Estrutura: resumo por contrato para o portal
+// ══════════════════════════════════════════════════════
+const CONTRATOS = [
+  {
+    id:"EPR", nome:"EPR", arquivo:"dashboard_EPR.html",
+    rodovias:["BR-153","BR-277","BR-369","PR-092","PR-151","PR-407"], uf:"PR",
+    totalEquip:20, totalFaixas:31,
+    fluxoHoje:134786, lapMedio:74.5,
+    faixasCrit:8, faixasWarn:6, faixasOk:17, afericoesVenc60:5,
+    faixasSample:[
+      {serie:"548",id:"F1",status:"ok"},{serie:"548",id:"F2",status:"warn"},
+      {serie:"549",id:"F1",status:"ok"},{serie:"549",id:"F2",status:"crit"},
+      {serie:"552",id:"F2",status:"off"},{serie:"558",id:"F1",status:"off"},
+      {serie:"561",id:"F1",status:"crit"}
+    ],
+    fluxoSpark:[110000,125000,130000,128000,124000,130000,122000,95000,134786],
+    cor:"#0ea5e9", atualizado:"09/03/2026 23:59"
+  },
+  {
+    id:"ABC", nome:"Contrato ABC", arquivo:"dashboard_ABC.html",
+    rodovias:["BR-116","BR-376"], uf:"PR",
+    totalEquip:15, totalFaixas:24,
+    fluxoHoje:98200, lapMedio:81.2,
+    faixasCrit:2, faixasWarn:4, faixasOk:18, afericoesVenc60:2,
+    faixasSample:[
+      {serie:"201",id:"F1",status:"ok"},{serie:"201",id:"F2",status:"ok"},
+      {serie:"205",id:"F1",status:"warn"},{serie:"210",id:"F1",status:"crit"}
+    ],
+    fluxoSpark:[85000,90000,94000,92000,88000,95000,91000,80000,98200],
+    cor:"#22d3a0", atualizado:"09/03/2026 23:59"
+  },
+  {
+    id:"XYZ", nome:"Contrato XYZ", arquivo:"dashboard_XYZ.html",
+    rodovias:["PR-317","PR-323"], uf:"PR",
+    totalEquip:8, totalFaixas:14,
+    fluxoHoje:42100, lapMedio:68.9,
+    faixasCrit:4, faixasWarn:3, faixasOk:7, afericoesVenc60:1,
+    faixasSample:[
+      {serie:"301",id:"F1",status:"crit"},{serie:"301",id:"F2",status:"crit"},
+      {serie:"305",id:"F1",status:"ok"},{serie:"308",id:"F1",status:"warn"}
+    ],
+    fluxoSpark:[35000,38000,40000,39000,36000,41000,38000,33000,42100],
+    cor:"#f59e0b", atualizado:"09/03/2026 23:59"
+  },
+  {
+    id:"DEF", nome:"Contrato DEF", arquivo:"dashboard_DEF.html",
+    rodovias:["BR-277","BR-467"], uf:"PR",
+    totalEquip:12, totalFaixas:20,
+    fluxoHoje:77400, lapMedio:85.6,
+    faixasCrit:1, faixasWarn:2, faixasOk:17, afericoesVenc60:0,
+    faixasSample:[
+      {serie:"401",id:"F1",status:"ok"},{serie:"401",id:"F2",status:"ok"},
+      {serie:"408",id:"F1",status:"crit"},{serie:"412",id:"F1",status:"warn"}
+    ],
+    fluxoSpark:[68000,71000,74000,73000,70000,76000,72000,63000,77400],
+    cor:"#8b5cf6", atualizado:"09/03/2026 23:59"
+  },
+];
+
+// ══════════════════════════════════════════
+let filtroAtual = 'todos';
+
+function fmtN(n){ if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR') }
+function fmtPct(n){ return n?n.toFixed(1)+'%':'—' }
+function lapColor(v){ return v>=80?'var(--green)':v>=60?'var(--yellow)':'var(--red)' }
+function statusContrato(c){ if(c.faixasCrit>=3)return'crit'; if(c.faixasCrit>=1||c.faixasWarn>=3)return'warn'; return'ok' }
+
+function buildConsolidado() {
+  const totalF = CONTRATOS.reduce((a,c)=>a+c.totalFaixas,0);
+  const totCrit= CONTRATOS.reduce((a,c)=>a+c.faixasCrit,0);
+  const totWarn= CONTRATOS.reduce((a,c)=>a+c.faixasWarn,0);
+  const totFlx = CONTRATOS.reduce((a,c)=>a+(c.fluxoHoje||0),0);
+  const lapG   = CONTRATOS.reduce((a,c)=>a+c.lapMedio,0)/CONTRATOS.length;
+  const totAfer= CONTRATOS.reduce((a,c)=>a+(c.afericoesVenc60||0),0);
+  const nCrit  = CONTRATOS.filter(c=>statusContrato(c)==='crit').length;
+
+  document.getElementById('cFaixas').textContent = totalF;
+  document.getElementById('cCrit').textContent   = totCrit;
+  document.getElementById('cWarn').textContent   = totWarn;
+  document.getElementById('cFluxo').textContent  = fmtN(totFlx);
+  document.getElementById('cLap').textContent    = fmtPct(lapG);
+  document.getElementById('cAfer').textContent   = totAfer;
+
+  const dt = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('heroSub').textContent =
+    `${dt}  ·  ${CONTRATOS.length} contratos ativos  ·  ${nCrit} em situação crítica`;
+}
+
+function sparkline(vals, color) {
+  const W=80,H=28,P=2;
+  const max=Math.max(...vals,1);
+  const pts=vals.map((v,i)=>`${P+(i/(vals.length-1||1))*(W-P*2)},${H-P-(v/max)*(H-P*2)}`).join(' ');
+  const last=pts.split(' ').slice(-1)[0].split(',');
+  const safeColor=color.replace(/[^a-zA-Z0-9]/g,'');
+  return `<svg width="${W}" height="${H}" style="display:block;flex-shrink:0">
+    <defs><linearGradient id="sg${safeColor}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${color}" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+    </linearGradient></defs>
+    <path d="M${P},${H-P} ${pts.split(' ').map(p=>'L'+p).join(' ')} L${last[0]},${H-P} Z" fill="url(#sg${safeColor})"/>
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="2.5" fill="${color}"/>
+  </svg>`;
+}
+
+function setFiltro(f, el) {
+  filtroAtual=f;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderCards();
+}
+
+function renderCards() {
+  const busca = document.getElementById('searchInput').value.toLowerCase().trim();
+  let lista = CONTRATOS.filter(c=>{
+    const st=statusContrato(c);
+    if(filtroAtual!=='todos'&&st!==filtroAtual) return false;
+    if(busca){ const hay=[c.id,c.nome,...(c.rodovias||[])].join(' ').toLowerCase(); if(!hay.includes(busca))return false; }
+    return true;
+  });
+
+  const grid=document.getElementById('cardsGrid');
+  if(!lista.length){
+    grid.innerHTML=`<div class="no-results" style="grid-column:1/-1"><div style="font-size:32px;margin-bottom:12px">🔍</div>Nenhum contrato encontrado</div>`;
+    return;
+  }
+
+  grid.innerHTML=lista.map(c=>{
+    const st    = statusContrato(c);
+    const stLbl = st==='crit'?'CRÍTICO':st==='warn'?'ATENÇÃO':'NORMAL';
+    const stCls = st==='crit'?'b-crit':st==='warn'?'b-warn':'b-ok';
+    const lapClr= lapColor(c.lapMedio);
+    const lapW  = Math.round(Math.min(c.lapMedio||0,100));
+
+    const chips = (c.faixasSample||[]).slice(0,7).map(f=>{
+      const cls = f.status==='ok'?'fc-ok':f.status==='warn'?'fc-warn':f.status==='off'?'fc-off':'fc-crit';
+      const dot = f.status==='ok'?'#22d3a0':f.status==='warn'?'#f59e0b':f.status==='off'?'#4d6080':'#f43f5e';
+      return `<div class="fchip2 ${cls}"><div class="fchip2-dot" style="background:${dot}"></div>${f.serie}|${f.id}</div>`;
+    }).join('');
+    const mais = (c.faixasSample||[]).length>7?`<div class="fchip2 fc-off">+${c.faixasSample.length-7}</div>`:'';
+    const spark = c.fluxoSpark ? sparkline(c.fluxoSpark, c.cor||'#0ea5e9') : '';
+
+    return `<a class="ccard" href="${c.arquivo}" style="--cc:${c.cor||'var(--accent)'}">
+      <div class="cc-head">
+        <div>
+          <div class="cc-nome">${c.nome}</div>
+          <div class="cc-sub">${(c.rodovias||[]).join(' · ')} · ${c.uf||''}</div>
+        </div>
+        <span class="cc-badge ${stCls}">${stLbl}</span>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-met">
+          <div class="cc-met-lbl">Equipamentos</div>
+          <div class="cc-met-val" style="color:var(--text)">${c.totalEquip||'—'}</div>
+        </div>
+        <div class="cc-met">
+          <div class="cc-met-lbl">Faixas Críticas</div>
+          <div class="cc-met-val" style="color:${c.faixasCrit>0?'var(--red)':'var(--green)'}">${c.faixasCrit}</div>
+        </div>
+        <div class="cc-met">
+          <div class="cc-met-lbl">LAP Médio</div>
+          <div class="cc-met-val" style="color:${lapClr}">${fmtPct(c.lapMedio)}</div>
+        </div>
+      </div>
+      <div class="cc-lap">
+        <div class="cc-lap-row">
+          <span class="cc-lap-lbl">LAP / OCR — todas as faixas</span>
+          <span class="cc-lap-pct" style="color:${lapClr}">${fmtPct(c.lapMedio)}</span>
+        </div>
+        <div class="cc-lap-track"><div class="cc-lap-fill" style="width:${lapW}%;background:${lapClr}"></div></div>
+      </div>
+      <div class="cc-faixas-row">${chips}${mais}</div>
+      <div class="cc-footer">
+        <div>
+          <div class="cc-foot-info">Fluxo hoje: <b style="color:var(--text)">${fmtN(c.fluxoHoje)}</b> veíc.</div>
+          <div class="cc-foot-info" style="margin-top:3px">Atualizado: ${c.atualizado||'—'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${spark}
+          <div class="cc-arrow">ACESSAR
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function clock(){ document.getElementById('pclock').textContent=new Date().toLocaleString('pt-BR',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'}) }
+clock(); setInterval(clock,1000);
+buildConsolidado();
+renderCards();
+</script>
+</body>
+</html>
