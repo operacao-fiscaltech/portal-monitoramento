@@ -241,59 +241,125 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 // ══════════════════════════════════════════════════════
 const CONTRATOS = [
   {
-    id:"EPR", nome:"EPR", arquivo:"dashboard_EPR.html",
-    rodovias:["BR-153","BR-277","BR-369","PR-092","PR-151","PR-407"], uf:"PR",
-    totalEquip:20, totalFaixas:31,
-    fluxoHoje:134786, lapMedio:74.5,
-    faixasCrit:8, faixasWarn:6, faixasOk:17, afericoesVenc60:5,
-    faixasSample:[
-      {serie:"548",id:"F1",status:"ok"},{serie:"548",id:"F2",status:"warn"},
-      {serie:"549",id:"F1",status:"ok"},{serie:"549",id:"F2",status:"crit"},
-      {serie:"552",id:"F2",status:"off"},{serie:"558",id:"F1",status:"off"},
-      {serie:"561",id:"F1",status:"crit"}
+    "id": "EPR",
+    "nome": "EPR",
+    "arquivo": "dashboard_EPR.html",
+    "rodovias": [
+      "BR-153",
+      "BR-277",
+      "BR-369",
+      "PR-092",
+      "PR-151"
     ],
-    fluxoSpark:[110000,125000,130000,128000,124000,130000,122000,95000,134786],
-    cor:"#0066cc", atualizado:"09/03/2026 23:59"
-  },
-  {
-    id:"ABC", nome:"Contrato ABC", arquivo:"dashboard_ABC.html",
-    rodovias:["BR-116","BR-376"], uf:"PR",
-    totalEquip:15, totalFaixas:24,
-    fluxoHoje:98200, lapMedio:81.2,
-    faixasCrit:2, faixasWarn:4, faixasOk:18, afericoesVenc60:2,
-    faixasSample:[
-      {serie:"201",id:"F1",status:"ok"},{serie:"201",id:"F2",status:"ok"},
-      {serie:"205",id:"F1",status:"warn"},{serie:"210",id:"F1",status:"crit"}
+    "uf": "PR",
+    "totalEquip": 28,
+    "totalFaixas": 43,
+    "fluxoHoje": 114172,
+    "lapMedio": 73.5,
+    "aprovMedio": 0.895,
+    "faixasCrit": 6,
+    "faixasWarn": 22,
+    "faixasOk": 13,
+    "faixasOff": 2,
+    "afericoesVenc60": 15,
+    "faixasSample": [
+      {
+        "serie": "545",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "545",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "546",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "547",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "548",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "548",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "549",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "549",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "550",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "550",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "551",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "551",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "552",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "552",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "553",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "553",
+        "id": "2",
+        "status": "warn"
+      }
     ],
-    fluxoSpark:[85000,90000,94000,92000,88000,95000,91000,80000,98200],
-    cor:"#059669", atualizado:"09/03/2026 23:59"
-  },
-  {
-    id:"XYZ", nome:"Contrato XYZ", arquivo:"dashboard_XYZ.html",
-    rodovias:["PR-317","PR-323"], uf:"PR",
-    totalEquip:8, totalFaixas:14,
-    fluxoHoje:42100, lapMedio:68.9,
-    faixasCrit:4, faixasWarn:3, faixasOk:7, afericoesVenc60:1,
-    faixasSample:[
-      {serie:"301",id:"F1",status:"crit"},{serie:"301",id:"F2",status:"crit"},
-      {serie:"305",id:"F1",status:"ok"},{serie:"308",id:"F1",status:"warn"}
+    "fluxoSpark": [
+      176547,
+      184384,
+      189480,
+      194242,
+      201032,
+      222894,
+      201943,
+      172937,
+      180784,
+      169032,
+      114172
     ],
-    fluxoSpark:[35000,38000,40000,39000,36000,41000,38000,33000,42100],
-    cor:"#d97706", atualizado:"09/03/2026 23:59"
-  },
-  {
-    id:"DEF", nome:"Contrato DEF", arquivo:"dashboard_DEF.html",
-    rodovias:["BR-277","BR-467"], uf:"PR",
-    totalEquip:12, totalFaixas:20,
-    fluxoHoje:77400, lapMedio:85.6,
-    faixasCrit:1, faixasWarn:2, faixasOk:17, afericoesVenc60:0,
-    faixasSample:[
-      {serie:"401",id:"F1",status:"ok"},{serie:"401",id:"F2",status:"ok"},
-      {serie:"408",id:"F1",status:"crit"},{serie:"412",id:"F1",status:"warn"}
-    ],
-    fluxoSpark:[68000,71000,74000,73000,70000,76000,72000,63000,77400],
-    cor:"#7c3aed", atualizado:"09/03/2026 23:59"
-  },
+    "cor": "#0ea5e9",
+    "atualizado": "12/03/2026 10:41"
+  }
 ];
 
 // ══════════════════════════════════════════════
