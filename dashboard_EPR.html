@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 18:14">
+<meta name="gerado" content="13/03/2026 18:19">
 </head>
 <body>
 <div class="layout">
@@ -1341,12 +1341,17 @@ function buildHorario(){
   function horarioPeriodo(fx){
     const hpd=fx.horario_por_dia;
     if(hpd&&Object.keys(hpd).length>0){
-      // Se período tem dias definidos, filtrar por eles
-      const diasFiltro=dias.length>0 ? dias : Object.keys(hpd).sort();
+      const hpdKeys=Object.keys(hpd); // formato 'YYYY-MM-DD'
+      // Extrair número do dia de qualquer formato: '01 Dom' ou '2026-03-01' → '01'
+      const diaNum=d=>d.includes('-')?d.slice(8,10):d.slice(0,2);
+      // Filtrar pelos dias do período (que podem ser '01 Dom' ou 'YYYY-MM-DD')
+      const diasFiltro=dias.length>0 ? dias : hpdKeys.sort();
       const agg=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
       diasFiltro.forEach(d=>{
-        const h=hpd[d];
-        if(h) h.forEach((v,i)=>agg[i]+=v);
+        const num=diaNum(d);
+        // Achar a chave correspondente em hpd
+        const hpdKey=hpdKeys.find(k=>k.slice(8,10)===num);
+        if(hpdKey){const h=hpd[hpdKey];if(h)h.forEach((v,i)=>agg[i]+=v);}
       });
       return agg;
     }
