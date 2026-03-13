@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 17:33">
+<meta name="gerado" content="13/03/2026 17:36">
 </head>
 <body>
 <div class="layout">
@@ -1625,12 +1625,10 @@ function buildInfraDiario(){
       }
       return pcell(dv.consist||0,'5,150,105',true)+pcell(dv.ntec||0,'217,119,6',false)+pcell(dv.tec||0,'220,38,38',false);
     }).join('');
-    // ── linha de identificação com mesma fonte das demais tabelas ──
     return`<tr style="border-bottom:1px solid var(--border)">
-      <td style="white-space:nowrap;padding:6px 10px;font-family:var(--mono);font-weight:700;color:var(--accent);font-size:11px">${f.serie}
-        <span style="color:#94a3b8;font-weight:400;margin-left:4px">F${f.faixa}</span>
-        <span style="color:var(--muted2);font-family:var(--sans);font-size:11px;font-weight:400;margin-left:8px">${(f.local||'').substring(0,22)}</span>
-      </td>
+      <td style="padding:5px 10px;font-family:var(--mono);font-weight:700;color:var(--accent);white-space:nowrap">${f.serie}</td>
+      <td style="padding:5px 6px;text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
+      <td style="padding:5px 10px;font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.local||'—'}</td>
       ${cells}
     </tr>`;
   }).join('');
@@ -1642,8 +1640,8 @@ function buildInfraDiario(){
     <div style="overflow-x:auto">
     <table style="border-collapse:collapse;font-size:11px;min-width:900px">
       <thead>
-        <tr><th style="text-align:left;padding:8px 10px;background:var(--accent2);color:white;min-width:200px;white-space:nowrap">Equipamento</th>${thDates}</tr>
-        <tr><th style="background:var(--accent2)"></th>${thSubs}</tr>
+        <tr><th style="text-align:left;padding:8px 10px;background:var(--accent2);color:white;white-space:nowrap">Série</th><th style="text-align:center;padding:8px 6px;background:var(--accent2);color:white">F.</th><th style="text-align:left;padding:8px 10px;background:var(--accent2);color:white;min-width:150px">Local</th>${thDates}</tr>
+        <tr><th style="background:var(--accent2)"></th><th style="background:var(--accent2)"></th><th style="background:var(--accent2)"></th>${thSubs}</tr>
       </thead>
       <tbody>${diaRows}</tbody>
     </table>
