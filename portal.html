@@ -152,7 +152,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 
 /* Responsive */
 @media(max-width:1100px){.kpi-strip{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:760px){.kpi-strip{grid-template-columns:repeat(2,1fr)};.cards-grid{grid-template-columns:1fr}.hero-band,.main{padding-left:18px;padding-right:18px}.header-inner{padding:0 18px}}
+.cfg-btn{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:12px;font-weight:700;font-family:var(--display);text-decoration:none;transition:.2s;letter-spacing:.02em;}
+.cfg-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);}
+@media(max-width:760px){.cfg-btn span{display:none}}
 @media(max-width:500px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -184,6 +186,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
         <span class="hclock-sep">|</span>
         <span id="hClockTime"></span>
       </div>
+      <a href="configurador_fiscaltech.html" class="cfg-btn" title="Configurador de Contratos">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Configurador
+      </a>
     </div>
   </div>
 </header>
@@ -359,7 +367,7 @@ const CONTRATOS = [
       99905
     ],
     "cor": "#0ea5e9",
-    "atualizado": "13/03/2026 08:46"
+    "atualizado": "13/03/2026 08:54"
   }
 ];
 
