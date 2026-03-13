@@ -241,7 +241,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
 <meta name="gerado" content="">
-<!-- GERADO: 13/03/2026 11:56:46 -->
+<!-- GERADO: 13/03/2026 12:17:03 -->
 </head>
 <body>
 <div class="layout">
@@ -293,7 +293,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
     <div class="tb-left">
       <div class="tb-title" id="pageTitle">Central de Operações <span id="periodTag">ESTE MÊS</span></div>
       <div class="apres-badge" id="apresIndicator">🔍 MODO ANÁLISE — D-1</div>
-      <div id="fonteAtualiz" style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;display:none"></div>
+      <div id="fonteAtualiz" style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:3px;letter-spacing:.02em"></div>
     </div>
     <div class="tb-right">
       <a href="portal.html" style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--accent2);text-decoration:none;padding:5px 12px;border:1px solid var(--accent-light);border-radius:6px;background:var(--accent3);font-weight:600;transition:.15s" onmouseover="this.style.background='var(--accent)';this.style.color='white'" onmouseout="this.style.background='var(--accent3)';this.style.color='var(--accent2)'">← Portal</a>
@@ -344,12 +344,6 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         </div>
       </div>
     </div>
-    <div class="sem-row" style="margin-bottom:12px">
-      <div class="sem-item sem-info"><div class="sem-n" id="pAfer">—</div><div><div class="sem-lbl">Afer. Urgente</div><div class="sem-desc">Vence em ≤ 30 dias</div></div></div>
-      <div class="sem-item sem-crit"><div class="sem-n" id="pFuncCrit">—</div><div><div class="sem-lbl">Func. Crítico</div><div class="sem-desc">Funcionamento &lt; 80%</div></div></div>
-      <div class="sem-item sem-crit"><div class="sem-n" id="pAprovCritN">—</div><div><div class="sem-lbl">Aprov. Imagens Crítico</div><div class="sem-desc">&lt; 85%</div></div></div>
-      <div class="sem-item sem-crit"><div class="sem-n" id="pLapCritN">—</div><div><div class="sem-lbl">LAP Crítico</div><div class="sem-desc">&lt; 80%</div></div></div>
-    </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
       <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Func. Crítico</div></div><div id="pFuncCritList"></div></div>
       <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Aprov. Imagens Crítico</div></div><div id="pAprovCritList"></div></div>
@@ -364,6 +358,18 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 95%)</div><div class="kpi-val" id="avOk">—</div><div class="kpi-sub">faixas</div></div>
       <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">Atenção (85–95%)</div><div class="kpi-val" id="avWarn">—</div><div class="kpi-sub">faixas</div></div>
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico (&lt; 85%)</div><div class="kpi-val" id="avCrit">—</div><div class="kpi-sub">faixas</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div><div class="panel-title">📊 Distribuição de Faixas por Aproveitamento de Imagens</div><div class="panel-sub">Quantidade de faixas em cada intervalo de %</div></div>
+        <div class="sub-btns" style="margin:0">
+          <button class="sbtn active" onclick="setAvHistPeriodo('mes',this)">Mensal</button>
+          <button class="sbtn" onclick="setAvHistPeriodo('semana',this)">Semanal</button>
+          <button class="sbtn" onclick="setAvHistPeriodo('dia',this)">Diário</button>
+        </div>
+      </div>
+      <div id="avHistogram"></div>
     </div>
 
     <div class="panel">
@@ -577,21 +583,19 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ AFERIÇÕES ══ -->
   <div class="view" id="view-afericoes">
-    <div class="kpi-row" style="grid-template-columns:repeat(6,1fr)">
-      <div class="kpi" style="--kc:#7f1d1d"><div class="kpi-lbl">Vencida</div><div class="kpi-val" id="afVenc">—</div><div class="kpi-sub">expirada</div></div>
+    <div class="kpi-row kpi-4">
+      <div class="kpi" style="--kc:#7f1d1d"><div class="kpi-lbl">Vencida</div><div class="kpi-val" id="afVenc">—</div><div class="kpi-sub">aferição expirada</div></div>
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">≤ 30 dias</div><div class="kpi-val" id="afUrg">—</div><div class="kpi-sub">urgente</div></div>
-      <div class="kpi" style="--kc:#f97316"><div class="kpi-lbl">31–60 dias</div><div class="kpi-val" id="afAt60">—</div><div class="kpi-sub">atenção</div></div>
-      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">61–90 dias</div><div class="kpi-val" id="afAt90">—</div><div class="kpi-sub">programar</div></div>
-      <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">&gt; 90 dias</div><div class="kpi-val" id="afOk">—</div><div class="kpi-sub">em dia</div></div>
-      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Faixas</div><div class="kpi-val" id="afTotal">—</div><div class="kpi-sub">cadastradas</div></div>
+      <div class="kpi" style="--kc:#f97316"><div class="kpi-lbl">≤ 60 dias</div><div class="kpi-val" id="afAt60">—</div><div class="kpi-sub">atenção</div></div>
+      <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">≤ 90 dias</div><div class="kpi-val" id="afAt90">—</div><div class="kpi-sub">programar</div></div>
     </div>
     <div class="filter-bar">
       <button class="fchip active" onclick="filtrarAfer('todos',this)">Todos</button>
       <button class="fchip" onclick="filtrarAfer('vencida',this)">Vencida</button>
       <button class="fchip" onclick="filtrarAfer('urgente',this)">≤ 30d</button>
-      <button class="fchip" onclick="filtrarAfer('at60',this)">31–60d</button>
-      <button class="fchip" onclick="filtrarAfer('at90',this)">61–90d</button>
-      <button class="fchip" onclick="filtrarAfer('ok',this)">&gt; 90d</button>
+      <button class="fchip" onclick="filtrarAfer('at60',this)">≤ 60d</button>
+      <button class="fchip" onclick="filtrarAfer('at90',this)">≤ 90d</button>
+      <button class="fchip" onclick="filtrarAfer('ok',this)">&gt; 90d OK</button>
     </div>
     <div class="afer-wrap">
       <table class="afer-tbl">
@@ -710,6 +714,7 @@ const INFRA_ENQ_DIA = {"Velocidade": {"13": 171, "12": 656, "11": 601, "10": 550
 const INFRA_ENQ_SERIE = {"548|2": {"Velocidade": 189, "Vel.+Peso": 1}, "551|1": {"Velocidade": 382, "Vel.+Peso": 17}, "565|1": {"Velocidade": 214, "Vel.+Peso": 51, "Outros": 2}, "571|1": {"Velocidade": 203, "Outros": 9, "Vel.+Peso": 78}, "564|1": {"Velocidade": 63, "Vel.+Peso": 11, "Outros": 1}, "557|1": {"Velocidade": 514, "Vel.+Peso": 128, "Outros": 21}, "550|1": {"Vel.+Peso": 36, "Velocidade": 419}, "559|1": {"Velocidade": 105, "Vel.+Peso": 29, "Outros": 2}, "568|2": {"Velocidade": 134, "Vel.+Peso": 30, "Outros": 6}, "548|1": {"Velocidade": 341, "Vel.+Peso": 15}, "553|2": {"Vel.+Peso": 78, "Velocidade": 222, "Outros": 22}, "567|2": {"Velocidade": 352, "Vel.+Peso": 87, "Outros": 6}, "572|1": {"Velocidade": 17, "Vel.+Peso": 1}, "570|1": {"Velocidade": 238, "Vel.+Peso": 65}, "553|1": {"Vel.+Peso": 115, "Velocidade": 258, "Outros": 45}, "569|1": {"Velocidade": 214, "Vel.+Peso": 50, "Outros": 26}, "561|1": {"Velocidade": 804, "Vel.+Peso": 193, "Outros": 37}, "566|1": {"Velocidade": 122, "Vel.+Peso": 28, "Outros": 3}, "568|1": {"Velocidade": 124, "Vel.+Peso": 40, "Outros": 10}, "569|2": {"Velocidade": 307, "Vel.+Peso": 63, "Outros": 17}, "570|2": {"Velocidade": 148, "Vel.+Peso": 13}, "549|1": {"Velocidade": 282, "Vel.+Peso": 7}, "551|2": {"Velocidade": 40, "Vel.+Peso": 4}, "571|2": {"Velocidade": 101, "Vel.+Peso": 31, "Outros": 1}, "562|1": {"Velocidade": 590, "Vel.+Peso": 131, "Outros": 12}, "562|2": {"Velocidade": 206, "Vel.+Peso": 26, "Outros": 4}, "560|1": {"Velocidade": 68, "Vel.+Peso": 22}, "554|2": {"Velocidade": 85, "Vel.+Peso": 23, "Outros": 6}, "546|1": {"Vel.+Peso": 21, "Velocidade": 55, "Outros": 1}, "554|1": {"Velocidade": 78, "Outros": 9, "Vel.+Peso": 35}, "549|2": {"Velocidade": 76, "Vel.+Peso": 1}, "567|1": {"Velocidade": 94, "Outros": 23, "Vel.+Peso": 33}, "563|1": {"Velocidade": 26, "Vel.+Peso": 9, "Outros": 2}, "572|2": {"Velocidade": 22, "Vel.+Peso": 1}, "550|2": {"Velocidade": 71}, "552|2": {"Velocidade": 182, "Vel.+Peso": 12}, "552|1": {"Velocidade": 580, "Vel.+Peso": 61, "Outros": 3}, "547|1": {"Vel.+Peso": 9, "Velocidade": 29}, "556|1": {"Vel.+Peso": 2, "Velocidade": 8}, "555|1": {"Velocidade": 8}, "558|1": {"Velocidade": 103, "Outros": 7, "Vel.+Peso": 44}};
 
 const INFRA_ENQ_COD = {};
+const INFRA_ENQ_SERIE_COD = {}; // {serie|pista: {cod: n}} — preenchido pelo atualizar_todos.py
 
 
 const TOP_INFRA = {"548|2": {"nome": "BR-277 km 032+000", "sentido": "CRESCENTE", "total": 190, "tec": 5, "ntec_real": 78, "consist": 107, "tec_top": {"Erro de parametrização": 4, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 35, "Infração não consumada": 18, "Placa deteriorada/raspada/dobrada/ilegível": 17, "Veículo/Placa com obstáculo à frente": 4, "Placa reflexiva saturada": 2}}, "EPR009|2": {"nome": "BR-277 km 032+000", "sentido": "CRESCENTE", "total": 190, "tec": 5, "ntec_real": 78, "consist": 107, "tec_top": {"Erro de parametrização": 4, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 35, "Infração não consumada": 18, "Placa deteriorada/raspada/dobrada/ilegível": 17, "Veículo/Placa com obstáculo à frente": 4, "Placa reflexiva saturada": 2}}, "551|1": {"nome": "BR-277 km 036+400", "sentido": "DECRESCENTE", "total": 399, "tec": 77, "ntec_real": 158, "consist": 164, "tec_top": {"Imagem desfocada/borrada/embaçada": 33, "Câmera com problema (interf./distorc./artefatos)": 27, "Erro de parametrização": 10, "Imagem completamente sem veículo": 4, "Imagem com iluminação deficiente": 3}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 54, "Veículo/Placa fora do campo visível": 42, "Infração não consumada": 17, "Placa deteriorada/raspada/dobrada/ilegível": 13, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8}}, "EPR012|1": {"nome": "BR-277 km 036+400", "sentido": "DECRESCENTE", "total": 399, "tec": 77, "ntec_real": 158, "consist": 164, "tec_top": {"Imagem desfocada/borrada/embaçada": 33, "Câmera com problema (interf./distorc./artefatos)": 27, "Erro de parametrização": 10, "Imagem completamente sem veículo": 4, "Imagem com iluminação deficiente": 3}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 54, "Veículo/Placa fora do campo visível": 42, "Infração não consumada": 17, "Placa deteriorada/raspada/dobrada/ilegível": 13, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8}}, "565|1": {"nome": "PR-151 km 195+900", "sentido": "DECRESCENTE", "total": 267, "tec": 30, "ntec_real": 66, "consist": 171, "tec_top": {"Imagem com iluminação deficiente": 21, "Imagem completamente sem veículo": 7, "Câmera com problema (interf./distorc./artefatos)": 1, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 36, "Placa deteriorada/raspada/dobrada/ilegível": 11, "Veículo sem cadastro": 3, "Veículo sem placa": 3, "Veículo/Placa com obstáculo à frente": 3}}, "571|1": {"nome": "PR-151 km 315+600", "sentido": "CRESCENTE", "total": 290, "tec": 21, "ntec_real": 126, "consist": 143, "tec_top": {"Imagem com iluminação deficiente": 16, "Imagem completamente sem veículo": 4, "Câmera com problema (deslocada/zoom)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 65, "Veículo/Placa com obstáculo à frente": 16, "Veículo de emergência ou policial": 11, "Veículo sem cadastro": 11, "Placa deteriorada/raspada/dobrada/ilegível": 7}}, "564|1": {"nome": "PR-092 km 280+240", "sentido": "DECRESCENTE", "total": 75, "tec": 1, "ntec_real": 34, "consist": 40, "tec_top": {"Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Placa reflexiva saturada": 18, "Placa deteriorada/raspada/dobrada/ilegível": 7, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 4, "Veículo/Placa com obstáculo à frente": 2, "Veículo/Placa fora do campo visível": 1}}, "557|1": {"nome": "BR-369 km 018+400", "sentido": "CRESCENTE", "total": 663, "tec": 21, "ntec_real": 128, "consist": 514, "tec_top": {"Imagem com iluminação deficiente": 19, "Câmera com problema (interf./distorc./artefatos)": 2}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 27, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 21, "Veículo sem placa": 21, "Veículo/Placa fora do campo visível": 19, "Placa fora do padrão (outro país/oficial)": 13}}, "EPR018|1": {"nome": "BR-369 km 018+400", "sentido": "CRESCENTE", "total": 663, "tec": 21, "ntec_real": 128, "consist": 514, "tec_top": {"Imagem com iluminação deficiente": 19, "Câmera com problema (interf./distorc./artefatos)": 2}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 27, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 21, "Veículo sem placa": 21, "Veículo/Placa fora do campo visível": 19, "Placa fora do padrão (outro país/oficial)": 13}}, "550|1": {"nome": "BR-277 km 035+500", "sentido": "DECRESCENTE", "total": 455, "tec": 68, "ntec_real": 222, "consist": 165, "tec_top": {"Imagem completamente sem veículo": 37, "Imagem com iluminação deficiente": 18, "Erro de parametrização": 9, "Câmera com problema (interf./distorc./artefatos)": 2, "Imagem desfocada/borrada/embaçada": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 60, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 43, "Veículo/Placa com obstáculo à frente": 40, "Infração não consumada": 27, "Placa deteriorada/raspada/dobrada/ilegível": 19}}, "EPR011|1": {"nome": "BR-277 km 035+500", "sentido": "DECRESCENTE", "total": 455, "tec": 68, "ntec_real": 222, "consist": 165, "tec_top": {"Imagem completamente sem veículo": 37, "Imagem com iluminação deficiente": 18, "Erro de parametrização": 9, "Câmera com problema (interf./distorc./artefatos)": 2, "Imagem desfocada/borrada/embaçada": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 60, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 43, "Veículo/Placa com obstáculo à frente": 40, "Infração não consumada": 27, "Placa deteriorada/raspada/dobrada/ilegível": 19}}, "559|1": {"nome": "BR-369 km 86+250", "sentido": "CRESCENTE", "total": 136, "tec": 1, "ntec_real": 65, "consist": 70, "tec_top": {"Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo de emergência ou policial": 17, "Veículo sem placa": 12, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 10, "Veículo sem cadastro": 9, "Placa deteriorada/raspada/dobrada/ilegível": 7}}, "EPR020|1": {"nome": "BR-369 km 86+250", "sentido": "CRESCENTE", "total": 136, "tec": 1, "ntec_real": 65, "consist": 70, "tec_top": {"Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo de emergência ou policial": 17, "Veículo sem placa": 12, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 10, "Veículo sem cadastro": 9, "Placa deteriorada/raspada/dobrada/ilegível": 7}}, "568|2": {"nome": "PR-151 km 297+800", "sentido": "CRESCENTE", "total": 170, "tec": 24, "ntec_real": 66, "consist": 80, "tec_top": {"Imagem com iluminação deficiente": 22, "Imagem desfocada/borrada/embaçada": 2}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 16, "Veículo/Placa com obstáculo à frente": 13, "Veículo/Placa fora do campo visível": 9, "Veículo sem placa": 7, "Veículo de emergência ou policial": 5}}, "548|1": {"nome": "BR-277 km 032+000", "sentido": "CRESCENTE", "total": 356, "tec": 9, "ntec_real": 233, "consist": 114, "tec_top": {"Erro de parametrização": 4, "Câmera com problema (interf./distorc./artefatos)": 1, "Câmera com problema (deslocada/zoom)": 1, "Imagem completamente sem veículo": 1, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 98, "Veículo/Placa com obstáculo à frente": 45, "Infração não consumada": 33, "Placa deteriorada/raspada/dobrada/ilegível": 30, "Veículo sem placa": 12}}, "EPR009|1": {"nome": "BR-277 km 032+000", "sentido": "CRESCENTE", "total": 356, "tec": 9, "ntec_real": 233, "consist": 114, "tec_top": {"Erro de parametrização": 4, "Câmera com problema (interf./distorc./artefatos)": 1, "Câmera com problema (deslocada/zoom)": 1, "Imagem completamente sem veículo": 1, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 98, "Veículo/Placa com obstáculo à frente": 45, "Infração não consumada": 33, "Placa deteriorada/raspada/dobrada/ilegível": 30, "Veículo sem placa": 12}}, "553|2": {"nome": "BR-277 - Ayrton Senna km 002+070 LESTE", "sentido": "DECRESCENTE", "total": 322, "tec": 79, "ntec_real": 172, "consist": 71, "tec_top": {"Imagem completamente sem veículo": 58, "Imagem com iluminação deficiente": 18, "Câmera com problema (interf./distorc./artefatos)": 2, "Câmera com problema (deslocada/zoom)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 73, "Veículo/Placa com obstáculo à frente": 59, "Placa deteriorada/raspada/dobrada/ilegível": 11, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 10, "Veículo sem placa": 8}}, "EPR014|2": {"nome": "BR-277 - Ayrton Senna km 002+070 LESTE", "sentido": "DECRESCENTE", "total": 322, "tec": 79, "ntec_real": 172, "consist": 71, "tec_top": {"Imagem completamente sem veículo": 58, "Imagem com iluminação deficiente": 18, "Câmera com problema (interf./distorc./artefatos)": 2, "Câmera com problema (deslocada/zoom)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 73, "Veículo/Placa com obstáculo à frente": 59, "Placa deteriorada/raspada/dobrada/ilegível": 11, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 10, "Veículo sem placa": 8}}, "567|2": {"nome": "PR-151 km 260+200", "sentido": "CRESCENTE", "total": 445, "tec": 32, "ntec_real": 175, "consist": 238, "tec_top": {"Imagem com iluminação deficiente": 22, "Imagem desfocada/borrada/embaçada": 5, "Câmera com problema (interf./distorc./artefatos)": 5}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 80, "Veículo sem placa": 34, "Veículo/Placa fora do campo visível": 20, "Veículo/Placa com obstáculo à frente": 16, "Placa reflexiva saturada": 9}}, "572|1": {"nome": "PR-407 km 000+000", "sentido": "CRESCENTE", "total": 18, "tec": 0, "ntec_real": 3, "consist": 15, "tec_top": {}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 1, "Veículo/Placa fora do campo visível": 1, "Placa deteriorada/raspada/dobrada/ilegível": 1}}, "570|1": {"nome": "PR-151 km 307+400", "sentido": "CRESCENTE", "total": 303, "tec": 15, "ntec_real": 128, "consist": 160, "tec_top": {"Imagem desfocada/borrada/embaçada": 8, "Imagem com iluminação deficiente": 6, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 24, "Veículo de emergência ou policial": 19, "Placa deteriorada/raspada/dobrada/ilegível": 18, "Placa reflexiva saturada": 16, "Veículo/Placa fora do campo visível": 14}}, "553|1": {"nome": "BR-277 - Ayrton Senna km 002+070 LESTE", "sentido": "DECRESCENTE", "total": 418, "tec": 106, "ntec_real": 197, "consist": 115, "tec_top": {"Imagem completamente sem veículo": 62, "Imagem com iluminação deficiente": 39, "Câmera com problema (deslocada/zoom)": 3, "Câmera com problema (interf./distorc./artefatos)": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 60, "Veículo de emergência ou policial": 43, "Placa deteriorada/raspada/dobrada/ilegível": 24, "Veículo sem placa": 18, "Veículo sem cadastro": 17}}, "EPR014|1": {"nome": "BR-277 - Ayrton Senna km 002+070 LESTE", "sentido": "DECRESCENTE", "total": 418, "tec": 106, "ntec_real": 197, "consist": 115, "tec_top": {"Imagem completamente sem veículo": 62, "Imagem com iluminação deficiente": 39, "Câmera com problema (deslocada/zoom)": 3, "Câmera com problema (interf./distorc./artefatos)": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 60, "Veículo de emergência ou policial": 43, "Placa deteriorada/raspada/dobrada/ilegível": 24, "Veículo sem placa": 18, "Veículo sem cadastro": 17}}, "569|1": {"nome": "PR-151 km 298+000", "sentido": "DECRESCENTE", "total": 290, "tec": 3, "ntec_real": 102, "consist": 185, "tec_top": {"Imagem com iluminação deficiente": 3}, "ntec_top": {"Veículo de emergência ou policial": 25, "Veículo sem cadastro": 17, "Veículo sem placa": 16, "Veículo/Placa com obstáculo à frente": 16, "Placa deteriorada/raspada/dobrada/ilegível": 13}}, "561|1": {"nome": "PR-092 km 219+800", "sentido": "CRESCENTE", "total": 1034, "tec": 156, "ntec_real": 227, "consist": 651, "tec_top": {"Imagem com iluminação deficiente": 113, "Câmera com problema (interf./distorc./artefatos)": 25, "Imagem desfocada/borrada/embaçada": 18}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 73, "Veículo/Placa fora do campo visível": 64, "Placa reflexiva saturada": 30, "Veículo/Placa com obstáculo à frente": 19, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 17}}, "566|1": {"nome": "PR-151 km 195+800", "sentido": "CRESCENTE", "total": 153, "tec": 3, "ntec_real": 54, "consist": 96, "tec_top": {"Imagem desfocada/borrada/embaçada": 2, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 13, "Veículo sem placa": 12, "Veículo/Placa com obstáculo à frente": 6, "Placa deteriorada/raspada/dobrada/ilegível": 6, "Veículo sem cadastro": 4}}, "568|1": {"nome": "PR-151 km 297+800", "sentido": "CRESCENTE", "total": 174, "tec": 9, "ntec_real": 68, "consist": 97, "tec_top": {"Imagem com iluminação deficiente": 8, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo de emergência ou policial": 13, "Placa reflexiva saturada": 12, "Placa deteriorada/raspada/dobrada/ilegível": 11, "Veículo/Placa com obstáculo à frente": 8, "Veículo sem placa": 7}}, "569|2": {"nome": "PR-151 km 298+000", "sentido": "DECRESCENTE", "total": 387, "tec": 14, "ntec_real": 181, "consist": 192, "tec_top": {"Imagem com iluminação deficiente": 6, "Imagem completamente sem veículo": 4, "Imagem desfocada/borrada/embaçada": 3, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 53, "Placa deteriorada/raspada/dobrada/ilegível": 43, "Veículo sem placa": 28, "Veículo/Placa com obstáculo à frente": 17, "Placa reflexiva saturada": 12}}, "570|2": {"nome": "PR-151 km 307+400", "sentido": "CRESCENTE", "total": 161, "tec": 6, "ntec_real": 62, "consist": 93, "tec_top": {"Imagem com iluminação deficiente": 5, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo sem placa": 15, "Veículo/Placa com obstáculo à frente": 13, "Placa deteriorada/raspada/dobrada/ilegível": 12, "Veículo sem cadastro": 5, "Veículo/Placa fora do campo visível": 5}}, "549|1": {"nome": "BR-277 km 033+300", "sentido": "DECRESCENTE", "total": 289, "tec": 97, "ntec_real": 125, "consist": 67, "tec_top": {"Imagem completamente sem veículo": 66, "Imagem com iluminação deficiente": 14, "Câmera com problema (interf./distorc./artefatos)": 11, "Erro de parametrização": 6}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 41, "Veículo/Placa fora do campo visível": 37, "Placa deteriorada/raspada/dobrada/ilegível": 13, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 12, "Infração não consumada": 10}}, "EPR010|1": {"nome": "BR-277 km 033+300", "sentido": "DECRESCENTE", "total": 289, "tec": 97, "ntec_real": 125, "consist": 67, "tec_top": {"Imagem completamente sem veículo": 66, "Imagem com iluminação deficiente": 14, "Câmera com problema (interf./distorc./artefatos)": 11, "Erro de parametrização": 6}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 41, "Veículo/Placa fora do campo visível": 37, "Placa deteriorada/raspada/dobrada/ilegível": 13, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 12, "Infração não consumada": 10}}, "551|2": {"nome": "BR-277 km 036+400", "sentido": "DECRESCENTE", "total": 44, "tec": 9, "ntec_real": 27, "consist": 8, "tec_top": {"Câmera com problema (interf./distorc./artefatos)": 3, "Imagem desfocada/borrada/embaçada": 3, "Erro de parametrização": 2, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 7, "Veículo sem placa": 6, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Infração não consumada": 2}}, "EPR012|2": {"nome": "BR-277 km 036+400", "sentido": "DECRESCENTE", "total": 44, "tec": 9, "ntec_real": 27, "consist": 8, "tec_top": {"Câmera com problema (interf./distorc./artefatos)": 3, "Imagem desfocada/borrada/embaçada": 3, "Erro de parametrização": 2, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 7, "Veículo sem placa": 6, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Infração não consumada": 2}}, "571|2": {"nome": "PR-151 km 315+600", "sentido": "CRESCENTE", "total": 133, "tec": 4, "ntec_real": 65, "consist": 64, "tec_top": {"Imagem com iluminação deficiente": 3, "Câmera com problema (deslocada/zoom)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 24, "Veículo sem placa": 15, "Veículo/Placa com obstáculo à frente": 9, "Placa deteriorada/raspada/dobrada/ilegível": 7, "Placa fora do padrão (outro país/oficial)": 4}}, "562|1": {"nome": "PR-092 km 220+200", "sentido": "DECRESCENTE", "total": 733, "tec": 107, "ntec_real": 231, "consist": 395, "tec_top": {"Imagem desfocada/borrada/embaçada": 83, "Imagem com iluminação deficiente": 20, "Câmera com problema (interf./distorc./artefatos)": 3, "Imagem completamente sem veículo": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 66, "Placa deteriorada/raspada/dobrada/ilegível": 56, "Placa reflexiva saturada": 51, "Veículo/Placa com obstáculo à frente": 20, "Veículo sem placa": 11}}, "562|2": {"nome": "PR-092 km 220+200", "sentido": "DECRESCENTE", "total": 236, "tec": 31, "ntec_real": 73, "consist": 132, "tec_top": {"Imagem desfocada/borrada/embaçada": 29, "Imagem com iluminação deficiente": 1, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 23, "Placa deteriorada/raspada/dobrada/ilegível": 16, "Placa reflexiva saturada": 14, "Veículo sem placa": 8, "Veículo/Placa com obstáculo à frente": 5}}, "560|1": {"nome": "BR-369 km 086+330", "sentido": "DECRESCENTE", "total": 90, "tec": 4, "ntec_real": 52, "consist": 34, "tec_top": {"Imagem com iluminação deficiente": 2, "Imagem desfocada/borrada/embaçada": 2}, "ntec_top": {"Veículo de emergência ou policial": 11, "Placa fora do padrão (outro país/oficial)": 9, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8, "Veículo sem cadastro": 7, "Placa reflexiva saturada": 5}}, "EPR021|1": {"nome": "BR-369 km 086+330", "sentido": "DECRESCENTE", "total": 90, "tec": 4, "ntec_real": 52, "consist": 34, "tec_top": {"Imagem com iluminação deficiente": 2, "Imagem desfocada/borrada/embaçada": 2}, "ntec_top": {"Veículo de emergência ou policial": 11, "Placa fora do padrão (outro país/oficial)": 9, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 8, "Veículo sem cadastro": 7, "Placa reflexiva saturada": 5}}, "554|2": {"nome": "BR-277 - Ayrton Senna km 002+070", "sentido": "CRESCENTE", "total": 114, "tec": 18, "ntec_real": 76, "consist": 20, "tec_top": {"Imagem completamente sem veículo": 14, "Imagem com iluminação deficiente": 2, "Desacionamento incorreto do sensor": 2}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 24, "Veículo/Placa fora do campo visível": 21, "Placa deteriorada/raspada/dobrada/ilegível": 14, "Veículo de emergência ou policial": 4, "Veículo sem cadastro": 4}}, "EPR015|2": {"nome": "BR-277 - Ayrton Senna km 002+070", "sentido": "CRESCENTE", "total": 114, "tec": 18, "ntec_real": 76, "consist": 20, "tec_top": {"Imagem completamente sem veículo": 14, "Imagem com iluminação deficiente": 2, "Desacionamento incorreto do sensor": 2}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 24, "Veículo/Placa fora do campo visível": 21, "Placa deteriorada/raspada/dobrada/ilegível": 14, "Veículo de emergência ou policial": 4, "Veículo sem cadastro": 4}}, "546|1": {"nome": "BR-153 km 041+900", "sentido": "CRESCENTE", "total": 77, "tec": 4, "ntec_real": 29, "consist": 44, "tec_top": {"Imagem com iluminação deficiente": 4}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 7, "Veículo de emergência ou policial": 6, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 5, "Placa deteriorada/raspada/dobrada/ilegível": 5, "Veículo sem placa": 3}}, "EPR007|1": {"nome": "BR-153 km 041+900", "sentido": "CRESCENTE", "total": 77, "tec": 4, "ntec_real": 29, "consist": 44, "tec_top": {"Imagem com iluminação deficiente": 4}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 7, "Veículo de emergência ou policial": 6, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 5, "Placa deteriorada/raspada/dobrada/ilegível": 5, "Veículo sem placa": 3}}, "554|1": {"nome": "BR-277 - Ayrton Senna km 002+070", "sentido": "CRESCENTE", "total": 122, "tec": 4, "ntec_real": 88, "consist": 30, "tec_top": {"Imagem completamente sem veículo": 3, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo de emergência ou policial": 37, "Placa deteriorada/raspada/dobrada/ilegível": 14, "Veículo/Placa com obstáculo à frente": 9, "Veículo/Placa fora do campo visível": 8, "Veículo sem placa": 8}}, "EPR015|1": {"nome": "BR-277 - Ayrton Senna km 002+070", "sentido": "CRESCENTE", "total": 122, "tec": 4, "ntec_real": 88, "consist": 30, "tec_top": {"Imagem completamente sem veículo": 3, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo de emergência ou policial": 37, "Placa deteriorada/raspada/dobrada/ilegível": 14, "Veículo/Placa com obstáculo à frente": 9, "Veículo/Placa fora do campo visível": 8, "Veículo sem placa": 8}}, "549|2": {"nome": "BR-277 km 033+300", "sentido": "DECRESCENTE", "total": 77, "tec": 3, "ntec_real": 30, "consist": 44, "tec_top": {"Imagem com iluminação deficiente": 2, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 12, "Infração não consumada": 7, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Veículo sem placa": 2}}, "EPR010|2": {"nome": "BR-277 km 033+300", "sentido": "DECRESCENTE", "total": 77, "tec": 3, "ntec_real": 30, "consist": 44, "tec_top": {"Imagem com iluminação deficiente": 2, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 12, "Infração não consumada": 7, "Placa deteriorada/raspada/dobrada/ilegível": 3, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 3, "Veículo sem placa": 2}}, "567|1": {"nome": "PR-151 km 260+200", "sentido": "CRESCENTE", "total": 150, "tec": 7, "ntec_real": 69, "consist": 74, "tec_top": {"Imagem com iluminação deficiente": 4, "Câmera com problema (interf./distorc./artefatos)": 2, "Imagem desfocada/borrada/embaçada": 1}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 18, "Veículo/Placa com obstáculo à frente": 11, "Veículo/Placa fora do campo visível": 10, "Veículo de emergência ou policial": 9, "Veículo sem placa": 7}}, "563|1": {"nome": "PR-092 km 280+220", "sentido": "CRESCENTE", "total": 37, "tec": 7, "ntec_real": 15, "consist": 15, "tec_top": {"Imagem com iluminação deficiente": 7}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 10, "Veículo de emergência ou policial": 2, "Veículo sem placa": 1, "Veículo/Placa com obstáculo à frente": 1, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 1}}, "572|2": {"nome": "PR-407 km 000+000", "sentido": "CRESCENTE", "total": 23, "tec": 0, "ntec_real": 0, "consist": 23, "tec_top": {}, "ntec_top": {}}, "550|2": {"nome": "BR-277 km 035+500", "sentido": "DECRESCENTE", "total": 71, "tec": 3, "ntec_real": 37, "consist": 31, "tec_top": {"Imagem completamente sem veículo": 2, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 15, "Infração não consumada": 5, "Placa deteriorada/raspada/dobrada/ilegível": 4, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 4, "Placa reflexiva saturada": 3}}, "EPR011|2": {"nome": "BR-277 km 035+500", "sentido": "DECRESCENTE", "total": 71, "tec": 3, "ntec_real": 37, "consist": 31, "tec_top": {"Imagem completamente sem veículo": 2, "Imagem com iluminação deficiente": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 15, "Infração não consumada": 5, "Placa deteriorada/raspada/dobrada/ilegível": 4, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 4, "Placa reflexiva saturada": 3}}, "552|2": {"nome": "BR-277 km 041+400", "sentido": "DECRESCENTE", "total": 194, "tec": 39, "ntec_real": 101, "consist": 54, "tec_top": {"Imagem com iluminação deficiente": 32, "Câmera com problema (interf./distorc./artefatos)": 3, "Imagem desfocada/borrada/embaçada": 3, "Imagem completamente sem veículo": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 65, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 16, "Veículo sem placa": 6, "Veículo/Placa com obstáculo à frente": 6, "Placa deteriorada/raspada/dobrada/ilegível": 3}}, "EPR013|2": {"nome": "BR-277 km 041+400", "sentido": "DECRESCENTE", "total": 194, "tec": 39, "ntec_real": 101, "consist": 54, "tec_top": {"Imagem com iluminação deficiente": 32, "Câmera com problema (interf./distorc./artefatos)": 3, "Imagem desfocada/borrada/embaçada": 3, "Imagem completamente sem veículo": 1}, "ntec_top": {"Veículo/Placa fora do campo visível": 65, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 16, "Veículo sem placa": 6, "Veículo/Placa com obstáculo à frente": 6, "Placa deteriorada/raspada/dobrada/ilegível": 3}}, "552|1": {"nome": "BR-277 km 041+400", "sentido": "DECRESCENTE", "total": 644, "tec": 172, "ntec_real": 214, "consist": 258, "tec_top": {"Imagem com iluminação deficiente": 133, "Imagem desfocada/borrada/embaçada": 21, "Câmera com problema (interf./distorc./artefatos)": 8, "Imagem completamente sem veículo": 5, "Erro de parametrização": 5}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 58, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 46, "Veículo/Placa fora do campo visível": 30, "Placa deteriorada/raspada/dobrada/ilegível": 21, "Veículo de emergência ou policial": 17}}, "EPR013|1": {"nome": "BR-277 km 041+400", "sentido": "DECRESCENTE", "total": 644, "tec": 172, "ntec_real": 214, "consist": 258, "tec_top": {"Imagem com iluminação deficiente": 133, "Imagem desfocada/borrada/embaçada": 21, "Câmera com problema (interf./distorc./artefatos)": 8, "Imagem completamente sem veículo": 5, "Erro de parametrização": 5}, "ntec_top": {"Veículo/Placa com obstáculo à frente": 58, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 46, "Veículo/Placa fora do campo visível": 30, "Placa deteriorada/raspada/dobrada/ilegível": 21, "Veículo de emergência ou policial": 17}}, "547|1": {"nome": "BR-153 km 041+950", "sentido": "DECRESCENTE", "total": 38, "tec": 2, "ntec_real": 25, "consist": 11, "tec_top": {"Imagem com iluminação deficiente": 2}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 9, "Veículo de emergência ou policial": 6, "Veículo sem placa": 4, "Veículo/Placa com obstáculo à frente": 2, "Veículo/Placa fora do campo visível": 2}}, "EPR008|1": {"nome": "BR-153 km 041+950", "sentido": "DECRESCENTE", "total": 38, "tec": 2, "ntec_real": 25, "consist": 11, "tec_top": {"Imagem com iluminação deficiente": 2}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 9, "Veículo de emergência ou policial": 6, "Veículo sem placa": 4, "Veículo/Placa com obstáculo à frente": 2, "Veículo/Placa fora do campo visível": 2}}, "556|1": {"nome": "BR-277 - Bento Rocha km 000+950", "sentido": "CRESCENTE", "total": 10, "tec": 2, "ntec_real": 5, "consist": 3, "tec_top": {"Imagem com iluminação deficiente": 1, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 4, "Veículo/Placa fora do campo visível": 1}}, "EPR017|1": {"nome": "BR-277 - Bento Rocha km 000+950", "sentido": "CRESCENTE", "total": 10, "tec": 2, "ntec_real": 5, "consist": 3, "tec_top": {"Imagem com iluminação deficiente": 1, "Câmera com problema (interf./distorc./artefatos)": 1}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 4, "Veículo/Placa fora do campo visível": 1}}, "555|1": {"nome": "BR-277 - Bento Rocha km 001+120", "sentido": "DECRESCENTE", "total": 8, "tec": 2, "ntec_real": 3, "consist": 3, "tec_top": {"Imagem completamente sem veículo": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 2, "Placa deteriorada/raspada/dobrada/ilegível": 1}}, "EPR016|1": {"nome": "BR-277 - Bento Rocha km 001+120", "sentido": "DECRESCENTE", "total": 8, "tec": 2, "ntec_real": 3, "consist": 3, "tec_top": {"Imagem completamente sem veículo": 2}, "ntec_top": {"Veículo/Placa fora do campo visível": 2, "Placa deteriorada/raspada/dobrada/ilegível": 1}}, "558|1": {"nome": "BR-369 km 019+970", "sentido": "DECRESCENTE", "total": 154, "tec": 7, "ntec_real": 58, "consist": 89, "tec_top": {"Imagem completamente sem veículo": 4, "Imagem com iluminação deficiente": 3}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 17, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 13, "Placa fora do padrão (outro país/oficial)": 8, "Veículo/Placa fora do campo visível": 7, "Veículo de emergência ou policial": 4}}, "EPR019|1": {"nome": "BR-369 km 019+970", "sentido": "DECRESCENTE", "total": 154, "tec": 7, "ntec_real": 58, "consist": 89, "tec_top": {"Imagem completamente sem veículo": 4, "Imagem com iluminação deficiente": 3}, "ntec_top": {"Placa deteriorada/raspada/dobrada/ilegível": 17, "Imagem ruim - motivo ambiental (chuva/sol/galhos)": 13, "Placa fora do padrão (outro país/oficial)": 8, "Veículo/Placa fora do campo visível": 7, "Veículo de emergência ou policial": 4}}};
@@ -722,7 +727,7 @@ const DB = [{"id":"EPR","nome":"EPR","dias":["01 Dom","02 Seg","03 Ter","04 Qua"
 // ══════════════════════════════════════════════
 //  ESTADO
 // ══════════════════════════════════════════════
-let periodo='mes', filtroAferAtual='todos', viewAtual='painel', lapSub='integral', modoApresentacao=false, mesAtivo='atual';
+let periodo='mes', filtroAferAtual='todos', viewAtual='painel', lapSub='integral', modoApresentacao=false, mesAtivo='atual', avHistPeriodo='mes';
 // diasKeys e periodoKeys serão sobrescritas após declaração de modoApresentacao
 
 // ══════════════════════════════════════════════
@@ -801,6 +806,53 @@ function setPeriod(p,el){
   if(tag) tag.textContent={dia:'HOJE',semana:'ESTA SEMANA',mes:'ESTE MÊS'}[p]||'';
   rebuild();
 }
+function setAvHistPeriodo(p,el){
+  avHistPeriodo=p;
+  document.querySelectorAll('.sbtn').forEach(b=>{
+    // só resetar os do painel de aproveitamento (pai com id avHistogram)
+  });
+  if(el){
+    const parent=el.closest('.panel');
+    if(parent)parent.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+  }
+  buildAvHistogram();
+}
+
+function buildAvHistogram(){
+  const el=document.getElementById('avHistogram');
+  if(!el)return;
+  const faixas=todasFaixas();
+  // Calcular aproveitamento por faixa respeitando o período selecionado no histograma
+  let diasHist=diasKeys();
+  if(avHistPeriodo==='dia') diasHist=diasHist.slice(-1);
+  else if(avHistPeriodo==='semana') diasHist=diasHist.slice(-7);
+  // Para aproveitamento de imagens, o índice já é consolidado no período
+  // Usar indice_aprov direto (consolidado do mês) ou calcular por período se tiver aprov_por_data
+  const vals=faixas.map(fx=>{
+    if(avHistPeriodo==='mes'||!fx.aprov_por_data){
+      return (fx.aproveitamento?.indice_aprov||0)*100;
+    }
+    // Calcular média do período selecionado
+    let s=0,n=0;
+    diasHist.forEach(d=>{
+      const v=fx.aprov_por_data?.[d]?.indice_aprov;
+      if(v!=null&&v>0){s+=v*100;n++;}
+    });
+    return n?s/n:0;
+  }).filter(v=>v>0);
+
+  const BUCKETS=[
+    {min:100,max:null, label:'100%',   sublabel:'perfeito', color:'#059669'},
+    {min:95, max:100,  label:'95–99%', sublabel:'ótimo',    color:'#10b981'},
+    {min:90, max:95,   label:'90–95%', sublabel:'bom',      color:'#84cc16'},
+    {min:80, max:90,   label:'80–90%', sublabel:'atenção',  color:'#f59e0b'},
+    {min:70, max:80,   label:'70–80%', sublabel:'alerta',   color:'#f97316'},
+    {min:0,  max:70,   label:'<70%',   sublabel:'crítico',  color:'#dc2626'},
+  ];
+  el.innerHTML=svgHistograma(vals,BUCKETS,[],null,{height:170});
+}
+
 function rebuild(){
   const m={painel:buildPainel,aproveitamento:buildAproveitamento,lap:buildLap,fluxo:buildFluxo,infracoes:buildInfracoes,horario:buildHorario,teste:buildTeste,afericoes:buildAfer};
   if(m[viewAtual])m[viewAtual]();
@@ -838,8 +890,8 @@ function svgBarChart(labels,datasets,opts={}){
       const x=padL+i*gap+(di*(bw+2))+gap/2-(datasets.length*(bw+2))/2;
       const y=padT+ch-barH;
       svg+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw}" height="${barH.toFixed(1)}" rx="3" fill="${ds.color}" opacity=".9"/>`;
-      if(datasets.length===1&&n<=12){
-        svg+=`<text x="${(x+bw/2).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle" font-size="8.5" fill="${ds.color}" font-family="IBM Plex Mono" font-weight="600">${opts.pct?v.toFixed(1)+'%':(v>=1000?(v/1000).toFixed(1)+'k':v)}</text>`;
+      if(datasets.length===1&&(n<=12||opts.showLabels)){
+        svg+=`<text x="${(x+bw/2).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle" font-size="8" fill="${ds.color}" font-family="IBM Plex Mono" font-weight="600">${opts.pct?v.toFixed(1)+'%':(v>=1000?(v/1000).toFixed(1)+'k':v)}</text>`;
       }
     });
   });
@@ -982,10 +1034,13 @@ function buildPainel(){
   });
 
   // Referência de atualização
-  // Referência de atualização — mostra no topbar
+  // Referência de atualização — visível em todas as páginas
   const gerado=document.querySelector('meta[name="gerado"]')?.content;
   const fonteEl=document.getElementById('fonteAtualiz');
-  if(fonteEl&&gerado){fonteEl.innerHTML='<span style="color:var(--muted)">📄 Atualizado:</span> '+gerado;fonteEl.style.display='block';}
+  if(fonteEl){
+    if(gerado){fonteEl.innerHTML='<span style="opacity:.6">📄 Fonte: Ares / SIOR &nbsp;·&nbsp; Atualizado:</span> <b>'+gerado+'</b>';}
+    else{fonteEl.innerHTML='<span style="opacity:.5;font-style:italic">Fonte não disponível — rode atualizar_todos.py</span>';}
+  }
 
   set$('pEq',faixas.length);
   set$('pAprov',aprovN?(aprovSum/aprovN).toFixed(1)+'%':'—');
@@ -993,8 +1048,6 @@ function buildPainel(){
   set$('pLap',lapN?lapSum/lapN>0?fmtPct(lapSum/lapN):'—':'—');
   set$('pSemOk',ok);set$('pSemWarn',warn);set$('pSemCrit',crit);set$('pAfer',aferUrg);
   set$('pFuncCrit',tsCritP);
-  set$('pAprovCritN',aprovCritList.length);
-  set$('pLapCritN',lapCritList.length);
   set$('pTsOk',tsOkP);set$('pTsWarn',tsWarnP);set$('pTsCrit',tsCritP);
 
   aprovCritList.sort((a,b)=>(a.aproveitamento?.indice_aprov||0)-(b.aproveitamento?.indice_aprov||0));
@@ -1045,10 +1098,8 @@ function buildAproveitamento(){
 
   setHTML$('avBody',rows.join(''));
 
-  // Histograma aproveitamento de imagens
-  const valsAprovHist=faixas.map(fx=>(fx.aproveitamento?.indice_aprov||0)*100);
-  const histAprovEl=document.getElementById('avHistogram');
-  if(histAprovEl) histAprovEl.innerHTML=svgHistograma(valsAprovHist,HIST_BUCKETS_FUNC,[],null,{height:170});
+  // Histograma aproveitamento
+  buildAvHistogram();
 
   // Top Inconsistências por Faixa usando TOP_INFRA
   const infraRows=faixas.map(fx=>{
@@ -1695,7 +1746,7 @@ function buildTeste(){
     faixas.forEach(fx=>{const v=fx.teste?.[d];if(v!=null){s+=v/24*100;n++;}});
     return n?s/n:null;
   });
-  setHTML$('tsMensalChart',svgBarChart(dias,[{data:pctsDia,color:'#0066cc'}],{height:150,padL:50,pct:true}));
+  setHTML$('tsMensalChart',svgBarChart(dias,[{data:pctsDia,color:'#0066cc'}],{height:165,padL:50,pct:true,showLabels:true}));
 
   // Histograma de faixas por faixa de %
   const valsFuncHist = faixas.map(fx=>{
@@ -1736,29 +1787,85 @@ function buildInfraEnq(){
   const ENQ_BG={'Velocidade':'#e8f0fc','Vel.+Peso':'#f5f3ff','Outros':'#f9fafb'};
   const tipos=Object.keys(ENQ_CORES);
 
-  // ── Painel por Enquadramento (códigos reais do CSV) ──
+  // ── Painel por Enquadramento — mesmo layout do Por Grupo mas por código ──
   const elCod=document.getElementById('infEnqCodigos');
   if(elCod){
     if(typeof INFRA_ENQ_COD!=='undefined'&&Object.keys(INFRA_ENQ_COD).length>0){
+      // Só mostrar códigos com infrações
       const codKeys=Object.keys(INFRA_ENQ_COD).filter(k=>INFRA_ENQ_COD[k]>0).sort((a,b)=>INFRA_ENQ_COD[b]-INFRA_ENQ_COD[a]);
-      const maxCod=Math.max(...codKeys.map(k=>INFRA_ENQ_COD[k]),1);
-      const codRows=codKeys.map(cod=>{
-        const n=INFRA_ENQ_COD[cod]||0;
-        const desc=ENQ_MAP[cod]||('Código '+cod);
-        const isVel=['74550','74551','74630','74631','74710','74711'].includes(cod);
-        const isPeso=['68312','68313'].includes(cod);
-        const cor=isVel?'#0066cc':isPeso?'#7c3aed':'#6b7280';
-        const pct=Math.round(n/maxCod*100);
-        return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)">'
-          +'<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);min-width:52px">'+cod+'</span>'
-          +'<span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+desc+'</span>'
-          +'<div style="flex:0 0 120px;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+cor+';border-radius:4px"></div></div>'
-          +'<span style="font-family:var(--mono);font-size:12px;font-weight:800;color:'+cor+';min-width:50px;text-align:right">'+n.toLocaleString('pt-BR')+'</span>'
-          +'</div>';
-      }).join('');
-      elCod.innerHTML=codRows||'<div style="padding:12px;color:var(--muted);font-size:12px">Nenhuma infração no período</div>';
+      if(codKeys.length===0){
+        elCod.innerHTML='<div style="padding:12px;color:var(--muted);font-size:12px">Nenhuma infração no período</div>';
+      } else {
+        // Cores por grupo de código
+        const corCod=cod=>{
+          if(['74550','74551','74630','74631','74710','74711'].includes(cod))return'#0066cc';
+          if(['68312','68313'].includes(cod))return'#7c3aed';
+          if(['60681','66362'].includes(cod))return'#f97316';
+          return'#6b7280';
+        };
+        // Por faixa: INFRA_ENQ_SERIE_COD[serie|pista][cod] = n
+        const hasSerie=typeof INFRA_ENQ_SERIE_COD!=='undefined'&&Object.keys(INFRA_ENQ_SERIE_COD).length>0;
+        // Cabeçalho
+        const thCods=codKeys.map(cod=>`<th style="text-align:left;padding:6px 8px;font-size:9px;color:${corCod(cod)};white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis" title="${ENQ_MAP[cod]||cod}">${cod}<br><span style="font-weight:400;opacity:.7;font-size:8px">${(ENQ_MAP[cod]||'').slice(0,12)}</span></th>`).join('');
+        // Linha total
+        const tdTots=codKeys.map(cod=>{
+          const n=INFRA_ENQ_COD[cod]||0;
+          const cor=corCod(cod);
+          return `<td style="padding:5px 8px;text-align:center;font-family:var(--mono);font-weight:800;color:${cor};font-size:11px">${n}</td>`;
+        }).join('');
+        // Linhas por série (se disponível)
+        let serieRows='';
+        if(hasSerie){
+          const serieKeys=Object.keys(INFRA_ENQ_SERIE_COD).sort();
+          serieRows=serieKeys.map(k=>{
+            const v=INFRA_ENQ_SERIE_COD[k];
+            const tot=codKeys.reduce((a,c)=>a+(v[c]||0),0);
+            if(!tot)return'';
+            const [cp,pi]=k.split('|');
+            const cells=codKeys.map(cod=>{
+              const n=v[cod]||0;
+              if(!n)return`<td style="padding:5px 8px;text-align:center;color:#d1d5db;font-size:9px">—</td>`;
+              const cor=corCod(cod);
+              const pct=tot>0?Math.round(n/tot*100):0;
+              return`<td style="padding:5px 8px;text-align:center">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                  <span style="font-family:var(--mono);font-size:10px;font-weight:700;color:${cor}">${n}</span>
+                  <div style="width:36px;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${cor};border-radius:3px"></div></div>
+                </div>
+              </td>`;
+            }).join('');
+            return`<tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:5px 10px;font-family:var(--mono);font-weight:800;color:var(--accent);font-size:11px;white-space:nowrap">${cp}</td>
+              <td style="padding:5px 6px;font-family:var(--mono);font-size:10px;color:var(--muted)">F${pi}</td>
+              <td style="padding:5px 8px;text-align:center;font-family:var(--mono);font-weight:800;font-size:12px">${tot}</td>
+              ${cells}
+            </tr>`;
+          }).filter(Boolean).join('');
+        }
+        const tableHTML=`<div style="overflow-x:auto">
+          <table style="border-collapse:collapse;font-size:11px;width:100%">
+            <thead>
+              <tr style="background:var(--card2)">
+                <th style="text-align:left;padding:6px 10px;font-size:10px;color:var(--muted)">Série</th>
+                <th style="padding:6px 6px;font-size:10px;color:var(--muted)">Fx</th>
+                <th style="text-align:center;padding:6px 8px;font-size:10px;color:var(--muted)">Total</th>
+                ${thCods}
+              </tr>
+            </thead>
+            <tbody>
+              ${serieRows||'<tr><td colspan="'+(3+codKeys.length)+'" style="padding:12px;color:var(--muted);text-align:center;font-style:italic">Detalhamento por faixa disponível após atualização</td></tr>'}
+              <tr style="background:var(--accent3);font-weight:800;border-top:2px solid var(--border2)">
+                <td style="padding:6px 10px;color:var(--accent2)" colspan="2">TOTAL</td>
+                <td style="padding:6px 8px;text-align:center;font-family:var(--mono);color:var(--accent2)">${codKeys.reduce((a,c)=>a+(INFRA_ENQ_COD[c]||0),0)}</td>
+                ${tdTots}
+              </tr>
+            </tbody>
+          </table>
+        </div>`;
+        elCod.innerHTML=tableHTML;
+      }
     } else {
-      elCod.innerHTML='<div style="padding:12px;color:var(--muted);font-size:12px;font-style:italic">Dados de enquadramento disponíveis após atualização do script.</div>';
+      elCod.innerHTML='<div style="padding:16px;color:var(--muted);font-size:12px;font-style:italic;text-align:center">Dados de enquadramento disponíveis após atualização do script.</div>';
     }
   }
 
