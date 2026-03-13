@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 18:19">
+<meta name="gerado" content="13/03/2026 18:25">
 </head>
 <body>
 <div class="layout">
@@ -402,7 +402,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         </div>
       </div>
       <div class="tbl-wrap">
-        <table class="data-tbl">
+        <table id="avTable" class="data-tbl">
           <thead><tr>
             <th>Série</th><th>Faixa</th><th>Local</th><th>Sentido</th>
             <th style="color:var(--green)">Total Consist.</th>
@@ -427,7 +427,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         </select>
       </div>
       <div class="tbl-wrap">
-        <table class="data-tbl">
+        <table id="avInfraTable" class="data-tbl">
           <thead><tr>
             <th>Série</th><th>Faixa</th><th>Local</th><th>Total</th>
             <th style="color:var(--green)">🟢 Consistente</th>
@@ -616,7 +616,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       <button class="fchip" onclick="filtrarAfer('ok',this)">OK</button>
     </div>
     <div class="afer-wrap">
-      <table class="afer-tbl">
+      <table id="afTable" class="afer-tbl">
         <thead><tr>
           <th>Série</th><th>Local</th><th>Sentido</th><th>Faixas</th>
           <th>Cód. Cliente</th><th>Vel. Limite</th>
@@ -651,7 +651,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Aproveitamento Geral — Imagem Teste por Faixa</div><div class="panel-sub">Horas com imagem teste / 24h × dias</div></div>
       <div class="tbl-wrap">
-        <table class="data-tbl">
+        <table id="tsGeralTable" class="data-tbl">
           <thead><tr><th>Série · Faixa</th><th>Local</th><th>Sentido</th><th>Faixa</th><th>Total Horas Esperadas</th><th>Horas com Imagem</th><th>% Funcionamento</th><th>Status</th></tr></thead>
           <tbody id="tsGeralBody"></tbody>
         </table>
@@ -935,6 +935,58 @@ function svgBarChart(labels,datasets,opts={}){
 }
 
 
+
+// ══════════════════════════════════════════════
+//  ORDENAÇÃO CLICÁVEL DE TABELAS
+// ══════════════════════════════════════════════
+const _sortState = {};
+
+function sortTable(tblEl, col) {
+  if (!tblEl) return;
+  const id = tblEl.id || '_noId';
+  const st = _sortState[id] || {col: -1, asc: true};
+  const asc = st.col === col ? !st.asc : true;
+  _sortState[id] = {col, asc};
+
+  const tbody = tblEl.querySelector('tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  rows.sort((a, b) => {
+    const ca = a.cells[col], cb = b.cells[col];
+    if (!ca || !cb) return 0;
+    const ta = (ca.innerText||ca.textContent).trim();
+    const tb2 = (cb.innerText||cb.textContent).trim();
+    const na = parseFloat(ta.replace(/[^\d.\-]/g, ''));
+    const nb = parseFloat(tb2.replace(/[^\d.\-]/g, ''));
+    const cmp = (!isNaN(na)&&!isNaN(nb)) ? na-nb : ta.localeCompare(tb2,'pt-BR',{numeric:true});
+    return asc ? cmp : -cmp;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+
+  tblEl.querySelectorAll('thead th').forEach((th, i) => {
+    const base = th.dataset.sortBase || (th.dataset.sortBase = th.innerText.replace(/[▲▼⇅\s]+$/,'').trim());
+    if (i === col)
+      th.innerHTML = base + '<span style="margin-left:4px;font-size:9px;opacity:.7">'+(asc?'▲':'▼')+'</span>';
+    else
+      th.innerHTML = base + '<span style="margin-left:4px;font-size:9px;opacity:.2">⇅</span>';
+  });
+}
+
+function makeSortable(tblEl) {
+  if (!tblEl) return;
+  if (typeof tblEl === 'string') tblEl = document.getElementById(tblEl);
+  if (!tblEl) return;
+  tblEl.querySelectorAll('thead th').forEach((th, i) => {
+    th.dataset.sortBase = th.innerText.replace(/[▲▼⇅\s]+$/,'').trim();
+    th.innerHTML = th.dataset.sortBase + '<span style="margin-left:4px;font-size:9px;opacity:.2">⇅</span>';
+    th.style.cssText += ';cursor:pointer;user-select:none;white-space:nowrap';
+    th.onclick = () => sortTable(tblEl, i);
+    th.onmouseenter = () => th.style.opacity='.75';
+    th.onmouseleave = () => th.style.opacity='';
+  });
+}
+
 // ══════════════════════════════════════════════════════════════
 //  HISTOGRAMA DE FAIXAS POR FAIXA DE %
 // ══════════════════════════════════════════════════════════════
@@ -1107,6 +1159,7 @@ function buildAproveitamento(){
   buildTopInc();
   buildPivotTable();
   buildInfraDiario();
+
 }
 
 function buildAvKpis(){
@@ -1157,6 +1210,8 @@ function buildAvTable(){
   </tr>`).join('');
   const el=document.getElementById('avBody');
   if(el) el.innerHTML=rows||'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:16px">Sem resultados</td></tr>';
+
+  makeSortable('avTable');
 }
 
 
@@ -1203,6 +1258,7 @@ function buildLap(){
     return`<tr><td style="font-family:var(--mono);font-weight:700;color:var(--accent);min-width:50px">${fx._serie}</td><td style="min-width:40px;text-align:center"><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td><td style="min-width:130px;font-size:11px">${fx._local.slice(0,20)}…</td>${cells}<td class="val center" style="color:${corLap(med)};font-weight:800">${fmtPct(med)}</td></tr>`;
   });
   setHTML$('lapTableWrap',`<table class="data-tbl" style="min-width:900px"><thead><tr><th>Série</th><th>Faixa</th><th>Local</th>${headers}<th>Média</th></tr></thead><tbody>${rows.join('')}</tbody></table>`);
+  makeSortable(document.querySelector('#lapTableWrap table'));
 }
 
 // ══════════════════════════════════════════════
@@ -1292,6 +1348,7 @@ function buildDiaTable(containerId,faixas,dias,campo){
   });
   const el=document.getElementById(containerId);if(!el)return;
   el.innerHTML=`<table class="fd-tbl" style="width:100%"><thead><tr><th class="left">Série · Faixa</th><th class="left">Local</th>${headers}<th>Total</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+  makeSortable(el);
 }
 
 // ══════════════════════════════════════════════
@@ -1410,6 +1467,7 @@ function buildHorario(){
   setHTML$('horaGrid',`<table class="hora-tbl"><thead><tr>
     <th style="text-align:left;min-width:200px">Série / Faixa — ${periodoLabel}</th>${thoras}<th>Total</th>
   </tr></thead><tbody>${rowsCom}${rowsSem}</tbody></table>`);
+  makeSortable(document.querySelector('#horaGrid table'));
 
   buildDiaTable('hrDiaTbl',comDados,dias,'fluxo');
 }
@@ -1428,6 +1486,8 @@ function buildAfer(){
   }));
   set$('afVenc',venc);set$('afUrg',urg);set$('afAt',at);set$('afOk',ok);set$('afTotal',all.length);
   renderAfer(all,filtroAferAtual);
+
+  makeSortable('afTable');
 }
 function filtrarAfer(tipo,el){
   filtroAferAtual=tipo;
@@ -1594,6 +1654,8 @@ function buildTopInc(){
     <td style="background:rgba(220,38,38,.04)">${barC(f.csv_tec,f.csv_total,'var(--red)')}</td>
     <td style="background:rgba(220,38,38,.04);min-width:180px;padding:6px 10px">${top3(f.csv_tec_top,'var(--red)')}</td>
   </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">Sem dados</td></tr>';
+
+  makeSortable('avInfraTable');
 }
 
 function buildInfraDiario(){
@@ -1699,6 +1761,8 @@ function buildInfraDiario(){
   </div>`;
 
   el.innerHTML=geralHtml+diaHtml;
+  // tornar tabelas ordenáveis
+  el.querySelectorAll("table").forEach(t=>makeSortable(t));
 }
 
 
@@ -1795,6 +1859,8 @@ function buildTeste(){
   });
   const histEl=document.getElementById('tsFuncHist');
   if(histEl) histEl.innerHTML=svgHistograma(valsFuncHist,HIST_BUCKETS_FUNC,[],null,{height:170});
+
+  makeSortable('tsGeralTable');
 }
 
 // ══════════════════════════════════════════════
@@ -1965,6 +2031,8 @@ function buildInfraEnq(){
       ${serieRows||`<tr><td colspan="${colSpanTotal}" style="padding:16px;color:var(--muted);text-align:center;font-style:italic;font-size:12px">Detalhamento por faixa disponível após atualização.</td></tr>`}
     </tbody>
   </table>`;
+
+  makeSortable(el.querySelector('table'));
 }
 // ══════════════════════════════════════════════
 //  INIT
