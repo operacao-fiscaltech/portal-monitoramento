@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 17:47">
+<meta name="gerado" content="13/03/2026 17:53">
 </head>
 <body>
 <div class="layout">
@@ -575,15 +575,23 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ FLUXO HORÁRIO ══ -->
   <div class="view" id="view-horario">
-    <div class="kpi-row kpi-4">
+    <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Pico Hora</div><div class="kpi-val" id="hrPico">—</div><div class="kpi-sub">hora de maior fluxo</div></div>
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Hoje</div><div class="kpi-val" id="hrTotal">—</div><div class="kpi-sub">veículos</div></div>
       <div class="kpi" style="--kc:var(--muted)"><div class="kpi-lbl">Baixo Movimento</div><div class="kpi-val" id="hrMin">—</div><div class="kpi-sub">hora mais vazia</div></div>
-      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Faixas</div><div class="kpi-val" id="hrEqs">—</div><div class="kpi-sub">com dados</div></div>
+      <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Faixas com dados</div><div class="kpi-val" id="hrEqs">—</div><div class="kpi-sub">fluxo horário</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Sem dados</div><div class="kpi-val" id="hrSemDados">—</div><div class="kpi-sub">faixas sem registro</div></div>
     </div>
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Fluxo Hora × Faixa (Mapa de Calor — intensidade de azul)</div></div>
       <div class="hora-grid" id="horaGrid"></div>
+    </div>
+    <div class="panel" id="hrSemDadosPanel" style="display:none">
+      <div class="panel-head" style="background:rgba(220,38,38,.06);border-bottom:2px solid rgba(220,38,38,.25)">
+        <div><div class="panel-title" style="color:var(--red)">⚠️ Faixas Sem Registro de Fluxo Horário</div><div class="panel-sub">Equipamentos sem dados no relatório Funcionamento Horário</div></div>
+        <div id="hrSemDadosCount" style="font-family:var(--mono);font-weight:800;font-size:22px;color:var(--red)">0</div>
+      </div>
+      <div id="hrSemDadosGrid"></div>
     </div>
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Fluxo Diário por Faixa — Mapa de Calor vs Dia Anterior</div></div>
@@ -1326,26 +1334,28 @@ function buildInfracoes(){
 //  FLUXO HORÁRIO
 // ══════════════════════════════════════════════
 function buildHorario(){
-  const faixas=todasFaixas().filter(fx=>fx.horario&&fx.horario.some(v=>v>0));
+  const todasFx=todasFaixas();
+  const comDados=todasFx.filter(fx=>fx.horario&&fx.horario.some(v=>v>0));
+  const semDados=todasFx.filter(fx=>!fx.horario||!fx.horario.some(v=>v>0));
   const horas=Array.from({length:24},(_,i)=>i);
-  const allVals=faixas.flatMap(fx=>fx.horario||[]).filter(v=>v>0);
+  const allVals=comDados.flatMap(fx=>fx.horario||[]).filter(v=>v>0);
   const maxVal=Math.max(...allVals,1);
   const totalGeral=allVals.reduce((a,b)=>a+b,0);
-  const dias=periodoKeys();  // respeita período e apresentação
-  const hoje=dias[dias.length-1], ant=dias[dias.length-2];
+  const dias=periodoKeys();
 
-  const horaSomas=horas.map(h=>faixas.reduce((a,fx)=>a+(fx.horario?.[h]||0),0));
+  const horaSomas=horas.map(h=>comDados.reduce((a,fx)=>a+(fx.horario?.[h]||0),0));
   const picoH=horaSomas.indexOf(Math.max(...horaSomas));
   const nonZero=horaSomas.filter(v=>v>0);
-  const minH=horaSomas.indexOf(Math.min(...nonZero));
+  const minH=nonZero.length?horaSomas.indexOf(Math.min(...nonZero)):0;
   set$('hrPico',`${String(picoH).padStart(2,'0')}h (${fmtN(horaSomas[picoH])})`);
   set$('hrTotal',fmtN(totalGeral));
   set$('hrMin',`${String(minH).padStart(2,'0')}h`);
-  set$('hrEqs',faixas.length);
+  set$('hrEqs',comDados.length);
+  set$('hrSemDados',semDados.length);
 
-  // Tabela hora x equip — mapa de calor por intensidade absoluta
+  // Mapa de calor — faixas COM dados
   const thoras=horas.map(h=>`<th>${String(h).padStart(2,'0')}h</th>`).join('');
-  const rows=faixas.map(fx=>{
+  const rows=comDados.map(fx=>{
     const cells=horas.map(h=>{
       const v=fx.horario?.[h]||0;
       if(!v)return`<td style="background:#f8fafc;color:#d1d5db;font-size:9px">—</td>`;
@@ -1360,8 +1370,39 @@ function buildHorario(){
   }).join('');
   setHTML$('horaGrid',`<table class="hora-tbl"><thead><tr><th style="text-align:left;min-width:200px">Série / Faixa</th>${thoras}<th>Total/dia</th></tr></thead><tbody>${rows}</tbody></table>`);
 
-  // Tabela diário — fluxo horário total por dia com mapa de calor vs dia anterior
-  buildDiaTable('hrDiaTbl',faixas,dias,'fluxo');
+  // Painel de faixas SEM dados
+  const panel=document.getElementById('hrSemDadosPanel');
+  const countEl=document.getElementById('hrSemDadosCount');
+  const gridEl=document.getElementById('hrSemDadosGrid');
+  if(panel){
+    if(semDados.length>0){
+      panel.style.display='block';
+      if(countEl) countEl.textContent=semDados.length;
+      // Tabela das faixas sem dados
+      const sdRows=semDados.map(fx=>`<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:7px 10px;font-family:var(--mono);font-weight:700;color:var(--red)">${fx._serie}</td>
+        <td style="padding:7px 6px;text-align:center"><span style="background:rgba(220,38,38,.12);color:#fca5a5;border:1px solid rgba(220,38,38,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${fx.id}</span></td>
+        <td style="padding:7px 10px;font-size:11px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fx._local||'—'}</td>
+        <td style="padding:7px 10px;font-size:11px;color:var(--muted2)">${fx._sentido||'—'}</td>
+        <td style="padding:7px 10px"><span style="background:rgba(220,38,38,.1);color:var(--red);border-radius:4px;padding:3px 10px;font-size:10px;font-weight:700">Sem registro</span></td>
+      </tr>`).join('');
+      if(gridEl) gridEl.innerHTML=`<table style="border-collapse:collapse;width:100%;font-size:12px">
+        <thead><tr style="background:var(--card2)">
+          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Série</th>
+          <th style="padding:7px 6px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Faixa</th>
+          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Local</th>
+          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Sentido</th>
+          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Status</th>
+        </tr></thead>
+        <tbody>${sdRows}</tbody>
+      </table>`;
+    } else {
+      panel.style.display='none';
+    }
+  }
+
+  // Tabela diário
+  buildDiaTable('hrDiaTbl',comDados,dias,'fluxo');
 }
 
 // ══════════════════════════════════════════════
