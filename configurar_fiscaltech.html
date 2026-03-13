@@ -188,9 +188,10 @@ tr:hover td{background:var(--bg3);}
   </div>
   <div class="hbar">
     <div class="hkpi"><div class="hkpi-v" id="hTotal">0</div><div class="hkpi-l">Total</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hEPR" style="color:var(--accent)">0</div><div class="hkpi-l">EPR</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hDNIT" style="color:var(--green)">0</div><div class="hkpi-l">DNIT</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hAgetran" style="color:var(--purple)">0</div><div class="hkpi-l">Agetran</div></div>
+    <div class="hkpi"><div class="hkpi-v" id="hARES" style="color:var(--accent)">0</div><div class="hkpi-l">ARES</div></div>
+    <div class="hkpi"><div class="hkpi-v" id="hSIOR" style="color:var(--green)">0</div><div class="hkpi-l">SIOR</div></div>
+    <div class="hkpi"><div class="hkpi-v" id="hPROMULT" style="color:var(--purple)">0</div><div class="hkpi-l">PROMULT</div></div>
+    <div class="hkpi"><div class="hkpi-v" id="hOVERSEE" style="color:var(--yellow)">0</div><div class="hkpi-l">OVERSEE</div></div>
     <div style="display:flex;align-items:center;gap:10px;margin-left:8px;padding-left:16px;border-left:1px solid var(--border)">
       <span id="userLabel" style="font-size:11px;color:var(--text3);font-family:var(--mono)"></span>
       <button onclick="logout()" style="padding:5px 12px;background:var(--redg);color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)">Sair</button>
@@ -234,15 +235,15 @@ tr:hover td{background:var(--bg3);}
   <div class="card">
     <div class="ct">🗂️ Modelo de Dashboard</div>
     <div class="mgrid" id="mgrid"></div>
-    <input type="hidden" id="fModelo" value="EPR">
+    <input type="hidden" id="fModelo" value="ARES">
   </div>
 
   <div class="card">
     <div class="ct">📋 Identificação</div>
     <div class="fg">
-      <div class="fl"><label>ID do Contrato *</label><input type="text" id="fId" placeholder="ex: EPR01, DNIT-SP" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_-]/g,'');prvw()"></div>
+      <div class="fl"><label>ID do Contrato *</label><input type="text" id="fId" placeholder="ex: ARES01, SIOR-SP" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_-]/g,'');prvw()"></div>
       <div class="fl"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="ex: EPR Litoral Pioneiro"></div>
-      <div class="fl"><label>Concessionária / Órgão</label><input type="text" id="fConcess" placeholder="ex: EPR, DNIT, Agetran"></div>
+      <div class="fl"><label>Concessionária / Órgão</label><input type="text" id="fConcess" placeholder="ex: EPR, DNIT, Agetran, Oversee"></div>
       <div class="fl"><label>UF</label>
         <select id="fUF"><option value="">Selecionar...</option><option>PR</option><option>SP</option><option>SC</option><option>RS</option><option>MG</option><option>RJ</option><option>GO</option><option>MT</option><option>MS</option><option>BA</option><option>PE</option><option>CE</option></select>
       </div>
@@ -293,15 +294,15 @@ tr:hover td{background:var(--bg3);}
     Templates ficam em: <code style="font-family:var(--mono);background:var(--bg3);padding:1px 5px;border-radius:3px">C:\fiscaltech\modelos\NOME_MODELO\dashboard_template.html</code>
   </div>
 
-  <!-- EPR -->
+  <!-- ARES -->
   <div class="modelo-info-card" style="background:var(--accentg);border-color:var(--border2)">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
       <div style="flex:1">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge be" style="font-size:11px;padding:4px 10px">EPR</span>
+          <span class="badge be" style="font-size:11px;padding:4px 10px">Modelo 1 — ARES</span>
           <span class="badge" style="background:var(--greeng);color:var(--green)">✅ ATIVO</span>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo EPR</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 1 — ARES</div>
         <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Concessões rodoviárias federais/estaduais com sistema Ares completo.</div>
         <div style="font-size:10px;color:var(--text2);font-weight:600;margin-bottom:5px">📄 Arquivos XLS:</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
@@ -319,45 +320,64 @@ tr:hover td{background:var(--bg3);}
       </div>
       <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
         <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--accent)" id="mCountEPR">0</div>
+        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--accent)" id="mCountARES">0</div>
       </div>
     </div>
   </div>
 
-  <!-- DNIT -->
+  <!-- SIOR -->
   <div class="modelo-info-card" style="background:var(--greeng);border-color:var(--green)">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
       <div style="flex:1">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge bd2" style="font-size:11px;padding:4px 10px">DNIT</span>
+          <span class="badge bd2" style="font-size:11px;padding:4px 10px">Modelo 2 — SIOR</span>
           <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo DNIT</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Contratos com o Departamento Nacional de Infraestrutura de Transportes.</div>
-        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros XLS de um contrato DNIT, envie para construirmos o parser e o dashboard específico.</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 2 — SIOR</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema SIOR — contratos DNIT.</div>
+        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato SIOR, envie para construirmos o parser e o dashboard específico.</div>
       </div>
       <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
         <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--green)" id="mCountDNIT">0</div>
+        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--green)" id="mCountSIOR">0</div>
       </div>
     </div>
   </div>
 
-  <!-- AGETRAN -->
+  <!-- PROMULT -->
   <div class="modelo-info-card" style="background:var(--purpleg);border-color:var(--purple)">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
       <div style="flex:1">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge ba" style="font-size:11px;padding:4px 10px">AGETRAN</span>
+          <span class="badge ba" style="font-size:11px;padding:4px 10px">Modelo 3 — PROMULT</span>
           <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo Agetran</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Contratos com agências estaduais de transportes.</div>
-        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros XLS de um contrato Agetran, envie para construirmos o parser e o dashboard específico.</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 3 — PROMULT</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema Promult — contratos Agetran.</div>
+        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato Promult, envie para construirmos o parser e o dashboard específico.</div>
       </div>
       <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
         <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--purple)" id="mCountAgetran">0</div>
+        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--purple)" id="mCountPROMULT">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERSEE -->
+  <div class="modelo-info-card" style="background:var(--yellowg);border-color:var(--yellow)">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span class="badge by" style="font-size:11px;padding:4px 10px;background:var(--yellowg);color:var(--yellow);border:1px solid var(--yellow)">Modelo 4 — OVERSEE</span>
+          <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
+        </div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 4 — OVERSEE</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema Oversee — a definir.</div>
+        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato Oversee, envie para construirmos o parser e o dashboard específico.</div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
+        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="mCountOVERSEE">0</div>
       </div>
     </div>
   </div>
@@ -386,7 +406,7 @@ tr:hover td{background:var(--bg3);}
       <div class="fl fg2">
         <label>Pasta Modelos (templates)</label>
         <input type="text" id="gModelos" value="C:\fiscaltech\modelos">
-        <div style="font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono)">\EPR\dashboard_template.html · \DNIT\dashboard_template.html · \AGETRAN\dashboard_template.html</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono)">\ARES\dashboard_template.html · \SIOR\dashboard_template.html · \PROMULT\dashboard_template.html · \OVERSEE\dashboard_template.html</div>
       </div>
     </div>
   </div>
@@ -408,7 +428,7 @@ tr:hover td{background:var(--bg3);}
   </div>
 
   <div class="card">
-    <div class="ct">📊 Thresholds — Modelo EPR</div>
+    <div class="ct">📊 Thresholds — Modelo 1 (ARES)</div>
     <div class="fg">
       <div class="fl"><label>Aproveitamento OK (%)</label><input type="number" id="gAprovOk" value="95" min="0" max="100"></div>
       <div class="fl"><label>Aproveitamento Atenção (%)</label><input type="number" id="gAprovWarn" value="85" min="0" max="100"></div>
@@ -482,7 +502,7 @@ async function fazerLogin() {
     if(ul)ul.textContent='👤 '+user;
     err.style.display='none';
     load();
-    renderMCards('EPR');
+    renderMCards('ARES');
     document.getElementById('fRaiz').value=G.pasta_raiz;
     document.getElementById('fPortal').value=G.pasta_portal;
   } else {
@@ -518,13 +538,15 @@ let G={
   modo_apresentacao:0,periodo:'mes'
 };
 const MODELOS=[
-  {id:'EPR',nome:'Modelo EPR',cor:'accent',ok:true,
-   desc:'Concessões rodoviárias com Ares completo.',
+  {id:'ARES',   nome:'Modelo 1 — ARES',    cor:'accent', ok:true,
+   desc:'Sistema Ares — concessões rodoviárias federais/estaduais.',
    secs:['Funcionamento','Aproveitamento','LAP','OCR','Fluxo','Infrações','Aferições']},
-  {id:'DNIT',nome:'Modelo DNIT',cor:'green',ok:false,
-   desc:'Contratos DNIT — estrutura a definir.',secs:['A definir']},
-  {id:'AGETRAN',nome:'Modelo Agetran',cor:'purple',ok:false,
-   desc:'Contratos Agetran — estrutura a definir.',secs:['A definir']}
+  {id:'SIOR',   nome:'Modelo 2 — SIOR',    cor:'green',  ok:false,
+   desc:'Sistema SIOR — contratos DNIT.',secs:['A definir']},
+  {id:'PROMULT',nome:'Modelo 3 — PROMULT', cor:'purple', ok:false,
+   desc:'Sistema Promult — contratos Agetran.',secs:['A definir']},
+  {id:'OVERSEE',nome:'Modelo 4 — OVERSEE', cor:'yellow', ok:false,
+   desc:'Sistema Oversee — a definir.',secs:['A definir']}
 ];
 
 // ── STORAGE ────────────────────────────────────
@@ -550,9 +572,10 @@ function nav(id,btn){
 // ── UI ─────────────────────────────────────────
 function ui(){
   document.getElementById('hTotal').textContent=contratos.length;
-  document.getElementById('hEPR').textContent=contratos.filter(c=>c.modelo==='EPR').length;
-  document.getElementById('hDNIT').textContent=contratos.filter(c=>c.modelo==='DNIT').length;
-  document.getElementById('hAgetran').textContent=contratos.filter(c=>c.modelo==='AGETRAN').length;
+  document.getElementById('hARES').textContent=contratos.filter(c=>c.modelo==='ARES').length;
+  document.getElementById('hSIOR').textContent=contratos.filter(c=>c.modelo==='SIOR').length;
+  document.getElementById('hPROMULT').textContent=contratos.filter(c=>c.modelo==='PROMULT').length;
+  document.getElementById('hOVERSEE').textContent=contratos.filter(c=>c.modelo==='OVERSEE').length;
   atualizaPortalUrl();
   renderSidebar();
   renderGeral();
@@ -563,8 +586,8 @@ function atualizaPortalUrl(){
   const el=document.getElementById('gPortalUrl');if(el)el.value=u;
 }
 
-function corModelo(m){return m==='EPR'?'var(--accent)':m==='DNIT'?'var(--green)':'var(--purple)';}
-function badgeModelo(m){return m==='EPR'?'be':m==='DNIT'?'bd2':'ba';}
+function corModelo(m){return m==='ARES'?'var(--accent)':m==='SIOR'?'var(--green)':m==='PROMULT'?'var(--purple)':'var(--yellow)';}
+function badgeModelo(m){return m==='ARES'?'be':m==='SIOR'?'bd2':m==='PROMULT'?'ba':'by';}
 
 function renderSidebar(){
   const cl=document.getElementById('clist');
@@ -680,7 +703,7 @@ function limpar(){
   document.getElementById('fTitle').textContent='Novo Contrato';
   document.getElementById('fSub').textContent='Preencha as informações';
   document.getElementById('btnDel').style.display='none';
-  renderMCards('EPR');document.getElementById('fModelo').value='EPR';
+  renderMCards('ARES');document.getElementById('fModelo').value='EPR';
   ['fNome','fConcess','fUrl','fObs'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('fId').value='';document.getElementById('fId').readOnly=false;
   document.getElementById('fUF').value='';
@@ -741,9 +764,10 @@ function salvarG(){
 
 // ── PÁGINA MODELOS ─────────────────────────────
 function loadModelosPage(){
-  document.getElementById('mCountEPR').textContent=contratos.filter(c=>c.modelo==='EPR').length;
-  document.getElementById('mCountDNIT').textContent=contratos.filter(c=>c.modelo==='DNIT').length;
-  document.getElementById('mCountAgetran').textContent=contratos.filter(c=>c.modelo==='AGETRAN').length;
+  document.getElementById('mCountARES').textContent=contratos.filter(c=>c.modelo==='ARES').length;
+  document.getElementById('mCountSIOR').textContent=contratos.filter(c=>c.modelo==='SIOR').length;
+  document.getElementById('mCountPROMULT').textContent=contratos.filter(c=>c.modelo==='PROMULT').length;
+  document.getElementById('mCountOVERSEE').textContent=contratos.filter(c=>c.modelo==='OVERSEE').length;
 }
 
 // ── GERAR ──────────────────────────────────────
@@ -1034,7 +1058,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     const el=document.getElementById('userLabel');
     if(el)el.textContent='👤 '+user;
     load();
-    renderMCards('EPR');
+    renderMCards('ARES');
     document.getElementById('fRaiz').value=G.pasta_raiz;
     document.getElementById('fPortal').value=G.pasta_portal;
   }
