@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 18:08">
+<meta name="gerado" content="13/03/2026 18:14">
 </head>
 <body>
 <div class="layout">
@@ -1339,16 +1339,18 @@ function buildHorario(){
 
   // Para cada faixa, calcular horario filtrado pelo período selecionado
   function horarioPeriodo(fx){
-    // Se tem horario_por_dia, filtrar pelos dias do período
-    if(fx.horario_por_dia&&Object.keys(fx.horario_por_dia).length>0){
+    const hpd=fx.horario_por_dia;
+    if(hpd&&Object.keys(hpd).length>0){
+      // Se período tem dias definidos, filtrar por eles
+      const diasFiltro=dias.length>0 ? dias : Object.keys(hpd).sort();
       const agg=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-      dias.forEach(d=>{
-        const h=fx.horario_por_dia[d];
+      diasFiltro.forEach(d=>{
+        const h=hpd[d];
         if(h) h.forEach((v,i)=>agg[i]+=v);
       });
       return agg;
     }
-    // Fallback: usa horario agregado total (compatibilidade)
+    // Fallback: usa horario agregado total
     return fx.horario||[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
   }
 
