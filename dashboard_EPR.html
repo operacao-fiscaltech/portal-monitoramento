@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<!-- GERADO: 13/03/2026 09:53:55 -->
+<!-- GERADO: 13/03/2026 10:03:20 -->
 </head>
 <body>
 <div class="layout">
@@ -907,7 +907,6 @@ function buildPainel(){
     const horasEsp=diasTs.length*24;
     const horasTeste=vals.reduce((a,b)=>a+b,0);
     const pct=horasEsp>0?horasTeste/horasEsp*100:0;
-    if(pct>0){sumPct2+=pct;nPct2++;}
     if(pct>=95)tsOkP++;else if(pct>=80)tsWarnP++;else tsCritP++; // pct=0 = crítico
   });
   set$('pEq',faixas.length);
