@@ -255,7 +255,7 @@ tr:hover td{background:var(--bg3);}
     <div class="fg">
       <div class="fl fg2"><label>URL do Sistema *</label><input type="text" id="fUrl" placeholder="https://nomecontrato.fiscaltech.ind.br" oninput="prvw()"></div>
       <div class="fl"><label>Usuário</label><input type="text" id="fUser" value="portal.monitoramento"></div>
-      <div class="fl"><label>Senha</label><input type="password" id="fSenha" value="88212605"></div>
+      <div class="fl"><label>Senha</label><input type="password" id="fSenha" value="Fiscal@123"></div>
     </div>
   </div>
 
@@ -477,7 +477,7 @@ tr:hover td{background:var(--bg3);}
 // Senha é armazenada como hash SHA-256 para maior segurança
 const USUARIOS = {
   "fiscaltech": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", // senha: admin
-  "operacao":   "b14361404c078ffd549c03db443c3fede2f3e534ad9d8b9a6b7b802dae6d3c0b", // senha: fiscal@2025
+  "operacao":   "af57649342064f138416ed6d99503dfc169df91bf8d70a37519d8fdf06c71909", // senha: Fiscal@123
 };
 // Para gerar hash de nova senha: https://emn178.github.io/online-tools/sha256.html
 
@@ -708,7 +708,7 @@ function limpar(){
   document.getElementById('fId').value='';document.getElementById('fId').readOnly=false;
   document.getElementById('fUF').value='';
   document.getElementById('fUser').value='portal.monitoramento';
-  document.getElementById('fSenha').value='88212605';
+  document.getElementById('fSenha').value='Fiscal@123';
   document.getElementById('fRaiz').value=G.pasta_raiz;
   document.getElementById('fPortal').value=G.pasta_portal;
   document.getElementById('fHrDl').value='06:30';document.getElementById('fHrAt').value='07:00';
@@ -866,7 +866,7 @@ function buildAgendadorStr(){
 function buildBaixar(){
   const bloco=contratos.map(c=>`    # ${c.modelo} | ${c.id}
     {"id":"${c.id}","modelo":"${c.modelo}","nome":"${c.nome}",
-     "url":"${c.url}","usuario":"${c.usuario||'portal.monitoramento'}","senha":"${c.senha||'88212605'}",
+     "url":"${c.url}","usuario":"${c.usuario||'portal.monitoramento'}","senha":"${c.senha||'Fiscal@123'}",
      "pasta":r"${c.pasta_raiz||G.pasta_raiz}\\${c.id}","hr_download":"${c.hr_dl||'06:30'}"},`).join('\n');
   return `"""
 baixar_relatorios.py — Fiscaltech Monitoramento
