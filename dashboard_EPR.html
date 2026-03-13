@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 17:53">
+<meta name="gerado" content="13/03/2026 17:56">
 </head>
 <body>
 <div class="layout">
@@ -1353,55 +1353,36 @@ function buildHorario(){
   set$('hrEqs',comDados.length);
   set$('hrSemDados',semDados.length);
 
-  // Mapa de calor — faixas COM dados
   const thoras=horas.map(h=>`<th>${String(h).padStart(2,'0')}h</th>`).join('');
-  const rows=comDados.map(fx=>{
+
+  // Linhas COM dados — mapa de calor azul
+  const rowsCom=comDados.map(fx=>{
     const cells=horas.map(h=>{
       const v=fx.horario?.[h]||0;
       if(!v)return`<td style="background:#f8fafc;color:#d1d5db;font-size:9px">—</td>`;
       const intensity=v/maxVal;
-      const alpha=Math.max(0.08,intensity);
-      const bg=`rgba(0,102,204,${alpha.toFixed(2)})`;
+      const bg=`rgba(0,102,204,${Math.max(0.08,intensity).toFixed(2)})`;
       const txt=intensity>0.55?'white':'#1e3a5f';
       return`<td style="background:${bg};color:${txt}">${v>=1000?(v/1000).toFixed(1)+'k':v}</td>`;
     }).join('');
     const total=fx.horario.reduce((a,b)=>a+b,0);
     return`<tr><td class="eq-lbl">${fx._serie} F${fx.id} — ${fx._local.slice(0,18)}</td>${cells}<td style="font-family:var(--mono);font-size:10px;font-weight:800;color:var(--accent2);padding:0 8px;white-space:nowrap">${fmtN(total)}</td></tr>`;
   }).join('');
-  setHTML$('horaGrid',`<table class="hora-tbl"><thead><tr><th style="text-align:left;min-width:200px">Série / Faixa</th>${thoras}<th>Total/dia</th></tr></thead><tbody>${rows}</tbody></table>`);
 
-  // Painel de faixas SEM dados
-  const panel=document.getElementById('hrSemDadosPanel');
-  const countEl=document.getElementById('hrSemDadosCount');
-  const gridEl=document.getElementById('hrSemDadosGrid');
-  if(panel){
-    if(semDados.length>0){
-      panel.style.display='block';
-      if(countEl) countEl.textContent=semDados.length;
-      // Tabela das faixas sem dados
-      const sdRows=semDados.map(fx=>`<tr style="border-bottom:1px solid var(--border)">
-        <td style="padding:7px 10px;font-family:var(--mono);font-weight:700;color:var(--red)">${fx._serie}</td>
-        <td style="padding:7px 6px;text-align:center"><span style="background:rgba(220,38,38,.12);color:#fca5a5;border:1px solid rgba(220,38,38,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${fx.id}</span></td>
-        <td style="padding:7px 10px;font-size:11px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${fx._local||'—'}</td>
-        <td style="padding:7px 10px;font-size:11px;color:var(--muted2)">${fx._sentido||'—'}</td>
-        <td style="padding:7px 10px"><span style="background:rgba(220,38,38,.1);color:var(--red);border-radius:4px;padding:3px 10px;font-size:10px;font-weight:700">Sem registro</span></td>
-      </tr>`).join('');
-      if(gridEl) gridEl.innerHTML=`<table style="border-collapse:collapse;width:100%;font-size:12px">
-        <thead><tr style="background:var(--card2)">
-          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Série</th>
-          <th style="padding:7px 6px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Faixa</th>
-          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Local</th>
-          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Sentido</th>
-          <th style="text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Status</th>
-        </tr></thead>
-        <tbody>${sdRows}</tbody>
-      </table>`;
-    } else {
-      panel.style.display='none';
-    }
-  }
+  // Linhas SEM dados — destacadas em vermelho
+  const rowsSem=semDados.map(fx=>{
+    const cells=horas.map(()=>`<td style="background:rgba(220,38,38,.07);color:rgba(220,38,38,.4);font-size:9px;text-align:center">—</td>`).join('');
+    return`<tr style="background:rgba(220,38,38,.04)">
+      <td class="eq-lbl" style="color:var(--red);font-weight:700">${fx._serie} F${fx.id} — ${fx._local.slice(0,18)}</td>
+      ${cells}
+      <td style="padding:0 8px;white-space:nowrap"><span style="background:rgba(220,38,38,.12);color:var(--red);border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700">sem dados</span></td>
+    </tr>`;
+  }).join('');
 
-  // Tabela diário
+  setHTML$('horaGrid',`<table class="hora-tbl"><thead><tr>
+    <th style="text-align:left;min-width:200px">Série / Faixa</th>${thoras}<th>Total/dia</th>
+  </tr></thead><tbody>${rowsCom}${rowsSem}</tbody></table>`);
+
   buildDiaTable('hrDiaTbl',comDados,dias,'fluxo');
 }
 
