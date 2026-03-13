@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 17:31">
+<meta name="gerado" content="13/03/2026 17:33">
 </head>
 <body>
 <div class="layout">
@@ -729,7 +729,7 @@ const media      = v=>{ const f=v.filter(x=>x!=null&&x>=0); return f.length?soma
 const fmtN       = n=>{ if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR'); };
 const fmtPct     = n=>n!=null&&n!==''?n.toFixed(1)+'%':'—';
 const fmtIdx     = n=>n!=null?(n*100).toFixed(1)+'%':'—';
-const fmtDia     = d=>{ if(!d||d.length<8)return d; if(d.includes('-'))return d.slice(8)+'/'+d.slice(5,7); return d.slice(6,8)+'/'+d.slice(4,6); };
+const fmtDia     = d=>{ if(!d)return d; if(d.includes('-')&&d.length>=10)return d.slice(8)+'/'+d.slice(5,7); if(/^\d{8}$/.test(d))return d.slice(6,8)+'/'+d.slice(4,6); if(/^\d{2}\s/.test(d))return d.slice(0,2)+'/'+d.slice(3,6); return d; };
 const diasRest   = v=>{ if(!v)return 9999; const h=new Date();h.setHours(0,0,0,0);return Math.round((new Date(v+' 12:00')-h)/86400000); };
 const corAprov   = v=>v>=0.95?'var(--green)':v>=0.85?'var(--yellow)':'var(--red)';
 const corAprovBg = v=>v>=0.95?'var(--green-bg)':v>=0.85?'var(--yellow-bg)':'var(--red-bg)';
@@ -1179,7 +1179,7 @@ function buildLap(){
     faixas.forEach(fx=>{const v=fx.lap?.[lapSub]?.[d];if(v!=null&&v>=0){s+=v;n++;}});
     return n?s/n:null;
   });
-  const lapLabels=dias.map(d=>d.slice(6,8)+'/'+d.slice(4,6));
+  const lapLabels=dias.map(fmtDia);
   setHTML$('lapBarChart',svgBarChart(lapLabels,[{data:consolidados,color:'#0066cc'}],{height:165,pct:true,padL:50,showLabels:true}));
 
   // Tabela todos faixas por dia
@@ -1225,7 +1225,7 @@ function buildFluxo(){
   set$('fxMedia',fmtN(Math.round(mediaD)));
 
   // Bar chart consolidado com valores por dia
-  const fxLabels=dias.map(d=>d.slice(6,8)+'/'+d.slice(4,6));
+  const fxLabels=dias.map(fmtDia);
   setHTML$('fxConsolidChart',svgBarChart(fxLabels,[{data:consolidados,color:'#0066cc'}],{height:170,padL:50,showLabels:true}));
 
   // Top 10 variação último dia vs anterior
@@ -1303,7 +1303,7 @@ function buildInfracoes(){
   set$('infTotal',fmtN(total));set$('infHoje',fmtN(ultTotal));
   set$('infMedia',fmtN(+(total/dias.length).toFixed(1)));
 
-  const infLabels=dias.map(d=>d.slice(6,8)+'/'+d.slice(4,6));
+  const infLabels=dias.map(fmtDia);
   setHTML$('infConsolidChart',svgBarChart(infLabels,[{data:consolidados,color:'#dc2626'}],{height:170,padL:50,showLabels:true}));
 
   // Top 10 último dia
