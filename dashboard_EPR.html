@@ -241,7 +241,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
 <meta name="gerado" content="">
-<!-- GERADO: 13/03/2026 11:35:01 -->
+<!-- GERADO: 13/03/2026 11:56:46 -->
 </head>
 <body>
 <div class="layout">
@@ -347,12 +347,14 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
     <div class="sem-row" style="margin-bottom:12px">
       <div class="sem-item sem-info"><div class="sem-n" id="pAfer">—</div><div><div class="sem-lbl">Afer. Urgente</div><div class="sem-desc">Vence em ≤ 30 dias</div></div></div>
       <div class="sem-item sem-crit"><div class="sem-n" id="pFuncCrit">—</div><div><div class="sem-lbl">Func. Crítico</div><div class="sem-desc">Funcionamento &lt; 80%</div></div></div>
+      <div class="sem-item sem-crit"><div class="sem-n" id="pAprovCritN">—</div><div><div class="sem-lbl">Aprov. Imagens Crítico</div><div class="sem-desc">&lt; 85%</div></div></div>
+      <div class="sem-item sem-crit"><div class="sem-n" id="pLapCritN">—</div><div><div class="sem-lbl">LAP Crítico</div><div class="sem-desc">&lt; 80%</div></div></div>
     </div>
-    <div class="grid2">
-      <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔴 Aproveitamento Crítico</div></div><div id="pAprovCritList"></div></div>
-      <div class="rank-panel"><div class="rp-head"><div class="rp-title">🔴 LAP Crítico</div></div><div id="pLapCritList"></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+      <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Func. Crítico</div></div><div id="pFuncCritList"></div></div>
+      <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Aprov. Imagens Crítico</div></div><div id="pAprovCritList"></div></div>
+      <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 LAP Crítico</div></div><div id="pLapCritList"></div></div>
     </div>
-    <div class="rank-panel" style="margin-bottom:16px"><div class="rp-head"><div class="rp-title">🔴 Funcionamento Crítico</div></div><div id="pFuncCritList"></div></div>
   </div>
 
   <!-- ══ APROVEITAMENTO DE IMAGENS ══ -->
@@ -385,10 +387,10 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         <table class="data-tbl">
           <thead><tr>
             <th>Série · Faixa</th><th>Local</th><th>Faixa</th><th>Total</th>
-            <th style="color:var(--green)">Consistente (qtd)</th>
-            <th style="color:var(--yellow)">N-Técnica (qtd)</th>
+            <th style="color:var(--green)">🟢 Consistente</th>
+            <th style="color:var(--yellow)">🟡 N-Técnica</th>
             <th style="background:rgba(217,119,6,.06)">Top Não-Técnico</th>
-            <th style="color:var(--red)">Técnica (qtd)</th>
+            <th style="color:var(--red)">🔴 Técnica</th>
             <th style="background:rgba(220,38,38,.06)">Top Técnico</th>
           </tr></thead>
           <tbody id="avInfraBody"></tbody>
@@ -575,15 +577,17 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ AFERIÇÕES ══ -->
   <div class="view" id="view-afericoes">
-    <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi-row" style="grid-template-columns:repeat(6,1fr)">
+      <div class="kpi" style="--kc:#7f1d1d"><div class="kpi-lbl">Vencida</div><div class="kpi-val" id="afVenc">—</div><div class="kpi-sub">expirada</div></div>
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">≤ 30 dias</div><div class="kpi-val" id="afUrg">—</div><div class="kpi-sub">urgente</div></div>
-      <div class="kpi" style="--kc:var(--orange,#f97316)"><div class="kpi-lbl">31–60 dias</div><div class="kpi-val" id="afAt60">—</div><div class="kpi-sub">atenção</div></div>
+      <div class="kpi" style="--kc:#f97316"><div class="kpi-lbl">31–60 dias</div><div class="kpi-val" id="afAt60">—</div><div class="kpi-sub">atenção</div></div>
       <div class="kpi" style="--kc:var(--yellow)"><div class="kpi-lbl">61–90 dias</div><div class="kpi-val" id="afAt90">—</div><div class="kpi-sub">programar</div></div>
       <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">&gt; 90 dias</div><div class="kpi-val" id="afOk">—</div><div class="kpi-sub">em dia</div></div>
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Faixas</div><div class="kpi-val" id="afTotal">—</div><div class="kpi-sub">cadastradas</div></div>
     </div>
     <div class="filter-bar">
       <button class="fchip active" onclick="filtrarAfer('todos',this)">Todos</button>
+      <button class="fchip" onclick="filtrarAfer('vencida',this)">Vencida</button>
       <button class="fchip" onclick="filtrarAfer('urgente',this)">≤ 30d</button>
       <button class="fchip" onclick="filtrarAfer('at60',this)">31–60d</button>
       <button class="fchip" onclick="filtrarAfer('at90',this)">61–90d</button>
@@ -611,6 +615,17 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Crítico (&lt; 80%)</div><div class="kpi-val" id="tsCrit">—</div><div class="kpi-sub">faixas</div></div>
     </div>
 
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div class="panel" style="margin:0">
+        <div class="panel-head"><div class="panel-title">📊 Distribuição por Faixa de Funcionamento</div><div class="panel-sub">Faixas em cada intervalo de % — período selecionado</div></div>
+        <div id="tsFuncHist"></div>
+      </div>
+      <div class="panel" style="margin:0">
+        <div class="panel-head"><div class="panel-title">Evolução — % de Funcionamento por Dia</div><div class="panel-sub">Aproveitamento médio diário de imagem teste</div></div>
+        <div id="tsMensalChart"></div>
+      </div>
+    </div>
+
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Aproveitamento Geral — Imagem Teste por Faixa</div><div class="panel-sub">Horas com imagem teste / 24h × dias</div></div>
       <div class="tbl-wrap">
@@ -624,17 +639,6 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Imagem Teste — Dia a Dia por Faixa (Mapa de Calor)</div></div>
       <div class="fd-table-wrap" id="tsDiaTbl"></div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title">Evolução Mensal — Imagem Teste Consolidada</div>
-      </div>
-      <div id="tsMensalChart"></div>
-    </div>
-    <div class="panel">
-      <div class="panel-head"><div class="panel-title">📊 Distribuição de Faixas por Faixa de Funcionamento</div><div class="panel-sub">Quantidade de faixas em cada intervalo de % de funcionamento</div></div>
-      <div id="tsFuncHist"></div>
     </div>
   </div>
 
@@ -978,11 +982,10 @@ function buildPainel(){
   });
 
   // Referência de atualização
+  // Referência de atualização — mostra no topbar
+  const gerado=document.querySelector('meta[name="gerado"]')?.content;
   const fonteEl=document.getElementById('fonteAtualiz');
-  if(fonteEl){
-    const gerado=document.querySelector('meta[name="gerado"]')?.content;
-    if(gerado){fonteEl.textContent='Dados: '+gerado;fonteEl.style.display='block';}
-  }
+  if(fonteEl&&gerado){fonteEl.innerHTML='<span style="color:var(--muted)">📄 Atualizado:</span> '+gerado;fonteEl.style.display='block';}
 
   set$('pEq',faixas.length);
   set$('pAprov',aprovN?(aprovSum/aprovN).toFixed(1)+'%':'—');
@@ -990,6 +993,8 @@ function buildPainel(){
   set$('pLap',lapN?lapSum/lapN>0?fmtPct(lapSum/lapN):'—':'—');
   set$('pSemOk',ok);set$('pSemWarn',warn);set$('pSemCrit',crit);set$('pAfer',aferUrg);
   set$('pFuncCrit',tsCritP);
+  set$('pAprovCritN',aprovCritList.length);
+  set$('pLapCritN',lapCritList.length);
   set$('pTsOk',tsOkP);set$('pTsWarn',tsWarnP);set$('pTsCrit',tsCritP);
 
   aprovCritList.sort((a,b)=>(a.aproveitamento?.indice_aprov||0)-(b.aproveitamento?.indice_aprov||0));
@@ -1068,7 +1073,7 @@ function buildAproveitamento(){
       <td style="font-size:11px;max-width:130px;overflow:hidden;text-overflow:ellipsis">${fx._local}</td>
       <td><span class="faixa-chip" style="background:#e8f0fc;color:var(--accent);border-color:var(--accent-light)">F${fx.id}</span></td>
       <td class="val center" style="font-weight:800">${tot}</td>
-      <td style="background:rgba(5,150,105,.04)"><div style="display:flex;align-items:center;gap:5px"><b style="font-family:var(--mono);font-size:12px;color:var(--green);min-width:30px">${ti.consist}</b><span style="font-family:var(--mono);font-size:9px;color:var(--green)">${pct(ti.consist)}</span></div></td>
+      <td style="background:rgba(5,150,105,.04)">${bar(ti.consist,'var(--green)')}</td>
       <td style="background:rgba(217,119,6,.04)">${bar(ti.ntec_real,'var(--yellow)')}</td>
       <td style="background:rgba(217,119,6,.04);min-width:200px;padding:6px 12px">${topNtec||'<span style="color:var(--muted2);font-size:10px">—</span>'}</td>
       <td style="background:rgba(220,38,38,.04)">${bar(ti.tec,'var(--red)')}</td>
@@ -1336,16 +1341,15 @@ function buildHorario(){
 //  AFERIÇÕES
 // ══════════════════════════════════════════════
 function buildAfer(){
-  let urg=0,at60=0,at90=0,ok=0,all=[];
-  // Iterar por faixas individuais
+  let venc=0,urg=0,at60=0,at90=0,ok=0,all=[];
   DB.forEach(c=>c.faixas.forEach(eq=>{
     (eq.faixas||[{id:'1'}]).forEach(fx=>{
       const d=diasRest(eq.venc_afer);
-      if(d<=30)urg++;else if(d<=60)at60++;else if(d<=90)at90++;else ok++;
+      if(d<0)venc++;else if(d<=30)urg++;else if(d<=60)at60++;else if(d<=90)at90++;else ok++;
       all.push({...eq,_fxId:fx.id,dias:d,_c:c});
     });
   }));
-  set$('afUrg',urg);set$('afAt60',at60);set$('afAt90',at90);set$('afOk',ok);set$('afTotal',all.length);
+  set$('afVenc',venc);set$('afUrg',urg);set$('afAt60',at60);set$('afAt90',at90);set$('afOk',ok);set$('afTotal',all.length);
   renderAfer(all,filtroAferAtual);
 }
 function filtrarAfer(tipo,el){
@@ -1362,15 +1366,16 @@ function filtrarAfer(tipo,el){
 }
 function renderAfer(all,tipo){
   let filtered=all;
-  if(tipo==='urgente')filtered=all.filter(e=>e.dias<=30);
+  if(tipo==='vencida')filtered=all.filter(e=>e.dias<0);
+  else if(tipo==='urgente')filtered=all.filter(e=>e.dias>=0&&e.dias<=30);
   else if(tipo==='at60')filtered=all.filter(e=>e.dias>30&&e.dias<=60);
   else if(tipo==='at90')filtered=all.filter(e=>e.dias>60&&e.dias<=90);
   else if(tipo==='ok')filtered=all.filter(e=>e.dias>90);
   filtered.sort((a,b)=>a.dias-b.dias);
-  const bAfer4=d=>d<=30?'b-r':d<=60?'b-r':d<=90?'b-y':'b-g';
-  const lblAfer4=d=>d<=30?'Urgente':d<=60?'Atenção':d<=90?'Programar':'OK';
+  const bAfer4=d=>d<0?'b-r':d<=30?'b-r':d<=90?'b-y':'b-g';
+  const lblAfer4=d=>d<0?'Vencida':d<=30?'Urgente':d<=60?'Atenção':d<=90?'Programar':'OK';
   const rows=filtered.map(eq=>{
-    const d=eq.dias, cor=d<=30?'var(--red)':d<=60?'#f97316':d<=90?'var(--yellow)':'var(--green)';
+    const d=eq.dias, cor=d<0?'#7f1d1d':d<=30?'var(--red)':d<=60?'#f97316':d<=90?'var(--yellow)':'var(--green)';
     const barW=Math.min(100,Math.max(0,d>365?100:(d/365*100)));
     return`<tr>
       <td style="font-family:var(--mono);font-weight:800;color:var(--accent)">${eq.serie}</td>
@@ -1412,8 +1417,15 @@ function buildPivotTable(){
     return`<td style="text-align:center;font-weight:800;background:#e8f0fc;color:var(--accent2)">${v}</td>`;
   }).join('');
 
+  // Reordenar: Consistente primeiro, depois N-Técnico, depois Técnico
+  const isTecDesc=d=>['Câmera com problema (deslocada/zoom)','Câmera com problema (interf./distorc./artefatos)','Desacionamento incorreto do sensor','Erro de parametrização','Imagem completamente sem veículo','Imagem desfocada/borrada/embaçada'].includes(d);
+  const orderedDescs=[
+    ...descs.filter(d=>d==='Consistente'),
+    ...descs.filter(d=>d!=='Consistente'&&!isTecDesc(d)),
+    ...descs.filter(d=>isTecDesc(d))
+  ];
   // Linhas por descrição
-  const rows=descs.map(desc=>{
+  const rows=orderedDescs.map(desc=>{
     const isConsist=desc==='Consistente';
     const rowData=PIVOT_DESC_SERIE[desc]||{};
     const rowTotal=totDesc[desc]||0;
@@ -1677,7 +1689,13 @@ function buildTeste(){
 
   // Mensal consolidado
   const consolidados=dias.map(d=>faixas.reduce((a,fx)=>a+(fx.teste?.[d]||0),0));
-  setHTML$('tsMensalChart',svgBarChart(dias,[{data:consolidados,color:'#0066cc'}],{height:150,padL:50}));
+  // Evolução diária em % de funcionamento
+  const pctsDia=dias.map(d=>{
+    let s=0,n=0;
+    faixas.forEach(fx=>{const v=fx.teste?.[d];if(v!=null){s+=v/24*100;n++;}});
+    return n?s/n:null;
+  });
+  setHTML$('tsMensalChart',svgBarChart(dias,[{data:pctsDia,color:'#0066cc'}],{height:150,padL:50,pct:true}));
 
   // Histograma de faixas por faixa de %
   const valsFuncHist = faixas.map(fx=>{
