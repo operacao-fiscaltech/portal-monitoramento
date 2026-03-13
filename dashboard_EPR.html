@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="13/03/2026 15:43">
+<meta name="gerado" content="13/03/2026 15:54">
 </head>
 <body>
 <div class="layout">
@@ -811,23 +811,60 @@ function buildAvHistogram(){
 function buildAvDiario(){
   const el=document.getElementById('avDiarioChart');
   if(!el)return;
-  // Fonte: APROV_DIARIO (CSV consulta infrações) — {YYYYMMDD: {ntec, tec, total}}
-  // % Aproveitamento = Não-Técnica / Total × 100 por dia
   const hasDados=typeof APROV_DIARIO!=='undefined'&&Object.keys(APROV_DIARIO).length>0;
   if(!hasDados){
     el.innerHTML='<div style="padding:20px;color:var(--muted);font-size:12px;font-style:italic;text-align:center">Dados disponíveis após atualização do script.</div>';
     return;
   }
-  // Usar as chaves do próprio APROV_DIARIO (YYYYMMDD), ordenadas
   const dias=Object.keys(APROV_DIARIO).sort();
-  const vals=dias.map(d=>{
-    const v=APROV_DIARIO[d];
-    if(!v||!v.total)return null;
-    // % Aproveitamento = Consistente / Total (Consistente tem Razao=Não-Técnica no CSV)
-    return(v.consist/v.total*100);
-  });
   const labels=dias.map(d=>d.slice(6,8)+'/'+d.slice(4,6));
-  el.innerHTML=svgBarChart(labels,[{data:vals,color:'#f59e0b'}],{height:165,padL:50,pct:true,showLabels:true});
+  // Barras empilhadas: Consistente (verde) + N-Técnico (amarelo) + Técnico (vermelho)
+  const W=700,H=165,padL=50,padB=30,padT=15,padR=20;
+  const cw=W-padL-padR, ch=H-padT-padB;
+  const n=dias.length;
+  const bw=Math.max(4,(cw/n)*0.65);
+  const gap=cw/n;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px" xmlns="http://www.w3.org/2000/svg">`;
+  // grid 0/25/50/75/100%
+  [0,.25,.5,.75,1].forEach(t=>{
+    const y=padT+ch*(1-t);
+    svg+=`<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+    svg+=`<text x="${padL-5}" y="${y+4}" text-anchor="end" font-size="9" fill="#9ca3af" font-family="IBM Plex Mono">${(t*100).toFixed(0)}%</text>`;
+  });
+  // barras empilhadas por dia
+  dias.forEach((d,i)=>{
+    const v=APROV_DIARIO[d]||{};
+    const tot=v.total||0; if(!tot)return;
+    const pCons=(v.consist||0)/tot, pNtec=(v.ntec||0)/tot, pTec=(v.tec||0)/tot;
+    const x=padL+i*gap+gap/2-bw/2;
+    let yOff=padT+ch; // empilha de baixo para cima
+    // Técnico (vermelho) — na base
+    const hTec=pTec*ch;
+    if(hTec>0){yOff-=hTec;svg+=`<rect x="${x.toFixed(1)}" y="${yOff.toFixed(1)}" width="${bw}" height="${hTec.toFixed(1)}" rx="0" fill="#ef4444" opacity=".85"/>`;}
+    // N-Técnico (amarelo) — meio
+    const hNtec=pNtec*ch;
+    if(hNtec>0){yOff-=hNtec;svg+=`<rect x="${x.toFixed(1)}" y="${yOff.toFixed(1)}" width="${bw}" height="${hNtec.toFixed(1)}" rx="0" fill="#f59e0b" opacity=".85"/>`;}
+    // Consistente (verde) — topo
+    const hCons=pCons*ch;
+    if(hCons>0){yOff-=hCons;svg+=`<rect x="${x.toFixed(1)}" y="${yOff.toFixed(1)}" width="${bw}" height="${hCons.toFixed(1)}" rx="2 2 0 0" fill="#22c55e" opacity=".85"/>`;}
+    // Label % consist no topo
+    const pctLbl=(pCons*100).toFixed(0)+'%';
+    svg+=`<text x="${(x+bw/2).toFixed(1)}" y="${(yOff-3).toFixed(1)}" text-anchor="middle" font-size="8" fill="#16a34a" font-family="IBM Plex Mono" font-weight="700">${pctLbl}</text>`;
+  });
+  // x labels
+  labels.forEach((lbl,i)=>{
+    const x=padL+i*gap+gap/2;
+    svg+=`<text x="${x.toFixed(1)}" y="${H-5}" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="IBM Plex Mono">${lbl}</text>`;
+  });
+  // legenda
+  svg+=`<rect x="${padL}" y="2" width="10" height="8" fill="#22c55e" rx="2"/>`;
+  svg+=`<text x="${padL+13}" y="9" font-size="8" fill="#6b7280" font-family="IBM Plex Mono">Consist.</text>`;
+  svg+=`<rect x="${padL+60}" y="2" width="10" height="8" fill="#f59e0b" rx="2"/>`;
+  svg+=`<text x="${padL+73}" y="9" font-size="8" fill="#6b7280" font-family="IBM Plex Mono">N-Téc.</text>`;
+  svg+=`<rect x="${padL+120}" y="2" width="10" height="8" fill="#ef4444" rx="2"/>`;
+  svg+=`<text x="${padL+133}" y="9" font-size="8" fill="#6b7280" font-family="IBM Plex Mono">Téc.</text>`;
+  svg+='</svg>';
+  el.innerHTML=svg;
 }
 
 function rebuild(){
