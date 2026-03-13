@@ -241,7 +241,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
 <meta name="gerado" content="">
-<!-- GERADO: 13/03/2026 12:32:39 -->
+<!-- GERADO: 13/03/2026 13:47:41 -->
 </head>
 <body>
 <div class="layout">
@@ -324,15 +324,6 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Aprov. de Funcionamento</div><div class="kpi-val" id="pFuncAprov">—</div><div class="kpi-sub">% médio imagem teste</div></div>
       <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="pLap">—</div><div class="kpi-sub">OCR integral</div></div>
     </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:12px">
-      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">📅 Aferições</div>
-      <div class="sem-row" style="margin:0;gap:8px">
-        <div class="sem-item" style="background:rgba(127,29,29,.08);border-color:rgba(127,29,29,.25)"><div class="sem-n" style="color:#7f1d1d" id="pAfVenc">—</div><div><div class="sem-lbl">Vencida</div><div class="sem-desc">expirada</div></div></div>
-        <div class="sem-item sem-crit"><div class="sem-n" id="pAfUrg">—</div><div><div class="sem-lbl">≤ 30 dias</div><div class="sem-desc">urgente</div></div></div>
-        <div class="sem-item sem-warn" style="background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.3)"><div class="sem-n" style="color:#f97316" id="pAfAt60">—</div><div><div class="sem-lbl">≤ 60 dias</div><div class="sem-desc">atenção</div></div></div>
-        <div class="sem-item sem-warn"><div class="sem-n" id="pAfAt90">—</div><div><div class="sem-lbl">≤ 90 dias</div><div class="sem-desc">programar</div></div></div>
-      </div>
-    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
       <!-- Aproveitamento de Imagens -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px">
@@ -353,6 +344,15 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         </div>
       </div>
     </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">📅 Aferições</div>
+      <div class="sem-row" style="margin:0;gap:8px">
+        <div class="sem-item" style="background:rgba(127,29,29,.08);border-color:rgba(127,29,29,.25)"><div class="sem-n" style="color:#7f1d1d" id="pAfVenc">—</div><div><div class="sem-lbl">Vencida</div><div class="sem-desc">expirada</div></div></div>
+        <div class="sem-item sem-crit"><div class="sem-n" id="pAfUrg">—</div><div><div class="sem-lbl">≤ 30 dias</div><div class="sem-desc">urgente</div></div></div>
+        <div class="sem-item sem-warn" style="background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.3)"><div class="sem-n" style="color:#f97316" id="pAfAt60">—</div><div><div class="sem-lbl">≤ 60 dias</div><div class="sem-desc">atenção</div></div></div>
+        <div class="sem-item sem-warn"><div class="sem-n" id="pAfAt90">—</div><div><div class="sem-lbl">≤ 90 dias</div><div class="sem-desc">programar</div></div></div>
+      </div>
+    </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
       <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Func. Crítico</div></div><div id="pFuncCritList"></div></div>
       <div class="rank-panel" style="margin:0"><div class="rp-head"><div class="rp-title">🔴 Aprov. Imagens Crítico</div></div><div id="pAprovCritList"></div></div>
@@ -360,7 +360,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
     </div>
   </div>
 
-  <!-- ══ APROVEITAMENTO DE IMAGENS ══ -->
+    <!-- ══ APROVEITAMENTO DE IMAGENS ══ -->
   <div class="view" id="view-aproveitamento">
     <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Índice Médio</div><div class="kpi-val" id="avIdx">—</div><div class="kpi-sub">aproveitamento</div></div>
@@ -377,21 +377,20 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
             <button class="sbtn active" onclick="setAvHistPeriodo('mes',this)">Mensal</button>
             <button class="sbtn" onclick="setAvHistPeriodo('semana',this)">Semanal</button>
             <button class="sbtn" onclick="setAvHistPeriodo('dia',this)">Diário</button>
-        
-      
+          </div>
+        </div>
         <div id="avHistogram"></div>
-    
+      </div>
       <div class="panel" style="margin:0">
         <div class="panel-head">
           <div><div class="panel-title">Evolução — % de Aproveitamento por Dia</div><div class="panel-sub">Aproveitamento médio diário de imagens</div></div>
           <select id="avSerieSel" onchange="buildAvDiario()" class="fchip" style="border-radius:6px;min-width:140px">
             <option value="">Todas as séries</option>
           </select>
-      
+        </div>
         <div id="avDiarioChart"></div>
-    
-  
-
+      </div>
+    </div>
 
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Todos os Equipamentos — Aproveitamento de Imagens</div></div>
@@ -407,9 +406,8 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       </div>
     </div>
 
-
     <div class="panel">
-      <div class="panel-head"><div><div class="panel-title">🔬 Top Inconsistências por Faixa — Técnico e Não-Técnico</div><div class="panel-sub">Principais causas de inconsistência por faixa • dados de 11/03/2026</div></div></div>
+      <div class="panel-head"><div><div class="panel-title">🔬 Top Inconsistências por Faixa — Técnico e Não-Técnico</div><div class="panel-sub">Principais causas de inconsistência por faixa</div></div></div>
       <div class="tbl-wrap">
         <table class="data-tbl">
           <thead><tr>
@@ -425,12 +423,11 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
       </div>
     </div>
 
-
     <div class="panel">
       <div class="panel-head">
         <div>
           <div class="panel-title">Motivo de Inconsistência × Faixa</div>
-          <div class="panel-sub">Número de ocorrências por tipo de problema em cada faixa (tabela dinâmica)</div>
+          <div class="panel-sub">Número de ocorrências por tipo de problema em cada faixa</div>
         </div>
       </div>
       <div id="pivotTableWrap" style="overflow-x:auto"></div>
