@@ -150,6 +150,7 @@ tr:hover td{background:var(--bg3);}
 @keyframes su{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 .modelo-info-card{border-radius:var(--rad);padding:16px 20px;margin-bottom:14px;border:1px solid var(--border);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 </head>
 <body>
@@ -193,6 +194,11 @@ tr:hover td{background:var(--bg3);}
     <div class="hkpi"><div class="hkpi-v" id="hPROMULT" style="color:var(--purple)">0</div><div class="hkpi-l">PROMULT</div></div>
     <div class="hkpi"><div class="hkpi-v" id="hOVERSEE" style="color:var(--yellow)">0</div><div class="hkpi-l">OVERSEE</div></div>
     <div style="display:flex;align-items:center;gap:10px;margin-left:8px;padding-left:16px;border-left:1px solid var(--border)">
+      <!-- INDICADOR AGENTE -->
+      <div id="agenteIndicador" title="Agente local" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer" onclick="nav('execucao',null)">
+        <div id="agenteDot" style="width:7px;height:7px;border-radius:50%;background:var(--text3);transition:.3s"></div>
+        <span id="agenteLabel" style="font-size:10px;font-weight:700;font-family:var(--mono);color:var(--text3)">AGENTE</span>
+      </div>
       <span id="userLabel" style="font-size:11px;color:var(--text3);font-family:var(--mono)"></span>
       <button onclick="logout()" style="padding:5px 12px;background:var(--redg);color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)">Sair</button>
       <a href="portal.html" style="padding:5px 12px;background:var(--accentg);color:var(--accent);border:1px solid var(--accent);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;font-family:var(--sans)">← Portal</a>
@@ -206,6 +212,7 @@ tr:hover td{background:var(--bg3);}
     <div class="aside-lbl">Menu</div>
     <button class="nb on" onclick="nav('geral',this)"><span class="nb-ic">📊</span>Visão Geral</button>
     <button class="nb" onclick="nav('novo',this)"><span class="nb-ic">➕</span>Novo Contrato</button>
+    <button class="nb" onclick="nav('execucao',this)"><span class="nb-ic">⚡</span>Execução Manual</button>
     <button class="nb" onclick="nav('modelos',this)"><span class="nb-ic">🗂️</span>Modelos</button>
     <button class="nb" onclick="nav('global',this)"><span class="nb-ic">⚙️</span>Config. Global</button>
     <button class="nb" onclick="nav('gerar',this)"><span class="nb-ic">🚀</span>Gerar Scripts</button>
@@ -281,6 +288,82 @@ tr:hover td{background:var(--bg3);}
     <button class="btn bp" onclick="salvar()">💾 Salvar Contrato</button>
     <button class="btn bg_" onclick="limpar()">✕ Limpar</button>
     <button class="btn bd bsm" id="btnDel" style="display:none" onclick="deletar()">🗑️ Remover</button>
+  </div>
+</div>
+
+<!-- EXECUÇÃO MANUAL -->
+<div class="view" id="v-execucao">
+  <div class="ph">
+    <div class="ph-left"><div class="ph-title">Execução Manual</div><div class="ph-sub">Execute o ciclo completo ou etapas individuais fora do horário agendado</div></div>
+    <div id="execStatusBadge" style="display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg3)">
+      <div id="execDot" style="width:8px;height:8px;border-radius:50%;background:var(--text3)"></div>
+      <span id="execStatusTxt" style="font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text3)">Verificando agente...</span>
+    </div>
+  </div>
+
+  <!-- ALERTA AGENTE OFFLINE -->
+  <div id="execAgenteAviso" class="wbox" style="display:none;margin-bottom:16px">
+    ⚠️ <strong>Agente local não encontrado.</strong> Para usar a execução manual, inicie o agente:<br>
+    <code style="font-family:var(--mono);background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:11px">python C:\fiscaltech\portal\agente_fiscaltech.py</code><br>
+    <span style="font-size:10px;color:var(--text3);margin-top:4px;display:block">Você pode adicionar ao Agendador de Tarefas do Windows para iniciar automaticamente com o computador.</span>
+  </div>
+
+  <!-- AÇÕES PRINCIPAIS -->
+  <div class="card">
+    <div class="ct">⚡ Ações</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:800">🔄 Ciclo Completo</div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa download dos relatórios e depois atualiza todos os dashboards em sequência.</div>
+        <button class="btn bp" id="btnCiclo" onclick="executarAcao('ciclo')" style="margin-top:auto">▶ Executar Agora</button>
+      </div>
+
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:800">⬇️ Somente Download</div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa apenas o <code style="font-family:var(--mono)">baixar_relatorios.py</code> — busca os XLS no sistema Ares.</div>
+        <button class="btn bg_" id="btnBaixar" onclick="executarAcao('baixar')" style="margin-top:auto">▶ Só Baixar</button>
+      </div>
+
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:800">📊 Somente Atualizar</div>
+        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa apenas o <code style="font-family:var(--mono)">atualizar_todos.py</code> — gera e publica os dashboards.</div>
+        <button class="btn bg_" id="btnAtualizar" onclick="executarAcao('atualizar')" style="margin-top:auto">▶ Só Atualizar</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BARRA DE PROGRESSO -->
+  <div id="execProgressCard" class="card" style="display:none">
+    <div class="ct">⏳ Em Execução</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="width:12px;height:12px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite"></div>
+      <span id="execScriptAtual" style="font-size:12px;font-weight:700;color:var(--accent);font-family:var(--mono)">Iniciando...</span>
+    </div>
+    <div style="background:var(--bg3);border-radius:6px;height:6px;overflow:hidden">
+      <div id="execProgressBar" style="height:100%;background:var(--accent);width:0%;transition:width .5s;border-radius:6px"></div>
+    </div>
+  </div>
+
+  <!-- PAINEL DE LOGS -->
+  <div class="card">
+    <div class="ct" style="justify-content:space-between">
+      <span>📋 Logs de Execução</span>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button class="btn bg_ bsm" onclick="limparLogs()">🗑️ Limpar</button>
+        <button class="btn bs bsm" onclick="copiarLogs()">📋 Copiar</button>
+      </div>
+    </div>
+    <div id="execLogs" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2);height:340px;overflow-y:auto;white-space:pre-wrap;word-break:break-all">
+      <span style="color:var(--text3)">— Nenhuma execução ainda. Use os botões acima para iniciar. —</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <span id="execUltimoOk" style="font-size:10px;color:var(--text3);font-family:var(--mono)"></span>
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;color:var(--text3)">
+        <input type="checkbox" id="execAutoScroll" checked style="width:auto"> Auto-scroll
+      </label>
+    </div>
   </div>
 </div>
 
@@ -567,6 +650,8 @@ function nav(id,btn){
   if(id==='gerar')loadGerar();
   if(id==='modelos')loadModelosPage();
   if(id==='novo'&&!editId)limpar();
+  if(id==='execucao'){pingAgente();iniciarPoll();}
+  else pararPoll();
 }
 
 // ── UI ─────────────────────────────────────────
@@ -681,8 +766,8 @@ function editar(id){
   document.getElementById('fTitle').textContent=`Editando: ${c.id}`;
   document.getElementById('fSub').textContent=c.nome;
   document.getElementById('btnDel').style.display='inline-flex';
-  renderMCards(c.modelo||'EPR');
-  document.getElementById('fModelo').value=c.modelo||'EPR';
+  renderMCards(c.modelo||'ARES');
+  document.getElementById('fModelo').value=c.modelo||'ARES';
   document.getElementById('fId').value=c.id;document.getElementById('fId').readOnly=true;
   document.getElementById('fNome').value=c.nome;
   document.getElementById('fConcess').value=c.concessao||'';
@@ -703,7 +788,7 @@ function limpar(){
   document.getElementById('fTitle').textContent='Novo Contrato';
   document.getElementById('fSub').textContent='Preencha as informações';
   document.getElementById('btnDel').style.display='none';
-  renderMCards('ARES');document.getElementById('fModelo').value='EPR';
+  renderMCards('ARES');document.getElementById('fModelo').value='ARES';
   ['fNome','fConcess','fUrl','fObs'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('fId').value='';document.getElementById('fId').readOnly=false;
   document.getElementById('fUF').value='';
@@ -830,6 +915,8 @@ function gerarAgendador(){
 }
 
 function gerarBaixar(){if(!contratos.length){toast('⚠️ Nenhum contrato','warn');return;}showOut('baixar_relatorios.py',buildBaixar(),'baixar_relatorios.py');}
+function carregarGlobal(){return G;}
+
 function gerarAtualizar(){showOut('atualizar_todos.py',buildAtualizar(),'atualizar_todos.py');}
 
 function gerarTudo(){
@@ -2261,6 +2348,150 @@ if __name__ == "__main__":
   return src;
 }
 
+// ── AGENTE LOCAL ───────────────────────────────
+const AGENTE_URL   = 'http://localhost:5001';
+let agenteOnline   = false;
+let logOffset      = 0;
+let pollInterval   = null;
+let progressFake   = 0;
+
+async function pingAgente(){
+  try{
+    const r=await fetch(AGENTE_URL+'/status',{signal:AbortSignal.timeout(1200)});
+    if(!r.ok)throw new Error();
+    const d=await r.json();
+    agenteOnline=true;
+    atualizarIndicador(d);
+    return d;
+  }catch(e){
+    agenteOnline=false;
+    atualizarIndicador(null);
+    return null;
+  }
+}
+
+function atualizarIndicador(d){
+  const dot=document.getElementById('agenteDot');
+  const lbl=document.getElementById('agenteLabel');
+  const aviso=document.getElementById('execAgenteAviso');
+  const btn1=document.getElementById('btnCiclo');
+  const btn2=document.getElementById('btnBaixar');
+  const btn3=document.getElementById('btnAtualizar');
+  const sBadge=document.getElementById('execStatusBadge');
+  const sDot=document.getElementById('execDot');
+  const sTxt=document.getElementById('execStatusTxt');
+
+  if(!d){
+    if(dot){dot.style.background='var(--red)';}
+    if(lbl){lbl.style.color='var(--red)';lbl.textContent='OFFLINE';}
+    if(aviso)aviso.style.display='block';
+    if(btn1)btn1.disabled=true;
+    if(btn2)btn2.disabled=true;
+    if(btn3)btn3.disabled=true;
+    if(sDot)sDot.style.background='var(--red)';
+    if(sTxt){sTxt.style.color='var(--red)';sTxt.textContent='Agente offline';}
+    return;
+  }
+  if(aviso)aviso.style.display='none';
+  if(d.rodando){
+    if(dot){dot.style.background='var(--yellow)';}
+    if(lbl){lbl.style.color='var(--yellow)';lbl.textContent='RODANDO';}
+    if(btn1)btn1.disabled=true;
+    if(btn2)btn2.disabled=true;
+    if(btn3)btn3.disabled=true;
+    if(sDot)sDot.style.background='var(--yellow)';
+    if(sTxt){sTxt.style.color='var(--yellow)';sTxt.textContent='Executando: '+d.script_atual;}
+    document.getElementById('execProgressCard')?.style && (document.getElementById('execProgressCard').style.display='block');
+    document.getElementById('execScriptAtual') && (document.getElementById('execScriptAtual').textContent=d.script_atual||'Processando...');
+    progressFake=Math.min(progressFake+2,90);
+    const pb=document.getElementById('execProgressBar');
+    if(pb)pb.style.width=progressFake+'%';
+  } else {
+    if(dot){dot.style.background='var(--green)';}
+    if(lbl){lbl.style.color='var(--green)';lbl.textContent='ONLINE';}
+    if(btn1)btn1.disabled=false;
+    if(btn2)btn2.disabled=false;
+    if(btn3)btn3.disabled=false;
+    if(sDot)sDot.style.background=d.erro?'var(--red)':'var(--green)';
+    if(sTxt){
+      sTxt.style.color=d.erro?'var(--red)':'var(--green)';
+      if(d.erro)sTxt.textContent='Erro na última execução';
+      else if(d.ultimo_ok){const t=new Date(d.ultimo_ok);sTxt.textContent='OK às '+t.toLocaleTimeString('pt-BR');}
+      else sTxt.textContent='Agente online — pronto';
+    }
+    document.getElementById('execProgressCard')?.style && (document.getElementById('execProgressCard').style.display='none');
+    progressFake=0;
+    const pb=document.getElementById('execProgressBar');
+    if(pb)pb.style.width='100%';
+    const uo=document.getElementById('execUltimoOk');
+    if(uo&&d.ultimo_ok){const t=new Date(d.ultimo_ok);uo.textContent='Última execução OK: '+t.toLocaleString('pt-BR');}
+  }
+}
+
+async function buscarLogs(){
+  try{
+    const r=await fetch(`${AGENTE_URL}/logs?desde=${logOffset}`,{signal:AbortSignal.timeout(2000)});
+    const d=await r.json();
+    if(d.logs&&d.logs.length){
+      const el=document.getElementById('execLogs');
+      if(el){
+        if(logOffset===0)el.innerHTML='';
+        d.logs.forEach(l=>{
+          const cor=l.nivel==='ERRO'?'var(--red)':l.nivel==='OK'?'var(--green)':l.nivel==='WARN'?'var(--yellow)':'var(--text2)';
+          el.innerHTML+=`<span style="color:var(--text3)">${l.ts}</span> <span style="color:${cor}">${escHtml(l.msg)}</span>\n`;
+        });
+        logOffset=d.total;
+        if(document.getElementById('execAutoScroll')?.checked)el.scrollTop=el.scrollHeight;
+      }
+    }
+  }catch(e){}
+}
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function iniciarPoll(){
+  if(pollInterval)return;
+  pollInterval=setInterval(async()=>{
+    const d=await pingAgente();
+    await buscarLogs();
+  },1500);
+}
+
+function pararPoll(){
+  if(pollInterval){clearInterval(pollInterval);pollInterval=null;}
+}
+
+async function executarAcao(acao){
+  if(!agenteOnline){toast('⚠️ Agente offline. Inicie agente_fiscaltech.py','err');return;}
+  const rotas={ciclo:'/executar/ciclo',baixar:'/executar/baixar',atualizar:'/executar/atualizar'};
+  const nomes={ciclo:'Ciclo Completo',baixar:'Download de Relatórios',atualizar:'Atualização Dashboards'};
+  logOffset=0;
+  document.getElementById('execLogs').innerHTML='';
+  progressFake=0;
+  try{
+    const r=await fetch(AGENTE_URL+rotas[acao],{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pasta_portal:G.pasta_portal||'C:\\fiscaltech\\portal'})
+    });
+    const d=await r.json();
+    if(r.ok){toast('▶ '+nomes[acao]+' iniciado!','ok');iniciarPoll();}
+    else toast('⚠️ '+d.erro,'warn');
+  }catch(e){toast('❌ Não foi possível conectar ao agente','err');}
+}
+
+function limparLogs(){
+  fetch(AGENTE_URL+'/logs/limpar').catch(()=>{});
+  logOffset=0;
+  const el=document.getElementById('execLogs');
+  if(el)el.innerHTML='<span style="color:var(--text3)">— Logs limpos. —</span>';
+}
+
+function copiarLogs(){
+  const el=document.getElementById('execLogs');
+  if(el)navigator.clipboard.writeText(el.innerText).then(()=>toast('📋 Logs copiados!','ok'));
+}
+
 // ── TOAST ──────────────────────────────────────
 function toast(msg,tipo='ok'){
   const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';
@@ -2271,7 +2502,6 @@ function toast(msg,tipo='ok'){
 // ── INIT ───────────────────────────────────────
 window.addEventListener('DOMContentLoaded',()=>{
   if(verificarSessao()){
-    // já logado — mostra usuário
     const user=sessionStorage.getItem(SESSION_KEY);
     const el=document.getElementById('userLabel');
     if(el)el.textContent='👤 '+user;
@@ -2279,6 +2509,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     renderMCards('ARES');
     document.getElementById('fRaiz').value=G.pasta_raiz;
     document.getElementById('fPortal').value=G.pasta_portal;
+    // Pinga o agente ao iniciar para mostrar status no header
+    pingAgente();
+    setInterval(pingAgente, 10000); // Verifica a cada 10s
   }
   ['gUser','gRepo'].forEach(id=>{
     document.getElementById(id)?.addEventListener('input',()=>{
