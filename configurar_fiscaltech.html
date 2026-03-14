@@ -808,9 +808,35 @@ function salvar(){
     hr_at:document.getElementById('fHrAt').value,
     obs:document.getElementById('fObs').value.trim()
   };
-  if(editId){const i=contratos.findIndex(c=>c.id===editId);if(i>=0)contratos[i]={...contratos[i],...obj,id:editId};toast('✅ Contrato atualizado com sucesso!','ok');}
-  else{contratos.push(obj);toast('✅ Contrato "'+id+'" cadastrado com sucesso!','ok');}
-  editId=null;save();ui();nav('geral',document.querySelector('.nb.on')||document.querySelector('.nb'));
+  if(editId){const i=contratos.findIndex(c=>c.id===editId);if(i>=0)contratos[i]={...contratos[i],...obj,id:editId};}
+  else{contratos.push(obj);}
+  editId=null;save();ui();
+  // Regenerar scripts automaticamente via agente
+  sincronizarAgente(id, !!editId);
+  nav('geral',document.querySelector('.nb.on')||document.querySelector('.nb'));
+}
+
+async function sincronizarAgente(id, editando){
+  if(!agenteOnline){
+    toast('✅ Contrato "'+(editando?id:id)+'" '+(editando?'atualizado':'cadastrado')+'! (Agente offline — scripts não atualizados)','warn');
+    return;
+  }
+  toast('💾 Salvando e atualizando scripts...','ok');
+  try{
+    const r=await fetch(AGENTE_URL+'/salvar/contrato',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({config:{global:G,contratos}})
+    });
+    const d=await r.json();
+    if(d.ok){
+      toast('✅ Contrato "'+(id)+'" '+(editando?'atualizado':'cadastrado')+'! Scripts atualizados automaticamente.','ok');
+    } else {
+      toast('✅ Contrato salvo! Mas houve erro ao atualizar scripts.','warn');
+    }
+  }catch(e){
+    toast('✅ Contrato "'+(id)+'" '+(editando?'atualizado':'cadastrado')+'! (Agente indisponível)','warn');
+  }
 }
 
 function editar(id){
@@ -1002,7 +1028,15 @@ function toggleStatusContrato(id){
   const novoStatus=contratos[i].status==='inativo'?'ativo':'inativo';
   contratos[i].status=novoStatus;
   save();ui();
-  toast(`${novoStatus==='ativo'?'✅ Ativo':'⏸ Inativo'}: ${id}`,'ok');
+  toast(`${novoStatus==='ativo'?'✅ Ativado':'⏸ Desativado'}: ${id}`,'ok');
+  // Sincroniza scripts com o agente
+  if(agenteOnline){
+    fetch(AGENTE_URL+'/salvar/contrato',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({config:{global:G,contratos}})
+    }).catch(()=>{});
+  }
 }
 
 function carregarGlobal(){return G;}
