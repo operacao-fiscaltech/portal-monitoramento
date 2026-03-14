@@ -43,6 +43,7 @@ aside{width:250px;background:var(--bg2);border-right:1px solid var(--border);dis
 .ci{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s;margin-bottom:3px;border:1px solid transparent;}
 .ci:hover{background:var(--bg3);}
 .ci.on{background:var(--accentg);border-color:var(--border2);}
+.ci.ci-inativo{opacity:.6;}
 .ci-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .ci-info{min-width:0;flex:1;}
 .ci-id{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text);}
@@ -281,6 +282,22 @@ tr:hover td{background:var(--bg3);}
       <div class="fl"><label>Horário Download</label><input type="time" id="fHrDl" value="06:30"></div>
       <div class="fl"><label>Horário Atualização</label><input type="time" id="fHrAt" value="07:00"></div>
       <div class="fl fg2"><label>Observações</label><textarea id="fObs" placeholder="Anotações..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🔘 Status do Contrato</div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;text-transform:none;font-size:13px;font-weight:600;letter-spacing:0">
+        <div id="statusToggle" onclick="toggleStatus()" style="width:44px;height:24px;border-radius:12px;background:var(--green);cursor:pointer;position:relative;transition:.2s;flex-shrink:0">
+          <div id="statusThumb" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:23px;transition:.2s"></div>
+        </div>
+        <span id="statusLabel" style="color:var(--green)">Ativo — incluído nas execuções automáticas</span>
+      </label>
+      <input type="hidden" id="fStatus" value="ativo">
+    </div>
+    <div style="font-size:10px;color:var(--text3);margin-top:10px;font-family:var(--mono)">
+      ⚠️ Contratos <strong>Inativos</strong> são pulados completamente no ciclo de execução (download e atualização).
     </div>
   </div>
 
@@ -677,14 +694,20 @@ function badgeModelo(m){return m==='ARES'?'be':m==='SIOR'?'bd2':m==='PROMULT'?'b
 function renderSidebar(){
   const cl=document.getElementById('clist');
   if(!contratos.length){cl.innerHTML='<div style="padding:10px 8px;font-size:10px;color:var(--text3);text-align:center">Nenhum contrato</div>';return;}
-  cl.innerHTML=contratos.map(c=>`
-    <div class="ci" onclick="editar('${c.id}')">
-      <div class="ci-dot" style="background:${corModelo(c.modelo)}"></div>
+  cl.innerHTML=contratos.map(c=>{
+    const ativo=c.status!=='inativo';
+    return `
+    <div class="ci ${ativo?'':'ci-inativo'}" onclick="editar('${c.id}')">
+      <div class="ci-dot" style="background:${ativo?corModelo(c.modelo):'var(--text3)'}"></div>
       <div class="ci-info">
-        <div class="ci-id">${c.id}</div>
-        <div class="ci-meta">${c.modelo} · ${c.uf||'—'}</div>
+        <div class="ci-id" style="${ativo?'':'color:var(--text3)'}">${c.id}</div>
+        <div class="ci-meta">${c.modelo} · ${c.uf||'—'} · <span style="color:${ativo?'var(--green)':'var(--red)'};font-weight:700">${ativo?'ATIVO':'INATIVO'}</span></div>
       </div>
-    </div>`).join('');
+      <button onclick="event.stopPropagation();toggleStatusContrato('${c.id}')" title="${ativo?'Desativar':'Ativar'}"
+        style="flex-shrink:0;padding:2px 7px;border-radius:4px;border:1px solid ${ativo?'var(--green)':'var(--red)'};background:${ativo?'var(--greeng)':'var(--redg)'};color:${ativo?'var(--green)':'var(--red)'};font-size:9px;font-weight:700;cursor:pointer;font-family:var(--mono)">
+        ${ativo?'ON':'OFF'}
+      </button>
+    </div>`}).join('');
 }
 
 function renderGeral(){
@@ -695,17 +718,44 @@ function renderGeral(){
       <button class="btn bp" style="margin-top:18px" onclick="nav('novo',null)">➕ Adicionar Primeiro Contrato</button></div>`;
     return;
   }
-  dc.innerHTML=`<div class="tw"><table><thead><tr>
-    <th>ID</th><th>Nome</th><th>Modelo</th><th>UF</th><th>URL Ares</th><th>Download</th><th>Ações</th>
-  </tr></thead><tbody>${contratos.map(c=>`<tr>
-    <td><span class="badge ${badgeModelo(c.modelo)} mono">${c.id}</span></td>
-    <td style="font-weight:600">${c.nome}</td>
-    <td><span class="badge ${badgeModelo(c.modelo)}">${c.modelo}</span></td>
-    <td><span class="badge bg2">${c.uf||'—'}</span></td>
-    <td class="mono" style="font-size:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.url||'—'}</td>
-    <td class="mono" style="font-size:10px">${c.hr_dl||'06:30'}</td>
-    <td><button class="btn bg_ bsm" onclick="editar('${c.id}')">✏️ Editar</button></td>
-  </tr>`).join('')}</tbody></table></div>`;
+  const filtro=window._filtroGeral||'todos';
+  const lista=filtro==='todos'?contratos:contratos.filter(c=>(filtro==='ativos'?c.status!=='inativo':c.status==='inativo'));
+  const nAtivos=contratos.filter(c=>c.status!=='inativo').length;
+  const nInativos=contratos.filter(c=>c.status==='inativo').length;
+
+  const tabs=`<div style="display:flex;gap:8px;margin-bottom:16px">
+    ${[['todos','Todos','var(--text2)',contratos.length],['ativos','✅ Ativos','var(--green)',nAtivos],['inativos','🔴 Inativos','var(--red)',nInativos]].map(([v,l,cor,n])=>`
+    <button onclick="window._filtroGeral='${v}';renderGeral()" style="padding:6px 14px;border-radius:6px;border:1px solid ${filtro===v?cor:'var(--border)'};background:${filtro===v?'var(--bg3)':'transparent'};color:${filtro===v?cor:'var(--text3)'};font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)">
+      ${l} <span style="background:var(--bg3);padding:1px 6px;border-radius:3px;font-family:var(--mono);font-size:10px">${n}</span>
+    </button>`).join('')}
+  </div>`;
+
+  const rows=lista.map(c=>{
+    const ativo=c.status!=='inativo';
+    return `<tr style="${ativo?'':'opacity:.6'}">
+      <td><span class="badge ${badgeModelo(c.modelo)} mono">${c.id}</span></td>
+      <td style="font-weight:600">${c.nome}</td>
+      <td><span class="badge ${badgeModelo(c.modelo)}">${c.modelo}</span></td>
+      <td><span class="badge bg2">${c.uf||'—'}</span></td>
+      <td class="mono" style="font-size:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.url||'—'}</td>
+      <td class="mono" style="font-size:10px">${c.hr_dl||'06:30'}</td>
+      <td>
+        <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;border:1px solid ${ativo?'var(--green)':'var(--red)'};background:${ativo?'var(--greeng)':'var(--redg)'};color:${ativo?'var(--green)':'var(--red)'};font-size:9px;font-weight:700;font-family:var(--mono)">
+          ${ativo?'● ATIVO':'○ INATIVO'}
+        </span>
+      </td>
+      <td style="display:flex;gap:6px">
+        <button class="btn bg_ bsm" onclick="editar('${c.id}')">✏️ Editar</button>
+        <button class="btn bsm" onclick="toggleStatusContrato('${c.id}')"
+          style="padding:5px 10px;border-radius:6px;border:1px solid ${ativo?'var(--red)':'var(--green)'};background:${ativo?'var(--redg)':'var(--greeng)'};color:${ativo?'var(--red)':'var(--green)'};font-size:10px;font-weight:700;cursor:pointer">
+          ${ativo?'⏸ Desativar':'▶ Ativar'}
+        </button>
+      </td>
+    </tr>`;}).join('');
+
+  dc.innerHTML=tabs+`<div class="tw"><table><thead><tr>
+    <th>ID</th><th>Nome</th><th>Modelo</th><th>UF</th><th>URL Ares</th><th>Download</th><th>Status</th><th>Ações</th>
+  </tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // ── MODELO CARDS ───────────────────────────────
@@ -744,6 +794,7 @@ function salvar(){
   if(!id||!nome){toast('⚠️ ID e Nome são obrigatórios','warn');return;}
   if(!editId&&contratos.find(c=>c.id===id)){toast('⚠️ ID já existe','warn');return;}
   const obj={id,nome,modelo,
+    status:document.getElementById('fStatus').value||'ativo',
     concessao:document.getElementById('fConcess').value.trim(),
     uf:document.getElementById('fUF').value,
     url:document.getElementById('fUrl').value.trim(),
@@ -755,9 +806,9 @@ function salvar(){
     hr_at:document.getElementById('fHrAt').value,
     obs:document.getElementById('fObs').value.trim()
   };
-  if(editId){const i=contratos.findIndex(c=>c.id===editId);if(i>=0)contratos[i]={...contratos[i],...obj,id:editId};toast('✅ Contrato atualizado!','ok');}
-  else{contratos.push(obj);toast('✅ Contrato salvo!','ok');}
-  editId=null;save();ui();nav('geral',document.querySelector('.nb'));
+  if(editId){const i=contratos.findIndex(c=>c.id===editId);if(i>=0)contratos[i]={...contratos[i],...obj,id:editId};toast('✅ Contrato atualizado com sucesso!','ok');}
+  else{contratos.push(obj);toast('✅ Contrato "'+id+'" cadastrado com sucesso!','ok');}
+  editId=null;save();ui();nav('geral',document.querySelector('.nb.on')||document.querySelector('.nb'));
 }
 
 function editar(id){
@@ -780,6 +831,7 @@ function editar(id){
   document.getElementById('fHrDl').value=c.hr_dl||'06:30';
   document.getElementById('fHrAt').value=c.hr_at||'07:00';
   document.getElementById('fObs').value=c.obs||'';
+  setStatusToggle(c.status!=='inativo');
   prvw();
 }
 
@@ -797,6 +849,7 @@ function limpar(){
   document.getElementById('fRaiz').value=G.pasta_raiz;
   document.getElementById('fPortal').value=G.pasta_portal;
   document.getElementById('fHrDl').value='06:30';document.getElementById('fHrAt').value='07:00';
+  setStatusToggle(true);
   prvw();
 }
 
@@ -915,6 +968,41 @@ function gerarAgendador(){
 }
 
 function gerarBaixar(){if(!contratos.length){toast('⚠️ Nenhum contrato','warn');return;}showOut('baixar_relatorios.py',buildBaixar(),'baixar_relatorios.py');}
+function setStatusToggle(ativo){
+  const tog=document.getElementById('statusToggle');
+  const thumb=document.getElementById('statusThumb');
+  const lbl=document.getElementById('statusLabel');
+  const inp=document.getElementById('fStatus');
+  if(!tog)return;
+  if(ativo){
+    tog.style.background='var(--green)';
+    thumb.style.left='23px';
+    lbl.style.color='var(--green)';
+    lbl.textContent='Ativo — incluído nas execuções automáticas';
+    inp.value='ativo';
+  } else {
+    tog.style.background='var(--red)';
+    thumb.style.left='3px';
+    lbl.style.color='var(--red)';
+    lbl.textContent='Inativo — pulado nas execuções automáticas';
+    inp.value='inativo';
+  }
+}
+
+function toggleStatus(){
+  const atual=document.getElementById('fStatus').value;
+  setStatusToggle(atual==='inativo');
+}
+
+function toggleStatusContrato(id){
+  const i=contratos.findIndex(c=>c.id===id);
+  if(i<0)return;
+  const novoStatus=contratos[i].status==='inativo'?'ativo':'inativo';
+  contratos[i].status=novoStatus;
+  save();ui();
+  toast(`${novoStatus==='ativo'?'✅ Ativo':'⏸ Inativo'}: ${id}`,'ok');
+}
+
 function carregarGlobal(){return G;}
 
 function gerarAtualizar(){showOut('atualizar_todos.py',buildAtualizar(),'atualizar_todos.py');}
