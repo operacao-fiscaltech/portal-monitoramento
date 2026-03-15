@@ -2403,11 +2403,11 @@ def main():
     template_dash = os.path.join(PASTA_MODELOS, "ARES", "dashboard_template.html")
     if not os.path.exists(template_dash):
         # Fallback: template na pasta local
-        template_dash = os.path.join(PASTA_LOCAL, "dashboard_EPR_template.html")
+        template_dash = os.path.join(PASTA_LOCAL, "dashboard_BASE_template.html")
     if not os.path.exists(template_dash):
         print(f"ERRO: template nao encontrado. Esperado em:\\n"
               f"  {os.path.join(PASTA_MODELOS, 'ARES', 'dashboard_template.html')}\\n"
-              f"  {os.path.join(PASTA_LOCAL, 'dashboard_EPR_template.html')}")
+              f"  {os.path.join(PASTA_LOCAL, 'dashboard_BASE_template.html')}")
         return
     print(f"Template: {template_dash}\\n")
     template_port = os.path.join(PASTA_LOCAL, "portal.html")
