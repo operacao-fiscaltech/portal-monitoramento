@@ -257,11 +257,11 @@ select option{background:white}
 
 <script>
 // ══════════════════════════════════════════════════════
-//  USUÁRIOS — salvos diretamente neste arquivo
+//  USUÁRIOS — base embutida no HTML (publicada no GitHub)
+//  localStorage é a fonte primária (persiste entre sessões)
 //  Níveis: adm_sis | adm | analista
-//  NÃO edite manualmente — use o painel de gerenciamento
 // ══════════════════════════════════════════════════════
-const USUARIOS = {
+const USUARIOS_BASE = {
   "fiscaltech": {
     hash: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
     nivel: "adm_sis",
@@ -271,10 +271,26 @@ const USUARIOS = {
 // senha padrão fiscaltech: admin
 
 const SESSION_KEY  = 'ft_session';
+const USUARIOS_KEY = 'ft_usuarios_v2';
 const AGENTE_URL   = 'http://localhost:5001';
 
-// ── Usuários em memória (sincronizado com USUARIOS) ───
-let usuariosMemoria = JSON.parse(JSON.stringify(USUARIOS));
+// ── Carrega: localStorage primeiro, fallback para base embutida ──
+function carregarUsuarios() {
+  try {
+    const s = localStorage.getItem(USUARIOS_KEY);
+    if (s) {
+      const u = JSON.parse(s);
+      // Garante que ADM SIS base sempre existe
+      if (!u['fiscaltech']) u['fiscaltech'] = USUARIOS_BASE['fiscaltech'];
+      return u;
+    }
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(USUARIOS_BASE));
+}
+
+function salvarUsuariosStorage(u) {
+  try { localStorage.setItem(USUARIOS_KEY, JSON.stringify(u)); } catch(e) {}
+}
 
 // ── SHA-256 ──────────────────────────────────────────
 async function sha256(msg) {
@@ -292,33 +308,16 @@ function setSessao(user, nivel) {
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user, nivel, ts: Date.now() }));
 }
 
-// ── Sincroniza usuários com o agente (salva login.html) ──
-async function sincronizarUsuarios() {
+// ── Sincroniza com agente (publica no GitHub) ─────────
+async function sincronizarUsuarios(u) {
   try {
     const r = await fetch(AGENTE_URL + '/salvar/usuarios', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuarios: usuariosMemoria })
+      body: JSON.stringify({ usuarios: u })
     });
-    if (r.ok) {
-      mostrarAlerta('ok', '✅ Usuário salvo! Atualizando...');
-      // Recarrega após 1.5s para carregar o login.html atualizado com o novo usuário
-      setTimeout(() => location.reload(), 1500);
-    } else {
-      mostrarAlerta('ok', '✅ Salvo localmente. Agente offline — publique manualmente.');
-    }
-  } catch(e) {
-    // Agente offline — mantém em memória e avisa
-    mostrarAlerta('warn', '⚠️ Agente offline. Usuário salvo temporariamente — publique manualmente para persistir.');
-  }
-}
-
-function carregarUsuarios() {
-  return usuariosMemoria;
-}
-
-function salvarUsuariosStorage(u) {
-  usuariosMemoria = u;
+    return r.ok;
+  } catch(e) { return false; }
 }
 
 function limparSessao() {
@@ -482,9 +481,13 @@ async function salvarUsuario() {
   if (editando && editando !== user) delete usuarios[editando];
 
   salvarUsuariosStorage(usuarios);
+  mostrarAlerta('ok', `✅ Usuário "${editando || user}" ${editando ? 'atualizado' : 'criado'} com sucesso!`);
   limparForm();
   renderTabela(sessao.nivel);
-  sincronizarUsuarios();
+  // Tenta publicar no GitHub via agente
+  sincronizarUsuarios(usuarios).then(ok => {
+    if(ok) mostrarAlerta('ok', `✅ Usuário "${editando || user}" ${editando ? 'atualizado' : 'criado'} e publicado!`);
+  });
 }
 
 function editarUsuario(user) {
@@ -507,8 +510,9 @@ function excluirUsuario(user) {
   const usuarios = carregarUsuarios();
   delete usuarios[user];
   salvarUsuariosStorage(usuarios);
+  mostrarAlerta('ok', `🗑️ Usuário "${user}" removido.`);
   renderTabela(sessao.nivel);
-  sincronizarUsuarios();
+  sincronizarUsuarios(usuarios);
 }
 
 function limparForm() {
@@ -532,7 +536,7 @@ async function publicarUsuarios() {
     const r = await fetch(AGENTE_URL + '/salvar/usuarios', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuarios: usuariosMemoria })
+      body: JSON.stringify({ usuarios: carregarUsuarios() })
     });
     if (r.ok) {
       status.textContent = '✅ Publicado!';
