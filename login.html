@@ -105,6 +105,7 @@ select option{background:white}
 .br{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .alert{padding:10px 14px;border-radius:8px;font-size:11px;font-family:var(--mono);margin-bottom:12px;display:none}
 .alert-ok{background:var(--green-bg);border:1px solid var(--green-b);color:var(--green)}
+.alert-warn{background:var(--yellow-bg);border:1px solid var(--yellow-b);color:var(--yellow)}
 .alert-err{background:var(--red-bg);border:1px solid var(--red-b);color:var(--red)}
 
 /* NIVEL TAGS */
@@ -189,7 +190,8 @@ select option{background:white}
       <div class="section-title">👥 Gerenciar Usuários</div>
       <div class="section-sub">Cadastre, edite e remova usuários do sistema</div>
 
-      <div class="alert alert-ok" id="alertOk"></div>
+      <div class="alert alert-ok"  id="alertOk"></div>
+      <div class="alert alert-warn" id="alertWarn"></div>
       <div class="alert alert-err" id="alertErr"></div>
 
       <!-- FORM NOVO USUÁRIO -->
@@ -299,12 +301,15 @@ async function sincronizarUsuarios() {
       body: JSON.stringify({ usuarios: usuariosMemoria })
     });
     if (r.ok) {
-      mostrarAlerta('ok', '✅ Usuários salvos e publicados automaticamente!');
+      mostrarAlerta('ok', '✅ Usuário salvo! Atualizando...');
+      // Recarrega após 1.5s para carregar o login.html atualizado com o novo usuário
+      setTimeout(() => location.reload(), 1500);
     } else {
       mostrarAlerta('ok', '✅ Salvo localmente. Agente offline — publique manualmente.');
     }
   } catch(e) {
-    mostrarAlerta('ok', '✅ Salvo. Agente offline — os usuários serão publicados na próxima execução.');
+    // Agente offline — mantém em memória e avisa
+    mostrarAlerta('warn', '⚠️ Agente offline. Usuário salvo temporariamente — publique manualmente para persistir.');
   }
 }
 
@@ -546,12 +551,20 @@ async function publicarUsuarios() {
 }
 
 function mostrarAlerta(tipo, msg) {
-  const ok  = document.getElementById('alertOk');
-  const err = document.getElementById('alertErr');
-  ok.style.display = err.style.display = 'none';
-  if (tipo === 'ok') { ok.textContent = msg; ok.style.display = 'block'; }
-  else               { err.textContent = msg; err.style.display = 'block'; }
-  setTimeout(() => { ok.style.display = err.style.display = 'none'; }, 4000);
+  const ok   = document.getElementById('alertOk');
+  const warn = document.getElementById('alertWarn');
+  const err  = document.getElementById('alertErr');
+  if(ok)  ok.style.display   = 'none';
+  if(warn)warn.style.display  = 'none';
+  if(err) err.style.display   = 'none';
+  if (tipo === 'ok')   { ok.textContent   = msg; ok.style.display   = 'block'; }
+  else if(tipo==='warn'){ warn.textContent = msg; warn.style.display = 'block'; }
+  else                 { err.textContent  = msg; err.style.display  = 'block'; }
+  setTimeout(() => {
+    if(ok)  ok.style.display  = 'none';
+    if(warn)warn.style.display = 'none';
+    if(err) err.style.display  = 'none';
+  }, 5000);
 }
 
 function toast(msg) {
