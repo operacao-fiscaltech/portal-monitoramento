@@ -103,7 +103,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .rchip{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light);font-weight:600}
 
 /* Metrics row */
-.cc-metrics{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;background:var(--card2)}
+.cc-metrics-top{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:10px 10px 0 0;overflow:hidden;background:var(--card2);border-bottom:none}
+.cc-metrics-bot{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:16px;background:var(--card2)}
 .cc-met{padding:12px 14px;border-right:1px solid var(--border);position:relative}
 .cc-met:last-child{border-right:none}
 .cc-met-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
@@ -249,129 +250,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 // ══════════════════════════════════════════════════════
 const CONTRATOS = [
   {
-    "id": "EPR",
-    "nome": "EPR",
-    "arquivo": "dashboard_EPR.html",
-    "rodovias": [
-      "BR-153",
-      "BR-277",
-      "BR-369",
-      "PR-092",
-      "PR-151"
-    ],
-    "uf": "PR",
-    "totalEquip": 28,
-    "totalFaixas": 43,
-    "fluxoHoje": 152735,
-    "lapMedio": 73.4,
-    "aprovMedio": 0.894,
-    "faixasCrit": 6,
-    "faixasWarn": 26,
-    "faixasOk": 11,
-    "faixasOff": 0,
-    "afericoesVenc60": 2,
-    "faixasSample": [
-      {
-        "serie": "545",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "545",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "546",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "547",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "548",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "548",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "549",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "549",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "550",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "550",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "551",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "551",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "552",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "552",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "553",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "553",
-        "id": "2",
-        "status": "warn"
-      }
-    ],
-    "fluxoSpark": [
-      176547,
-      184384,
-      189480,
-      194242,
-      201094,
-      222894,
-      201943,
-      172937,
-      180784,
-      169032,
-      170847,
-      177539,
-      208610,
-      152735
-    ],
-    "cor": "#0ea5e9",
-    "atualizado": "14/03/2026 21:53"
-  },
-  {
     "id": "LITORALPIONEIRO",
     "nome": "LITORALPIONEIRO",
     "arquivo": "dashboard_LITORALPIONEIRO.html",
@@ -385,19 +263,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 28,
     "totalFaixas": 43,
-    "fluxoHoje": 170886,
-    "lapMedio": 73.6,
-    "aprovMedio": 0.894,
-    "faixasCrit": 7,
-    "faixasWarn": 25,
-    "faixasOk": 11,
+    "fluxoHoje": 177682,
+    "lapMedio": 73.5,
+    "aprovMedio": 0,
+    "funcMedio": 91.9,
+    "faixasCrit": 11,
+    "faixasWarn": 20,
+    "faixasOk": 12,
     "faixasOff": 0,
     "afericoesVenc60": 2,
     "faixasSample": [
       {
         "serie": "545",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "545",
@@ -407,7 +286,7 @@ const CONTRATOS = [
       {
         "serie": "546",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "547",
@@ -447,7 +326,7 @@ const CONTRATOS = [
       {
         "serie": "551",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "551",
@@ -489,133 +368,11 @@ const CONTRATOS = [
       170847,
       177539,
       208610,
-      170886
+      177682
     ],
-    "cor": "#22d3a0",
-    "atualizado": "14/03/2026 21:53"
-  },
-  {
-    "id": "PNCV-L7_DNIT-MS",
-    "nome": "PNCV-L7_DNIT-MS",
-    "arquivo": "dashboard_PNCV-L7_DNIT-MS.html",
-    "rodovias": [
-      "BR-060",
-      "BR-070",
-      "BR-158",
-      "BR-262",
-      "BR-267"
-    ],
-    "uf": "PR",
-    "totalEquip": 58,
-    "totalFaixas": 73,
-    "fluxoHoje": 135299,
-    "lapMedio": 83.8,
-    "aprovMedio": 0.928,
-    "faixasCrit": 4,
-    "faixasWarn": 27,
-    "faixasOk": 42,
-    "faixasOff": 0,
-    "afericoesVenc60": 5,
-    "faixasSample": [
-      {
-        "serie": "7241",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7242",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7243",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7243",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7244",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7244",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7245",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7245",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7246",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7246",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7247",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7247",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7248",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7248",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7249",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7249",
-        "id": "2",
-        "status": "ok"
-      }
-    ],
-    "fluxoSpark": [
-      124014,
-      157033,
-      160520,
-      166681,
-      170998,
-      188949,
-      161148,
-      131549,
-      159329,
-      165869,
-      163028,
-      172462,
-      183956,
-      135299
-    ],
-    "cor": "#f59e0b",
-    "atualizado": "14/03/2026 21:53"
+    "cor": "#0ea5e9",
+    "atualizado": "14/03/2026 22:30",
+    "referencia": "D-1 (14 Sáb)"
   },
   {
     "id": "PRVIAS",
@@ -629,12 +386,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 28,
     "totalFaixas": 54,
-    "fluxoHoje": 212204,
-    "lapMedio": 85.1,
+    "fluxoHoje": 234466,
+    "lapMedio": 85.0,
     "aprovMedio": 0.984,
-    "faixasCrit": 1,
-    "faixasWarn": 10,
-    "faixasOk": 43,
+    "funcMedio": 74.3,
+    "faixasCrit": 24,
+    "faixasWarn": 8,
+    "faixasOk": 22,
     "faixasOff": 0,
     "afericoesVenc60": 0,
     "faixasSample": [
@@ -686,7 +444,7 @@ const CONTRATOS = [
       {
         "serie": "7519",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7520",
@@ -733,10 +491,11 @@ const CONTRATOS = [
       265714,
       272010,
       295268,
-      212204
+      234466
     ],
     "cor": "#8b5cf6",
-    "atualizado": "14/03/2026 21:53"
+    "atualizado": "14/03/2026 22:30",
+    "referencia": "D-1 (14 Sáb)"
   }
 ];
 
@@ -745,8 +504,15 @@ let filtroAtual = 'todos';
 
 function fmtN(n){ if(!n&&n!==0)return'—'; if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'k'; return n.toLocaleString('pt-BR') }
 function fmtPct(n){ return n?n.toFixed(1)+'%':'—' }
-function lapColor(v){ return v>=80?'var(--green)':v>=60?'var(--yellow)':'var(--red)' }
-function statusContrato(c){ if(c.faixasCrit>=3)return'crit'; if(c.faixasCrit>=1||c.faixasWarn>=3)return'warn'; return'ok' }
+function funcColor(v){ return v>=95?'var(--green)':v>=80?'var(--yellow)':'var(--red)' }
+function aprovColor(v){ const p=v*100; return p>=95?'var(--green)':p>=85?'var(--yellow)':'var(--red)' }
+function statusContrato(c){
+  const aprovPct = (c.aprovMedio||0)*100;
+  const funcPct  = c.funcMedio||0;
+  const isCrit   = aprovPct > 0 && aprovPct < 85 || funcPct > 0 && funcPct < 80 || c.faixasCrit >= 3;
+  const isWarn   = !isCrit && (aprovPct >= 85 && aprovPct < 95 || funcPct >= 80 && funcPct < 95 || c.faixasCrit >= 1 || c.faixasWarn >= 3);
+  return isCrit ? 'crit' : isWarn ? 'warn' : 'ok';
+}
 
 function buildConsolidado() {
   const totalF = CONTRATOS.reduce((a,c)=>a+c.totalFaixas,0);
@@ -819,7 +585,7 @@ function renderCards() {
     const st    = statusContrato(c);
     const stLbl = st==='crit'?'CRÍTICO':st==='warn'?'ATENÇÃO':'NORMAL';
     const stCls = st==='crit'?'b-crit':st==='warn'?'b-warn':'b-ok';
-    const lapClr= lapColor(c.lapMedio);
+    const lapClr= c.lapMedio>=80?'var(--green)':c.lapMedio>=60?'var(--yellow)':'var(--red)';
     const lapW  = Math.round(Math.min(c.lapMedio||0,100));
 
     const rodChips=(c.rodovias||[]).map(r=>`<span class="rchip">${r}</span>`).join('');
@@ -851,18 +617,30 @@ function renderCards() {
         </div>
         <div class="cc-rodovia-chips">${rodChips}<span style="font-family:var(--mono);font-size:9px;color:var(--muted);align-self:center;padding-left:2px">${c.uf||''}</span></div>
 
-        <div class="cc-metrics">
+        <div class="cc-metrics-top">
+          <div class="cc-met">
+            <div class="cc-met-lbl">Funcionamento</div>
+            <div class="cc-met-val" style="color:${funcColor(c.funcMedio||0)}">${c.funcMedio?c.funcMedio.toFixed(1)+'%':'—'}</div>
+          </div>
+          <div class="cc-met">
+            <div class="cc-met-lbl">Aproveitamento</div>
+            <div class="cc-met-val" style="color:${aprovColor(c.aprovMedio||0)}">${c.aprovMedio?(c.aprovMedio*100).toFixed(1)+'%':'—'}</div>
+          </div>
+        </div>
+        <div class="cc-metrics-bot">
           <div class="cc-met">
             <div class="cc-met-lbl">Equipamentos</div>
             <div class="cc-met-val" style="color:var(--accent2)">${c.totalEquip||'—'}</div>
           </div>
           <div class="cc-met">
-            <div class="cc-met-lbl">Faixas Críticas</div>
-            <div class="cc-met-val" style="color:${c.faixasCrit>0?'var(--red)':'var(--green)'}">${c.faixasCrit}</div>
+            <div class="cc-met-lbl">Total Faixas</div>
+            <div class="cc-met-val" style="color:var(--accent2)">${c.totalFaixas||'—'}</div>
           </div>
           <div class="cc-met">
-            <div class="cc-met-lbl">LAP Médio</div>
-            <div class="cc-met-val" style="color:${lapClr}">${fmtPct(c.lapMedio)}</div>
+            <div class="cc-met-lbl">Faixas Críticas</div>
+            <div class="cc-met-val" style="color:${c.faixasCrit>0?'var(--red)':'var(--green)'}">
+              ${c.faixasCrit}${c.faixasWarn>0?`<span style="font-size:13px;color:var(--yellow);margin-left:5px">⚠${c.faixasWarn}</span>`:''}
+            </div>
           </div>
         </div>
 
@@ -879,8 +657,10 @@ function renderCards() {
 
       <div class="cc-footer">
         <div class="cc-foot-left">
-          <div class="cc-foot-info">Fluxo hoje: <b>${fmtN(c.fluxoHoje)}</b> veículos</div>
-          <div class="cc-foot-info">Atualizado: ${c.atualizado||'—'}</div>
+          <div class="cc-foot-info" style="display:flex;align-items:center;gap:5px">
+            <span style="background:var(--green);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;font-family:var(--mono)">D-1</span>
+            Atualizado: ${c.atualizado||'—'}
+          </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="cc-spark">${spark}</div>
