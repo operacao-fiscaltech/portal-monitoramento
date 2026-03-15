@@ -546,8 +546,28 @@ tr:hover td{background:var(--bg3);}
 <div class="view" id="v-gerar">
   <div class="ph"><div class="ph-left"><div class="ph-title">Gerar Scripts</div><div class="ph-sub">Gera todos os arquivos necessários para operação</div></div></div>
   <div class="card"><div class="ct">📦 Resumo</div><div id="resumoG">Carregando...</div></div>
+
   <div class="card">
-    <div class="ct">⚡ Ações</div>
+    <div class="ct">📤 Publicar no GitHub</div>
+    <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px">
+          Publica todos os HTMLs da pasta portal no GitHub Pages sem precisar rodar o ciclo completo de download.
+          <br><span style="font-size:10px;color:var(--text3);font-family:var(--mono)">portal.html · login.html · dashboards · configurar_fiscaltech.html</span>
+        </div>
+        <button class="btn bp" id="btnPublicar" onclick="publicarGitHub()">📤 Publicar Agora</button>
+      </div>
+      <div id="publicarStatus" style="display:none;flex:1;min-width:180px;background:var(--bg3);border-radius:8px;padding:12px;font-size:11px;font-family:var(--mono);color:var(--text2)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div id="publicarDot" style="width:8px;height:8px;border-radius:50%;background:var(--yellow);animation:pulse 1s infinite"></div>
+          <span id="publicarTxt">Publicando...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">⚡ Gerar Scripts</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn bp" onclick="gerarTudo()">⚡ Gerar e Baixar Tudo</button>
       <button class="btn bg_" onclick="gerarConfig()">📄 config.json</button>
@@ -2614,6 +2634,46 @@ function limparLogs(){
 function copiarLogs(){
   const el=document.getElementById('execLogs');
   if(el)navigator.clipboard.writeText(el.innerText).then(()=>toast('📋 Logs copiados!','ok'));
+}
+
+// ── PUBLICAR NO GITHUB ─────────────────────────────
+async function publicarGitHub(){
+  if(!agenteOnline){toast('⚠️ Agente offline — não é possível publicar','err');return;}
+  const btn=document.getElementById('btnPublicar');
+  const status=document.getElementById('publicarStatus');
+  const dot=document.getElementById('publicarDot');
+  const txt=document.getElementById('publicarTxt');
+  btn.disabled=true;
+  status.style.display='block';
+  dot.style.background='var(--yellow)';
+  txt.textContent='Publicando no GitHub...';
+  logOffset=0;
+  document.getElementById('execLogs')?.innerHTML && (document.getElementById('execLogs').innerHTML='');
+  try{
+    const r=await fetch(AGENTE_URL+'/publicar',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pasta_portal:G.pasta_portal||'C:\\fiscaltech\\portal'})
+    });
+    const d=await r.json();
+    if(d.ok){
+      dot.style.background='var(--green)';
+      txt.textContent='Publicado com sucesso!';
+      toast('✅ Publicação iniciada no GitHub!','ok');
+      iniciarPoll();
+    } else {
+      dot.style.background='var(--red)';
+      txt.textContent='Erro ao publicar';
+      toast('❌ Erro: '+d.erro,'err');
+    }
+  }catch(e){
+    dot.style.background='var(--red)';
+    txt.textContent='Agente indisponível';
+    toast('❌ Não foi possível conectar ao agente','err');
+  }finally{
+    btn.disabled=false;
+    setTimeout(()=>{ status.style.display='none'; },5000);
+  }
 }
 
 // ── TOAST ──────────────────────────────────────
