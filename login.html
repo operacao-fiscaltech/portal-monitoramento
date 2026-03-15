@@ -236,7 +236,17 @@ select option{background:white}
           <tbody id="tabelaUsuarios"></tbody>
         </table>
       </div>
-    </div>
+
+      <!-- BOTÃO DISCRETO PUBLICAR -->
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;align-items:center;gap:10px">
+        <span id="publicarUsuariosStatus" style="font-size:10px;font-family:var(--mono);color:var(--muted);display:none"></span>
+        <button onclick="publicarUsuarios()" id="btnPublicarUsuarios"
+          style="padding:5px 12px;background:transparent;border:1px solid var(--border2);border-radius:6px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--display);transition:.15s;display:flex;align-items:center;gap:5px"
+          onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+          onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">
+          ↑ Publicar usuários no GitHub
+        </button>
+      </div>
 
   </div>
 </div>
@@ -504,6 +514,35 @@ function limparForm() {
   document.getElementById('novoNivel').value      = '';
   document.getElementById('editandoUser').value   = '';
   document.getElementById('formTitulo').textContent = '➕ Novo Usuário';
+}
+
+async function publicarUsuarios() {
+  const btn    = document.getElementById('btnPublicarUsuarios');
+  const status = document.getElementById('publicarUsuariosStatus');
+  btn.disabled = true;
+  status.style.display = 'inline';
+  status.textContent   = 'Publicando...';
+  status.style.color   = 'var(--yellow)';
+  try {
+    const r = await fetch(AGENTE_URL + '/salvar/usuarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuarios: usuariosMemoria })
+    });
+    if (r.ok) {
+      status.textContent = '✅ Publicado!';
+      status.style.color = 'var(--green)';
+    } else {
+      status.textContent = '⚠️ Agente offline — será publicado no próximo ciclo';
+      status.style.color = 'var(--yellow)';
+    }
+  } catch(e) {
+    status.textContent = '⚠️ Agente offline — será publicado no próximo ciclo';
+    status.style.color = 'var(--yellow)';
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => { status.style.display = 'none'; }, 4000);
+  }
 }
 
 function mostrarAlerta(tipo, msg) {
