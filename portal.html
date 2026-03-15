@@ -187,12 +187,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
         <span class="hclock-sep">|</span>
         <span id="hClockTime"></span>
       </div>
-      <a href="configurar_fiscaltech.html" class="cfg-btn" title="Configurador de Contratos">
+      <div id="userInfoPortal" style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7)">
+        <span id="portalUserLabel"></span>
+        <span id="portalNivelBadge" style="padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700"></span>
+      </div>
+      <a href="configurar_fiscaltech.html" class="cfg-btn" id="btnConfigurador" title="Configurador de Contratos">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
         </svg>
         Configurador
       </a>
+      <button onclick="logoutPortal()" style="padding:5px 12px;background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display)">Sair</button>
     </div>
   </div>
 </header>
@@ -371,7 +376,7 @@ const CONTRATOS = [
       183063
     ],
     "cor": "#0ea5e9",
-    "atualizado": "14/03/2026 23:51",
+    "atualizado": "15/03/2026 12:49",
     "referencia": "D-1 (14 Sáb)"
   },
   {
@@ -493,7 +498,7 @@ const CONTRATOS = [
       774173
     ],
     "cor": "#22d3a0",
-    "atualizado": "14/03/2026 23:51",
+    "atualizado": "15/03/2026 12:49",
     "referencia": "D-1 (14 Sat)"
   },
   {
@@ -618,7 +623,7 @@ const CONTRATOS = [
       145545
     ],
     "cor": "#f59e0b",
-    "atualizado": "14/03/2026 23:51",
+    "atualizado": "15/03/2026 12:49",
     "referencia": "D-1 (14 Sat)"
   },
   {
@@ -741,7 +746,7 @@ const CONTRATOS = [
       242979
     ],
     "cor": "#8b5cf6",
-    "atualizado": "14/03/2026 23:51",
+    "atualizado": "15/03/2026 12:49",
     "referencia": "D-1 (14 Sáb)"
   }
 ];
@@ -930,6 +935,35 @@ function clock(){
 }
 clock(); setInterval(clock,1000);
 
+// ── Sessão / Auth ──
+const SESSION_KEY = 'ft_session';
+function getSessaoPortal(){
+  try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY))||null; }catch(e){ return null; }
+}
+function logoutPortal(){
+  sessionStorage.removeItem(SESSION_KEY);
+  window.location.href='login.html';
+}
+function verificarSessaoPortal(){
+  const s = getSessaoPortal();
+  if(!s){ window.location.href='login.html'; return; }
+  // Mostra usuário no header
+  const lbl = document.getElementById('portalUserLabel');
+  const badge = document.getElementById('portalNivelBadge');
+  if(lbl) lbl.textContent = '👤 '+s.user;
+  if(badge){
+    const nivelMap = {adm_sis:'ADM SIS', adm:'ADM', analista:'ANALISTA'};
+    const colorMap = {adm_sis:'#7c3aed', adm:'#0066cc', analista:'#059669'};
+    badge.textContent = nivelMap[s.nivel]||s.nivel;
+    badge.style.background = colorMap[s.nivel]||'#6b7280';
+    badge.style.color = 'white';
+  }
+  // Esconde botão configurador para analistas
+  const btnCfg = document.getElementById('btnConfigurador');
+  if(btnCfg && s.nivel === 'analista') btnCfg.style.display='none';
+}
+
+verificarSessaoPortal();
 buildConsolidado();
 renderCards();
 </script>
