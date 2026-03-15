@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fiscaltech — Central de Operações EPR</title>
+<title>Fiscaltech — Central de Operações PNCV-L3_DNIT-PB</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="15/03/2026 17:30">
+<meta name="gerado" content="15/03/2026 17:46">
 </head>
 <body>
 <div class="layout">
@@ -261,7 +261,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
         <div class="sb-brand-sub">Tecnologia a Favor da Vida</div>
       </div>
     </div>
-    <span class="contract-chip"><span class="contract-dot"></span>EPR — Ativo</span>
+    <span class="contract-chip"><span class="contract-dot"></span>PNCV-L3_DNIT-PB — Ativo</span>
   </div>
 
   <nav class="sb-nav">
@@ -1948,7 +1948,7 @@ function buildInfraEnq(){
   const serieToEPR={};
   DB.forEach(c=>c.faixas.forEach(eq=>{
     (eq.faixas||[{id:'1'}]).forEach(fx=>{
-      serieToEPR[eq.serie+'|'+fx.id]='EPR'+String(eq.serie).padStart(3,'0')+'|'+fx.id;
+      serieToEPR[eq.serie+'|'+fx.id]='PNCV-L3_DNIT-PB'+String(eq.serie).padStart(3,'0')+'|'+fx.id;
     });
   }));
   const getNomePista=(serie,pista)=>{
