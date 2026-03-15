@@ -120,7 +120,7 @@ select option{background:white}
 <body>
 
 <!-- HEADER -->
-<div class="header">
+<div class="header" id="loginHeader">
   <div style="display:flex;align-items:center;gap:14px">
     <div class="brand-logo">
       <svg viewBox="0 0 24 24" fill="none" stroke="#0052a3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -361,6 +361,7 @@ function logout() {
 function iniciarApp(user, nivel) {
   document.getElementById('loginPage').style.display = 'none';
   document.getElementById('appPage').style.display   = 'flex';
+  document.getElementById('loginHeader').style.display = 'none';
 
   const nivelLabel = nivel === 'adm_sis' ? 'ADM SIS' : nivel === 'adm' ? 'ADM' : 'ANALISTA';
   const nivelCls   = nivel === 'adm_sis' ? 'nb-adm-sis' : nivel === 'adm' ? 'nb-adm' : 'nb-analista';
@@ -584,6 +585,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const usuarios = carregarUsuarios();
     if (usuarios[sessao.user]) {
       iniciarApp(sessao.user, sessao.nivel);
+      // Se veio do configurador, rola direto para gerenciar usuários
+      if (document.referrer.includes('configurar_fiscaltech')) {
+        setTimeout(() => {
+          document.getElementById('sectionUsuarios')?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
       return;
     }
   }
