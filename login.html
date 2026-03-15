@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscaltech — Acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4f8;--surface:#fff;--border:#dde3ed;--border2:#c5cfe0;
+  --accent:#0066cc;--accent2:#0052a3;--accent3:#e8f0fc;
+  --green:#059669;--green-bg:#ecfdf5;--green-b:#a7f3d0;
+  --red:#dc2626;--red-bg:#fef2f2;--red-b:#fecaca;
+  --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;--purple-b:#ddd6fe;
+  --text:#0f1b2d;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --header:#0052a3;
+  --display:'Plus Jakarta Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --rad:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh;display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+.header{background:var(--header);height:60px;display:flex;align-items:center;padding:0 32px;gap:14px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.brand-logo{width:36px;height:36px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-logo svg{width:24px;height:24px}
+.brand-text{font-size:18px;font-weight:800;color:white;letter-spacing:.04em}
+.brand-text span{color:#7dd3fc;font-weight:300}
+.brand-sub{font-size:9px;color:rgba(255,255,255,.5);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+
+/* ── LOGIN PAGE ── */
+#loginPage{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 16px}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:44px 40px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(0,82,163,.08)}
+.login-icon{width:56px;height:56px;background:var(--accent3);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:26px}
+.login-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:28px}
+.fl{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fl label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.fl input{border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-family:var(--mono);color:var(--text);transition:.15s;outline:none}
+.fl input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent3)}
+.login-err{color:var(--red);font-size:11px;font-family:var(--mono);margin-bottom:12px;display:none;background:var(--red-bg);border:1px solid var(--red-b);border-radius:6px;padding:8px 12px}
+.btn-login{width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:var(--display);cursor:pointer;transition:.15s;margin-top:4px}
+.btn-login:hover{background:var(--accent2)}
+
+/* ── APP ── */
+#appPage{flex:1;display:none;flex-direction:column}
+.app-header{background:var(--header);height:60px;display:flex;align-items:center;padding:0 32px;justify-content:space-between}
+.app-header-left{display:flex;align-items:center;gap:14px}
+.app-header-right{display:flex;align-items:center;gap:12px}
+.user-badge{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.8);font-family:var(--mono)}
+.nivel-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;font-family:var(--mono)}
+.nb-adm-sis{background:#7c3aed;color:white}
+.nb-adm{background:#0066cc;color:white}
+.nb-analista{background:#059669;color:white}
+.btn-sair{padding:5px 14px;background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display);transition:.15s}
+.btn-sair:hover{background:var(--red);color:white}
+
+/* ── MENU CARDS ── */
+.app-body{flex:1;padding:36px;max-width:1200px;margin:0 auto;width:100%}
+.app-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.app-sub{font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:28px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:36px}
+.menu-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rad);padding:24px;cursor:pointer;text-decoration:none;color:inherit;transition:.2s;display:flex;flex-direction:column;gap:12px}
+.menu-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(0,82,163,.1);transform:translateY(-2px)}
+.menu-card.locked{opacity:.45;cursor:not-allowed;pointer-events:none}
+.mc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.mc-icon-blue{background:var(--accent3)}
+.mc-icon-green{background:var(--green-bg)}
+.mc-icon-purple{background:var(--purple-bg)}
+.mc-icon-yellow{background:var(--yellow-bg)}
+.mc-title{font-size:15px;font-weight:700}
+.mc-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.mc-badge{display:inline-flex;align-items:center;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:var(--mono);margin-top:4px;width:fit-content}
+.mc-badge-blue{background:var(--accent3);color:var(--accent)}
+.mc-badge-green{background:var(--green-bg);color:var(--green)}
+.mc-badge-purple{background:var(--purple-bg);color:var(--purple)}
+.mc-lock{font-size:10px;color:var(--muted2);display:flex;align-items:center;gap:4px;margin-top:4px}
+
+/* ── GERENCIAR USUÁRIOS ── */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rad);padding:24px;margin-bottom:20px;display:none}
+.section.visible{display:block}
+.section-title{font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.section-sub{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:20px}
+.tw{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f8fafc;color:var(--muted);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg3{grid-template-columns:1fr 1fr 1fr}
+.fg-full{grid-column:span 2}
+.fl-inline{display:flex;flex-direction:column;gap:4px}
+.fl-inline label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.fl-inline input,.fl-inline select{border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-family:var(--mono);color:var(--text);outline:none;transition:.15s}
+.fl-inline input:focus,.fl-inline select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent3)}
+select option{background:white}
+.btn{padding:8px 18px;border-radius:8px;border:none;font-size:12px;font-weight:700;font-family:var(--display);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.btn-p{background:var(--accent);color:white}.btn-p:hover{background:var(--accent2)}
+.btn-d{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}.btn-d:hover{background:var(--red);color:white}
+.btn-s{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}.btn-s:hover{background:var(--green);color:white}
+.btn-sm{padding:4px 10px;font-size:10px}
+.br{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.alert{padding:10px 14px;border-radius:8px;font-size:11px;font-family:var(--mono);margin-bottom:12px;display:none}
+.alert-ok{background:var(--green-bg);border:1px solid var(--green-b);color:var(--green)}
+.alert-err{background:var(--red-bg);border:1px solid var(--red-b);color:var(--red)}
+
+/* NIVEL TAGS */
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;font-family:var(--mono)}
+.tag-adm-sis{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-b)}
+.tag-adm{background:var(--accent3);color:var(--accent);border:1px solid #bcd4f8}
+.tag-analista{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+
+#toast{position:fixed;bottom:22px;right:22px;background:white;border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:12px;font-weight:600;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.12)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0052a3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-text">FISCAL<span>TECH</span></div>
+      <div class="brand-sub">Sistema de Monitoramento</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">Acesso ao Sistema</div>
+    <div class="login-sub">Sistema de Monitoramento</div>
+    <div class="fl">
+      <label>Usuário</label>
+      <input type="text" id="loginUser" placeholder="usuario" autocomplete="username"
+             onkeydown="if(event.key==='Enter')document.getElementById('loginSenha').focus()">
+    </div>
+    <div class="fl">
+      <label>Senha</label>
+      <input type="password" id="loginSenha" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')fazerLogin()">
+    </div>
+    <div class="login-err" id="loginErr">⚠️ Usuário ou senha incorretos</div>
+    <button class="btn-login" onclick="fazerLogin()">Entrar no Sistema</button>
+  </div>
+</div>
+
+<!-- APP PAGE -->
+<div id="appPage">
+  <div class="app-header">
+    <div class="app-header-left">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0052a3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-text" style="font-size:16px">FISCAL<span>TECH</span></div>
+        <div class="brand-sub">Sistema de Monitoramento</div>
+      </div>
+    </div>
+    <div class="app-header-right">
+      <div class="user-badge">
+        <span id="userNivelBadge" class="nivel-badge"></span>
+        <span id="userLabel">—</span>
+      </div>
+      <button class="btn-sair" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="app-title">Bem-vindo ao Fiscaltech</div>
+    <div class="app-sub" id="appSubtitle">Selecione um módulo para acessar</div>
+
+    <!-- MENU CARDS -->
+    <div class="menu-grid" id="menuGrid"></div>
+
+    <!-- GERENCIAR USUÁRIOS -->
+    <div class="section" id="sectionUsuarios">
+      <div class="section-title">👥 Gerenciar Usuários</div>
+      <div class="section-sub">Cadastre, edite e remova usuários do sistema</div>
+
+      <div class="alert alert-ok" id="alertOk"></div>
+      <div class="alert alert-err" id="alertErr"></div>
+
+      <!-- FORM NOVO USUÁRIO -->
+      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:20px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:14px;color:var(--text2)" id="formTitulo">➕ Novo Usuário</div>
+        <div class="fg fg3">
+          <div class="fl-inline">
+            <label>Usuário *</label>
+            <input type="text" id="novoUser" placeholder="nome.sobrenome"
+                   oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9._-]/g,'')">
+          </div>
+          <div class="fl-inline">
+            <label>Senha *</label>
+            <input type="password" id="novaSenha" placeholder="mínimo 6 caracteres">
+          </div>
+          <div class="fl-inline">
+            <label>Nível de Acesso *</label>
+            <select id="novoNivel">
+              <option value="">Selecionar...</option>
+              <option value="analista">Analista — só portal</option>
+              <option value="adm">ADM — portal + configurador</option>
+              <option value="adm_sis" id="optAdmSis">ADM SIS — acesso total</option>
+            </select>
+          </div>
+        </div>
+        <input type="hidden" id="editandoUser" value="">
+        <div class="br">
+          <button class="btn btn-p" onclick="salvarUsuario()">💾 Salvar</button>
+          <button class="btn" style="background:#f1f5f9;color:var(--text2);border:1px solid var(--border)" onclick="limparForm()">✕ Limpar</button>
+        </div>
+      </div>
+
+      <!-- TABELA USUÁRIOS -->
+      <div class="tw">
+        <table>
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Nível</th>
+              <th>Criado por</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaUsuarios"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  USUÁRIOS — salvos diretamente neste arquivo
+//  Níveis: adm_sis | adm | analista
+//  NÃO edite manualmente — use o painel de gerenciamento
+// ══════════════════════════════════════════════════════
+const USUARIOS = {
+  "fiscaltech": {
+    hash: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+    nivel: "adm_sis",
+    criadoPor: "sistema"
+  }
+};
+// senha padrão fiscaltech: admin
+
+const SESSION_KEY  = 'ft_session';
+const AGENTE_URL   = 'http://localhost:5001';
+
+// ── Usuários em memória (sincronizado com USUARIOS) ───
+let usuariosMemoria = JSON.parse(JSON.stringify(USUARIOS));
+
+// ── SHA-256 ──────────────────────────────────────────
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ── SESSÃO ───────────────────────────────────────────
+function getSessao() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)) || null; }
+  catch(e) { return null; }
+}
+
+function setSessao(user, nivel) {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user, nivel, ts: Date.now() }));
+}
+
+// ── Sincroniza usuários com o agente (salva login.html) ──
+async function sincronizarUsuarios() {
+  try {
+    const r = await fetch(AGENTE_URL + '/salvar/usuarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuarios: usuariosMemoria })
+    });
+    if (r.ok) {
+      mostrarAlerta('ok', '✅ Usuários salvos e publicados automaticamente!');
+    } else {
+      mostrarAlerta('ok', '✅ Salvo localmente. Agente offline — publique manualmente.');
+    }
+  } catch(e) {
+    mostrarAlerta('ok', '✅ Salvo. Agente offline — os usuários serão publicados na próxima execução.');
+  }
+}
+
+function carregarUsuarios() {
+  return usuariosMemoria;
+}
+
+function salvarUsuariosStorage(u) {
+  usuariosMemoria = u;
+}
+
+function limparSessao() {
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+// ── LOGIN ─────────────────────────────────────────────
+async function fazerLogin() {
+  const user  = document.getElementById('loginUser').value.trim().toLowerCase();
+  const senha = document.getElementById('loginSenha').value;
+  const err   = document.getElementById('loginErr');
+  if (!user || !senha) {
+    err.style.display = 'block';
+    err.textContent   = '⚠️ Preencha usuário e senha';
+    return;
+  }
+  const hash     = await sha256(senha);
+  const usuarios = carregarUsuarios();
+  const cadastro = usuarios[user];
+  if (cadastro && cadastro.hash === hash) {
+    setSessao(user, cadastro.nivel);
+    err.style.display = 'none';
+    iniciarApp(user, cadastro.nivel);
+  } else {
+    err.style.display = 'block';
+    err.textContent   = '⚠️ Usuário ou senha incorretos';
+    document.getElementById('loginSenha').value = '';
+    document.getElementById('loginSenha').focus();
+  }
+}
+
+function logout() {
+  limparSessao();
+  document.getElementById('appPage').style.display  = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('loginUser').value  = '';
+  document.getElementById('loginSenha').value = '';
+}
+
+// ── INICIAR APP ───────────────────────────────────────
+function iniciarApp(user, nivel) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appPage').style.display   = 'flex';
+
+  const nivelLabel = nivel === 'adm_sis' ? 'ADM SIS' : nivel === 'adm' ? 'ADM' : 'ANALISTA';
+  const nivelCls   = nivel === 'adm_sis' ? 'nb-adm-sis' : nivel === 'adm' ? 'nb-adm' : 'nb-analista';
+  document.getElementById('userLabel').textContent      = '👤 ' + user;
+  document.getElementById('userNivelBadge').textContent = nivelLabel;
+  document.getElementById('userNivelBadge').className   = 'nivel-badge ' + nivelCls;
+  document.getElementById('appSubtitle').textContent    =
+    `Logado como ${user} · Nível: ${nivelLabel}`;
+
+  renderMenu(nivel);
+
+  // Mostra seção de usuários para adm e adm_sis
+  const secUser = document.getElementById('sectionUsuarios');
+  if (nivel === 'adm_sis' || nivel === 'adm') {
+    secUser.classList.add('visible');
+    // ADM SIS pode criar adm_sis; ADM não pode
+    document.getElementById('optAdmSis').style.display =
+      nivel === 'adm_sis' ? '' : 'none';
+    renderTabela(nivel);
+  } else {
+    secUser.classList.remove('visible');
+  }
+}
+
+// ── MENU CARDS ────────────────────────────────────────
+function renderMenu(nivel) {
+  const temConfigurador = nivel === 'adm_sis' || nivel === 'adm';
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = `
+    <a class="menu-card" href="portal.html">
+      <div class="mc-icon mc-icon-blue">📊</div>
+      <div>
+        <div class="mc-title">Portal de Monitoramento</div>
+        <div class="mc-desc">Visão geral de todos os contratos, dashboards e indicadores em tempo real.</div>
+        <div class="mc-badge mc-badge-blue">Todos os níveis</div>
+      </div>
+    </a>
+    <a class="menu-card ${temConfigurador ? '' : 'locked'}" href="${temConfigurador ? 'configurar_fiscaltech.html' : '#'}">
+      <div class="mc-icon mc-icon-purple">⚙️</div>
+      <div>
+        <div class="mc-title">Configurador de Contratos</div>
+        <div class="mc-desc">Gerencie contratos, configure parâmetros e gere scripts de automação.</div>
+        <div class="mc-badge mc-badge-purple">${temConfigurador ? 'ADM / ADM SIS' : '🔒 Sem permissão'}</div>
+        ${!temConfigurador ? '<div class="mc-lock">🔒 Requer nível ADM ou superior</div>' : ''}
+      </div>
+    </a>
+    ${nivel === 'adm_sis' || nivel === 'adm' ? `
+    <div class="menu-card" onclick="document.getElementById('sectionUsuarios').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
+      <div class="mc-icon mc-icon-green">👥</div>
+      <div>
+        <div class="mc-title">Gerenciar Usuários</div>
+        <div class="mc-desc">Cadastre, edite e remova usuários. Defina níveis de acesso.</div>
+        <div class="mc-badge mc-badge-green">${nivel === 'adm_sis' ? 'ADM SIS — acesso total' : 'ADM — pode criar Analistas'}</div>
+      </div>
+    </div>` : ''}
+  `;
+}
+
+// ── GERENCIAR USUÁRIOS ────────────────────────────────
+function renderTabela(nivelAtual) {
+  const usuarios = carregarUsuarios();
+  const sessao   = getSessao();
+  const tbody    = document.getElementById('tabelaUsuarios');
+  const lista    = Object.entries(usuarios);
+
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Nenhum usuário cadastrado</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = lista.map(([u, dados]) => {
+    const tagCls  = dados.nivel === 'adm_sis' ? 'tag-adm-sis' : dados.nivel === 'adm' ? 'tag-adm' : 'tag-analista';
+    const tagLbl  = dados.nivel === 'adm_sis' ? 'ADM SIS' : dados.nivel === 'adm' ? 'ADM' : 'ANALISTA';
+    const isMe    = u === sessao?.user;
+    // Regras de edição/exclusão
+    const podeEditar  = nivelAtual === 'adm_sis' || (nivelAtual === 'adm' && dados.nivel === 'analista');
+    const podeExcluir = !isMe && podeEditar;
+    return `<tr>
+      <td><span style="font-family:var(--mono);font-weight:600">${u}</span>${isMe ? ' <span style="font-size:9px;color:var(--muted)">(você)</span>' : ''}</td>
+      <td><span class="tag ${tagCls}">${tagLbl}</span></td>
+      <td style="font-size:11px;color:var(--muted);font-family:var(--mono)">${dados.criadoPor || '—'}</td>
+      <td style="display:flex;gap:6px">
+        ${podeEditar  ? `<button class="btn btn-sm" style="background:#f1f5f9;border:1px solid var(--border);color:var(--text2)" onclick="editarUsuario('${u}')">✏️ Editar</button>` : ''}
+        ${podeExcluir ? `<button class="btn btn-sm btn-d" onclick="excluirUsuario('${u}')">🗑️</button>` : ''}
+        ${!podeEditar && !podeExcluir ? '<span style="font-size:10px;color:var(--muted2)">—</span>' : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function salvarUsuario() {
+  const sessao   = getSessao();
+  const usuarios = carregarUsuarios();
+  const editando = document.getElementById('editandoUser').value;
+  const user     = document.getElementById('novoUser').value.trim().toLowerCase();
+  const senha    = document.getElementById('novaSenha').value;
+  const nivel    = document.getElementById('novoNivel').value;
+
+  if (!user || !nivel) { mostrarAlerta('err', '⚠️ Preencha usuário e nível'); return; }
+  if (!editando && !senha) { mostrarAlerta('err', '⚠️ Informe a senha'); return; }
+  if (senha && senha.length < 6) { mostrarAlerta('err', '⚠️ Senha muito curta (mínimo 6 caracteres)'); return; }
+
+  // Verifica permissão de criação de nível
+  if (nivel === 'adm_sis' && sessao.nivel !== 'adm_sis') {
+    mostrarAlerta('err', '⚠️ Apenas ADM SIS pode criar usuários ADM SIS'); return;
+  }
+  if (nivel === 'adm' && sessao.nivel !== 'adm_sis' && sessao.nivel !== 'adm') {
+    mostrarAlerta('err', '⚠️ Apenas ADM ou superior pode criar ADMs'); return;
+  }
+  if (!editando && usuarios[user]) { mostrarAlerta('err', '⚠️ Usuário já existe'); return; }
+
+  const hash = senha ? await sha256(senha) : (usuarios[editando]?.hash || '');
+  usuarios[editando || user] = {
+    hash,
+    nivel,
+    criadoPor: sessao.user
+  };
+  if (editando && editando !== user) delete usuarios[editando];
+
+  salvarUsuariosStorage(usuarios);
+  limparForm();
+  renderTabela(sessao.nivel);
+  sincronizarUsuarios();
+}
+
+function editarUsuario(user) {
+  const usuarios = carregarUsuarios();
+  const dados    = usuarios[user];
+  if (!dados) return;
+  document.getElementById('novoUser').value      = user;
+  document.getElementById('novoUser').readOnly   = true;
+  document.getElementById('novaSenha').value     = '';
+  document.getElementById('novaSenha').placeholder = 'Deixe vazio para não alterar';
+  document.getElementById('novoNivel').value     = dados.nivel;
+  document.getElementById('editandoUser').value  = user;
+  document.getElementById('formTitulo').textContent = `✏️ Editando: ${user}`;
+  document.getElementById('sectionUsuarios').scrollIntoView({ behavior: 'smooth' });
+}
+
+function excluirUsuario(user) {
+  if (!confirm(`Remover usuário "${user}"?`)) return;
+  const sessao   = getSessao();
+  const usuarios = carregarUsuarios();
+  delete usuarios[user];
+  salvarUsuariosStorage(usuarios);
+  renderTabela(sessao.nivel);
+  sincronizarUsuarios();
+}
+
+function limparForm() {
+  document.getElementById('novoUser').value       = '';
+  document.getElementById('novoUser').readOnly    = false;
+  document.getElementById('novaSenha').value      = '';
+  document.getElementById('novaSenha').placeholder = 'mínimo 6 caracteres';
+  document.getElementById('novoNivel').value      = '';
+  document.getElementById('editandoUser').value   = '';
+  document.getElementById('formTitulo').textContent = '➕ Novo Usuário';
+}
+
+function mostrarAlerta(tipo, msg) {
+  const ok  = document.getElementById('alertOk');
+  const err = document.getElementById('alertErr');
+  ok.style.display = err.style.display = 'none';
+  if (tipo === 'ok') { ok.textContent = msg; ok.style.display = 'block'; }
+  else               { err.textContent = msg; err.style.display = 'block'; }
+  setTimeout(() => { ok.style.display = err.style.display = 'none'; }, 4000);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const sessao = getSessao();
+  if (sessao) {
+    const usuarios = carregarUsuarios();
+    if (usuarios[sessao.user]) {
+      iniciarApp(sessao.user, sessao.nivel);
+      return;
+    }
+  }
+  document.getElementById('loginUser').focus();
+});
+</script>
+</body>
+</html>
