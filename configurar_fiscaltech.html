@@ -240,7 +240,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
         <span id="agentLabel">Conectando…</span>
       </div>
       <span class="user-badge" id="cfgUserLabel"></span>
-      <button class="header-btn btn-back" onclick="window.location.href='portal.html'">← Portal</button>
+      <button class="header-btn btn-back" onclick="window.location.href=_urlPortal()">← Portal</button>
       <button class="header-btn btn-sair" onclick="sair()">Sair</button>
     </div>
   </div>
@@ -518,6 +518,10 @@ if(typeof AGENT_URL === "undefined"){
   var AGENT_URL = "http://localhost:5001"; // fallback para acesso local
 }
 
+// Navegação inteligente — detecta agente (/app/) vs GitHub Pages
+function _urlLogin()  { return window.location.pathname.startsWith('/app') ? '/app/login'  : 'login.html'; }
+function _urlPortal() { return window.location.pathname.startsWith('/app') ? '/app/portal' : 'portal.html'; }
+
 // ══════════════════════════════════════════════════════════════
 //  ESTADO
 // ══════════════════════════════════════════════════════════════
@@ -552,7 +556,7 @@ function getSessao(){
 function sair(){
   sessionStorage.removeItem(SESSION_KEY);
   sessionStorage.removeItem(AGENT_TOKEN_KEY);
-  window.location.href = 'login.html';
+  window.location.href = _urlLogin();
 }
 
 async function sha256(str){
@@ -564,8 +568,8 @@ async function sha256(str){
 async function iniciarAuth(){
   // 1. Verifica sessão do portal
   const s = getSessao();
-  if(!s){ window.location.href = 'login.html'; return; }
-  if(s.nivel === 'analista'){ window.location.href = 'portal.html'; return; }
+  if(!s){ window.location.href = _urlLogin(); return; }
+  if(s.nivel === 'analista'){ window.location.href = _urlPortal(); return; }
   document.getElementById('cfgUserLabel').textContent = '👤 '+s.user+' ('+s.nivel+')';
 
   // 2. Token já na session? Tenta conectar direto
