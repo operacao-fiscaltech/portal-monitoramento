@@ -142,6 +142,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:20px}
 .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
 
+/* ── SELEÇÃO DE CONTRATOS ── */
+.sel-panel{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.sel-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sel-panel-title{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sel-actions{display:flex;gap:6px}
+.sel-grid{display:flex;flex-wrap:wrap;gap:7px}
+.sel-chip{
+  display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--surface);cursor:pointer;
+  font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);
+  transition:.15s;user-select:none;
+}
+.sel-chip:hover{border-color:var(--accent);color:var(--accent2);background:var(--accent3)}
+.sel-chip.selecionado{background:var(--accent2);color:white;border-color:var(--accent2)}
+.sel-chip input[type=checkbox]{display:none}
+.sel-chip .sc-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;flex-shrink:0}
+.sel-aviso{font-family:var(--mono);font-size:10px;color:var(--yellow);background:var(--yellow-bg);border:1px solid var(--yellow-b);border-radius:6px;padding:6px 10px;margin-bottom:12px;display:none}
+.sel-aviso.show{display:block}
+
 /* ── TOASTS ── */
 #toastArea{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
 .toast{
@@ -174,8 +193,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   <div class="offline-box">
     <div class="offline-ico">🔌</div>
     <div class="offline-title">Agente não encontrado</div>
-    <div class="offline-sub" id="offlineSub">Conectando ao agente local…</div>
-    <button class="btn btn-primary" onclick="tentarReconectar()">↺ Tentar novamente</button>
+    <div class="offline-sub" id="offlineSub">Não foi possível conectar ao agente.</div>
+    <div style="margin:16px 0;text-align:left">
+      <label style="font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:7px">
+        Endereço do agente
+      </label>
+      <input
+        id="inputAgentUrl"
+        type="text"
+        placeholder="http://172.16.79.63:5001"
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+               font-family:var(--mono);font-size:13px;color:var(--text);background:var(--card2);
+               outline:none;margin-bottom:10px"
+        onkeydown="if(event.key==='Enter') tentarReconectar()"
+      >
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2);margin-bottom:14px">
+        IP da máquina onde o agente está rodando + porta 5001
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn btn-primary" onclick="tentarReconectar()">↺ Conectar</button>
+      <button class="btn btn-ghost" onclick="usarLocalhost()" style="font-size:12px">Usar localhost</button>
+    </div>
   </div>
 </div>
 
@@ -262,14 +301,31 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           <div id="execStatus" class="exec-status exec-idle">⏸ Aguardando</div>
         </div>
         <div class="card-body">
+
+          <!-- Painel de seleção de contratos -->
+          <div class="sel-panel">
+            <div class="sel-panel-head">
+              <span class="sel-panel-title">Contratos a executar</span>
+              <div class="sel-actions">
+                <button class="btn btn-ghost btn-sm" onclick="selTodos()">Todos</button>
+                <button class="btn btn-ghost btn-sm" onclick="selNenhum()">Nenhum</button>
+              </div>
+            </div>
+            <div class="sel-grid" id="selGrid">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Carregando contratos…</span>
+            </div>
+          </div>
+          <div class="sel-aviso" id="selAviso">⚠ Selecione ao menos um contrato para executar.</div>
+
+          <!-- Botões de ação -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-            <button class="btn btn-primary" onclick="executar('ciclo')">
+            <button class="btn btn-primary" onclick="executarSel('ciclo')">
               🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small>
             </button>
-            <button class="btn btn-ghost" onclick="executar('baixar')">
+            <button class="btn btn-ghost" onclick="executarSel('baixar')">
               ⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small>
             </button>
-            <button class="btn btn-ghost" onclick="executar('atualizar')">
+            <button class="btn btn-ghost" onclick="executarSel('atualizar')">
               📊 Só Atualizar<br><small style="font-weight:400;opacity:.8">Gerar dashboards</small>
             </button>
           </div>
@@ -462,12 +518,27 @@ const AGENT_URL = "http://localhost:5001";
 // ══════════════════════════════════════════════════════════════
 //  ESTADO
 // ══════════════════════════════════════════════════════════════
-const SESSION_KEY     = 'ft_session';
-const AGENT_TOKEN_KEY = 'ft_agent_token';
-let   _agentToken     = '';
-let   _config         = null;
-let   _logInterval    = null;
-let   _logOffset      = 0;
+const SESSION_KEY      = 'ft_session';
+const AGENT_TOKEN_KEY  = 'ft_agent_token';
+const AGENT_URL_KEY    = 'ft_agent_url';     // URL salva na session
+let   _agentToken      = '';
+let   _config          = null;
+let   _logInterval     = null;
+let   _logOffset       = 0;
+
+// Resolve AGENT_URL em ordem de prioridade:
+// 1. URL salva na session (digitada pelo ADM)
+// 2. AGENT_URL embutida no HTML (injetada pelo agente localmente)
+// 3. Fallback: localhost
+function resolverAgentUrl() {
+    return sessionStorage.getItem(AGENT_URL_KEY)
+        || AGENT_URL
+        || 'http://localhost:5001';
+}
+
+// Torna AGENT_URL dinâmico — sempre usa resolverAgentUrl()
+// Sobrescreve a constante com um proxy para não quebrar chamadas existentes
+let _agentUrlAtual = resolverAgentUrl();
 
 // ══════════════════════════════════════════════════════════════
 //  AUTENTICAÇÃO AUTOMÁTICA
@@ -490,59 +561,93 @@ async function sha256(str){
 async function iniciarAuth(){
   // 1. Verifica sessão do portal
   const s = getSessao();
-  if(!s){
-    window.location.href = 'login.html'; return;
-  }
-
-  // Nível insuficiente → volta ao portal sem mensagem de erro
-  if(s.nivel === 'analista'){
-    window.location.href = 'portal.html'; return;
-  }
-
+  if(!s){ window.location.href = 'login.html'; return; }
+  if(s.nivel === 'analista'){ window.location.href = 'portal.html'; return; }
   document.getElementById('cfgUserLabel').textContent = '👤 '+s.user+' ('+s.nivel+')';
 
-  // 2. Token já na session?
+  // 2. Token já na session? Tenta conectar direto
   const tokenCached = sessionStorage.getItem(AGENT_TOKEN_KEY);
   if(tokenCached){
     _agentToken = tokenCached;
-    await conectar();
-    return;
+    const ok = await conectar(false); // false = não mostra overlay se falhar
+    if(ok) return;
+    // Token pode ter expirado — limpa e tenta de novo
+    sessionStorage.removeItem(AGENT_TOKEN_KEY);
+    _agentToken = '';
   }
 
-  // 3. Tenta obter token via /auth (automático — usa hash da sessão)
-  if(s.h){
-    try{
-      const r = await fetch(AGENT_URL+'/auth',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({user: s.user, hash: s.h})
-      });
-      if(r.ok){
-        const d = await r.json();
-        if(d.token){
-          _agentToken = d.token;
-          sessionStorage.setItem(AGENT_TOKEN_KEY, d.token);
-          await conectar();
-          return;
-        }
-      }
-    }catch(e){}
+  // 3. Monta lista de URLs para tentar em ordem
+  const urlsSalvas   = sessionStorage.getItem(AGENT_URL_KEY);
+  const urlsParaTentar = [];
+  if(urlsSalvas)          urlsParaTentar.push(urlsSalvas);
+  if(AGENT_URL && AGENT_URL !== 'http://localhost:5001') urlsParaTentar.push(AGENT_URL);
+  urlsParaTentar.push('http://localhost:5001');
+  // Remove duplicatas mantendo ordem
+  const urlsUnicas = [...new Set(urlsParaTentar)];
+
+  // 4. Tenta cada URL
+  for(const url of urlsUnicas){
+    _agentUrlAtual = url;
+    const ok = await _tentarAuth(s, url);
+    if(ok) return;
   }
 
-  // 4. Falhou — agente offline ou config vazia
-  mostrarOffline('Agente não encontrado em '+AGENT_URL+'.<br>Verifique se o agente está em execução na máquina servidora.');
+  // 5. Todas falharam — mostra overlay com campo para digitar o IP
+  const inputEl = document.getElementById('inputAgentUrl');
+  if(inputEl) inputEl.value = _agentUrlAtual || '';
+  mostrarOffline(
+    'Não foi possível conectar automaticamente.<br>' +
+    'Digite o endereço do agente (IP da máquina servidora).'
+  );
 }
 
-async function conectar(){
+async function _tentarAuth(s, url){
+  if(!s.h) return false;
   try{
-    const r = await fetch(AGENT_URL+'/status');
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 4000); // timeout de 4s por tentativa
+    const r = await fetch(url+'/auth',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user: s.user, hash: s.h}),
+      signal: ctrl.signal
+    });
+    clearTimeout(tid);
+    if(!r.ok) return false;
+    const d = await r.json();
+    if(!d.token) return false;
+    _agentToken    = d.token;
+    _agentUrlAtual = url;
+    sessionStorage.setItem(AGENT_TOKEN_KEY, d.token);
+    sessionStorage.setItem(AGENT_URL_KEY,   url);
+    await conectar();
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+async function conectar(mostrarErro=true){
+  try{
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 5000);
+    const r    = await fetch(_agentUrlAtual+'/status', {signal: ctrl.signal});
+    clearTimeout(tid);
     if(!r.ok) throw new Error('status '+r.status);
     const d = await r.json();
+    document.getElementById('offlineOverlay').classList.remove('show');
     setAgentOnline(d.versao||'2.1');
     await carregarConfig();
     iniciarPoll();
+    return true;
   }catch(e){
-    mostrarOffline('Agente não encontrado em '+AGENT_URL+'.<br>Verifique se está em execução e se a porta 5001 está aberta.');
+    if(mostrarErro){
+      mostrarOffline(
+        'Não foi possível conectar em <b>'+_agentUrlAtual+'</b>.<br>' +
+        'Digite o endereço correto abaixo.'
+      );
+    }
+    return false;
   }
 }
 
@@ -552,11 +657,31 @@ function mostrarOffline(msg){
   setAgentOffline();
 }
 
+function usarLocalhost(){
+  const inp = document.getElementById('inputAgentUrl');
+  if(inp) inp.value = 'http://localhost:5001';
+}
+
 async function tentarReconectar(){
+  // Lê o campo digitado pelo ADM
+  const inp = document.getElementById('inputAgentUrl');
+  if(inp && inp.value.trim()){
+    const novaUrl = inp.value.trim().replace(/\/$/, ''); // remove barra final
+    sessionStorage.setItem(AGENT_URL_KEY, novaUrl);
+    _agentUrlAtual = novaUrl;
+  }
   document.getElementById('offlineOverlay').classList.remove('show');
   document.getElementById('agentDot').className = 'agent-dot checking';
-  document.getElementById('agentLabel').textContent = 'Reconectando…';
-  await iniciarAuth();
+  document.getElementById('agentLabel').textContent = 'Conectando…';
+
+  // Tenta auth com a URL digitada
+  const s = getSessao();
+  if(s){
+    const ok = await _tentarAuth(s, _agentUrlAtual);
+    if(ok) return;
+  }
+  // Se falhou, mostra o overlay novamente
+  mostrarOffline('Não foi possível conectar em <b>'+_agentUrlAtual+'</b>.<br>Verifique o IP e se o agente está em execução.');
 }
 
 function setAgentOnline(v){
@@ -580,7 +705,7 @@ async function agente(path, method='GET', body=null){
     }
   };
   if(body) opts.body = JSON.stringify(body);
-  const r = await fetch(AGENT_URL+path, opts);
+  const r = await fetch(_agentUrlAtual+path, opts);
   const d = await r.json();
   if(r.status === 401){
     // Token expirou — re-autentica
@@ -605,6 +730,7 @@ async function carregarConfig(){
     _config = { global:{}, contratos:[], usuarios:{} };
   }
   renderContratos();
+  renderSelGrid();
   renderUsuarios();
   renderGithub();
 }
@@ -807,17 +933,98 @@ async function salvarGithub(){
 }
 
 // ══════════════════════════════════════════════════════════════
+//  SELEÇÃO DE CONTRATOS
+// ══════════════════════════════════════════════════════════════
+let _contratosSelecionados = new Set();
+
+function renderSelGrid(){
+  const grid = document.getElementById('selGrid');
+  if(!grid) return;
+  const lista = (_config.contratos||[]).filter(c=>c.status==='ativo');
+  if(!lista.length){
+    grid.innerHTML='<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>';
+    return;
+  }
+  // Inicializa todos selecionados se vazio
+  if(_contratosSelecionados.size===0) lista.forEach(c=>_contratosSelecionados.add(c.id));
+
+  grid.innerHTML = lista.map(c=>{
+    const sel = _contratosSelecionados.has(c.id);
+    return `<label class="sel-chip ${sel?'selecionado':''}" onclick="toggleContrato('${c.id}',this)">
+      <span class="sc-dot"></span>${c.id}
+    </label>`;
+  }).join('');
+}
+
+function toggleContrato(id, el){
+  if(_contratosSelecionados.has(id)){
+    _contratosSelecionados.delete(id);
+    el.classList.remove('selecionado');
+  } else {
+    _contratosSelecionados.add(id);
+    el.classList.add('selecionado');
+  }
+  document.getElementById('selAviso').classList.toggle('show', _contratosSelecionados.size===0);
+}
+
+function selTodos(){
+  (_config.contratos||[]).filter(c=>c.status==='ativo').forEach(c=>_contratosSelecionados.add(c.id));
+  renderSelGrid();
+  document.getElementById('selAviso').classList.remove('show');
+}
+
+function selNenhum(){
+  _contratosSelecionados.clear();
+  renderSelGrid();
+  document.getElementById('selAviso').classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════════════
 //  AUTOMAÇÃO
 // ══════════════════════════════════════════════════════════════
+
+// Execução global (sem filtro) — usado apenas pelo botão Publicar
 async function executar(tipo){
-  const mapa = { ciclo:'executar/ciclo', baixar:'executar/baixar', atualizar:'executar/atualizar', publicar:'publicar' };
+  const mapa = { publicar:'publicar' };
   const path = '/'+mapa[tipo];
+  if(!path){ toast('Tipo desconhecido: '+tipo,'erro'); return; }
   try{
     await agente(path,'POST',{});
     toast('Iniciado: '+tipo,'info');
     _logOffset = 0;
     iniciarPollLogs();
   }catch(e){ toast('Erro: '+e.message,'erro'); }
+}
+
+// Execução com seleção de contratos
+async function executarSel(tipo){
+  const aviso = document.getElementById('selAviso');
+  if(_contratosSelecionados.size===0){
+    aviso.classList.add('show'); return;
+  }
+  aviso.classList.remove('show');
+
+  const ids = Array.from(_contratosSelecionados);
+  const todosAtivos = (_config.contratos||[]).filter(c=>c.status==='ativo').map(c=>c.id);
+  const eTodos = ids.length === todosAtivos.length && ids.every(id=>todosAtivos.includes(id));
+
+  // Se todos selecionados, usa rota normal (sem filtro)
+  if(eTodos){
+    const mapa = { ciclo:'executar/ciclo', baixar:'executar/baixar', atualizar:'executar/atualizar' };
+    try{
+      await agente('/'+mapa[tipo],'POST',{});
+      toast('Iniciado: todos os contratos','info');
+    }catch(e){ toast('Erro: '+e.message,'erro'); return; }
+  } else {
+    // Usa rota selecionada
+    const mapa = { ciclo:'executar/ciclo/selecionados', baixar:'executar/baixar/selecionados', atualizar:'executar/atualizar/selecionados' };
+    try{
+      await agente('/'+mapa[tipo],'POST',{ contratos: ids });
+      toast('Iniciado: '+ids.join(', '),'info');
+    }catch(e){ toast('Erro: '+e.message,'erro'); return; }
+  }
+  _logOffset = 0;
+  iniciarPollLogs();
 }
 
 async function limparLogs(){
@@ -884,10 +1091,12 @@ function iniciarPollLogs(){
 }
 
 function iniciarPoll(){
-  // Poll leve no status do agente
   setInterval(async()=>{
     try{
-      const r = await fetch(AGENT_URL+'/status');
+      const ctrl = new AbortController();
+      const tid  = setTimeout(()=>ctrl.abort(), 4000);
+      const r    = await fetch(_agentUrlAtual+'/status', {signal: ctrl.signal});
+      clearTimeout(tid);
       if(r.ok){ const d=await r.json(); setAgentOnline(d.versao||'2.1'); }
       else setAgentOffline();
     }catch(e){ setAgentOffline(); }
