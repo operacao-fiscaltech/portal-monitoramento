@@ -4,2708 +4,923 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fiscaltech — Configurador</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
 :root{
-  --bg:#0b0f1c;--bg2:#101524;--bg3:#161d30;--bg4:#1c253a;
-  --border:#1f2d47;--border2:#273758;
-  --accent:#2563eb;--accent2:#1d4ed8;--accentg:rgba(37,99,235,.14);
-  --green:#10b981;--greeng:rgba(16,185,129,.12);
-  --red:#ef4444;--redg:rgba(239,68,68,.12);
-  --yellow:#f59e0b;--yellowg:rgba(245,158,11,.12);
-  --purple:#8b5cf6;--purpleg:rgba(139,92,246,.12);
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#4e6080;
-  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--rad:10px;
+  --bg:#f0f4f8;--surface:#fff;--card:#fff;--card2:#f8fafc;
+  --border:#dde3ed;--border2:#c5cfe0;
+  --accent:#0066cc;--accent2:#0052a3;--accent3:#e8f0fc;--accent-light:#cce0ff;
+  --header:#0052a3;--header2:#003d7a;
+  --green:#059669;--green-bg:#ecfdf5;--green-b:#a7f3d0;
+  --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
+  --red:#dc2626;--red-bg:#fef2f2;--red-b:#fecaca;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;
+  --text:#0f1b2d;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
+  --display:'Plus Jakarta Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh}
 
-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
-.logo{display:flex;align-items:center;gap:12px;}
-.logo-mark{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.logo-text{font-size:15px;font-weight:800;letter-spacing:-.02em;}
-.logo-sub{font-size:10px;color:var(--text3);font-family:var(--mono);}
-.hbar{display:flex;align-items:center;gap:20px;}
-.hkpi{text-align:right;}
-.hkpi-v{font-size:19px;font-weight:800;font-family:var(--mono);color:var(--accent);}
-.hkpi-l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+/* ── HEADER ── */
+.header{background:var(--header);position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;max-width:1400px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{width:38px;height:38px;background:white;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.brand-logo svg{width:100%;height:100%}
+.brand-text{font-size:18px;font-weight:800;color:white;letter-spacing:.04em}
+.brand-text span{color:#7dd3fc;font-weight:300}
+.brand-sub{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:14px}
+.agent-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;transition:.3s}
+.agent-dot.off{background:#f87171}
+.agent-dot.checking{background:#fbbf24}
+.agent-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px}
+.user-badge{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7)}
+.header-btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display);border:none;transition:.15s}
+.btn-back{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
+.btn-back:hover{background:rgba(255,255,255,.2);color:white}
+.btn-sair{background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3)!important}
 
-.wrap{display:flex;flex:1;min-height:0;}
-aside{width:250px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
-.aside-top{padding:20px 16px 8px;}
-.aside-lbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:0 8px;margin-bottom:6px;}
-.nb{width:100%;background:none;border:none;color:var(--text2);font-size:12px;font-family:var(--sans);font-weight:600;display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;transition:.15s;text-align:left;}
-.nb:hover{background:var(--bg3);color:var(--text);}
-.nb.on{background:var(--accentg);color:var(--accent);border:1px solid var(--border2);}
-.nb-ic{width:18px;text-align:center;font-size:14px;}
-.sep{border:none;border-top:1px solid var(--border);margin:10px 14px;}
-.clist{flex:1;overflow-y:auto;padding:8px 12px;}
-.ci{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s;margin-bottom:3px;border:1px solid transparent;}
-.ci:hover{background:var(--bg3);}
-.ci.on{background:var(--accentg);border-color:var(--border2);}
-.ci.ci-inativo{opacity:.6;}
-.ci-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.ci-info{min-width:0;flex:1;}
-.ci-id{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text);}
-.ci-meta{font-size:9px;color:var(--text3);}
-
-main{flex:1;padding:28px 32px;overflow-y:auto;}
-.view{display:none;}
-.view.on{display:block;}
-
-.ph{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.ph-title{font-size:22px;font-weight:800;letter-spacing:-.03em;}
-.ph-sub{font-size:12px;color:var(--text3);font-family:var(--mono);margin-top:3px;}
-
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:22px;margin-bottom:18px;}
-.ct{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.ct::after{content:'';flex:1;height:1px;background:var(--border);}
-
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.fg2{grid-column:span 2;}
-.fl{display:flex;flex-direction:column;gap:5px;}
-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;}
-input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-size:12px;font-family:var(--mono);transition:.15s;width:100%;}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accentg);}
-input::placeholder{color:var(--text3);}
-input[readonly]{color:var(--text3);cursor:default;}
-textarea{resize:vertical;min-height:72px;}
-select option{background:var(--bg3);}
-
-.btn{padding:9px 18px;border-radius:8px;border:none;font-size:12px;font-weight:700;font-family:var(--sans);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;}
-.bp{background:var(--accent);color:#fff;} .bp:hover{background:var(--accent2);}
-.bg_{background:transparent;color:var(--text2);border:1px solid var(--border);} .bg_:hover{background:var(--bg3);color:var(--text);}
-.bd{background:var(--redg);color:var(--red);border:1px solid var(--red);} .bd:hover{background:var(--red);color:#fff;}
-.bs{background:var(--greeng);color:var(--green);border:1px solid var(--green);} .bs:hover{background:var(--green);color:#fff;}
-.bsm{padding:5px 11px;font-size:11px;}
-.br{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
-
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);}
-.be{background:var(--accentg);color:var(--accent);border:1px solid var(--accent);}
-.bd2{background:var(--greeng);color:var(--green);border:1px solid var(--green);}
-.ba{background:var(--purpleg);color:var(--purple);border:1px solid var(--purple);}
-.bg2{background:var(--bg3);color:var(--text2);}
-
-.tw{overflow-x:auto;border-radius:var(--rad);border:1px solid var(--border);}
-table{width:100%;border-collapse:collapse;font-size:11px;}
-th{background:var(--bg3);color:var(--text3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
-td{padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:var(--bg3);}
-.mono{font-family:var(--mono);}
-
-/* MODELO CARDS */
-.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:4px;}
-.mc{background:var(--bg3);border:2px solid var(--border);border-radius:var(--rad);padding:16px;cursor:pointer;transition:.2s;position:relative;}
-.mc:hover:not(.unavail){border-color:var(--border2);background:var(--bg4);}
-.mc.sel{border-color:var(--accent);background:var(--accentg);}
-.mc.unavail{opacity:.5;cursor:not-allowed;}
-.mc-label{font-size:10px;font-weight:700;font-family:var(--mono);padding:3px 8px;border-radius:4px;display:inline-flex;margin-bottom:8px;}
-.mc-name{font-size:13px;font-weight:800;margin-bottom:4px;}
-.mc-desc{font-size:10px;color:var(--text3);line-height:1.5;}
-.mc-tag{position:absolute;top:10px;right:10px;font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;font-family:var(--mono);}
-.mc-tag.ok{background:var(--greeng);color:var(--green);}
-.mc-tag.wip{background:var(--yellowg);color:var(--yellow);}
-.cfg-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);}
-@media(max-width:760px){.cfg-btn span{display:none}}
-
-/* LOGIN */
-#loginOverlay{
-  position:fixed;inset:0;background:var(--bg);z-index:9999;
-  display:flex;align-items:center;justify-content:center;
+/* ── LAYOUT ── */
+.wrap{max-width:1400px;margin:0 auto;padding:28px 32px 60px;display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.sidebar{display:flex;flex-direction:column;gap:8px;position:sticky;top:76px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;
+  cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:.15s;
+  border:1px solid transparent;
 }
-.login-box{
-  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-  padding:40px 36px;width:100%;max-width:380px;
-  box-shadow:0 24px 64px rgba(0,0,0,.6);
+.nav-item:hover{background:var(--surface);color:var(--text);border-color:var(--border)}
+.nav-item.active{background:var(--accent3);color:var(--accent2);border-color:var(--accent-light);font-weight:700}
+.nav-item .nav-ico{font-size:15px;flex-shrink:0}
+
+.content{display:flex;flex-direction:column;gap:20px}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.card-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+
+/* ── SEÇÕES ── */
+.secao{display:none}
+.secao.ativa{display:flex;flex-direction:column;gap:20px}
+
+/* ── FORM FIELDS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-full{grid-column:1/-1}
+.field label{display:block;font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{
+  width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:var(--display);font-size:13px;color:var(--text);background:var(--card2);
+  outline:none;transition:.15s;
 }
-.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
-.login-mark{width:40px;height:40px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.login-title{font-size:18px;font-weight:800;letter-spacing:-.02em;}
-.login-sub{font-size:11px;color:var(--text3);font-family:var(--mono);}
-.login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.login-field label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;}
-.login-field input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:11px 14px;font-size:13px;font-family:var(--mono);width:100%;transition:.15s;}
-.login-field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accentg);}
-.login-err{color:var(--red);font-size:11px;margin-bottom:12px;display:none;font-family:var(--mono);}
-.login-btn{width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:var(--sans);cursor:pointer;transition:.15s;margin-top:4px;}
-.login-btn:hover{background:var(--accent2);}
-.login-voltar{display:block;text-align:center;margin-top:16px;font-size:11px;color:var(--text3);text-decoration:none;font-family:var(--mono);}
-.login-voltar:hover{color:var(--text2);}
-.app-hidden{display:none!important;}
-.mc-sec{font-size:8px;padding:1px 5px;background:var(--bg);border-radius:2px;color:var(--text3);font-family:var(--mono);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(0,102,204,.08)}
+.field textarea{resize:vertical;min-height:70px}
 
-.ppath{margin-top:10px;padding:10px 14px;background:var(--bg3);border-radius:8px;font-family:var(--mono);font-size:11px;color:var(--text3);}
-.ppath span{color:var(--accent);}
+/* ── BOTÕES ── */
+.btn{padding:9px 18px;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.btn-primary{background:var(--accent2);color:white}
+.btn-primary:hover{background:var(--header2)}
+.btn-success{background:var(--green);color:white}
+.btn-success:hover{background:#047857}
+.btn-danger{background:var(--red);color:white}
+.btn-danger:hover{background:#b91c1c}
+.btn-ghost{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}
+.btn-ghost:hover{background:var(--accent-light)}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-.hbox{background:var(--accentg);border:1px solid var(--border2);border-radius:var(--rad);padding:14px 18px;margin-bottom:16px;font-size:12px;line-height:1.6;}
-.wbox{background:var(--yellowg);border:1px solid var(--yellow);border-radius:var(--rad);padding:12px 16px;font-size:11px;line-height:1.6;}
+/* ── TABELA CONTRATOS ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8fafc}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700}
+.sp-ativo{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.sp-inativo{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
 
-.outbox{background:var(--bg);border:1px solid var(--border);border-radius:var(--rad);padding:14px 18px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2);max-height:380px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;}
+/* ── USUARIO ── */
+.user-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.user-row:last-child{border-bottom:none}
+.user-avatar{width:34px;height:34px;border-radius:8px;background:var(--accent3);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:13px;font-weight:700;color:var(--text)}
+.user-nivel{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.nivel-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700}
+.nb-adm_sis{background:#f5f3ff;color:#7c3aed}
+.nb-adm{background:#eff6ff;color:#0066cc}
+.nb-analista{background:#ecfdf5;color:#059669}
 
-.empty{text-align:center;padding:48px 24px;color:var(--text3);}
-.empty-ic{font-size:38px;margin-bottom:10px;}
-.empty-t{font-size:15px;font-weight:700;color:var(--text2);margin-bottom:6px;}
+/* ── LOG ── */
+.log-box{
+  background:#0d1117;border-radius:10px;padding:14px;
+  font-family:var(--mono);font-size:11px;line-height:1.7;
+  height:320px;overflow-y:auto;color:#c9d1d9;
+}
+.log-box::-webkit-scrollbar{width:5px}
+.log-box::-webkit-scrollbar-track{background:transparent}
+.log-box::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
+.log-ok{color:#56d364}.log-erro{color:#f87171}.log-warn{color:#e3b341}.log-info{color:#79c0ff}
 
-#toast{position:fixed;bottom:22px;right:22px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:11px 18px;font-size:12px;font-weight:600;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.5);animation:su .2s ease;}
-@keyframes su{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+/* ── BADGES EXECUÇÃO ── */
+.exec-status{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
+.exec-idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.exec-running{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.exec-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.exec-erro{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.spin{animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.modelo-info-card{border-radius:var(--rad);padding:16px 20px;margin-bottom:14px;border:1px solid var(--border);}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--surface);border-radius:16px;padding:28px;width:100%;max-width:520px;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:20px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* ── TOASTS ── */
+#toastArea{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.toast{
+  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:8px;
+  animation:slideIn .2s ease;min-width:260px;
+}
+@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.toast-erro{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.toast-info{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}
+.toast-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+
+/* ── OFFLINE OVERLAY ── */
+#offlineOverlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;
+}
+#offlineOverlay.show{display:flex}
+.offline-box{background:var(--surface);border-radius:16px;padding:36px;text-align:center;max-width:380px}
+.offline-ico{font-size:40px;margin-bottom:12px}
+.offline-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px}
+.offline-sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
-<div id="loginOverlay">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-mark">🛣️</div>
-      <div>
-        <div class="login-title">FISCALTECH</div>
-        <div class="login-sub">Configurador — Acesso Restrito</div>
-      </div>
-    </div>
-    <div class="login-field">
-      <label>Usuário</label>
-      <input type="text" id="loginUser" placeholder="usuario" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginSenha').focus()">
-    </div>
-    <div class="login-field">
-      <label>Senha</label>
-      <input type="password" id="loginSenha" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')fazerLogin()">
-    </div>
-    <div class="login-err" id="loginErr">⚠️ Usuário ou senha incorretos</div>
-    <button class="login-btn" onclick="fazerLogin()">Entrar</button>
-    <a href="portal.html" class="login-voltar">← Voltar ao Portal</a>
+<!-- ── OFFLINE OVERLAY ── -->
+<div id="offlineOverlay">
+  <div class="offline-box">
+    <div class="offline-ico">🔌</div>
+    <div class="offline-title">Agente não encontrado</div>
+    <div class="offline-sub" id="offlineSub">Conectando ao agente local…</div>
+    <button class="btn btn-primary" onclick="tentarReconectar()">↺ Tentar novamente</button>
   </div>
 </div>
 
-<!-- APP (oculto até login) -->
-<div id="appWrap" class="app-hidden">
-
-<header>
-  <div class="logo">
-    <div class="logo-mark">🛣️</div>
-    <div><div class="logo-text">FISCALTECH</div><div class="logo-sub">Configurador de Contratos v2.0</div></div>
-  </div>
-  <div class="hbar">
-    <div class="hkpi"><div class="hkpi-v" id="hTotal">0</div><div class="hkpi-l">Total</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hARES" style="color:var(--accent)">0</div><div class="hkpi-l">ARES</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hSIOR" style="color:var(--green)">0</div><div class="hkpi-l">SIOR</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hPROMULT" style="color:var(--purple)">0</div><div class="hkpi-l">PROMULT</div></div>
-    <div class="hkpi"><div class="hkpi-v" id="hOVERSEE" style="color:var(--yellow)">0</div><div class="hkpi-l">OVERSEE</div></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-left:8px;padding-left:16px;border-left:1px solid var(--border)">
-      <!-- INDICADOR AGENTE -->
-      <div id="agenteIndicador" title="Agente local" style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer" onclick="nav('execucao',null)">
-        <div id="agenteDot" style="width:7px;height:7px;border-radius:50%;background:var(--text3);transition:.3s"></div>
-        <span id="agenteLabel" style="font-size:10px;font-weight:700;font-family:var(--mono);color:var(--text3)">AGENTE</span>
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 35 L20 15 L28 22 L38 8 L55 28" stroke="#0052a3" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="5" y="38" width="70" height="4" rx="2" fill="#0052a3"/>
+          <path d="M38 8 L55 28 L68 18" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
       </div>
-      <span id="userLabel" style="font-size:11px;color:var(--text3);font-family:var(--mono)"></span>
-      <button onclick="logout()" style="padding:5px 12px;background:var(--redg);color:var(--red);border:1px solid var(--red);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)">Sair</button>
-      <a href="login.html" style="padding:5px 12px;background:var(--greeng);color:var(--green);border:1px solid var(--green);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;font-family:var(--sans)" id="btnGerenciarUsers">👥 Usuários</a>
-      <a href="portal.html" style="padding:5px 12px;background:var(--accentg);color:var(--accent);border:1px solid var(--accent);border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;font-family:var(--sans)">← Portal</a>
+      <div>
+        <div class="brand-text">FISCAL<span>TECH</span></div>
+        <div class="brand-sub">Configurador v2.1</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="agent-badge">
+        <div class="agent-dot checking" id="agentDot"></div>
+        <span id="agentLabel">Conectando…</span>
+      </div>
+      <span class="user-badge" id="cfgUserLabel"></span>
+      <button class="header-btn btn-back" onclick="window.location.href='portal.html'">← Portal</button>
+      <button class="header-btn btn-sair" onclick="sair()">Sair</button>
     </div>
   </div>
 </header>
 
+<!-- ── LAYOUT ── -->
 <div class="wrap">
-<aside>
-  <div class="aside-top">
-    <div class="aside-lbl">Menu</div>
-    <button class="nb on" onclick="nav('geral',this)"><span class="nb-ic">📊</span>Visão Geral</button>
-    <button class="nb" onclick="nav('novo',this)"><span class="nb-ic">➕</span>Novo Contrato</button>
-    <button class="nb" onclick="nav('execucao',this)"><span class="nb-ic">⚡</span>Execução Manual</button>
-    <button class="nb" onclick="nav('modelos',this)"><span class="nb-ic">🗂️</span>Modelos</button>
-    <button class="nb" onclick="nav('global',this)"><span class="nb-ic">⚙️</span>Config. Global</button>
-    <button class="nb" onclick="nav('gerar',this)"><span class="nb-ic">🚀</span>Gerar Scripts</button>
-  </div>
-  <hr class="sep">
-  <div style="padding:0 14px 6px"><div class="aside-lbl">Contratos cadastrados</div></div>
-  <div class="clist" id="clist"></div>
-</aside>
 
-<main>
-
-<!-- GERAL -->
-<div class="view on" id="v-geral">
-  <div class="ph">
-    <div class="ph-left"><div class="ph-title">Visão Geral</div><div class="ph-sub">Todos os contratos configurados</div></div>
-    <button class="btn bp" onclick="nav('novo',null)">➕ Novo Contrato</button>
-  </div>
-  <div id="geralContent"></div>
-</div>
-
-<!-- NOVO / EDITAR -->
-<div class="view" id="v-novo">
-  <div class="ph">
-    <div class="ph-left"><div class="ph-title" id="fTitle">Novo Contrato</div><div class="ph-sub" id="fSub">Preencha as informações</div></div>
-  </div>
-
-  <div class="card">
-    <div class="ct">🗂️ Modelo de Dashboard</div>
-    <div class="mgrid" id="mgrid"></div>
-    <input type="hidden" id="fModelo" value="ARES">
-  </div>
-
-  <div class="card">
-    <div class="ct">📋 Identificação</div>
-    <div class="fg">
-      <div class="fl"><label>ID do Contrato *</label><input type="text" id="fId" placeholder="ex: ARES01, SIOR-SP" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_-]/g,'');prvw()"></div>
-      <div class="fl"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="ex: EPR Litoral Pioneiro"></div>
-      <div class="fl"><label>Concessionária / Órgão</label><input type="text" id="fConcess" placeholder="ex: EPR, DNIT, Agetran, Oversee"></div>
-      <div class="fl"><label>UF</label>
-        <select id="fUF"><option value="">Selecionar...</option><option>PR</option><option>SP</option><option>SC</option><option>RS</option><option>MG</option><option>RJ</option><option>GO</option><option>MT</option><option>MS</option><option>BA</option><option>PE</option><option>CE</option></select>
-      </div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-item active" onclick="mostrarSecao('contratos',this)">
+      <span class="nav-ico">🗂️</span> Contratos
     </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">🌐 Sistema Ares</div>
-    <div class="fg">
-      <div class="fl fg2"><label>URL do Sistema *</label><input type="text" id="fUrl" placeholder="https://nomecontrato.fiscaltech.ind.br" oninput="prvw()"></div>
-      <div class="fl"><label>Usuário</label><input type="text" id="fUser" value="portal.monitoramento"></div>
-      <div class="fl"><label>Senha</label><input type="password" id="fSenha" value="Fiscal@123"></div>
+    <div class="nav-item" onclick="mostrarSecao('automacao',this)">
+      <span class="nav-ico">⚡</span> Automação
     </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">📁 Caminhos</div>
-    <div class="fg">
-      <div class="fl fg2"><label>Pasta Raiz dos Relatórios</label><input type="text" id="fRaiz" placeholder="C:\fiscaltech\relatorios" oninput="prvw()"></div>
-      <div class="fl fg2"><label>Pasta do Portal</label><input type="text" id="fPortal" placeholder="C:\fiscaltech\portal"></div>
+    <div class="nav-item" onclick="mostrarSecao('usuarios',this)">
+      <span class="nav-ico">👥</span> Usuários
     </div>
-    <div class="ppath" id="pathPrvw">📂 <span>C:\fiscaltech\relatorios\ID_CONTRATO\2025\01\</span></div>
-  </div>
-
-  <div class="card">
-    <div class="ct">⏰ Agendamento</div>
-    <div class="fg">
-      <div class="fl"><label>Horário Download</label><input type="time" id="fHrDl" value="06:30"></div>
-      <div class="fl"><label>Horário Atualização</label><input type="time" id="fHrAt" value="07:00"></div>
-      <div class="fl fg2"><label>Observações</label><textarea id="fObs" placeholder="Anotações..."></textarea></div>
+    <div class="nav-item" onclick="mostrarSecao('github',this)">
+      <span class="nav-ico">🐙</span> GitHub
     </div>
-  </div>
+    <div class="nav-item" onclick="mostrarSecao('logs',this)">
+      <span class="nav-ico">📋</span> Logs do Agente
+    </div>
+  </nav>
 
-  <div class="card">
-    <div class="ct">🔘 Status do Contrato</div>
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;text-transform:none;font-size:13px;font-weight:600;letter-spacing:0">
-        <div id="statusToggle" onclick="toggleStatus()" style="width:44px;height:24px;border-radius:12px;background:var(--green);cursor:pointer;position:relative;transition:.2s;flex-shrink:0">
-          <div id="statusThumb" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:23px;transition:.2s"></div>
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ════ CONTRATOS ════ -->
+    <div class="secao ativa" id="sec-contratos">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🗂️ Contratos Ativos</div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalContrato(null)">+ Novo Contrato</button>
         </div>
-        <span id="statusLabel" style="color:var(--green)">Ativo — incluído nas execuções automáticas</span>
-      </label>
-      <input type="hidden" id="fStatus" value="ativo">
-    </div>
-    <div style="font-size:10px;color:var(--text3);margin-top:10px;font-family:var(--mono)">
-      ⚠️ Contratos <strong>Inativos</strong> são pulados completamente no ciclo de execução (download e atualização).
-    </div>
-  </div>
-
-  <div class="br">
-    <button class="btn bp" onclick="salvar()">💾 Salvar Contrato</button>
-    <button class="btn bg_" onclick="limpar()">✕ Limpar</button>
-    <button class="btn bd bsm" id="btnDel" style="display:none" onclick="deletar()">🗑️ Remover</button>
-  </div>
-</div>
-
-<!-- EXECUÇÃO MANUAL -->
-<div class="view" id="v-execucao">
-  <div class="ph">
-    <div class="ph-left"><div class="ph-title">Execução Manual</div><div class="ph-sub">Execute o ciclo completo ou etapas individuais fora do horário agendado</div></div>
-    <div id="execStatusBadge" style="display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg3)">
-      <div id="execDot" style="width:8px;height:8px;border-radius:50%;background:var(--text3)"></div>
-      <span id="execStatusTxt" style="font-size:11px;font-weight:700;font-family:var(--mono);color:var(--text3)">Verificando agente...</span>
-    </div>
-  </div>
-
-  <!-- ALERTA AGENTE OFFLINE -->
-  <div id="execAgenteAviso" class="wbox" style="display:none;margin-bottom:16px">
-    ⚠️ <strong>Agente local não encontrado.</strong> Para usar a execução manual, inicie o agente:<br>
-    <code style="font-family:var(--mono);background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:11px">python C:\fiscaltech\portal\agente_fiscaltech.py</code><br>
-    <span style="font-size:10px;color:var(--text3);margin-top:4px;display:block">Você pode adicionar ao Agendador de Tarefas do Windows para iniciar automaticamente com o computador.</span>
-  </div>
-
-  <!-- AÇÕES PRINCIPAIS -->
-  <div class="card">
-    <div class="ct">⚡ Ações</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
-        <div style="font-size:13px;font-weight:800">🔄 Ciclo Completo</div>
-        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa download dos relatórios e depois atualiza todos os dashboards em sequência.</div>
-        <button class="btn bp" id="btnCiclo" onclick="executarAcao('ciclo')" style="margin-top:auto">▶ Executar Agora</button>
-      </div>
-
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
-        <div style="font-size:13px;font-weight:800">⬇️ Somente Download</div>
-        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa apenas o <code style="font-family:var(--mono)">baixar_relatorios.py</code> — busca os XLS no sistema Ares.</div>
-        <button class="btn bg_" id="btnBaixar" onclick="executarAcao('baixar')" style="margin-top:auto">▶ Só Baixar</button>
-      </div>
-
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rad);padding:18px;display:flex;flex-direction:column;gap:10px">
-        <div style="font-size:13px;font-weight:800">📊 Somente Atualizar</div>
-        <div style="font-size:10px;color:var(--text3);line-height:1.5">Executa apenas o <code style="font-family:var(--mono)">atualizar_todos.py</code> — gera e publica os dashboards.</div>
-        <button class="btn bg_" id="btnAtualizar" onclick="executarAcao('atualizar')" style="margin-top:auto">▶ Só Atualizar</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- BARRA DE PROGRESSO -->
-  <div id="execProgressCard" class="card" style="display:none">
-    <div class="ct">⏳ Em Execução</div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-      <div style="width:12px;height:12px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite"></div>
-      <span id="execScriptAtual" style="font-size:12px;font-weight:700;color:var(--accent);font-family:var(--mono)">Iniciando...</span>
-    </div>
-    <div style="background:var(--bg3);border-radius:6px;height:6px;overflow:hidden">
-      <div id="execProgressBar" style="height:100%;background:var(--accent);width:0%;transition:width .5s;border-radius:6px"></div>
-    </div>
-  </div>
-
-  <!-- PAINEL DE LOGS -->
-  <div class="card">
-    <div class="ct" style="justify-content:space-between">
-      <span>📋 Logs de Execução</span>
-      <div style="display:flex;gap:8px;margin-left:auto">
-        <button class="btn bg_ bsm" onclick="limparLogs()">🗑️ Limpar</button>
-        <button class="btn bs bsm" onclick="copiarLogs()">📋 Copiar</button>
-      </div>
-    </div>
-    <div id="execLogs" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--text2);height:340px;overflow-y:auto;white-space:pre-wrap;word-break:break-all">
-      <span style="color:var(--text3)">— Nenhuma execução ainda. Use os botões acima para iniciar. —</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-      <span id="execUltimoOk" style="font-size:10px;color:var(--text3);font-family:var(--mono)"></span>
-      <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:10px;color:var(--text3)">
-        <input type="checkbox" id="execAutoScroll" checked style="width:auto"> Auto-scroll
-      </label>
-    </div>
-  </div>
-</div>
-
-<!-- MODELOS -->
-<div class="view" id="v-modelos">
-  <div class="ph"><div class="ph-left"><div class="ph-title">Modelos de Dashboard</div><div class="ph-sub">Cada modelo tem parsers, indicadores e layouts próprios</div></div></div>
-
-  <div class="hbox">
-    <strong>💡 Como funcionam os modelos:</strong><br>
-    Cada contrato usa um modelo fixo. O modelo define quais arquivos XLS são esperados, como os dados são lidos e quais seções aparecem no dashboard.<br>
-    Templates ficam em: <code style="font-family:var(--mono);background:var(--bg3);padding:1px 5px;border-radius:3px">C:\fiscaltech\modelos\NOME_MODELO\dashboard_template.html</code>
-  </div>
-
-  <!-- ARES -->
-  <div class="modelo-info-card" style="background:var(--accentg);border-color:var(--border2)">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge be" style="font-size:11px;padding:4px 10px">Modelo 1 — ARES</span>
-          <span class="badge" style="background:var(--greeng);color:var(--green)">✅ ATIVO</span>
-        </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 1 — ARES</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Concessões rodoviárias federais/estaduais com sistema Ares completo.</div>
-        <div style="font-size:10px;color:var(--text2);font-weight:600;margin-bottom:5px">📄 Arquivos XLS:</div>
-        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">
-          <span class="badge bg2">Funcionamento_Fluxo_YYYYMMDD.xlsx</span>
-          <span class="badge bg2">Lista_Geral_Pistas_YYYYMMDD.xls</span>
-          <span class="badge bg2">Aproveitamento_Imagens_YYYYMMDD.xlsx</span>
-          <span class="badge bg2">consulta_infracoes_YYYYMMDD.csv</span>
-        </div>
-        <div style="font-size:10px;color:var(--text2);font-weight:600;margin-bottom:5px">📊 Seções:</div>
-        <div style="display:flex;flex-wrap:wrap;gap:4px">
-          <span class="badge be">Painel Geral</span><span class="badge be">Funcionamento</span><span class="badge be">Aproveitamento</span>
-          <span class="badge be">LAP</span><span class="badge be">OCR</span><span class="badge be">Fluxo</span>
-          <span class="badge be">Infrações</span><span class="badge be">Fluxo Horário</span><span class="badge be">Aferições</span>
+        <div class="card-body" style="padding:0">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>ID</th><th>Nome</th><th>Concessão</th><th>UF</th><th>Modelo</th><th>Status</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tblContratos">
+              <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Carregando…</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--accent)" id="mCountARES">0</div>
+    </div>
+
+    <!-- ════ AUTOMAÇÃO ════ -->
+    <div class="secao" id="sec-automacao">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">⚡ Execução Manual</div>
+          <div id="execStatus" class="exec-status exec-idle">⏸ Aguardando</div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+            <button class="btn btn-primary" onclick="executar('ciclo')">
+              🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small>
+            </button>
+            <button class="btn btn-ghost" onclick="executar('baixar')">
+              ⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small>
+            </button>
+            <button class="btn btn-ghost" onclick="executar('atualizar')">
+              📊 Só Atualizar<br><small style="font-weight:400;opacity:.8">Gerar dashboards</small>
+            </button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="executar('publicar')">
+            📤 Publicar no GitHub agora
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">📋 Log de Execução</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="limparLogs()">Limpar</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding:12px">
+          <div class="log-box" id="logBox">Aguardando execução…</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- SIOR -->
-  <div class="modelo-info-card" style="background:var(--greeng);border-color:var(--green)">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge bd2" style="font-size:11px;padding:4px 10px">Modelo 2 — SIOR</span>
-          <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
+    <!-- ════ USUÁRIOS ════ -->
+    <div class="secao" id="sec-usuarios">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">👥 Usuários do Portal</div>
+          <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">+ Novo Usuário</button>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 2 — SIOR</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema SIOR — contratos DNIT.</div>
-        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato SIOR, envie para construirmos o parser e o dashboard específico.</div>
-      </div>
-      <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--green)" id="mCountSIOR">0</div>
+        <div class="card-body">
+          <div id="listaUsuarios">Carregando…</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- PROMULT -->
-  <div class="modelo-info-card" style="background:var(--purpleg);border-color:var(--purple)">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge ba" style="font-size:11px;padding:4px 10px">Modelo 3 — PROMULT</span>
-          <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
+    <!-- ════ GITHUB ════ -->
+    <div class="secao" id="sec-github">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🐙 Configuração GitHub</div>
+          <button class="btn btn-primary btn-sm" onclick="salvarGithub()">Salvar</button>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 3 — PROMULT</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema Promult — contratos Agetran.</div>
-        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato Promult, envie para construirmos o parser e o dashboard específico.</div>
-      </div>
-      <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--purple)" id="mCountPROMULT">0</div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="field">
+              <label>Usuário GitHub</label>
+              <input type="text" id="ghUsuario" placeholder="seu-usuario">
+            </div>
+            <div class="field">
+              <label>Repositório</label>
+              <input type="text" id="ghRepo" placeholder="portal-monitoramento">
+            </div>
+            <div class="field form-full">
+              <label>Token (Personal Access Token)</label>
+              <input type="password" id="ghToken" placeholder="ghp_…">
+            </div>
+            <div class="field">
+              <label>Branch</label>
+              <input type="text" id="ghBranch" placeholder="main" value="main">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- OVERSEE -->
-  <div class="modelo-info-card" style="background:var(--yellowg);border-color:var(--yellow)">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span class="badge by" style="font-size:11px;padding:4px 10px;background:var(--yellowg);color:var(--yellow);border:1px solid var(--yellow)">Modelo 4 — OVERSEE</span>
-          <span class="badge" style="background:var(--yellowg);color:var(--yellow)">🔧 EM BREVE</span>
+    <!-- ════ LOGS ════ -->
+    <div class="secao" id="sec-logs">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">📋 Logs do Agente</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="carregarLogs()">↺ Atualizar</button>
+            <button class="btn btn-ghost btn-sm" onclick="limparLogs()">Limpar</button>
+          </div>
         </div>
-        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Modelo 4 — OVERSEE</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Sistema Oversee — a definir.</div>
-        <div class="wbox">⚠️ Modelo ainda não implementado. Ao receber os primeiros arquivos de um contrato Oversee, envie para construirmos o parser e o dashboard específico.</div>
+        <div class="card-body" style="padding:12px">
+          <div class="log-box" id="logBoxAgente">Carregando…</div>
+        </div>
       </div>
-      <div style="text-align:center;background:var(--bg2);border-radius:var(--rad);padding:16px 24px;flex-shrink:0">
-        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Contratos</div>
-        <div style="font-size:32px;font-weight:800;font-family:var(--mono);color:var(--yellow)" id="mCountOVERSEE">0</div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /wrap -->
+
+<!-- ── MODAL CONTRATO ── -->
+<div class="modal-bg" id="modalContrato">
+  <div class="modal">
+    <div class="modal-title" id="modalContratoTitulo">Novo Contrato</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>ID (sem espaços)</label>
+        <input type="text" id="cId" placeholder="MINHA_CONCESSIONARIA">
       </div>
+      <div class="field">
+        <label>Nome Exibição</label>
+        <input type="text" id="cNome" placeholder="Minha Concessão">
+      </div>
+      <div class="field">
+        <label>URL do Portal</label>
+        <input type="text" id="cUrl" placeholder="https://contrato.fiscaltech.ind.br">
+      </div>
+      <div class="field">
+        <label>Concessão</label>
+        <input type="text" id="cConcessao" placeholder="EPR / DNIT / ECOVIAS…">
+      </div>
+      <div class="field">
+        <label>UF</label>
+        <select id="cUf">
+          <option value="PR">PR</option><option value="SP">SP</option>
+          <option value="SC">SC</option><option value="RS">RS</option>
+          <option value="MS">MS</option><option value="MG">MG</option>
+          <option value="ES">ES</option><option value="RJ">RJ</option>
+          <option value="GO">GO</option><option value="MT">MT</option>
+          <option value="BA">BA</option><option value="PB">PB</option>
+          <option value="PE">PE</option><option value="CE">CE</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="cStatus">
+          <option value="ativo">Ativo</option>
+          <option value="inativo">Inativo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Usuário Portal</label>
+        <input type="text" id="cUsuario" value="portal.monitoramento">
+      </div>
+      <div class="field">
+        <label>Senha Portal</label>
+        <input type="password" id="cSenha" placeholder="Fiscal@123">
+      </div>
+      <div class="field">
+        <label>Horário Download</label>
+        <input type="time" id="cHrDl" value="06:30">
+      </div>
+      <div class="field">
+        <label>Horário Atualização</label>
+        <input type="time" id="cHrAt" value="07:00">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="fecharModal('modalContrato')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarContrato()">Salvar Contrato</button>
     </div>
   </div>
 </div>
 
-<!-- CONFIG GLOBAL -->
-<div class="view" id="v-global">
-  <div class="ph"><div class="ph-left"><div class="ph-title">Configuração Global</div><div class="ph-sub">Parâmetros compartilhados por todos os contratos</div></div></div>
-
-  <div class="card">
-    <div class="ct">🐙 GitHub Pages</div>
-    <div class="fg">
-      <div class="fl"><label>Usuário GitHub</label><input type="text" id="gUser" placeholder="operacao-fiscaltech"></div>
-      <div class="fl"><label>Repositório</label><input type="text" id="gRepo" placeholder="portal-monitoramento"></div>
-      <div class="fl fg2"><label>Token (ghp_...)</label><input type="password" id="gToken" placeholder="ghp_..."></div>
-      <div class="fl"><label>Branch</label><input type="text" id="gBranch" value="main"></div>
-      <div class="fl"><label>URL Portal (gerada)</label><input type="text" id="gPortalUrl" readonly></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">📁 Caminhos Padrão</div>
-    <div class="fg">
-      <div class="fl"><label>Pasta Raiz Relatórios</label><input type="text" id="gRaiz" value="C:\fiscaltech\relatorios"></div>
-      <div class="fl"><label>Pasta Portal</label><input type="text" id="gPortal" value="C:\fiscaltech\portal"></div>
-      <div class="fl fg2">
-        <label>Pasta Modelos (templates)</label>
-        <input type="text" id="gModelos" value="C:\fiscaltech\modelos">
-        <div style="font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono)">\ARES\dashboard_template.html · \SIOR\dashboard_template.html · \PROMULT\dashboard_template.html · \OVERSEE\dashboard_template.html</div>
+<!-- ── MODAL USUÁRIO ── -->
+<div class="modal-bg" id="modalUsuario">
+  <div class="modal">
+    <div class="modal-title">Novo Usuário</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Login</label>
+        <input type="text" id="uLogin" placeholder="joao.silva">
+      </div>
+      <div class="field">
+        <label>Nível de Acesso</label>
+        <select id="uNivel">
+          <option value="analista">Analista — só visualização</option>
+          <option value="adm">ADM — configurador</option>
+          <option value="adm_sis">ADM SIS — acesso total</option>
+        </select>
+      </div>
+      <div class="field form-full">
+        <label>Senha</label>
+        <input type="password" id="uSenha" placeholder="Mínimo 6 caracteres">
+      </div>
+      <div class="field form-full">
+        <label>Confirmar Senha</label>
+        <input type="password" id="uSenhaConf" placeholder="Repita a senha">
       </div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">📅 Modo Apresentação</div>
-    <div class="hbox">
-      <strong>Reuniões diárias:</strong> quando ativo, o dia vigente é <strong>sempre desconsiderado</strong> em todos os dashboards —
-      os dados do dia em andamento distorcem a análise.
-    </div>
-    <div class="fg">
-      <div class="fl"><label>Padrão ao abrir dashboard</label>
-        <select id="gApres"><option value="0">Desativado (dados completos)</option><option value="1">Ativado por padrão (exclui dia atual)</option></select>
-      </div>
-      <div class="fl"><label>Período padrão</label>
-        <select id="gPer"><option value="mes">Mês atual</option><option value="semana">Última semana</option><option value="dia">Hoje</option></select>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">📊 Thresholds — Modelo 1 (ARES)</div>
-    <div class="fg">
-      <div class="fl"><label>Aproveitamento OK (%)</label><input type="number" id="gAprovOk" value="95" min="0" max="100"></div>
-      <div class="fl"><label>Aproveitamento Atenção (%)</label><input type="number" id="gAprovWarn" value="85" min="0" max="100"></div>
-      <div class="fl"><label>Funcionamento OK (%)</label><input type="number" id="gFuncOk" value="95" min="0" max="100"></div>
-      <div class="fl"><label>Funcionamento Atenção (%)</label><input type="number" id="gFuncWarn" value="80" min="0" max="100"></div>
-      <div class="fl"><label>LAP OK (%)</label><input type="number" id="gLapOk" value="90" min="0" max="100"></div>
-      <div class="fl"><label>LAP Crítico (%)</label><input type="number" id="gLapCrit" value="80" min="0" max="100"></div>
-    </div>
-  </div>
-
-  <div class="br"><button class="btn bp" onclick="salvarG()">💾 Salvar Config. Global</button></div>
-</div>
-
-<!-- GERAR -->
-<div class="view" id="v-gerar">
-  <div class="ph"><div class="ph-left"><div class="ph-title">Gerar Scripts</div><div class="ph-sub">Gera todos os arquivos necessários para operação</div></div></div>
-  <div class="card"><div class="ct">📦 Resumo</div><div id="resumoG">Carregando...</div></div>
-
-  <div class="card">
-    <div class="ct">📤 Publicar no GitHub</div>
-    <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px">
-        <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px">
-          Publica todos os HTMLs da pasta portal no GitHub Pages sem precisar rodar o ciclo completo de download.
-          <br><span style="font-size:10px;color:var(--text3);font-family:var(--mono)">portal.html · login.html · dashboards · configurar_fiscaltech.html</span>
-        </div>
-        <button class="btn bp" id="btnPublicar" onclick="publicarGitHub()">📤 Publicar Agora</button>
-      </div>
-      <div id="publicarStatus" style="display:none;flex:1;min-width:180px;background:var(--bg3);border-radius:8px;padding:12px;font-size:11px;font-family:var(--mono);color:var(--text2)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <div id="publicarDot" style="width:8px;height:8px;border-radius:50%;background:var(--yellow);animation:pulse 1s infinite"></div>
-          <span id="publicarTxt">Publicando...</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="ct">⚡ Gerar Scripts</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn bp" onclick="gerarTudo()">⚡ Gerar e Baixar Tudo</button>
-      <button class="btn bg_" onclick="gerarConfig()">📄 config.json</button>
-      <button class="btn bg_" onclick="gerarAtualizar()">🐍 atualizar_todos.py</button>
-      <button class="btn bg_" onclick="gerarBaixar()">🐍 baixar_relatorios.py</button>
-      <button class="btn bg_" onclick="gerarBat()">📁 criar_pastas.bat</button>
-      <button class="btn bg_" onclick="gerarAgendador()">⏰ agendador.bat</button>
-    </div>
-  </div>
-  <div class="card" id="outCard" style="display:none">
-    <div class="ct" id="outTitle">📋 Saída</div>
-    <div class="outbox" id="outBox"></div>
-    <div class="br">
-      <button class="btn bs bsm" onclick="cpOut()">📋 Copiar</button>
-      <button class="btn bp bsm" onclick="dlOut()">⬇️ Download</button>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="fecharModal('modalUsuario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarUsuario()">Criar Usuário</button>
     </div>
   </div>
 </div>
 
-</main>
-</div>
-</div><!-- /appWrap -->
-
-<div id="toast" style="position:fixed;bottom:22px;right:22px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:11px 18px;font-size:12px;font-weight:600;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.5)"></div>
+<!-- ── TOASTS ── -->
+<div id="toastArea"></div>
 
 <script>
-// ── USUÁRIOS AUTORIZADOS ────────────────────────
-// Para adicionar/remover usuários, edite esta lista
-// Senha é armazenada como hash SHA-256 para maior segurança
-const USUARIOS = {
-  "fiscaltech": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", // senha: admin
-  "operacao":   "af57649342064f138416ed6d99503dfc169df91bf8d70a37519d8fdf06c71909", // senha: Fiscal@123
-};
-// Para gerar hash de nova senha: https://emn178.github.io/online-tools/sha256.html
+// ══════════════════════════════════════════════════════════════
+//  AGENT_URL — injetado automaticamente pelo agente ao iniciar
+// ══════════════════════════════════════════════════════════════
+const AGENT_URL = "http://localhost:5001";
 
-const SESSION_KEY = 'ft_auth';
+// ══════════════════════════════════════════════════════════════
+//  ESTADO
+// ══════════════════════════════════════════════════════════════
+const SESSION_KEY     = 'ft_session';
+const AGENT_TOKEN_KEY = 'ft_agent_token';
+let   _agentToken     = '';
+let   _config         = null;
+let   _logInterval    = null;
+let   _logOffset      = 0;
 
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+// ══════════════════════════════════════════════════════════════
+//  AUTENTICAÇÃO AUTOMÁTICA
+// ══════════════════════════════════════════════════════════════
+function getSessao(){
+  try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY))||null; }catch(e){ return null; }
 }
-
-async function fazerLogin() {
-  const user  = document.getElementById('loginUser').value.trim().toLowerCase();
-  const senha = document.getElementById('loginSenha').value;
-  const err   = document.getElementById('loginErr');
-  if(!user||!senha){ err.style.display='block'; err.textContent='⚠️ Preencha usuário e senha'; return; }
-  const hash = await sha256(senha);
-  if(USUARIOS[user] && USUARIOS[user]===hash){
-    sessionStorage.setItem(SESSION_KEY, user);
-    document.getElementById('loginOverlay').style.display='none';
-    document.getElementById('appWrap').classList.remove('app-hidden');
-    const ul=document.getElementById('userLabel');
-    if(ul)ul.textContent='👤 '+user;
-    err.style.display='none';
-    load();
-    renderMCards('ARES');
-    document.getElementById('fRaiz').value=G.pasta_raiz;
-    document.getElementById('fPortal').value=G.pasta_portal;
-  } else {
-    err.style.display='block';
-    err.textContent='⚠️ Usuário ou senha incorretos';
-    document.getElementById('loginSenha').value='';
-    document.getElementById('loginSenha').focus();
-  }
-}
-
-function verificarSessao() {
-  const user = sessionStorage.getItem(SESSION_KEY);
-  if(user && USUARIOS[user]) {
-    document.getElementById('loginOverlay').style.display='none';
-    document.getElementById('appWrap').classList.remove('app-hidden');
-    return true;
-  }
-  document.getElementById('loginUser').focus();
-  return false;
-}
-
-function logout() {
+function sair(){
   sessionStorage.removeItem(SESSION_KEY);
-  location.reload();
-}
-let contratos=[], editId=null, outTxt='', outFile='';
-let G={
-  github_usuario:'operacao-fiscaltech',github_repo:'portal-monitoramento',
-  github_token:'',github_branch:'main',
-  pasta_raiz:'C:\\fiscaltech\\relatorios',pasta_portal:'C:\\fiscaltech\\portal',
-  pasta_modelos:'C:\\fiscaltech\\modelos',
-  aprov_ok:95,aprov_warn:85,func_ok:95,func_warn:80,lap_ok:90,lap_crit:80,
-  modo_apresentacao:0,periodo:'mes'
-};
-const MODELOS=[
-  {id:'ARES',   nome:'Modelo 1 — ARES',    cor:'accent', ok:true,
-   desc:'Sistema Ares — concessões rodoviárias federais/estaduais.',
-   secs:['Funcionamento','Aproveitamento','LAP','OCR','Fluxo','Infrações','Aferições']},
-  {id:'SIOR',   nome:'Modelo 2 — SIOR',    cor:'green',  ok:false,
-   desc:'Sistema SIOR — contratos DNIT.',secs:['A definir']},
-  {id:'PROMULT',nome:'Modelo 3 — PROMULT', cor:'purple', ok:false,
-   desc:'Sistema Promult — contratos Agetran.',secs:['A definir']},
-  {id:'OVERSEE',nome:'Modelo 4 — OVERSEE', cor:'yellow', ok:false,
-   desc:'Sistema Oversee — a definir.',secs:['A definir']}
-];
-
-// ── STORAGE ────────────────────────────────────
-function save(){localStorage.setItem('ft_c',JSON.stringify(contratos));localStorage.setItem('ft_g',JSON.stringify(G));}
-function load(){
-  try{const c=localStorage.getItem('ft_c');if(c)contratos=JSON.parse(c);}catch(e){}
-  try{const g=localStorage.getItem('ft_g');if(g)G={...G,...JSON.parse(g)};}catch(e){}
-  ui();
+  sessionStorage.removeItem(AGENT_TOKEN_KEY);
+  window.location.href = 'login.html';
 }
 
-// ── NAV ────────────────────────────────────────
-function nav(id,btn){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
-  document.getElementById('v-'+id)?.classList.add('on');
-  if(btn)btn.classList.add('on');
-  if(id==='global')loadG();
-  if(id==='gerar')loadGerar();
-  if(id==='modelos')loadModelosPage();
-  if(id==='novo'&&!editId)limpar();
-  if(id==='execucao'){pingAgente();iniciarPoll();}
-  else pararPoll();
+async function sha256(str){
+  const buf = new TextEncoder().encode(str);
+  const b   = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 
-// ── UI ─────────────────────────────────────────
-function ui(){
-  document.getElementById('hTotal').textContent=contratos.length;
-  document.getElementById('hARES').textContent=contratos.filter(c=>c.modelo==='ARES').length;
-  document.getElementById('hSIOR').textContent=contratos.filter(c=>c.modelo==='SIOR').length;
-  document.getElementById('hPROMULT').textContent=contratos.filter(c=>c.modelo==='PROMULT').length;
-  document.getElementById('hOVERSEE').textContent=contratos.filter(c=>c.modelo==='OVERSEE').length;
-  atualizaPortalUrl();
-  renderSidebar();
-  renderGeral();
-}
+async function iniciarAuth(){
+  // 1. Verifica sessão do portal
+  const s = getSessao();
+  if(!s){
+    window.location.href = 'login.html'; return;
+  }
 
-function atualizaPortalUrl(){
-  const u=`https://${G.github_usuario}.github.io/${G.github_repo}/portal.html`;
-  const el=document.getElementById('gPortalUrl');if(el)el.value=u;
-}
+  // Nível insuficiente → volta ao portal sem mensagem de erro
+  if(s.nivel === 'analista'){
+    window.location.href = 'portal.html'; return;
+  }
 
-function corModelo(m){return m==='ARES'?'var(--accent)':m==='SIOR'?'var(--green)':m==='PROMULT'?'var(--purple)':'var(--yellow)';}
-function badgeModelo(m){return m==='ARES'?'be':m==='SIOR'?'bd2':m==='PROMULT'?'ba':'by';}
+  document.getElementById('cfgUserLabel').textContent = '👤 '+s.user+' ('+s.nivel+')';
 
-function renderSidebar(){
-  const cl=document.getElementById('clist');
-  if(!contratos.length){cl.innerHTML='<div style="padding:10px 8px;font-size:10px;color:var(--text3);text-align:center">Nenhum contrato</div>';return;}
-  cl.innerHTML=contratos.map(c=>{
-    const ativo=c.status!=='inativo';
-    return `
-    <div class="ci ${ativo?'':'ci-inativo'}" onclick="editar('${c.id}')">
-      <div class="ci-dot" style="background:${ativo?corModelo(c.modelo):'var(--text3)'}"></div>
-      <div class="ci-info">
-        <div class="ci-id" style="${ativo?'':'color:var(--text3)'}">${c.id}</div>
-        <div class="ci-meta">${c.modelo} · ${c.uf||'—'} · <span style="color:${ativo?'var(--green)':'var(--red)'};font-weight:700">${ativo?'ATIVO':'INATIVO'}</span></div>
-      </div>
-      <button onclick="event.stopPropagation();toggleStatusContrato('${c.id}')" title="${ativo?'Desativar':'Ativar'}"
-        style="flex-shrink:0;padding:2px 7px;border-radius:4px;border:1px solid ${ativo?'var(--green)':'var(--red)'};background:${ativo?'var(--greeng)':'var(--redg)'};color:${ativo?'var(--green)':'var(--red)'};font-size:9px;font-weight:700;cursor:pointer;font-family:var(--mono)">
-        ${ativo?'ON':'OFF'}
-      </button>
-    </div>`}).join('');
-}
-
-function renderGeral(){
-  const dc=document.getElementById('geralContent');
-  if(!contratos.length){
-    dc.innerHTML=`<div class="empty"><div class="empty-ic">📋</div><div class="empty-t">Nenhum contrato cadastrado</div>
-      <div style="font-size:12px;margin-top:6px">Clique em <strong>Novo Contrato</strong> para começar</div>
-      <button class="btn bp" style="margin-top:18px" onclick="nav('novo',null)">➕ Adicionar Primeiro Contrato</button></div>`;
+  // 2. Token já na session?
+  const tokenCached = sessionStorage.getItem(AGENT_TOKEN_KEY);
+  if(tokenCached){
+    _agentToken = tokenCached;
+    await conectar();
     return;
   }
-  const filtro=window._filtroGeral||'todos';
-  const lista=filtro==='todos'?contratos:contratos.filter(c=>(filtro==='ativos'?c.status!=='inativo':c.status==='inativo'));
-  const nAtivos=contratos.filter(c=>c.status!=='inativo').length;
-  const nInativos=contratos.filter(c=>c.status==='inativo').length;
 
-  const tabs=`<div style="display:flex;gap:8px;margin-bottom:16px">
-    ${[['todos','Todos','var(--text2)',contratos.length],['ativos','✅ Ativos','var(--green)',nAtivos],['inativos','🔴 Inativos','var(--red)',nInativos]].map(([v,l,cor,n])=>`
-    <button onclick="window._filtroGeral='${v}';renderGeral()" style="padding:6px 14px;border-radius:6px;border:1px solid ${filtro===v?cor:'var(--border)'};background:${filtro===v?'var(--bg3)':'transparent'};color:${filtro===v?cor:'var(--text3)'};font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans)">
-      ${l} <span style="background:var(--bg3);padding:1px 6px;border-radius:3px;font-family:var(--mono);font-size:10px">${n}</span>
-    </button>`).join('')}
-  </div>`;
-
-  const rows=lista.map(c=>{
-    const ativo=c.status!=='inativo';
-    return `<tr style="${ativo?'':'opacity:.6'}">
-      <td><span class="badge ${badgeModelo(c.modelo)} mono">${c.id}</span></td>
-      <td style="font-weight:600">${c.nome}</td>
-      <td><span class="badge ${badgeModelo(c.modelo)}">${c.modelo}</span></td>
-      <td><span class="badge bg2">${c.uf||'—'}</span></td>
-      <td class="mono" style="font-size:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.url||'—'}</td>
-      <td class="mono" style="font-size:10px">${c.hr_dl||'06:30'}</td>
-      <td>
-        <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;border:1px solid ${ativo?'var(--green)':'var(--red)'};background:${ativo?'var(--greeng)':'var(--redg)'};color:${ativo?'var(--green)':'var(--red)'};font-size:9px;font-weight:700;font-family:var(--mono)">
-          ${ativo?'● ATIVO':'○ INATIVO'}
-        </span>
-      </td>
-      <td style="display:flex;gap:6px">
-        <button class="btn bg_ bsm" onclick="editar('${c.id}')">✏️ Editar</button>
-        <button class="btn bsm" onclick="toggleStatusContrato('${c.id}')"
-          style="padding:5px 10px;border-radius:6px;border:1px solid ${ativo?'var(--red)':'var(--green)'};background:${ativo?'var(--redg)':'var(--greeng)'};color:${ativo?'var(--red)':'var(--green)'};font-size:10px;font-weight:700;cursor:pointer">
-          ${ativo?'⏸ Desativar':'▶ Ativar'}
-        </button>
-      </td>
-    </tr>`;}).join('');
-
-  dc.innerHTML=tabs+`<div class="tw"><table><thead><tr>
-    <th>ID</th><th>Nome</th><th>Modelo</th><th>UF</th><th>URL Ares</th><th>Download</th><th>Status</th><th>Ações</th>
-  </tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-
-// ── MODELO CARDS ───────────────────────────────
-function renderMCards(sel){
-  const g=document.getElementById('mgrid');
-  const cmap={accent:'var(--accent)',green:'var(--green)',purple:'var(--purple)'};
-  const bmap={accent:'var(--accentg)',green:'var(--greeng)',purple:'var(--purpleg)'};
-  g.innerHTML=MODELOS.map(m=>{
-    const cor=cmap[m.cor];const bg=bmap[m.cor];const s=sel===m.id;
-    return `<div class="mc ${s?'sel':''} ${!m.ok?'unavail':''}"
-      onclick="${m.ok?`selModelo('${m.id}')`:''}"
-      style="${s?`border-color:${cor};background:${bg};`:''}"
-    >
-      <div class="mc-label" style="background:${bg};color:${cor};border:1px solid ${cor}">${m.id}</div>
-      <div class="mc-tag ${m.ok?'ok':'wip'}">${m.ok?'✅ Ativo':'🔧 Em breve'}</div>
-      <div class="mc-name">${m.nome}</div>
-      <div class="mc-desc">${m.desc}</div>
-      <div class="mc-secs">${m.secs.map(s=>`<span class="mc-sec">${s}</span>`).join('')}</div>
-    </div>`;
-  }).join('');
-}
-function selModelo(id){document.getElementById('fModelo').value=id;renderMCards(id);}
-
-// ── PREVIEW CAMINHO ────────────────────────────
-function prvw(){
-  const raiz=document.getElementById('fRaiz').value||G.pasta_raiz||'C:\\fiscaltech\\relatorios';
-  const id=document.getElementById('fId').value||'ID_CONTRATO';
-  document.getElementById('pathPrvw').innerHTML=`📂 <span>${raiz}\\${id}\\2025\\01\\</span>`;
-}
-
-// ── SALVAR / EDITAR / DELETAR ──────────────────
-function salvar(){
-  const id=document.getElementById('fId').value.trim();
-  const nome=document.getElementById('fNome').value.trim();
-  const modelo=document.getElementById('fModelo').value;
-  if(!id||!nome){toast('⚠️ ID e Nome são obrigatórios','warn');return;}
-  if(!editId&&contratos.find(c=>c.id===id)){toast('⚠️ ID já existe','warn');return;}
-  const obj={id,nome,modelo,
-    status:document.getElementById('fStatus').value||'ativo',
-    concessao:document.getElementById('fConcess').value.trim(),
-    uf:document.getElementById('fUF').value,
-    url:document.getElementById('fUrl').value.trim(),
-    usuario:document.getElementById('fUser').value.trim(),
-    senha:document.getElementById('fSenha').value,
-    pasta_raiz:document.getElementById('fRaiz').value.trim(),
-    pasta_portal:document.getElementById('fPortal').value.trim(),
-    hr_dl:document.getElementById('fHrDl').value,
-    hr_at:document.getElementById('fHrAt').value,
-    obs:document.getElementById('fObs').value.trim()
-  };
-  if(editId){const i=contratos.findIndex(c=>c.id===editId);if(i>=0)contratos[i]={...contratos[i],...obj,id:editId};}
-  else{contratos.push(obj);}
-  editId=null;save();ui();
-  // Regenerar scripts automaticamente via agente
-  sincronizarAgente(id, !!editId);
-  nav('geral',document.querySelector('.nb.on')||document.querySelector('.nb'));
-}
-
-async function sincronizarAgente(id, editando){
-  if(!agenteOnline){
-    toast('✅ Contrato "'+(editando?id:id)+'" '+(editando?'atualizado':'cadastrado')+'! (Agente offline — scripts não atualizados)','warn');
-    return;
-  }
-  toast('💾 Salvando e atualizando scripts...','ok');
-  try{
-    const r=await fetch(AGENTE_URL+'/salvar/contrato',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({config:{global:G,contratos}})
-    });
-    const d=await r.json();
-    if(d.ok){
-      toast('✅ Contrato "'+(id)+'" '+(editando?'atualizado':'cadastrado')+'! Scripts atualizados automaticamente.','ok');
-    } else {
-      toast('✅ Contrato salvo! Mas houve erro ao atualizar scripts.','warn');
-    }
-  }catch(e){
-    toast('✅ Contrato "'+(id)+'" '+(editando?'atualizado':'cadastrado')+'! (Agente indisponível)','warn');
-  }
-}
-
-function editar(id){
-  const c=contratos.find(x=>x.id===id);if(!c)return;
-  editId=id;nav('novo',null);
-  document.getElementById('fTitle').textContent=`Editando: ${c.id}`;
-  document.getElementById('fSub').textContent=c.nome;
-  document.getElementById('btnDel').style.display='inline-flex';
-  renderMCards(c.modelo||'ARES');
-  document.getElementById('fModelo').value=c.modelo||'ARES';
-  document.getElementById('fId').value=c.id;document.getElementById('fId').readOnly=true;
-  document.getElementById('fNome').value=c.nome;
-  document.getElementById('fConcess').value=c.concessao||'';
-  document.getElementById('fUF').value=c.uf||'';
-  document.getElementById('fUrl').value=c.url||'';
-  document.getElementById('fUser').value=c.usuario||'portal.monitoramento';
-  document.getElementById('fSenha').value=c.senha||'';
-  document.getElementById('fRaiz').value=c.pasta_raiz||G.pasta_raiz;
-  document.getElementById('fPortal').value=c.pasta_portal||G.pasta_portal;
-  document.getElementById('fHrDl').value=c.hr_dl||'06:30';
-  document.getElementById('fHrAt').value=c.hr_at||'07:00';
-  document.getElementById('fObs').value=c.obs||'';
-  setStatusToggle(c.status!=='inativo');
-  prvw();
-}
-
-function limpar(){
-  editId=null;
-  document.getElementById('fTitle').textContent='Novo Contrato';
-  document.getElementById('fSub').textContent='Preencha as informações';
-  document.getElementById('btnDel').style.display='none';
-  renderMCards('ARES');document.getElementById('fModelo').value='ARES';
-  ['fNome','fConcess','fUrl','fObs'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('fId').value='';document.getElementById('fId').readOnly=false;
-  document.getElementById('fUF').value='';
-  document.getElementById('fUser').value='portal.monitoramento';
-  document.getElementById('fSenha').value='Fiscal@123';
-  document.getElementById('fRaiz').value=G.pasta_raiz;
-  document.getElementById('fPortal').value=G.pasta_portal;
-  document.getElementById('fHrDl').value='06:30';document.getElementById('fHrAt').value='07:00';
-  setStatusToggle(true);
-  prvw();
-}
-
-function deletar(){
-  if(!confirm(`Remover contrato "${editId}"?`))return;
-  contratos=contratos.filter(c=>c.id!==editId);editId=null;
-  save();ui();nav('geral',document.querySelector('.nb'));toast('🗑️ Contrato removido','warn');
-}
-
-// ── CONFIG GLOBAL ──────────────────────────────
-function loadG(){
-  document.getElementById('gUser').value=G.github_usuario||'';
-  document.getElementById('gRepo').value=G.github_repo||'';
-  document.getElementById('gToken').value=G.github_token||'';
-  document.getElementById('gBranch').value=G.github_branch||'main';
-  document.getElementById('gRaiz').value=G.pasta_raiz||'';
-  document.getElementById('gPortal').value=G.pasta_portal||'';
-  document.getElementById('gModelos').value=G.pasta_modelos||'C:\\fiscaltech\\modelos';
-  document.getElementById('gAprovOk').value=G.aprov_ok??95;
-  document.getElementById('gAprovWarn').value=G.aprov_warn??85;
-  document.getElementById('gFuncOk').value=G.func_ok??95;
-  document.getElementById('gFuncWarn').value=G.func_warn??80;
-  document.getElementById('gLapOk').value=G.lap_ok??90;
-  document.getElementById('gLapCrit').value=G.lap_crit??80;
-  document.getElementById('gApres').value=G.modo_apresentacao??0;
-  document.getElementById('gPer').value=G.periodo||'mes';
-  atualizaPortalUrl();
-}
-
-function salvarG(){
-  G={
-    github_usuario:document.getElementById('gUser').value.trim(),
-    github_repo:document.getElementById('gRepo').value.trim(),
-    github_token:document.getElementById('gToken').value.trim(),
-    github_branch:document.getElementById('gBranch').value.trim()||'main',
-    pasta_raiz:document.getElementById('gRaiz').value.trim(),
-    pasta_portal:document.getElementById('gPortal').value.trim(),
-    pasta_modelos:document.getElementById('gModelos').value.trim(),
-    aprov_ok:+document.getElementById('gAprovOk').value,
-    aprov_warn:+document.getElementById('gAprovWarn').value,
-    func_ok:+document.getElementById('gFuncOk').value,
-    func_warn:+document.getElementById('gFuncWarn').value,
-    lap_ok:+document.getElementById('gLapOk').value,
-    lap_crit:+document.getElementById('gLapCrit').value,
-    modo_apresentacao:+document.getElementById('gApres').value,
-    periodo:document.getElementById('gPer').value
-  };
-  save();ui();toast('✅ Config. global salva!','ok');
-}
-
-// ── PÁGINA MODELOS ─────────────────────────────
-function loadModelosPage(){
-  document.getElementById('mCountARES').textContent=contratos.filter(c=>c.modelo==='ARES').length;
-  document.getElementById('mCountSIOR').textContent=contratos.filter(c=>c.modelo==='SIOR').length;
-  document.getElementById('mCountPROMULT').textContent=contratos.filter(c=>c.modelo==='PROMULT').length;
-  document.getElementById('mCountOVERSEE').textContent=contratos.filter(c=>c.modelo==='OVERSEE').length;
-}
-
-// ── GERAR ──────────────────────────────────────
-function loadGerar(){
-  const el=document.getElementById('resumoG');
-  if(!contratos.length){el.innerHTML='<span style="color:var(--red)">⚠️ Nenhum contrato cadastrado.</span>';return;}
-  const pm=MODELOS.map(m=>{const n=contratos.filter(c=>c.modelo===m.id).length;
-    return n?`<span class="badge ${badgeModelo(m.id)}">${m.id}: ${n}</span>`:''}).filter(Boolean).join(' ');
-  el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-    <div style="background:var(--bg3);border-radius:8px;padding:14px">
-      <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Contratos</div>
-      <div style="font-size:26px;font-weight:800;font-family:var(--mono);color:var(--accent)">${contratos.length}</div>
-      <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${pm}</div>
-    </div>
-    <div style="background:var(--bg3);border-radius:8px;padding:14px">
-      <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Arquivos gerados</div>
-      <div style="font-size:11px;color:var(--text2);line-height:2;font-family:var(--mono)">📄 config.json<br>🐍 atualizar_todos.py<br>🐍 baixar_relatorios.py<br>📁 criar_pastas.bat<br>⏰ agendador.bat</div>
-    </div>
-  </div>
-  <div style="font-size:11px;color:var(--text3)">GitHub: <span style="color:var(--accent);font-family:var(--mono)">${G.github_usuario}/${G.github_repo}</span>
-  → <span style="color:var(--green);font-family:var(--mono)">https://${G.github_usuario}.github.io/${G.github_repo}/portal.html</span></div>`;
-}
-
-function showOut(titulo,txt,nome){outTxt=txt;outFile=nome;
-  document.getElementById('outCard').style.display='block';
-  document.getElementById('outTitle').textContent='📋 '+titulo;
-  document.getElementById('outBox').textContent=txt;
-  document.getElementById('outCard').scrollIntoView({behavior:'smooth'});}
-function cpOut(){navigator.clipboard.writeText(outTxt).then(()=>toast('📋 Copiado!','ok'));}
-function dlOut(){dl(outFile,outTxt);}
-function dl(n,t){const b=new Blob([t],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();}
-
-function gerarConfig(){showOut('config.json',JSON.stringify({global:G,contratos},null,2),'config.json');}
-
-function gerarBat(){
-  const ano=new Date().getFullYear();
-  const ls=['@echo off','echo Criando estrutura de pastas Fiscaltech...',''];
-  contratos.forEach(c=>{
-    const raiz=c.pasta_raiz||G.pasta_raiz;
-    ls.push(`rem === ${c.id} — ${c.nome} [${c.modelo}] ===`);
-    for(let m=1;m<=12;m++){const mm=String(m).padStart(2,'0');
-      ls.push(`mkdir "${raiz}\\${c.id}\\${ano}\\${mm}" 2>nul`);
-      ls.push(`mkdir "${raiz}\\${c.id}\\${ano+1}\\${mm}" 2>nul`);}
-    ls.push('');
-  });
-  ls.push('rem === Modelos ===');
-  ['EPR','DNIT','AGETRAN'].forEach(m=>ls.push(`mkdir "${G.pasta_modelos}\\${m}" 2>nul`));
-  ls.push(`mkdir "${G.pasta_portal}" 2>nul`,'','echo Pronto! Pastas criadas com sucesso.','pause');
-  showOut('criar_pastas.bat',ls.join('\n'),'criar_pastas.bat');
-}
-
-function gerarAgendador(){
-  const dlHrs=[...new Set(contratos.map(c=>c.hr_dl||'06:30'))];
-  const atHrs=[...new Set(contratos.map(c=>c.hr_at||'07:00'))];
-  const ls=['@echo off','echo Configurando Agendador de Tarefas Windows...','echo Execute como Administrador!',''];
-  dlHrs.forEach(h=>{ls.push(`schtasks /create /tn "Fiscaltech\\Download_${h.replace(':','')} " /tr "python \\"${G.pasta_portal}\\baixar_relatorios.py\\"" /sc daily /st ${h} /f`,'');});
-  atHrs.forEach(h=>{ls.push(`schtasks /create /tn "Fiscaltech\\Atualizar_${h.replace(':','')}" /tr "python \\"${G.pasta_portal}\\atualizar_todos.py\\"" /sc daily /st ${h} /f`,'');});
-  ls.push('echo Agendamento configurado!','pause');
-  showOut('agendador.bat',ls.join('\n'),'agendador.bat');
-}
-
-function gerarBaixar(){if(!contratos.length){toast('⚠️ Nenhum contrato','warn');return;}showOut('baixar_relatorios.py',buildBaixar(),'baixar_relatorios.py');}
-function setStatusToggle(ativo){
-  const tog=document.getElementById('statusToggle');
-  const thumb=document.getElementById('statusThumb');
-  const lbl=document.getElementById('statusLabel');
-  const inp=document.getElementById('fStatus');
-  if(!tog)return;
-  if(ativo){
-    tog.style.background='var(--green)';
-    thumb.style.left='23px';
-    lbl.style.color='var(--green)';
-    lbl.textContent='Ativo — incluído nas execuções automáticas';
-    inp.value='ativo';
-  } else {
-    tog.style.background='var(--red)';
-    thumb.style.left='3px';
-    lbl.style.color='var(--red)';
-    lbl.textContent='Inativo — pulado nas execuções automáticas';
-    inp.value='inativo';
-  }
-}
-
-function toggleStatus(){
-  const atual=document.getElementById('fStatus').value;
-  setStatusToggle(atual==='inativo');
-}
-
-function toggleStatusContrato(id){
-  const i=contratos.findIndex(c=>c.id===id);
-  if(i<0)return;
-  const novoStatus=contratos[i].status==='inativo'?'ativo':'inativo';
-  contratos[i].status=novoStatus;
-  save();ui();
-  toast(`${novoStatus==='ativo'?'✅ Ativado':'⏸ Desativado'}: ${id}`,'ok');
-  // Sincroniza scripts com o agente
-  if(agenteOnline){
-    fetch(AGENTE_URL+'/salvar/contrato',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({config:{global:G,contratos}})
-    }).catch(()=>{});
-  }
-}
-
-function carregarGlobal(){return G;}
-
-function gerarAtualizar(){showOut('atualizar_todos.py',buildAtualizar(),'atualizar_todos.py');}
-
-function gerarTudo(){
-  if(!contratos.length){toast('⚠️ Nenhum contrato','warn');return;}
-  const arqs=[
-    {n:'config.json',t:JSON.stringify({global:G,contratos},null,2)},
-    {n:'atualizar_todos.py',t:buildAtualizar()},
-    {n:'baixar_relatorios.py',t:buildBaixar()},
-    {n:'criar_pastas.bat',t:buildBatStr()},
-    {n:'agendador.bat',t:buildAgendadorStr()},
-  ];
-  arqs.forEach((a,i)=>setTimeout(()=>dl(a.n,a.t),i*350));
-  toast(`✅ ${arqs.length} arquivos gerados!`,'ok');
-  setTimeout(()=>showOut('Prévia — config.json',JSON.stringify({global:G,contratos},null,2),'config.json'),600);
-}
-
-function buildBatStr(){
-  const ano=new Date().getFullYear();
-  const ls=['@echo off','echo Criando pastas...',''];
-  contratos.forEach(c=>{const raiz=c.pasta_raiz||G.pasta_raiz;ls.push(`rem ${c.id}`);for(let m=1;m<=12;m++){const mm=String(m).padStart(2,'0');ls.push(`mkdir "${raiz}\\${c.id}\\${ano}\\${mm}" 2>nul`);ls.push(`mkdir "${raiz}\\${c.id}\\${ano+1}\\${mm}" 2>nul`);}ls.push('');});
-  ['EPR','DNIT','AGETRAN'].forEach(m=>ls.push(`mkdir "${G.pasta_modelos}\\${m}" 2>nul`));
-  ls.push(`mkdir "${G.pasta_portal}" 2>nul`,'','echo Pronto!','pause');return ls.join('\n');
-}
-function buildAgendadorStr(){
-  const dlH=[...new Set(contratos.map(c=>c.hr_dl||'06:30'))];
-  const atH=[...new Set(contratos.map(c=>c.hr_at||'07:00'))];
-  const ls=['@echo off','echo Agendando tarefas...',''];
-  dlH.forEach(h=>{ls.push(`schtasks /create /tn "Fiscaltech\\Download_${h.replace(':','')}" /tr "python \\"${G.pasta_portal}\\baixar_relatorios.py\\"" /sc daily /st ${h} /f`,'');});
-  atH.forEach(h=>{ls.push(`schtasks /create /tn "Fiscaltech\\Atualizar_${h.replace(':','')}" /tr "python \\"${G.pasta_portal}\\atualizar_todos.py\\"" /sc daily /st ${h} /f`,'');});
-  ls.push('echo Pronto!','pause');return ls.join('\n');
-}
-
-// ── PYTHON SCRIPTS ─────────────────────────────
-function buildBaixar(){
-  const bloco=contratos.map(c=>`    # ${c.modelo} | ${c.id}
-    {"id":"${c.id}","modelo":"${c.modelo}","nome":"${c.nome}",
-     "url":"${c.url}","usuario":"${c.usuario||'portal.monitoramento'}","senha":"${c.senha||'Fiscal@123'}",
-     "pasta":r"${c.pasta_raiz||G.pasta_raiz}\\${c.id}","hr_download":"${c.hr_dl||'06:30'}"},`).join('\n');
-  return `"""
-baixar_relatorios.py — Fiscaltech Monitoramento
-Gerado pelo Configurador Fiscaltech v2.0
-Contratos: ${contratos.map(c=>c.id).join(', ')} (${contratos.length} total)
-"""
-import os, time, datetime, logging
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
-log = logging.getLogger(__name__)
-
-CONTRATOS = [
-${bloco}
-]
-
-# Relatórios por modelo — adicionar quando DNIT/Agetran estiverem prontos
-RELATORIOS = {
-    "EPR": [
-        {"nome": "Funcionamento/Fluxo",    "endpoint": "/ferramenta/ExportarFuncionamentoFluxo"},
-        {"nome": "Lista Geral Pistas",     "endpoint": "/ferramenta/ExportarListaGeralPistas"},
-        {"nome": "Aproveitamento Imagens", "endpoint": "/ferramenta/ExportarAproveitamentoImagens"},
-        {"nome": "Consulta Infrações",     "endpoint": "/ferramenta/ListarInfracao"},
-    ],
-    "DNIT":    [],  # A implementar
-    "AGETRAN": [],  # A implementar
-}
-
-def baixar(c):
-    rels = RELATORIOS.get(c["modelo"], [])
-    if not rels:
-        log.warning(f"[{c['id']}] Modelo {c['modelo']} sem relatórios configurados")
-        return
-    hoje = datetime.date.today()
-    pasta_mes = os.path.join(c["pasta"], str(hoje.year), f"{hoje.month:02d}")
-    os.makedirs(pasta_mes, exist_ok=True)
-    log.info(f"[{c['id']}] Baixando {len(rels)} relatório(s) → {pasta_mes}")
-    opts = Options()
-    opts.add_argument("--headless")
-    opts.add_experimental_option("prefs", {"download.default_directory": pasta_mes, "download.prompt_for_download": False})
-    driver = webdriver.Chrome(options=opts)
-    try:
-        driver.get(f"{c['url']}/login")
-        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "username")))
-        driver.find_element(By.NAME, "username").send_keys(c["usuario"])
-        driver.find_element(By.NAME, "password").send_keys(c["senha"])
-        driver.find_element(By.CSS_SELECTOR, "button[type=submit]").click()
-        time.sleep(3)
-        for r in rels:
-            log.info(f"  [{c['id']}] {r['nome']}")
-            driver.get(f"{c['url']}{r['endpoint']}")
-            time.sleep(5)
-        log.info(f"[{c['id']}] Concluído")
-    except Exception as e:
-        log.error(f"[{c['id']}] Erro: {e}")
-    finally:
-        driver.quit()
-
-if __name__ == "__main__":
-    for c in CONTRATOS:
-        baixar(c)
-    log.info("Downloads concluídos.")
-`;
-}
-
-function buildAtualizar(){
-  const G2=carregarGlobal();
-  const src = `"""
-atualizar_todos.py — Fiscaltech Monitoramento v2
-=================================================
-Gerado pelo Configurador Fiscaltech
-Contratos: ${contratos.map(c=>c.id).join(', ')}
-"""
-
-import os, re, struct, json, glob, base64, datetime, requests
-from openpyxl import load_workbook
-
-# ============================================================
-#  CONFIGURACAO
-# ============================================================
-PASTA_RAIZ     = r"${G2.pasta_raiz||'C:\\fiscaltech\\relatorios'}"
-PASTA_LOCAL    = r"${G2.pasta_portal||'C:\\fiscaltech\\portal'}"
-PASTA_MODELOS  = r"${G2.pasta_modelos||'C:\\fiscaltech\\modelos'}"
-GITHUB_TOKEN   = "${G2.github_token||'ghp_SEU_TOKEN_AQUI'}"
-GITHUB_USUARIO = "${G2.github_usuario||''}"
-GITHUB_REPO    = "${G2.github_repo||'portal-monitoramento'}"
-GITHUB_BRANCH  = "${G2.github_branch||'main'}"
-
-LAP_OK    = ${G2.lap_ok||80}
-LAP_CRIT  = ${G2.lap_crit||60}
-APROV_OK   = ${((G2.aprov_ok||90)/100).toFixed(2)}
-APROV_CRIT = ${((G2.aprov_warn||70)/100).toFixed(2)}
-
-CORES_CONTRATO = [
-    "#0ea5e9","#22d3a0","#f59e0b","#8b5cf6",
-    "#f43f5e","#fb923c","#38bdf8","#4ade80",
-]
-
-# ============================================================
-#  PARSER OLE2/BIFF8 (XLS binario real)
-# ============================================================
-
-def _parse_ole2_workbook(filepath):
-    """Extrai o stream Workbook de um arquivo OLE2/CFB."""
-    with open(filepath, "rb") as f:
-        raw = f.read()
-    if raw[:8] != b'\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1':
-        return None
-    sector_size       = 2 ** struct.unpack_from('<H', raw, 30)[0]
-    fat_sectors_count = struct.unpack_from('<I', raw, 44)[0]
-    first_dir_sector  = struct.unpack_from('<I', raw, 48)[0]
-
-    def sector_offset(sid):
-        return 512 + sid * sector_size
-
-    fat = {}
-    for i in range(min(fat_sectors_count, 109)):
-        sid = struct.unpack_from('<I', raw, 76 + i * 4)[0]
-        if sid < 0xFFFFFFFB:
-            off = sector_offset(sid)
-            for j in range(sector_size // 4):
-                fat[len(fat)] = struct.unpack_from('<I', raw, off + j * 4)[0]
-
-    def follow_chain(start):
-        chain, cur, seen = [], start, set()
-        while cur < 0xFFFFFFFB and cur not in seen:
-            chain.append(cur); seen.add(cur)
-            cur = fat.get(cur, 0xFFFFFFFE)
-        return chain
-
-    def read_stream(chain):
-        buf = b''
-        for sec in chain:
-            off = sector_offset(sec)
-            buf += raw[off:off + sector_size]
-        return buf
-
-    dir_data = read_stream(follow_chain(first_dir_sector))
-    for i in range(len(dir_data) // 128):
-        off  = i * 128
-        nlen = struct.unpack_from('<H', dir_data, off + 64)[0]
-        name = dir_data[off:off + max(0, nlen - 2)].decode('utf-16-le', errors='ignore') if nlen > 2 else ''
-        if name == 'Workbook':
-            start = struct.unpack_from('<I', dir_data, off + 116)[0]
-            size  = struct.unpack_from('<I', dir_data, off + 120)[0]
-            return read_stream(follow_chain(start))[:size]
-    return None
-
-
-def _parse_biff8_cells(wb_data):
-    """Extrai {(sheet_idx, row, col): value} e SST do stream BIFF8."""
-    sst     = []
-    cells   = {}
-    sheet_i = -1
-
-    i = 0
-    while i < len(wb_data) - 4:
-        rt = struct.unpack_from('<H', wb_data, i)[0]
-        rl = struct.unpack_from('<H', wb_data, i + 2)[0]
-        d  = wb_data[i + 4: i + 4 + rl]
-
-        if rt == 0x0809 and len(d) >= 4:   # BOF
-            if struct.unpack_from('<H', d, 2)[0] == 0x0010:
-                sheet_i += 1
-
-        elif rt == 0x00FC and len(d) >= 8:  # SST
-            count = struct.unpack_from('<I', d, 4)[0]
-            pos = 8
-            for _ in range(min(count, 10000)):
-                if pos + 3 > len(d): break
-                slen  = struct.unpack_from('<H', d, pos)[0]
-                flags = d[pos + 2] if pos + 2 < len(d) else 0
-                pos  += 3
-                if flags & 4:
-                    rtc = struct.unpack_from('<H', d, pos)[0] if pos + 2 <= len(d) else 0
-                    pos += 2 + rtc * 4
-                if flags & 8:
-                    sz  = struct.unpack_from('<I', d, pos)[0] if pos + 4 <= len(d) else 0
-                    pos += 4 + sz
-                if flags & 1:
-                    end = pos + slen * 2
-                    val = d[pos:end].decode('utf-16-le', errors='replace')
-                else:
-                    end = pos + slen
-                    val = d[pos:end].decode('latin-1', errors='replace')
-                pos = end
-                sst.append(val)
-
-        elif rt == 0x00FD and len(d) >= 10:  # LABELSST
-            row = struct.unpack_from('<H', d, 0)[0]
-            col = struct.unpack_from('<H', d, 2)[0]
-            idx = struct.unpack_from('<I', d, 6)[0]
-            cells[(sheet_i, row, col)] = sst[idx] if idx < len(sst) else ''
-
-        elif rt == 0x0203 and len(d) >= 14:  # NUMBER
-            row = struct.unpack_from('<H', d, 0)[0]
-            col = struct.unpack_from('<H', d, 2)[0]
-            cells[(sheet_i, row, col)] = struct.unpack_from('<d', d, 6)[0]
-
-        elif rt == 0x027E and len(d) >= 10:  # RK
-            row = struct.unpack_from('<H', d, 0)[0]
-            col = struct.unpack_from('<H', d, 2)[0]
-            rk  = struct.unpack_from('<I', d, 6)[0]
-            if rk & 2:
-                val = (rk >> 2) * (0.01 if rk & 1 else 1)
-            else:
-                val = struct.unpack_from('<d', bytes(4) + struct.pack('<I', rk & 0xFFFFFFFC))[0]
-                if rk & 1: val /= 100
-            cells[(sheet_i, row, col)] = val
-
-        elif rt == 0x00BD and len(d) >= 6:   # MULRK
-            row       = struct.unpack_from('<H', d, 0)[0]
-            col_first = struct.unpack_from('<H', d, 2)[0]
-            for k in range((len(d) - 6) // 6):
-                off2 = 4 + k * 6
-                rk   = struct.unpack_from('<I', d, off2 + 2)[0]
-                if rk & 2:
-                    val = (rk >> 2) * (0.01 if rk & 1 else 1)
-                else:
-                    val = struct.unpack_from('<d', bytes(4) + struct.pack('<I', rk & 0xFFFFFFFC))[0]
-                    if rk & 1: val /= 100
-                cells[(sheet_i, row, col_first + k)] = val
-
-        elif rt == 0x0204 and len(d) >= 6:   # LABEL
-            row  = struct.unpack_from('<H', d, 0)[0]
-            col  = struct.unpack_from('<H', d, 2)[0]
-            slen = struct.unpack_from('<H', d, 4)[0]
-            cells[(sheet_i, row, col)] = d[6:6 + slen].decode('latin-1', errors='replace')
-
-        i += 4 + rl
-
-    return cells
-
-
-def ler_xls_biff8(filepath):
-    """Retorna dict {(row,col): value} para a sheet 0 de um XLS BIFF8."""
-    wb_data = _parse_ole2_workbook(filepath)
-    if not wb_data:
-        return {}
-    raw = _parse_biff8_cells(wb_data)
-    return {(r, c): v for (si, r, c), v in raw.items() if si == 0}
-
-
-def ler_xlsx(filepath):
-    """Retorna dict {(row,col): value} para a sheet ativa de um XLSX (0-indexed)."""
-    try:
-        wb = load_workbook(filepath, data_only=True)
-        ws = wb.active
-        cells = {}
-        for r_idx, row in enumerate(ws.iter_rows(values_only=True)):
-            for c_idx, val in enumerate(row):
-                if val is not None:
-                    cells[(r_idx, c_idx)] = val
-        return cells
-    except Exception as e:
-        print(f"  [ERRO xlsx] {filepath}: {e}")
-        return {}
-
-
-# ============================================================
-#  UTILITARIOS
-# ============================================================
-
-def encontrar_arquivo(pasta, *padroes):
-    for padrao in padroes:
-        matches = sorted(glob.glob(os.path.join(pasta, padrao)), reverse=True)
-        if matches:
-            return matches[0]
-    return None
-
-
-def cel_float(cells, row, col, default=0.0):
-    v = cells.get((row, col), default)
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return default
-
-
-def cel_str(cells, row, col, default=''):
-    v = cells.get((row, col), default)
-    return str(v).strip() if v is not None else default
-
-
-def excel_date_to_str(serial):
-    """Converte serial Excel (dias desde 1900-01-01) para ISO."""
-    try:
-        base = datetime.date(1899, 12, 30)
-        return (base + datetime.timedelta(days=int(serial))).isoformat()
-    except Exception:
-        return ''
-
-
-# ============================================================
-#  LEITURA: LISTA GERAL DE PISTAS
-# ============================================================
-
-def ler_lista_pistas(pasta):
-    path = encontrar_arquivo(pasta,
-        "Lista_Geral_Pistas_*.xls", "Lista_Geral_Pistas_*.xlsx",
-        "ListaGeralPistaServlet*.xls", "ListaGeralPistaServlet*.xlsx")
-    if not path:
-        print("  [AVISO] Lista_Geral_Pistas nao encontrada")
-        return []
-
-    cells = ler_xls_biff8(path) if path.endswith('.xls') else ler_xlsx(path)
-    equipamentos = {}  # serie_int -> dict
-
-    row = 4  # primeira linha de dados (0-indexed)
-    while True:
-        item = cel_str(cells, row, 1)
-        if not item:
-            if row > 200: break
-            row += 1
-            continue
-
-        serie_raw = cel_str(cells, row, 2)   # ex: "FSC110-0546"
-        m = re.search(r'(\\d{3,4})$', serie_raw)
-        if not m:
-            row += 1
-            continue
-        serie = int(m.group(1))
-
-        local     = cel_str(cells, row, 3)
-        sentido   = cel_str(cells, row, 5)
-        faixa     = cel_str(cells, row, 6)
-        cod_cli   = cel_str(cells, row, 7)
-        vel       = int(cel_float(cells, row, 13, 80))
-        dt_afer   = cel_float(cells, row, 16, 0)
-        venc_afer = cel_float(cells, row, 17, 0)
-
-        if serie not in equipamentos:
-            equipamentos[serie] = {
-                "serie":      str(serie),
-                "local":      local,
-                "cod":        cod_cli,
-                "sentido":    sentido,
-                "vel":        vel,
-                "ult_afer":   excel_date_to_str(dt_afer)   if dt_afer   > 1 else '',
-                "venc_afer":  excel_date_to_str(venc_afer) if venc_afer > 1 else '',
-                "faixas":     [],
-            }
-
-        faixa_id = str(int(float(faixa))) if re.match(r'^\\d+\\.?\\d*$', faixa) else faixa
-        faixas_existentes = [f["id"] for f in equipamentos[serie]["faixas"]]
-        if faixa_id not in faixas_existentes:
-            equipamentos[serie]["faixas"].append({"id": faixa_id})
-
-        row += 1
-
-    result = []
-    for serie in sorted(equipamentos):
-        eq = equipamentos[serie]
-        eq["faixas"] = sorted(eq["faixas"], key=lambda f: f["id"])
-        result.append(eq)
-
-    print(f"  [Pistas] {len(result)} equipamentos, {sum(len(e['faixas']) for e in result)} faixas")
-    return result
-
-
-# ============================================================
-#  LEITURA: FUNCIONAMENTO (Fluxo / Infracoes / Teste)
-# ============================================================
-
-def _extrair_cabecalho_dias(cells, row_header=6, col_inicio=10, col_fim=42):
-    dias = []
-    for c in range(col_inicio, col_fim):
-        v = cel_str(cells, row_header, c)
-        if re.match(r'^\\d{1,2}\\s+\\S+', v):
-            dias.append((c, v.strip()))
-    return dias
-
-
-def ler_funcionamento(path):
-    """Retorna {(serie_int, faixa_str): {label_dia: valor}} e lista de labels."""
-    cells    = ler_xlsx(path) if path.endswith('.xlsx') else ler_xls_biff8(path)
-    dias_cols = _extrair_cabecalho_dias(cells)
-    dados    = {}
-
-    row = 7
-    while True:
-        item = cells.get((row, 1))
-        if item is None:
-            if row > 300: break
-            row += 1
-            continue
-        if isinstance(item, str) and 'equip' in item.lower():
-            break
-
-        serie_raw = cel_float(cells, row, 2, 0)
-        if serie_raw == 0:
-            row += 1
-            continue
-        serie = int(serie_raw)
-        faixa = cel_str(cells, row, 7).strip() or '1'
-
-        linha_dias = {label: cel_float(cells, row, col) for col, label in dias_cols}
-        dados[(serie, faixa)] = linha_dias
-        row += 1
-
-    return dados, [label for _, label in dias_cols]
-
-
-# ============================================================
-#  LEITURA: APROVEITAMENTO GERAL
-# ============================================================
-#  Colunas (0-indexed após row 7):
-#  1=Item, 2=Série, 3=Local, 4=vazio, 5=Faixa, 6=Data(vazio),
-#  7=Tráfego, 8=Vel.Média, 9=Total Infrac, 10=Inc.Técnica,
-#  11=Inc.Não Técnica, 12=Total Incons, 13=Total Consist, 14=Em Proces,
-#  15=Indice Aprov, 16=% Aprov
-# ============================================================
-
-def ler_aproveitamento_geral(path):
-    """Retorna {(serie_int, faixa_str): {campos...}}"""
-    cells = ler_xls_biff8(path) if path.endswith('.xls') else ler_xlsx(path)
-    dados = {}
-    row = 8
-    while True:
-        item = cells.get((row, 1))
-        if item is None:
-            if row > 500: break
-            row += 1
-            continue
-        serie_raw = cel_float(cells, row, 2, 0)
-        if serie_raw == 0:
-            row += 1
-            continue
-        serie = int(serie_raw)
-        faixa = str(int(cel_float(cells, row, 5, 1)))
-
-        dados[(serie, faixa)] = {
-            "trafego":       int(cel_float(cells, row, 7)),
-            "vel_media":     round(cel_float(cells, row, 8), 1),
-            "total_infra":   int(cel_float(cells, row, 9)),
-            "inc_tec":       int(cel_float(cells, row, 10)),
-            "inc_n_tec":     int(cel_float(cells, row, 11)),
-            "total_incons":  int(cel_float(cells, row, 12)),
-            "total_consist": int(cel_float(cells, row, 13)),
-            "em_proc":       int(cel_float(cells, row, 14)),
-            "indice_aprov":  round(cel_float(cells, row, 15), 4),
-            "pct_aprov":     round(cel_float(cells, row, 16), 4),
+  // 3. Tenta obter token via /auth (automático — usa hash da sessão)
+  if(s.h){
+    try{
+      const r = await fetch(AGENT_URL+'/auth',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({user: s.user, hash: s.h})
+      });
+      if(r.ok){
+        const d = await r.json();
+        if(d.token){
+          _agentToken = d.token;
+          sessionStorage.setItem(AGENT_TOKEN_KEY, d.token);
+          await conectar();
+          return;
         }
-        row += 1
-
-    print(f"  [Aprov.Geral] {len(dados)} faixas")
-    return dados
-
-
-# ============================================================
-#  LEITURA: APROVEITAMENTO POR DATA
-# ============================================================
-
-def ler_aproveitamento_data(path):
-    """Retorna {(serie, faixa, data_iso): {campos...}}"""
-    cells = ler_xls_biff8(path) if path.endswith('.xls') else ler_xlsx(path)
-    dados = {}
-    row = 8
-    while True:
-        item = cells.get((row, 1))
-        if item is None:
-            if row > 10000: break
-            row += 1
-            continue
-        serie_raw = cel_float(cells, row, 2, 0)
-        if serie_raw == 0:
-            row += 1
-            continue
-        serie = int(serie_raw)
-        faixa = str(int(cel_float(cells, row, 5, 1)))
-        data  = cel_str(cells, row, 6)  # 'YYYY-MM-DD'
-        if not data:
-            row += 1
-            continue
-        dados[(serie, faixa, data)] = {
-            "trafego":      int(cel_float(cells, row, 7)),
-            "vel_media":    round(cel_float(cells, row, 8), 1),
-            "total_infra":  int(cel_float(cells, row, 9)),
-            "inc_tec":      int(cel_float(cells, row, 10)),
-            "inc_n_tec":    int(cel_float(cells, row, 11)),
-            "indice_aprov": round(cel_float(cells, row, 15), 4),
-            "pct_aprov":    round(cel_float(cells, row, 16), 4),
-        }
-        row += 1
-
-    print(f"  [Aprov.Data] {len(dados)} registros")
-    return dados
-
-
-# ============================================================
-#  LEITURA: LAP (todos os subperiodos)
-# ============================================================
-
-def ler_lap(path):
-    """Retorna {(serie_int, faixa_str): {label_dia: pct_int|None}} e lista de labels."""
-    cells = ler_xls_biff8(path) if path.endswith('.xls') else ler_xlsx(path)
-
-    dias_cols = []
-    for c in range(8, 50):
-        v = cel_str(cells, 10, c)
-        if re.match(r'^\\d{1,2}\\s+\\S+', v):
-            dias_cols.append((c, v.strip()))
-
-    dados = {}
-    row = 11
-    while True:
-        item = cells.get((row, 1))
-        if item is None:
-            if row > 200: break
-            row += 1
-            continue
-        serie_raw = cel_float(cells, row, 2, 0)
-        if serie_raw == 0:
-            row += 1
-            continue
-        serie = int(serie_raw)
-        faixa = str(int(cel_float(cells, row, 4, 1)))
-
-        linha_dias = {}
-        for col, label in dias_cols:
-            v = cel_float(cells, row, col, -1)
-            linha_dias[label] = int(v) if v >= 0 else None
-
-        dados[(serie, faixa)] = linha_dias
-        row += 1
-
-    return dados, [label for _, label in dias_cols]
-
-
-# ============================================================
-#  LEITURA: FUNCIONAMENTO HORARIO
-# ============================================================
-
-def ler_funcionamento_horario(path):
-    """Retorna {(serie, faixa, data_iso): [v0h..v23h]}"""
-    cells = ler_xls_biff8(path) if path.endswith('.xls') else ler_xlsx(path)
-    dados = {}
-    row = 5
-    while True:
-        serie_raw = cel_float(cells, row, 1, 0)
-        if serie_raw == 0:
-            if row > 5000: break
-            row += 1
-            continue
-        serie  = int(serie_raw)
-        faixa  = cel_str(cells, row, 7).strip() or '1'
-        data_s = cel_float(cells, row, 8, 0)
-        data   = excel_date_to_str(data_s) if data_s > 1 else ''
-        if not data or not faixa:
-            row += 1
-            continue
-        horas = [int(cel_float(cells, row, 9 + h, 0)) for h in range(24)]
-        dados[(serie, faixa, data)] = horas
-        row += 1
-
-    print(f"  [Horario] {len(dados)} registros")
-    return dados
-
-
-# ============================================================
-#  MONTAGEM DOS DADOS DO CONTRATO
-# ============================================================
-
-def montar_dados_contrato(pasta, id_contrato, ano, mes):
-    print(f"\\n[{id_contrato}] Lendo relatórios de: {pasta}")
-
-    equipamentos = ler_lista_pistas(pasta)
-    if not equipamentos:
-        return None
-
-    # Funcionamento
-    pf = encontrar_arquivo(pasta, "Funcionamento_Fluxo_*.xlsx",     "Funcionamento_Fluxo_*.xls")
-    pi = encontrar_arquivo(pasta, "Funcionamento_Infracoes_*.xlsx",  "Funcionamento_Infracoes_*.xls")
-    pt = encontrar_arquivo(pasta, "Funcionamento_Teste_*.xlsx",      "Funcionamento_Teste_*.xls")
-    ph = encontrar_arquivo(pasta, "Funcionamento_Horario_*.xls",     "Funcionamento_Horario_*.xlsx")
-
-    print(f"  Arquivos encontrados:")
-    for nome, path in [("Fluxo", pf), ("Infracoes", pi), ("Teste", pt), ("Horario", ph)]:
-        print(f"    {nome+':':<12} {os.path.basename(path) if path else '-- NÃO ENCONTRADO --'}")
-
-    d_fluxo, dias_labels = ler_funcionamento(pf) if pf else ({}, [])
-    d_infra, _           = ler_funcionamento(pi) if pi else ({}, [])
-    d_teste, _           = ler_funcionamento(pt) if pt else ({}, [])
-    d_horario            = ler_funcionamento_horario(ph) if ph else {}
-
-    # LAP
-    d_lap = {}
-    lap_dias = []
-    for nome, padrao in [
-        ("integral",  "LAP_Integral_24h_*.xls"),
-        ("tr_manha",  "LAP_Transicao_Manha_*.xls"),
-        ("diurno",    "LAP_Diurno_*.xls"),
-        ("tr_tarde",  "LAP_Transicao_Tarde_*.xls"),
-        ("noturno",   "LAP_Noturno_*.xls"),
-    ]:
-        p = encontrar_arquivo(pasta, padrao)
-        if p:
-            dd, lds = ler_lap(p)
-            d_lap[nome] = dd
-            if not lap_dias: lap_dias = lds
-            print(f"  LAP {nome}: {len(dd)} faixas")
-        else:
-            d_lap[nome] = {}
-
-    # Aproveitamento
-    pa_g = encontrar_arquivo(pasta, "Aproveitamento_Geral_*.xls")
-    pa_d = encontrar_arquivo(pasta, "Aproveitamento_Data_*.xls")
-    d_aprov_geral = ler_aproveitamento_geral(pa_g) if pa_g else {}
-    d_aprov_data  = ler_aproveitamento_data(pa_d)  if pa_d else {}
-
-    # Montar dados por faixa
-    for eq in equipamentos:
-        serie = int(eq["serie"])
-        for fx in eq["faixas"]:
-            faixa = fx["id"]
-            key   = (serie, faixa)
-
-            fx["fluxo"] = d_fluxo.get(key, {})
-            fx["infra"] = d_infra.get(key, {})
-            fx["teste"] = d_teste.get(key, {})
-
-            fx["lap"] = {
-                "integral": d_lap.get("integral", {}).get(key, {}),
-                "tr_manha": d_lap.get("tr_manha", {}).get(key, {}),
-                "diurno":   d_lap.get("diurno",   {}).get(key, {}),
-                "tr_tarde": d_lap.get("tr_tarde", {}).get(key, {}),
-                "noturno":  d_lap.get("noturno",  {}).get(key, {}),
-            }
-
-            aprov = d_aprov_geral.get(key)
-            fx["aproveitamento"] = aprov or {
-                "trafego": 0, "vel_media": 0, "total_infra": 0,
-                "inc_tec": 0, "inc_n_tec": 0, "total_incons": 0,
-                "total_consist": 0, "em_proc": 0, "indice_aprov": 0, "pct_aprov": 0
-            }
-
-            fx["aprov_por_data"] = {
-                data: vals
-                for (s, f, data), vals in d_aprov_data.items()
-                if s == serie and f == faixa
-            }
-
-            horario_key = max(
-                [(s, f2, d) for (s, f2, d) in d_horario if s == serie and f2 == faixa],
-                default=None
-            )
-            fx["horario"] = d_horario.get(horario_key, [0]*24)
-
-    return {
-        "id":           id_contrato,
-        "nome":         id_contrato,
-        "dias":         dias_labels or lap_dias,
-        "faixas":       equipamentos,   # JS espera c.faixas (lista de equipamentos)
-    }
-
-
-# ============================================================
-#  RESUMO PARA O PORTAL
-# ============================================================
-
-def dias_rest(venc):
-    if not venc: return 999
-    try:
-        return (datetime.date.fromisoformat(venc) - datetime.date.today()).days
-    except Exception:
-        return 999
-
-
-def detectar_rodovias(equipamentos):
-    rv = set()
-    for eq in equipamentos:
-        for m in re.findall(r'(?:BR|PR|SP|SC)-\\d+', eq.get("local", ""), re.I):
-            rv.add(m.upper())
-    return sorted(rv)[:5]
-
-
-def calcular_resumo(dados, cor, arquivo_html):
-    eqs  = dados["faixas"]
-    dias = dados["dias"]
-    crit = warn = ok = off = 0
-    lap_vals = []
-    aprov_vals = []
-    fluxo_spark = []
-    faixas_sample = []
-
-    for d_label in dias:
-        total = sum(
-            fx.get("fluxo", {}).get(d_label, 0)
-            for eq in eqs for fx in eq["faixas"]
-        )
-        fluxo_spark.append(int(total))
-
-    for eq in eqs:
-        for fx in eq["faixas"]:
-            lap_dict   = fx.get("lap", {}).get("integral", {})
-            lap_ultimo = next((v for v in reversed(list(lap_dict.values())) if v is not None), None)
-            aprov      = fx.get("aproveitamento", {})
-            indice     = aprov.get("indice_aprov", 0) or 0
-            flxh       = fx.get("fluxo", {}).get(dias[-1], 0) if dias else 0
-            dias_teste = sum(1 for v in fx.get("teste", {}).values() if v and v > 0)
-
-            if lap_ultimo is not None and lap_ultimo >= 0:
-                lap_vals.append(lap_ultimo)
-            if indice > 0:
-                aprov_vals.append(indice)
-
-            is_off  = (flxh == 0 and dias_teste == 0)
-            is_crit = not is_off and (
-                (indice > 0 and indice < APROV_CRIT) or
-                (lap_ultimo is not None and lap_ultimo < LAP_CRIT)
-            )
-            is_warn = not is_off and not is_crit and (
-                (indice >= APROV_CRIT and indice < APROV_OK) or
-                (lap_ultimo is not None and lap_ultimo >= LAP_CRIT and lap_ultimo < LAP_OK)
-            )
-
-            if is_off:    off  += 1
-            elif is_crit: crit += 1
-            elif is_warn: warn += 1
-            else:         ok   += 1
-
-            st = "off" if is_off else ("crit" if is_crit else ("warn" if is_warn else "ok"))
-            faixas_sample.append({"serie": eq["serie"], "id": fx["id"], "status": st})
-
-    return {
-        "id":              dados["id"],
-        "nome":            dados["nome"],
-        "arquivo":         arquivo_html,
-        "rodovias":        detectar_rodovias(eqs),
-        "uf":              "PR",
-        "totalEquip":      len(eqs),
-        "totalFaixas":     sum(len(eq["faixas"]) for eq in eqs),
-        "fluxoHoje":       fluxo_spark[-1] if fluxo_spark else 0,
-        "lapMedio":        round(sum(lap_vals) / len(lap_vals), 1) if lap_vals else 0,
-        "aprovMedio":      round(sum(aprov_vals) / len(aprov_vals), 3) if aprov_vals else 0,
-        "faixasCrit":      crit,
-        "faixasWarn":      warn,
-        "faixasOk":        ok,
-        "faixasOff":       off,
-        "afericoesVenc60": sum(1 for eq in eqs if dias_rest(eq.get("venc_afer", "")) <= 60),
-        "faixasSample":    faixas_sample[:16],
-        "fluxoSpark":      fluxo_spark,
-        "cor":             cor,
-        "atualizado":      datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-    }
-
-
-# ============================================================
-#  GERACAO HTML
-# ============================================================
-
-# ============================================================
-#  CONSULTA INFRAÇÕES (CSV — ListarInfracao)
-# ============================================================
-
-# Mapeamento código → descrição curta (ENQ_MAP)
-ENQ_MAP = {
-    "56732": "Parada na Faixa",
-    "56810": "Faixa Excl. Direita",
-    "56811": "Faixa Excl. Ônibus",
-    "55900": "Faixa Excl. Esquerda",
-    "57030": "Fora da Faixa",
-    "57110": "Fora da Faixa (2)",
-    "57200": "Contra Mão",
-    "57461": "Fora do Horário",
-    "57462": "Rodízio",
-    "57463": "Restr. Caminhões",
-    "60411": "Conv. Direita",
-    "60412": "Conv. Esquerda",
-    "60503": "Avanço Sinal",
-    "60681": "Evasão Balança",
-    "66362": "Fuga Balança",
-    "68312": "Excesso Peso Eixo",
-    "68313": "Excesso Peso PBT",
-    "74550": "Vel. até 20%",
-    "74551": "Vel. Méd. até 20%",
-    "74630": "Vel. 20–50%",
-    "74631": "Vel. Méd. 20–50%",
-    "74710": "Vel. acima 50%",
-    "74711": "Vel. Méd. >50%",
-    "75870": "Faixa Excl. Transp.",
-}
-
-
-def ler_consulta_infracoes(pasta):
-    """
-    Lê o CSV mais recente de consulta infrações na pasta.
-    Arquivo: consulta_infrações_*.csv  (separador ';', encoding ISO-8859-1)
-    Retorna:
-      consulta_infra   — {"EPRxxx|pista": {cod, pista, nome, sentido, total, tec, ntec, consist, incons, desc:{...}}}
-      infra_enq_cod    — {cod: total}
-      infra_enq_serie  — {"serie|pista": {cod: n}}
-      infra_enq_dia    — {cod: {"YYYYMMDD": n}}
-      nome_pista_map   — {"serie|pista": "Nome Pista"}
-    """
-    import csv, glob
-    from collections import defaultdict
-
-    padrao = os.path.join(pasta, "consulta_infra*.csv")
-    arquivos = sorted(glob.glob(padrao), reverse=True)   # mais recente primeiro (YYYYMMDD desc)
-    if not arquivos:
-        # Tentar pasta pai
-        padrao2 = os.path.join(os.path.dirname(pasta), "consulta_infra*.csv")
-        arquivos = sorted(glob.glob(padrao2), reverse=True)
-    if not arquivos:
-        print("  [Consulta] CSV não encontrado — enquadramento vazio")
-        return {}, {}, {}, {}, {}, {}
-
-    path = arquivos[0]  # mais recente (sorted reverse=True → índice 0)
-    if len(arquivos) > 1:
-        print(f"  [Consulta] {len(arquivos)} CSVs encontrados → usando o mais recente")
-    print(f"  [Consulta] Lendo {os.path.basename(path)}")
-
-    rows = []
-    for enc in ("utf-8-sig", "ISO-8859-1", "latin-1"):
-        try:
-            with open(path, "r", encoding=enc, errors="strict") as f:
-                reader = csv.DictReader(f, delimiter=";")
-                rows = list(reader)
-            break
-        except (UnicodeDecodeError, Exception):
-            continue
-    else:
-        # Último recurso: latin-1 com replace (aceita qualquer byte)
-        with open(path, "r", encoding="latin-1", errors="replace") as f:
-            reader = csv.DictReader(f, delimiter=";")
-            rows = list(reader)
-
-    if not rows:
-        print("  [Consulta] Erro ao ler CSV")
-        return {}, {}, {}, {}, {}
-
-    # Acumuladores
-    enq_serie   = defaultdict(lambda: defaultdict(int))   # {serie|pista: {cod: n}}
-    enq_total   = defaultdict(int)                        # {cod: total}
-    enq_dia     = defaultdict(lambda: defaultdict(int))   # {cod: {YYYYMMDD: n}}
-    nome_pista  = {}                                      # {serie|pista: Nome Pista}
-    aprov_dia   = defaultdict(lambda: {"ntec":0,"tec":0,"consist":0,"total":0})  # {YYYYMMDD: {ntec,tec,consist,total}}
-    # TOP_INFRA: {serie|pista: {total,tec,ntec_real,consist,tec_top:{desc:n},ntec_top:{desc:n}}}
-    top_infra_acc = defaultdict(lambda: {"total":0,"tec":0,"ntec_real":0,"consist":0,
-                                          "tec_top":defaultdict(int),"ntec_top":defaultdict(int)})
-    # INFRA_BY_SP: {serie|pista: {total,tec,ntec_real,consist,by_date:{YYYYMMDD:{tec,ntec_real,consist,total}}}}
-    by_sp_acc    = defaultdict(lambda: {"total":0,"tec":0,"ntec_real":0,"consist":0,
-                                         "by_date":defaultdict(lambda:{"tec":0,"ntec_real":0,"consist":0,"total":0})})
-
-    # Para CONSULTA_INFRA (aproveitamento): acumular tec/ntec/consist por EPR
-    ci_acc = defaultdict(lambda: {"total":0,"tec":0,"ntec":0,"consist":0,"incons":0,"desc":defaultdict(int)})
-
-    for row in rows:
-        serie  = (row.get("Local") or "").strip()
-        pista  = (row.get("Pista") or "").strip()
-        enq    = (row.get("Enquadramento") or "").strip()
-        nome   = (row.get("Nome Pista") or "").strip()
-        sentido= (row.get("Sentido") or "").strip()
-        razao  = (row.get("Razao Tecnica") or "").strip()
-        descr  = (row.get("Descricao") or "").strip()
-        cod_cl = (row.get("Cod. Pista Cliente") or "").strip()  # ex: EPR007
-        data_s = (row.get("Data Imagem") or "").strip()         # ex: 11/03/2026 17:31:26
-
-        if not serie or not pista:
-            continue
-
-        sp_key = f"{serie}|{pista}"
-        nome_pista[sp_key] = nome
-
-        # INFRA_ENQ_SERIE_COD e INFRA_ENQ_COD
-        # Converter data "DD/MM/YYYY HH:MM:SS" → "YYYYMMDD"
-        dia_key = None
-        if data_s and len(data_s) >= 10:
-            try:
-                d_d, m_d, a_d = data_s[:10].split("/")
-                dia_key = f"{a_d}{m_d}{d_d}"
-            except Exception:
-                pass
-
-        if enq:
-            enq_serie[sp_key][enq] += 1
-            enq_total[enq] += 1
-            if dia_key:
-                enq_dia[enq][dia_key] += 1
-
-        # APROV_DIARIO: classifica por Descricao (Consistente tem Razao=Não-Técnica no CSV!)
-        # Consist = Descricao=="Consistente" | Tec = Razao=="Técnica" | NTec = resto
-        if dia_key:
-            aprov_dia[dia_key]["total"] += 1
-            if descr == "Consistente":
-                aprov_dia[dia_key]["consist"] += 1
-            elif razao == "Técnica":
-                aprov_dia[dia_key]["tec"] += 1
-            else:
-                aprov_dia[dia_key]["ntec"] += 1
-
-        # TOP_INFRA e INFRA_BY_SP — classifica por Descricao (Consistente tem Razao=Não-Técnica!)
-        ti = top_infra_acc[sp_key]
-        bs = by_sp_acc[sp_key]
-        ti["total"] += 1
-        bs["total"] += 1
-        if descr == "Consistente":
-            ti["consist"] += 1
-            bs["consist"] += 1
-        elif razao == "Técnica":
-            ti["tec"] += 1
-            bs["tec"] += 1
-            if descr:
-                ti["tec_top"][descr] += 1
-        else:
-            ti["ntec_real"] += 1
-            bs["ntec_real"] += 1
-            if descr:
-                ti["ntec_top"][descr] += 1
-        if dia_key:
-            bs["by_date"][dia_key]["total"] += 1
-            if descr == "Consistente":
-                bs["by_date"][dia_key]["consist"] += 1
-            elif razao == "Técnica":
-                bs["by_date"][dia_key]["tec"] += 1
-            else:
-                bs["by_date"][dia_key]["ntec_real"] += 1
-
-        # CONSULTA_INFRA — chave "EPRxxx|pista"
-        epr_key = (cod_cl or f"EPR{serie.zfill(3)}") + "|" + pista
-        ci = ci_acc[epr_key]
-        ci["total"] += 1
-        ci["nome"]  = nome
-        ci["sentido"] = sentido
-        ci["cod"]   = cod_cl or f"EPR{serie.zfill(3)}"
-        ci["pista"] = pista
-        # Classifica por Descricao (Consistente tem Razao=Não-Técnica no CSV!)
-        if descr == "Consistente":
-            ci["consist"] += 1
-        elif razao == "Técnica":
-            ci["tec"] += 1
-            ci["incons"] += 1
-            if descr:
-                ci["desc"][descr] += 1
-        else:
-            ci["ntec"] += 1
-            ci["incons"] += 1
-            if descr:
-                ci["desc"][descr] += 1
-
-    # Converter defaultdicts para dicts normais
-    consulta_infra = {}
-    for epr_key, ci in ci_acc.items():
-        consulta_infra[epr_key] = {
-            "cod":     ci["cod"],
-            "pista":   ci["pista"],
-            "nome":    ci["nome"],
-            "sentido": ci["sentido"],
-            "total":   ci["total"],
-            "tec":     ci["tec"],
-            "ntec":    ci["ntec"],
-            "consist": ci["consist"],
-            "incons":  ci["incons"],
-            "desc":    dict(sorted(ci["desc"].items(), key=lambda x: -x[1])),
-        }
-
-    # PIVOT: Descrição × Série numérica
-    from collections import defaultdict as _dd
-    piv_desc_serie  = defaultdict(lambda: defaultdict(int))
-    piv_totais_serie= defaultdict(int)
-    piv_totais_desc = defaultdict(int)
-    piv_total       = 0
-    for row in rows:
-        serie = (row.get("Local") or "").strip()
-        descr = (row.get("Descricao") or "").strip()
-        if not serie or not descr: continue
-        piv_desc_serie[descr][serie] += 1
-        piv_totais_serie[serie] += 1
-        piv_totais_desc[descr] += 1
-        piv_total += 1
-    pivot_series      = sorted(piv_totais_serie.keys(), key=lambda s: -piv_totais_serie[s])
-    pivot_desc_list   = sorted(piv_totais_desc.keys(), key=lambda d: -piv_totais_desc[d])
-    pivot_desc_serie  = {d: {s: piv_desc_serie[d].get(s, 0) for s in pivot_series} for d in pivot_desc_list}
-    pivot_totais_serie= dict(piv_totais_serie)
-    pivot_totais_desc = dict(piv_totais_desc)
-
-    infra_enq_serie = {k: dict(v) for k, v in enq_serie.items()}
-    infra_enq_cod   = dict(enq_total)
-    infra_enq_dia   = {k: dict(v) for k, v in enq_dia.items()}
-    nome_pista_dict = dict(nome_pista)
-    aprov_diario    = {k: dict(v) for k, v in aprov_dia.items()}
-    # Serializar top_infra e infra_by_sp (converter defaultdicts internos)
-    top_infra = {
-        k: {
-            "total":    v["total"],
-            "tec":      v["tec"],
-            "ntec_real":v["ntec_real"],
-            "consist":  v["consist"],
-            "tec_top":  dict(sorted(v["tec_top"].items(), key=lambda x: -x[1])[:10]),
-            "ntec_top": dict(sorted(v["ntec_top"].items(), key=lambda x: -x[1])[:10]),
-        }
-        for k, v in top_infra_acc.items()
-    }
-    infra_by_sp = {
-        k: {
-            "total":    v["total"],
-            "tec":      v["tec"],
-            "ntec_real":v["ntec_real"],
-            "consist":  v["consist"],
-            "by_date":  {d: dict(dv) for d, dv in v["by_date"].items()},
-        }
-        for k, v in by_sp_acc.items()
-    }
-
-    print(f"  [Consulta] {len(rows)} registros | {len(infra_enq_serie)} faixas | "
-          f"{len(infra_enq_cod)} ENQ | {len(aprov_diario)} dias | "
-          f"{len(top_infra)} faixas TOP_INFRA | {len(infra_by_sp)} faixas BY_SP")
-    pivot = {
-        "series":       pivot_series,
-        "desc_list":    pivot_desc_list,
-        "desc_serie":   pivot_desc_serie,
-        "totais_serie": pivot_totais_serie,
-        "totais_desc":  pivot_totais_desc,
-        "total_geral":  piv_total,
-    }
-    return consulta_infra, infra_enq_cod, infra_enq_serie, infra_enq_dia, nome_pista_dict, aprov_diario, top_infra, infra_by_sp, pivot
-
-
-def gerar_dashboard(template_path, dados, id_contrato, pasta_csv=None):
-    with open(template_path, "r", encoding="utf-8") as f:
-        html = f.read()
-
-    # DB principal
-    db_json = json.dumps([dados], ensure_ascii=False, separators=(",", ":"))
-    html = re.sub(r"const DB = \\[.*?\\];", f"const DB = {db_json};", html, flags=re.DOTALL)
-
-    # Consulta infrações (CSV) — enquadramento, nome pista, CONSULTA_INFRA
-    if pasta_csv:
-        ci, enq_cod, enq_serie, enq_dia, nome_pista_dict, aprov_diario, top_infra, infra_by_sp, pivot = ler_consulta_infracoes(pasta_csv)
-    else:
-        ci, enq_cod, enq_serie, enq_dia, nome_pista_dict, aprov_diario, top_infra, infra_by_sp = {}, {}, {}, {}, {}, {}, {}, {}
-        pivot = {"series":[],"desc_list":[],"desc_serie":{},"totais_serie":{},"totais_desc":{},"total_geral":0}
-
-    sep = (",", ":")
-    html = re.sub(r"const CONSULTA_INFRA = \\{.*?\\};",
-                  f"const CONSULTA_INFRA = {json.dumps(ci, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const INFRA_ENQ_COD = \\{.*?\\};",
-                  f"const INFRA_ENQ_COD = {json.dumps(enq_cod, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const INFRA_ENQ_SERIE_COD = \\{.*?\\};",
-                  f"const INFRA_ENQ_SERIE_COD = {json.dumps(enq_serie, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const NOME_PISTA = \\{.*?\\};",
-                  f"const NOME_PISTA = {json.dumps(nome_pista_dict, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const INFRA_ENQ_DIA_COD = \\{.*?\\};",
-                  f"const INFRA_ENQ_DIA_COD = {json.dumps(enq_dia, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const APROV_DIARIO = \\{.*?\\};",
-                  f"const APROV_DIARIO = {json.dumps(aprov_diario, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const TOP_INFRA = \\{.*?\\};",
-                  f"const TOP_INFRA = {json.dumps(top_infra, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const INFRA_BY_SP = \\{.*?\\};",
-                  f"const INFRA_BY_SP = {json.dumps(infra_by_sp, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    # PIVOT
-    html = re.sub(r"const PIVOT_SERIES = \\[.*?\\];",
-                  f"const PIVOT_SERIES = {json.dumps(pivot['series'], ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const PIVOT_DESC_LIST = \\[.*?\\];",
-                  f"const PIVOT_DESC_LIST = {json.dumps(pivot['desc_list'], ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const PIVOT_DESC_SERIE = \\{.*?\\};",
-                  f"const PIVOT_DESC_SERIE = {json.dumps(pivot['desc_serie'], ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const PIVOT_TOTAIS_SERIE = \\{.*?\\};",
-                  f"const PIVOT_TOTAIS_SERIE = {json.dumps(pivot['totais_serie'], ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const PIVOT_TOTAIS_DESC = \\{.*?\\};",
-                  f"const PIVOT_TOTAIS_DESC = {json.dumps(pivot['totais_desc'], ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const PIVOT_TOTAL_GERAL = \\d+;",
-                  f"const PIVOT_TOTAL_GERAL = {pivot['total_geral']};",
-                  html, flags=re.DOTALL)
-
-
-    # ── Aproveitamento de Imagens — variáveis AV_* ──
-    # Montar AV_FAIXAS a partir de dados["faixas"] + top_infra + infra_by_sp
-    from collections import defaultdict as _dd
-    av_faixas = []
-    aprov_data_fx = {}
-    all_dates = set()
-
-    for eq in dados.get("faixas", []):
-        serie_i = int(eq["serie"])
-        local_eq = eq.get("local", "") or ""
-        for fx in eq.get("faixas", []):
-            faixa_s = str(fx["id"])
-            sp_key = f"{serie_i}|{faixa_s}"
-            ag = fx.get("aproveitamento") or {}
-            pd_map = fx.get("aprov_por_data") or {}
-            ti = top_infra.get(sp_key, {})
-            bs = infra_by_sp.get(sp_key, {})
-
-            # by_date do CSV: chave YYYYMMDD → converter para YYYY-MM-DD
-            by_date_iso = {}
-            for dk, dv in (bs.get("by_date") or {}).items():
-                if len(dk) == 8:
-                    iso = f"{dk[:4]}-{dk[4:6]}-{dk[6:8]}"
-                    by_date_iso[iso] = {
-                        "total": dv.get("total", 0),
-                        "consist": dv.get("consist", 0),
-                        "ntec": dv.get("ntec_real", 0),
-                        "tec": dv.get("tec", 0),
-                    }
-                    all_dates.add(iso)
-
-            av_faixas.append({
-                "serie": serie_i,
-                "faixa": faixa_s,
-                "cod": fx.get("cod", ""),
-                "local": fx.get("local", local_eq),
-                "sentido": fx.get("sentido", "") or eq.get("sentido", ""),
-                "vel": fx.get("vel", 0),
-                "afer": fx.get("afer", ""),
-                "validade": fx.get("validade", ""),
-                # Aproveitamento Geral
-                "total_infra": ag.get("total_infra", 0),
-                "inc_tec": ag.get("inc_tec", 0),
-                "inc_ntec": ag.get("inc_n_tec", 0),
-                "total_incons": ag.get("total_incons", 0),
-                "total_consist": ag.get("total_consist", 0),
-                "indice_aprov": round(ag.get("indice_aprov", 0), 4),
-                # Do CSV
-                "csv_total": ti.get("total", 0),
-                "csv_consist": ti.get("consist", 0),
-                "csv_ntec": ti.get("ntec_real", 0),
-                "csv_tec": ti.get("tec", 0),
-                "csv_ntec_top": dict(sorted(
-                    (ti.get("ntec_top") or {}).items(), key=lambda x: -x[1])[:3]),
-                "csv_tec_top": dict(sorted(
-                    (ti.get("tec_top") or {}).items(), key=lambda x: -x[1])[:3]),
-                "by_date": by_date_iso,
-            })
-
-            # APROV_DATA_FX: {"serie|faixa": {"YYYY-MM-DD": pct}}
-            aprov_data_fx[sp_key] = {
-                iso: round(v.get("indice_aprov", 0) * 100, 1)
-                for iso, v in pd_map.items()
-            }
-            all_dates.update(pd_map.keys())
-
-    # Datas ordenadas
-    av_datas = sorted(all_dates)
-
-    # Média diária
-    aprov_media_dia = []
-    for d in av_datas:
-        vals = [fx["by_date"][d]["consist"] / fx["by_date"][d]["total"] * 100
-                for fx in av_faixas
-                if d in fx["by_date"] and fx["by_date"][d].get("total", 0) > 0]
-        # Fallback: usar aprov_data_fx
-        if not vals:
-            vals2 = [aprov_data_fx.get(f"{fx['serie']}|{fx['faixa']}", {}).get(d)
-                     for fx in av_faixas]
-            vals = [v for v in vals2 if v is not None and v > 0]
-        aprov_media_dia.append({
-            "data": d,
-            "media": round(sum(vals) / len(vals), 1) if vals else 0,
-            "n": len(vals),
-        })
-
-    # Pivot motivo × equipamento (de INFRA_BY_SP / top_infra ntec_top + tec_top)
-    from collections import defaultdict as _dd2
-    pivot_matrix = _dd2(lambda: _dd2(int))
-    ptot_desc = _dd2(int)
-    for sp_key, ti in top_infra.items():
-        for descr, n in (ti.get("ntec_top") or {}).items():
-            pivot_matrix[descr][sp_key] += n
-            ptot_desc[descr] += n
-        for descr, n in (ti.get("tec_top") or {}).items():
-            pivot_matrix[descr][sp_key] += n
-            ptot_desc[descr] += n
-
-    av_pivot_descrs = sorted(ptot_desc.keys(), key=lambda x: -ptot_desc[x])
-    av_pivot_sfs = sorted(set(sf for d in pivot_matrix.values() for sf in d.keys()))
-    av_pivot_matrix = {d: dict(pivot_matrix[d]) for d in av_pivot_descrs}
-    av_pivot_tot_desc = dict(ptot_desc)
-    av_pivot_tot_sf = {sf: sum(pivot_matrix[d].get(sf, 0) for d in av_pivot_descrs)
-                       for sf in av_pivot_sfs}
-
-    html = re.sub(r"const AV_FAIXAS = \\[.*?\\];",
-                  f"const AV_FAIXAS = {json.dumps(av_faixas, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_DATAS = \\[.*?\\];",
-                  f"const AV_DATAS = {json.dumps(av_datas, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const APROV_MEDIA_DIA = \\[.*?\\];",
-                  f"const APROV_MEDIA_DIA = {json.dumps(aprov_media_dia, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const APROV_DATA_FX = \\{.*?\\};",
-                  f"const APROV_DATA_FX = {json.dumps(aprov_data_fx, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_PIVOT_DESCRS = \\[.*?\\];",
-                  f"const AV_PIVOT_DESCRS = {json.dumps(av_pivot_descrs, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_PIVOT_SFS = \\[.*?\\];",
-                  f"const AV_PIVOT_SFS = {json.dumps(av_pivot_sfs, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_PIVOT_MATRIX = \\{.*?\\};",
-                  f"const AV_PIVOT_MATRIX = {json.dumps(av_pivot_matrix, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_PIVOT_TOT_DESC = \\{.*?\\};",
-                  f"const AV_PIVOT_TOT_DESC = {json.dumps(av_pivot_tot_desc, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-    html = re.sub(r"const AV_PIVOT_TOT_SF = \\{.*?\\};",
-                  f"const AV_PIVOT_TOT_SF = {json.dumps(av_pivot_tot_sf, ensure_ascii=False, separators=sep)};",
-                  html, flags=re.DOTALL)
-
-    # Meta tag de geração
-    agora = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-    html = re.sub(r'<meta name="gerado" content="[^"]*">',
-                  f'<meta name="gerado" content="{agora}">', html)
-
-    return html
-
-
-def gerar_portal(template_path, resumos):
-    with open(template_path, "r", encoding="utf-8") as f:
-        html = f.read()
-    html = re.sub(
-        r'const CONTRATOS = \\[.*?\\];',
-        f'const CONTRATOS = {json.dumps(resumos, ensure_ascii=False, indent=2)};',
-        html, flags=re.DOTALL
-    )
-    return html
-
-
-# ============================================================
-#  GITHUB
-# ============================================================
-
-def gh_headers():
-    return {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
-
-
-def gh_sha(caminho):
-    url = f"https://api.github.com/repos/{GITHUB_USUARIO}/{GITHUB_REPO}/contents/{caminho}"
-    r = requests.get(url, headers=gh_headers(), params={"ref": GITHUB_BRANCH})
-    return r.json().get("sha") if r.status_code == 200 else None
-
-
-def gh_upload(caminho_local, caminho_repo):
-    with open(caminho_local, "rb") as f:
-        conteudo = base64.b64encode(f.read()).decode()
-    sha = gh_sha(caminho_repo)
-    url  = f"https://api.github.com/repos/{GITHUB_USUARIO}/{GITHUB_REPO}/contents/{caminho_repo}"
-    data = {
-        "message": f"Auto {datetime.datetime.now().strftime('%d/%m/%Y %H:%M')}",
-        "content": conteudo, "branch": GITHUB_BRANCH
-    }
-    if sha: data["sha"] = sha
-    r  = requests.put(url, headers=gh_headers(), json=data)
-    ok = r.status_code in (200, 201)
-    print(f"  {'OK' if ok else 'ERRO ' + str(r.status_code)} — {caminho_repo}")
-    return ok
-
-
-# ============================================================
-#  MAIN
-# ============================================================
-
-def pasta_mes(raiz, cid):
-    """
-    Resolve a pasta de relatórios do mês atual para o contrato.
-    Tenta vários formatos de data e faz busca recursiva se necessário.
-    """
-    hoje = datetime.date.today()
-    candidatas = [
-        os.path.join(raiz, cid, str(hoje.year), f"{hoje.month:02d}"),   # 2026/03
-        os.path.join(raiz, cid, str(hoje.year), str(hoje.month)),        # 2026/3
-        os.path.join(raiz, cid, f"{hoje.year}{hoje.month:02d}"),         # 202603
-        os.path.join(raiz, cid),                                          # raiz do contrato
-    ]
-    for t in candidatas:
-        if os.path.exists(t):
-            # Verificar se há pelo menos um arquivo XLS/XLSX
-            xls = glob.glob(os.path.join(t, "*.xls")) + glob.glob(os.path.join(t, "*.xlsx"))
-            if xls:
-                print(f"  [Pasta] {t}  ({len(xls)} arquivo(s) XLS/XLSX)")
-                return t
-    # Busca recursiva: pegar a subpasta mais recente com arquivos XLS
-    raiz_cid = os.path.join(raiz, cid)
-    if os.path.exists(raiz_cid):
-        todas = []
-        for root, dirs, files in os.walk(raiz_cid):
-            xls = [f for f in files if f.lower().endswith(('.xls','.xlsx'))]
-            if xls:
-                todas.append((root, len(xls)))
-        if todas:
-            todas.sort(key=lambda x: x[0], reverse=True)
-            melhor = todas[0][0]
-            print(f"  [Pasta] Busca recursiva → {melhor}  ({todas[0][1]} arquivo(s) XLS/XLSX)")
-            return melhor
-    # Fallback final sem verificação
-    fallback = os.path.join(raiz, cid, str(hoje.year), f"{hoje.month:02d}")
-    print(f"  [AVISO] Nenhuma pasta com XLS encontrada para '{cid}'. Usando: {fallback}")
-    return fallback
-
-
-def main():
-    hoje = datetime.date.today()
-    print(f"\\n{'='*55}\\n  Fiscaltech — {hoje.strftime('%d/%m/%Y %H:%M')}\\n{'='*55}\\n")
-
-    if not os.path.exists(PASTA_RAIZ):
-        print(f"ERRO: pasta nao encontrada: {PASTA_RAIZ}"); return
-
-    contratos = [d for d in sorted(os.listdir(PASTA_RAIZ))
-                 if os.path.isdir(os.path.join(PASTA_RAIZ, d)) and not d.startswith('.')]
-    if not contratos:
-        print("ERRO: nenhuma subpasta de contrato encontrada"); return
-    print(f"Contratos: {contratos}\\n")
-
-    os.makedirs(PASTA_LOCAL, exist_ok=True)
-    template_dash = os.path.join(PASTA_MODELOS, "ARES", "dashboard_template.html")
-    if not os.path.exists(template_dash):
-        # Fallback: template na pasta local
-        template_dash = os.path.join(PASTA_LOCAL, "dashboard_BASE_template.html")
-    if not os.path.exists(template_dash):
-        print(f"ERRO: template nao encontrado. Esperado em:\\n"
-              f"  {os.path.join(PASTA_MODELOS, 'ARES', 'dashboard_template.html')}\\n"
-              f"  {os.path.join(PASTA_LOCAL, 'dashboard_BASE_template.html')}")
-        return
-    print(f"Template: {template_dash}\\n")
-    template_port = os.path.join(PASTA_LOCAL, "portal.html")
-
-    resumos = []
-    gerados = []
-
-    for i, cid in enumerate(contratos):
-        print(f"[{cid}] Processando contrato...")
-        try:
-            pasta = pasta_mes(PASTA_RAIZ, cid)
-            dados = montar_dados_contrato(pasta, cid, hoje.year, hoje.month)
-            if not dados:
-                print(f"  [AVISO] Nenhum dado gerado para '{cid}' — dashboard NÃO será publicado.")
-                print(f"  Verifique se os arquivos XLS/XLSX estão em: {pasta}\\n")
-                continue
-            nome_h = f"dashboard_{cid}.html"
-            cor    = CORES_CONTRATO[i % len(CORES_CONTRATO)]
-            resumo = calcular_resumo(dados, cor, nome_h)
-            resumos.append(resumo)
-
-            html = gerar_dashboard(template_dash, dados, cid, pasta_csv=pasta)
-            caminho = os.path.join(PASTA_LOCAL, nome_h)
-            with open(caminho, "w", encoding="utf-8") as f:
-                f.write(html)
-            print(f"  Gerado: {caminho}  ({len(html):,} chars)")
-            gerados.append((caminho, nome_h))
-            print(f"  OK — {nome_h}\\n")
-        except Exception as e:
-            import traceback
-            print(f"  ERRO [{cid}]: {e}")
-            traceback.print_exc()
-
-    if resumos:
-        html_p = gerar_portal(template_port, resumos)
-        cp = os.path.join(PASTA_LOCAL, "portal.html")
-        with open(cp, "w", encoding="utf-8") as f:
-            f.write(html_p)
-        gerados.append((cp, "portal.html"))
-        print(f"portal.html atualizado ({len(resumos)} contratos)\\n")
-
-    # Publicar também arquivos estáticos que o portal depende
-    estaticos = ["configurar_fiscaltech.html"]
-    for nome_e in estaticos:
-        caminho_e = os.path.join(PASTA_LOCAL, nome_e)
-        if os.path.exists(caminho_e):
-            gerados.append((caminho_e, nome_e))
-        else:
-            print(f"  [AVISO] Arquivo não encontrado, pulando: {nome_e}")
-
-    print(f"[GITHUB] Publicando {len(gerados)} arquivo(s)...")
-    for c, r in gerados:
-        print(f"  → {r}")
-    ok = sum(1 for c, r in gerados if gh_upload(c, r))
-    print(f"\\nConcluido: {ok}/{len(gerados)} publicados")
-    print(f"Portal: https://{GITHUB_USUARIO}.github.io/{GITHUB_REPO}/portal.html\\n")
-
-
-if __name__ == "__main__":
-    main()
-`;
-  return src;
-}
-
-// ── AGENTE LOCAL ───────────────────────────────
-const AGENTE_URL   = 'http://localhost:5001';
-let agenteOnline   = false;
-let logOffset      = 0;
-let pollInterval   = null;
-let progressFake   = 0;
-
-async function pingAgente(){
-  try{
-    const r=await fetch(AGENTE_URL+'/status',{signal:AbortSignal.timeout(1200)});
-    if(!r.ok)throw new Error();
-    const d=await r.json();
-    agenteOnline=true;
-    atualizarIndicador(d);
-    return d;
-  }catch(e){
-    agenteOnline=false;
-    atualizarIndicador(null);
-    return null;
-  }
-}
-
-function atualizarIndicador(d){
-  const dot=document.getElementById('agenteDot');
-  const lbl=document.getElementById('agenteLabel');
-  const aviso=document.getElementById('execAgenteAviso');
-  const btn1=document.getElementById('btnCiclo');
-  const btn2=document.getElementById('btnBaixar');
-  const btn3=document.getElementById('btnAtualizar');
-  const sBadge=document.getElementById('execStatusBadge');
-  const sDot=document.getElementById('execDot');
-  const sTxt=document.getElementById('execStatusTxt');
-
-  if(!d){
-    if(dot){dot.style.background='var(--red)';}
-    if(lbl){lbl.style.color='var(--red)';lbl.textContent='OFFLINE';}
-    if(aviso)aviso.style.display='block';
-    if(btn1)btn1.disabled=true;
-    if(btn2)btn2.disabled=true;
-    if(btn3)btn3.disabled=true;
-    if(sDot)sDot.style.background='var(--red)';
-    if(sTxt){sTxt.style.color='var(--red)';sTxt.textContent='Agente offline';}
-    return;
-  }
-  if(aviso)aviso.style.display='none';
-  if(d.rodando){
-    if(dot){dot.style.background='var(--yellow)';}
-    if(lbl){lbl.style.color='var(--yellow)';lbl.textContent='RODANDO';}
-    if(btn1)btn1.disabled=true;
-    if(btn2)btn2.disabled=true;
-    if(btn3)btn3.disabled=true;
-    if(sDot)sDot.style.background='var(--yellow)';
-    if(sTxt){sTxt.style.color='var(--yellow)';sTxt.textContent='Executando: '+d.script_atual;}
-    document.getElementById('execProgressCard')?.style && (document.getElementById('execProgressCard').style.display='block');
-    document.getElementById('execScriptAtual') && (document.getElementById('execScriptAtual').textContent=d.script_atual||'Processando...');
-    progressFake=Math.min(progressFake+2,90);
-    const pb=document.getElementById('execProgressBar');
-    if(pb)pb.style.width=progressFake+'%';
-  } else {
-    if(dot){dot.style.background='var(--green)';}
-    if(lbl){lbl.style.color='var(--green)';lbl.textContent='ONLINE';}
-    if(btn1)btn1.disabled=false;
-    if(btn2)btn2.disabled=false;
-    if(btn3)btn3.disabled=false;
-    if(sDot)sDot.style.background=d.erro?'var(--red)':'var(--green)';
-    if(sTxt){
-      sTxt.style.color=d.erro?'var(--red)':'var(--green)';
-      if(d.erro)sTxt.textContent='Erro na última execução';
-      else if(d.ultimo_ok){const t=new Date(d.ultimo_ok);sTxt.textContent='OK às '+t.toLocaleTimeString('pt-BR');}
-      else sTxt.textContent='Agente online — pronto';
-    }
-    document.getElementById('execProgressCard')?.style && (document.getElementById('execProgressCard').style.display='none');
-    progressFake=0;
-    const pb=document.getElementById('execProgressBar');
-    if(pb)pb.style.width='100%';
-    const uo=document.getElementById('execUltimoOk');
-    if(uo&&d.ultimo_ok){const t=new Date(d.ultimo_ok);uo.textContent='Última execução OK: '+t.toLocaleString('pt-BR');}
-  }
-}
-
-async function buscarLogs(){
-  try{
-    const r=await fetch(`${AGENTE_URL}/logs?desde=${logOffset}`,{signal:AbortSignal.timeout(2000)});
-    const d=await r.json();
-    if(d.logs&&d.logs.length){
-      const el=document.getElementById('execLogs');
-      if(el){
-        if(logOffset===0)el.innerHTML='';
-        d.logs.forEach(l=>{
-          const cor=l.nivel==='ERRO'?'var(--red)':l.nivel==='OK'?'var(--green)':l.nivel==='WARN'?'var(--yellow)':'var(--text2)';
-          el.innerHTML+=`<span style="color:var(--text3)">${l.ts}</span> <span style="color:${cor}">${escHtml(l.msg)}</span>\n`;
-        });
-        logOffset=d.total;
-        if(document.getElementById('execAutoScroll')?.checked)el.scrollTop=el.scrollHeight;
       }
+    }catch(e){}
+  }
+
+  // 4. Falhou — agente offline ou config vazia
+  mostrarOffline('Agente não encontrado em '+AGENT_URL+'.<br>Verifique se o agente está em execução na máquina servidora.');
+}
+
+async function conectar(){
+  try{
+    const r = await fetch(AGENT_URL+'/status');
+    if(!r.ok) throw new Error('status '+r.status);
+    const d = await r.json();
+    setAgentOnline(d.versao||'2.1');
+    await carregarConfig();
+    iniciarPoll();
+  }catch(e){
+    mostrarOffline('Agente não encontrado em '+AGENT_URL+'.<br>Verifique se está em execução e se a porta 5001 está aberta.');
+  }
+}
+
+function mostrarOffline(msg){
+  document.getElementById('offlineSub').innerHTML = msg;
+  document.getElementById('offlineOverlay').classList.add('show');
+  setAgentOffline();
+}
+
+async function tentarReconectar(){
+  document.getElementById('offlineOverlay').classList.remove('show');
+  document.getElementById('agentDot').className = 'agent-dot checking';
+  document.getElementById('agentLabel').textContent = 'Reconectando…';
+  await iniciarAuth();
+}
+
+function setAgentOnline(v){
+  document.getElementById('agentDot').className  = 'agent-dot';
+  document.getElementById('agentLabel').textContent = 'Agente v'+v+' — Online';
+}
+function setAgentOffline(){
+  document.getElementById('agentDot').className  = 'agent-dot off';
+  document.getElementById('agentLabel').textContent = 'Offline';
+}
+
+// ══════════════════════════════════════════════════════════════
+//  CHAMADA AO AGENTE — helper com token automático
+// ══════════════════════════════════════════════════════════════
+async function agente(path, method='GET', body=null){
+  const opts = {
+    method,
+    headers:{
+      'Content-Type':'application/json',
+      'X-Agent-Token': _agentToken
     }
+  };
+  if(body) opts.body = JSON.stringify(body);
+  const r = await fetch(AGENT_URL+path, opts);
+  const d = await r.json();
+  if(r.status === 401){
+    // Token expirou — re-autentica
+    sessionStorage.removeItem(AGENT_TOKEN_KEY);
+    _agentToken = '';
+    await iniciarAuth();
+    throw new Error('re-auth');
+  }
+  if(!r.ok) throw new Error(d.erro || 'Erro '+r.status);
+  return d;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  CONFIGURAÇÃO
+// ══════════════════════════════════════════════════════════════
+async function carregarConfig(){
+  // Lê o config.json via /status (retorna o config completo)
+  // Como não há rota GET /config, usamos o config embutido no HTML de contratos
+  // e reconstruímos a partir do estado global
+  // Por enquanto inicializa vazio — populado ao salvar
+  if(!_config){
+    _config = { global:{}, contratos:[], usuarios:{} };
+  }
+  renderContratos();
+  renderUsuarios();
+  renderGithub();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  NAVEGAÇÃO
+// ══════════════════════════════════════════════════════════════
+function mostrarSecao(id, el){
+  document.querySelectorAll('.secao').forEach(s=>s.classList.remove('ativa'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('ativa');
+  el.classList.add('active');
+  if(id==='logs') carregarLogs();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  CONTRATOS
+// ══════════════════════════════════════════════════════════════
+let _editIdx = null;
+
+function renderContratos(){
+  const tbody = document.getElementById('tblContratos');
+  const lista = _config.contratos||[];
+  if(!lista.length){
+    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px">Nenhum contrato cadastrado.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = lista.map((c,i)=>`
+    <tr>
+      <td><span style="font-family:var(--mono);font-size:12px;font-weight:600">${c.id}</span></td>
+      <td>${c.nome||c.id}</td>
+      <td>${c.concessao||'—'}</td>
+      <td><span style="font-family:var(--mono);font-size:11px">${c.uf||'—'}</span></td>
+      <td><span style="font-family:var(--mono);font-size:11px">${c.modelo||'ARES'}</span></td>
+      <td><span class="status-pill ${c.status==='ativo'?'sp-ativo':'sp-inativo'}">${c.status==='ativo'?'● ATIVO':'○ INATIVO'}</span></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="abrirModalContrato(${i})">Editar</button>
+        <button class="btn btn-sm" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)" onclick="removerContrato(${i})">✕</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function abrirModalContrato(idx){
+  _editIdx = idx;
+  const c = idx !== null ? (_config.contratos||[])[idx] : null;
+  document.getElementById('modalContratoTitulo').textContent = c ? 'Editar: '+c.id : 'Novo Contrato';
+  document.getElementById('cId').value       = c?.id        || '';
+  document.getElementById('cNome').value     = c?.nome      || '';
+  document.getElementById('cUrl').value      = c?.url       || '';
+  document.getElementById('cConcessao').value= c?.concessao || '';
+  document.getElementById('cUf').value       = c?.uf        || 'PR';
+  document.getElementById('cStatus').value   = c?.status    || 'ativo';
+  document.getElementById('cUsuario').value  = c?.usuario   || 'portal.monitoramento';
+  document.getElementById('cSenha').value    = c?.senha     || '';
+  document.getElementById('cHrDl').value     = c?.hr_dl     || '06:30';
+  document.getElementById('cHrAt').value     = c?.hr_at     || '07:00';
+  document.getElementById('cId').disabled    = idx !== null; // ID imutável em edição
+  document.getElementById('modalContrato').classList.add('show');
+}
+
+async function salvarContrato(){
+  const id = document.getElementById('cId').value.trim().toUpperCase().replace(/\s/g,'_');
+  if(!id){ toast('ID é obrigatório','erro'); return; }
+
+  const c = {
+    id,
+    nome:      document.getElementById('cNome').value.trim()     || id,
+    modelo:    'ARES',
+    status:    document.getElementById('cStatus').value,
+    concessao: document.getElementById('cConcessao').value.trim(),
+    uf:        document.getElementById('cUf').value,
+    url:       document.getElementById('cUrl').value.trim(),
+    usuario:   document.getElementById('cUsuario').value.trim()  || 'portal.monitoramento',
+    senha:     document.getElementById('cSenha').value,
+    pasta_raiz:(_config.global?.pasta_raiz || 'C:\\fiscaltech\\relatorios'),
+    pasta_portal:(_config.global?.pasta_portal || 'C:\\fiscaltech\\portal'),
+    hr_dl:     document.getElementById('cHrDl').value,
+    hr_at:     document.getElementById('cHrAt').value,
+    obs:       ''
+  };
+
+  if(!_config.contratos) _config.contratos = [];
+  if(_editIdx !== null) _config.contratos[_editIdx] = c;
+  else _config.contratos.push(c);
+
+  fecharModal('modalContrato');
+
+  try{
+    await agente('/salvar/contrato','POST',{ config: _config });
+    toast('Contrato salvo e scripts regenerados ✓','ok');
+    renderContratos();
+  }catch(e){
+    toast('Erro ao salvar: '+e.message,'erro');
+  }
+}
+
+async function removerContrato(idx){
+  if(!confirm('Remover este contrato?')) return;
+  _config.contratos.splice(idx,1);
+  try{
+    await agente('/salvar/contrato','POST',{ config: _config });
+    toast('Contrato removido ✓','ok');
+    renderContratos();
+  }catch(e){
+    toast('Erro: '+e.message,'erro');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  USUÁRIOS
+// ══════════════════════════════════════════════════════════════
+let _usuarios = {};
+
+function renderUsuarios(){
+  const div = document.getElementById('listaUsuarios');
+  const users = Object.entries(_usuarios);
+  if(!users.length){
+    div.innerHTML = '<p style="color:var(--muted);font-size:13px">Nenhum usuário cadastrado.</p>';
+    return;
+  }
+  div.innerHTML = users.map(([login, u])=>`
+    <div class="user-row">
+      <div class="user-avatar">${login[0].toUpperCase()}</div>
+      <div class="user-info">
+        <div class="user-name">${login}</div>
+        <div class="user-nivel">Criado por: ${u.criadoPor||'sistema'}</div>
+      </div>
+      <span class="nivel-badge nb-${u.nivel}">${{adm_sis:'ADM SIS',adm:'ADM',analista:'ANALISTA'}[u.nivel]||u.nivel}</span>
+      <button class="btn btn-sm" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-b);margin-left:8px" onclick="removerUsuario('${login}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function abrirModalUsuario(){
+  document.getElementById('uLogin').value   = '';
+  document.getElementById('uSenha').value   = '';
+  document.getElementById('uSenhaConf').value = '';
+  document.getElementById('uNivel').value   = 'analista';
+  document.getElementById('modalUsuario').classList.add('show');
+}
+
+async function salvarUsuario(){
+  const login  = document.getElementById('uLogin').value.trim().toLowerCase();
+  const senha  = document.getElementById('uSenha').value;
+  const conf   = document.getElementById('uSenhaConf').value;
+  const nivel  = document.getElementById('uNivel').value;
+  const s      = getSessao();
+
+  if(!login){ toast('Login é obrigatório','erro'); return; }
+  if(senha.length < 6){ toast('Senha mínima: 6 caracteres','erro'); return; }
+  if(senha !== conf){ toast('Senhas não conferem','erro'); return; }
+
+  const h = await sha256(senha);
+  _usuarios[login] = { hash: h, nivel, criadoPor: s?.user||'adm' };
+
+  fecharModal('modalUsuario');
+  try{
+    await agente('/salvar/usuarios','POST',{ usuarios: _usuarios });
+    toast('Usuário criado e portal atualizado ✓','ok');
+    renderUsuarios();
+  }catch(e){
+    toast('Erro: '+e.message,'erro');
+  }
+}
+
+async function removerUsuario(login){
+  if(!confirm('Remover usuário "'+login+'"?')) return;
+  delete _usuarios[login];
+  try{
+    await agente('/salvar/usuarios','POST',{ usuarios: _usuarios });
+    toast('Usuário removido ✓','ok');
+    renderUsuarios();
+  }catch(e){
+    toast('Erro: '+e.message,'erro');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GITHUB
+// ══════════════════════════════════════════════════════════════
+function renderGithub(){
+  const g = _config.global||{};
+  document.getElementById('ghUsuario').value = g.github_usuario||'';
+  document.getElementById('ghRepo').value    = g.github_repo||'';
+  document.getElementById('ghToken').value   = g.github_token||'';
+  document.getElementById('ghBranch').value  = g.github_branch||'main';
+}
+
+async function salvarGithub(){
+  if(!_config.global) _config.global = {};
+  _config.global.github_usuario = document.getElementById('ghUsuario').value.trim();
+  _config.global.github_repo    = document.getElementById('ghRepo').value.trim();
+  _config.global.github_token   = document.getElementById('ghToken').value.trim();
+  _config.global.github_branch  = document.getElementById('ghBranch').value.trim()||'main';
+  try{
+    await agente('/salvar/config','POST',{ config: _config });
+    toast('Configuração GitHub salva ✓','ok');
+  }catch(e){ toast('Erro: '+e.message,'erro'); }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AUTOMAÇÃO
+// ══════════════════════════════════════════════════════════════
+async function executar(tipo){
+  const mapa = { ciclo:'executar/ciclo', baixar:'executar/baixar', atualizar:'executar/atualizar', publicar:'publicar' };
+  const path = '/'+mapa[tipo];
+  try{
+    await agente(path,'POST',{});
+    toast('Iniciado: '+tipo,'info');
+    _logOffset = 0;
+    iniciarPollLogs();
+  }catch(e){ toast('Erro: '+e.message,'erro'); }
+}
+
+async function limparLogs(){
+  try{
+    await agente('/logs/limpar','GET');
+    document.getElementById('logBox').textContent = '';
+    document.getElementById('logBoxAgente').textContent = '';
+    _logOffset = 0;
+    toast('Logs limpos','info');
+  }catch(e){ toast('Erro: '+e.message,'erro'); }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  LOGS
+// ══════════════════════════════════════════════════════════════
+async function carregarLogs(){
+  try{
+    const d = await agente('/logs?desde=0');
+    renderLogs(d.logs, document.getElementById('logBoxAgente'), true);
   }catch(e){}
 }
 
-function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderLogs(logs, el, substituir=false){
+  if(!logs?.length) return;
+  const map = { OK:'log-ok', ERRO:'log-erro', WARN:'log-warn', INFO:'log-info' };
+  const html = logs.map(l=>{
+    const cls = map[l.nivel]||'log-info';
+    return `<span class="${cls}">[${l.ts}] ${escHtml(l.msg)}</span>`;
+  }).join('\n');
+  if(substituir) el.innerHTML = html;
+  else el.innerHTML += (el.innerHTML?'\n':'')+html;
+  el.scrollTop = el.scrollHeight;
+}
+
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+let _pollLogs = null;
+function iniciarPollLogs(){
+  if(_pollLogs) clearInterval(_pollLogs);
+  _pollLogs = setInterval(async()=>{
+    try{
+      const d = await agente('/logs?desde='+_logOffset);
+      if(d.logs?.length){
+        renderLogs(d.logs, document.getElementById('logBox'));
+        _logOffset = d.total;
+      }
+      // Atualiza status de execução
+      const st = await fetch(AGENT_URL+'/status').then(r=>r.json());
+      const el = document.getElementById('execStatus');
+      if(st.rodando){
+        el.className='exec-status exec-running';
+        el.innerHTML='<span class="spin">⟳</span> '+escHtml(st.script_atual||'Executando…');
+      } else if(st.erro){
+        el.className='exec-status exec-erro';
+        el.textContent='✗ Erro na última execução';
+        clearInterval(_pollLogs); _pollLogs=null;
+      } else if(st.ultimo_ok){
+        el.className='exec-status exec-ok';
+        el.textContent='✓ Concluído com sucesso';
+        clearInterval(_pollLogs); _pollLogs=null;
+      }
+    }catch(e){}
+  }, 2000);
+}
 
 function iniciarPoll(){
-  if(pollInterval)return;
-  pollInterval=setInterval(async()=>{
-    const d=await pingAgente();
-    await buscarLogs();
-  },1500);
+  // Poll leve no status do agente
+  setInterval(async()=>{
+    try{
+      const r = await fetch(AGENT_URL+'/status');
+      if(r.ok){ const d=await r.json(); setAgentOnline(d.versao||'2.1'); }
+      else setAgentOffline();
+    }catch(e){ setAgentOffline(); }
+  }, 15000);
 }
 
-function pararPoll(){
-  if(pollInterval){clearInterval(pollInterval);pollInterval=null;}
+// ══════════════════════════════════════════════════════════════
+//  MODAIS
+// ══════════════════════════════════════════════════════════════
+function fecharModal(id){
+  document.getElementById(id).classList.remove('show');
 }
-
-async function executarAcao(acao){
-  if(!agenteOnline){toast('⚠️ Agente offline. Inicie agente_fiscaltech.py','err');return;}
-  const rotas={ciclo:'/executar/ciclo',baixar:'/executar/baixar',atualizar:'/executar/atualizar'};
-  const nomes={ciclo:'Ciclo Completo',baixar:'Download de Relatórios',atualizar:'Atualização Dashboards'};
-  logOffset=0;
-  document.getElementById('execLogs').innerHTML='';
-  progressFake=0;
-  try{
-    const r=await fetch(AGENTE_URL+rotas[acao],{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({pasta_portal:G.pasta_portal||'C:\\fiscaltech\\portal'})
-    });
-    const d=await r.json();
-    if(r.ok){toast('▶ '+nomes[acao]+' iniciado!','ok');iniciarPoll();}
-    else toast('⚠️ '+d.erro,'warn');
-  }catch(e){toast('❌ Não foi possível conectar ao agente','err');}
-}
-
-function limparLogs(){
-  fetch(AGENTE_URL+'/logs/limpar').catch(()=>{});
-  logOffset=0;
-  const el=document.getElementById('execLogs');
-  if(el)el.innerHTML='<span style="color:var(--text3)">— Logs limpos. —</span>';
-}
-
-function copiarLogs(){
-  const el=document.getElementById('execLogs');
-  if(el)navigator.clipboard.writeText(el.innerText).then(()=>toast('📋 Logs copiados!','ok'));
-}
-
-// ── PUBLICAR NO GITHUB ─────────────────────────────
-async function publicarGitHub(){
-  if(!agenteOnline){toast('⚠️ Agente offline — não é possível publicar','err');return;}
-  const btn=document.getElementById('btnPublicar');
-  const status=document.getElementById('publicarStatus');
-  const dot=document.getElementById('publicarDot');
-  const txt=document.getElementById('publicarTxt');
-  btn.disabled=true;
-  status.style.display='block';
-  dot.style.background='var(--yellow)';
-  txt.textContent='Publicando no GitHub...';
-  logOffset=0;
-  document.getElementById('execLogs')?.innerHTML && (document.getElementById('execLogs').innerHTML='');
-  try{
-    const r=await fetch(AGENTE_URL+'/publicar',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({pasta_portal:G.pasta_portal||'C:\\fiscaltech\\portal'})
-    });
-    const d=await r.json();
-    if(d.ok){
-      dot.style.background='var(--green)';
-      txt.textContent='Publicado com sucesso!';
-      toast('✅ Publicação iniciada no GitHub!','ok');
-      iniciarPoll();
-    } else {
-      dot.style.background='var(--red)';
-      txt.textContent='Erro ao publicar';
-      toast('❌ Erro: '+d.erro,'err');
-    }
-  }catch(e){
-    dot.style.background='var(--red)';
-    txt.textContent='Agente indisponível';
-    toast('❌ Não foi possível conectar ao agente','err');
-  }finally{
-    btn.disabled=false;
-    setTimeout(()=>{ status.style.display='none'; },5000);
-  }
-}
-
-// ── TOAST ──────────────────────────────────────
-function toast(msg,tipo='ok'){
-  const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';
-  t.style.borderColor=tipo==='ok'?'var(--green)':tipo==='warn'?'var(--yellow)':'var(--red)';
-  setTimeout(()=>t.style.display='none',3000);
-}
-
-// ── INIT ───────────────────────────────────────
-window.addEventListener('DOMContentLoaded',()=>{
-  if(verificarSessao()){
-    const user=sessionStorage.getItem(SESSION_KEY);
-    const el=document.getElementById('userLabel');
-    if(el)el.textContent='👤 '+user;
-    load();
-    renderMCards('ARES');
-    document.getElementById('fRaiz').value=G.pasta_raiz;
-    document.getElementById('fPortal').value=G.pasta_portal;
-    // Pinga o agente ao iniciar para mostrar status no header
-    pingAgente();
-    setInterval(pingAgente, 10000); // Verifica a cada 10s
-  }
-  ['gUser','gRepo'].forEach(id=>{
-    document.getElementById(id)?.addEventListener('input',()=>{
-      const u=document.getElementById('gUser').value.trim();
-      const r=document.getElementById('gRepo').value.trim();
-      if(u&&r)document.getElementById('gPortalUrl').value=`https://${u}.github.io/${r}/portal.html`;
-    });
-  });
+// Clique fora fecha
+document.querySelectorAll('.modal-bg').forEach(m=>{
+  m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('show'); });
 });
+
+// ══════════════════════════════════════════════════════════════
+//  TOASTS
+// ══════════════════════════════════════════════════════════════
+function toast(msg, tipo='info'){
+  const ico = {ok:'✓',erro:'✗',info:'ℹ',warn:'⚠'}[tipo]||'ℹ';
+  const div = document.createElement('div');
+  div.className = 'toast toast-'+tipo;
+  div.innerHTML = `<span>${ico}</span><span>${msg}</span>`;
+  document.getElementById('toastArea').appendChild(div);
+  setTimeout(()=>div.remove(), 3500);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
+iniciarAuth();
 </script>
 </body>
 </html>
