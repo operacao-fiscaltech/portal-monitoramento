@@ -253,12 +253,1919 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 // ══════════════════════════════════════════════════════
 //  AGENTE — URL injetada automaticamente pelo agente
 // ══════════════════════════════════════════════════════
-const AGENT_URL = "http://localhost:5001";
+// AGENT_URL: se servido pelo agente já foi definida no <head>
+if(typeof AGENT_URL === "undefined"){
+  var AGENT_URL = "http://localhost:5001"; // fallback para acesso local
+}
 
 // ══════════════════════════════════════════════════════
 //  DADOS — gerado por atualizar_todos.py
 // ══════════════════════════════════════════════════════
 const CONTRATOS = [
+  {
+    "id": "AGETRAN",
+    "nome": "AGETRAN",
+    "arquivo": "dashboard_AGETRAN.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 35,
+    "totalFaixas": 92,
+    "fluxoHoje": 198,
+    "lapMedio": 81.7,
+    "aprovMedio": 0.776,
+    "funcMedio": 96.7,
+    "faixasCrit": 29,
+    "faixasWarn": 50,
+    "faixasOk": 13,
+    "faixasOff": 0,
+    "afericoesVenc60": 6,
+    "faixasSample": [
+      {
+        "serie": "682",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "682",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "682",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "706",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "706",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "707",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "707",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "707",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "708",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "708",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "708",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "708",
+        "id": "4",
+        "status": "crit"
+      },
+      {
+        "serie": "709",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "709",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "709",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "709",
+        "id": "4",
+        "status": "crit"
+      }
+    ],
+    "fluxoSpark": [
+      985,
+      824,
+      813,
+      866,
+      876,
+      946,
+      1025,
+      1101,
+      665,
+      687,
+      614,
+      567,
+      630,
+      632,
+      695,
+      198
+    ],
+    "cor": "#0ea5e9",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "CAMPINAGRANDE",
+    "nome": "CAMPINAGRANDE",
+    "arquivo": "dashboard_CAMPINAGRANDE.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 16,
+    "totalFaixas": 34,
+    "fluxoHoje": 90290,
+    "lapMedio": 67.5,
+    "aprovMedio": 0,
+    "funcMedio": 99.6,
+    "faixasCrit": 8,
+    "faixasWarn": 18,
+    "faixasOk": 8,
+    "faixasOff": 0,
+    "afericoesVenc60": 12,
+    "faixasSample": [
+      {
+        "serie": "2",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "2",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "2",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "3",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "3",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "4",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "4",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "5",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "5",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "7",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "7",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "7",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "8",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "8",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      104220,
+      153101,
+      151485,
+      146828,
+      156858,
+      172182,
+      148877,
+      116427,
+      163523,
+      164040,
+      171053,
+      163972,
+      175783,
+      148809,
+      109564,
+      90290
+    ],
+    "cor": "#8b5cf6",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "CASCAVEL",
+    "nome": "CASCAVEL",
+    "arquivo": "dashboard_CASCAVEL.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 57,
+    "totalFaixas": 127,
+    "fluxoHoje": 42938,
+    "lapMedio": 76.4,
+    "aprovMedio": 0.987,
+    "funcMedio": 99.3,
+    "faixasCrit": 22,
+    "faixasWarn": 11,
+    "faixasOk": 89,
+    "faixasOff": 5,
+    "afericoesVenc60": 19,
+    "faixasSample": [
+      {
+        "serie": "1",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "1",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "1016",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "1016",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "6474",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6475",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6476",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6477",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6477",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6477",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6478",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6478",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6478",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6480",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6480",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6480",
+        "id": "3",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      485835,
+      506234,
+      412565,
+      266197,
+      42938
+    ],
+    "cor": "#f43f5e",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "CCRMSVIA",
+    "nome": "CCRMSVIA",
+    "arquivo": "dashboard_CCRMSVIA.html",
+    "rodovias": [
+      "BR-163"
+    ],
+    "uf": "PR",
+    "totalEquip": 39,
+    "totalFaixas": 46,
+    "fluxoHoje": 11926,
+    "lapMedio": 82.3,
+    "aprovMedio": 0.977,
+    "funcMedio": 94.7,
+    "faixasCrit": 4,
+    "faixasWarn": 5,
+    "faixasOk": 29,
+    "faixasOff": 8,
+    "afericoesVenc60": 7,
+    "faixasSample": [
+      {
+        "serie": "7399",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7400",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7401",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7402",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7403",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7404",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7405",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7406",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7407",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "7408",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7409",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "7410",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7411",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "7412",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7413",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "7414",
+        "id": "1",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      94824,
+      77873,
+      69027,
+      11926
+    ],
+    "cor": "#fb923c",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "CNL-RADARES",
+    "nome": "CNL-RADARES",
+    "arquivo": "dashboard_CNL-RADARES.html",
+    "rodovias": [
+      "SP-055",
+      "SP-088",
+      "SP-098"
+    ],
+    "uf": "PR",
+    "totalEquip": 14,
+    "totalFaixas": 31,
+    "fluxoHoje": 0,
+    "lapMedio": 49.6,
+    "aprovMedio": 0,
+    "funcMedio": 0,
+    "faixasCrit": 0,
+    "faixasWarn": 0,
+    "faixasOk": 0,
+    "faixasOff": 31,
+    "afericoesVenc60": 0,
+    "faixasSample": [
+      {
+        "serie": "7463",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7463",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7464",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7464",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7465",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7465",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7466",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7466",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7467",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7467",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7468",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7468",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7469",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7469",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "7470",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7471",
+        "id": "1",
+        "status": "off"
+      }
+    ],
+    "fluxoSpark": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cor": "#38bdf8",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "CONSORCIOBANDEIRANTES",
+    "nome": "CONSORCIOBANDEIRANTES",
+    "arquivo": "dashboard_CONSORCIOBANDEIRANTES.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 60,
+    "totalFaixas": 115,
+    "fluxoHoje": 277,
+    "lapMedio": 58.7,
+    "aprovMedio": 0.071,
+    "funcMedio": 96.9,
+    "faixasCrit": 78,
+    "faixasWarn": 7,
+    "faixasOk": 9,
+    "faixasOff": 21,
+    "afericoesVenc60": 17,
+    "faixasSample": [
+      {
+        "serie": "11",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "11",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "12",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "12",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "12",
+        "id": "4",
+        "status": "crit"
+      },
+      {
+        "serie": "1406",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "1427",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "1762",
+        "id": "5",
+        "status": "off"
+      },
+      {
+        "serie": "1765",
+        "id": "5",
+        "status": "off"
+      },
+      {
+        "serie": "1767",
+        "id": "4",
+        "status": "off"
+      },
+      {
+        "serie": "1769",
+        "id": "4",
+        "status": "off"
+      },
+      {
+        "serie": "1790",
+        "id": "6",
+        "status": "off"
+      },
+      {
+        "serie": "1842",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "1913",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "1924",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "2025",
+        "id": "4",
+        "status": "off"
+      }
+    ],
+    "fluxoSpark": [
+      356,
+      353,
+      349,
+      351,
+      363,
+      374,
+      365,
+      363,
+      368,
+      371,
+      370,
+      371,
+      380,
+      373,
+      371,
+      277
+    ],
+    "cor": "#4ade80",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "DAER",
+    "nome": "DAER",
+    "arquivo": "dashboard_DAER.html",
+    "rodovias": [
+      "SC-153",
+      "SC-377",
+      "SC-453"
+    ],
+    "uf": "PR",
+    "totalEquip": 13,
+    "totalFaixas": 13,
+    "fluxoHoje": 28,
+    "lapMedio": 91.5,
+    "aprovMedio": 1.0,
+    "funcMedio": 100.0,
+    "faixasCrit": 0,
+    "faixasWarn": 0,
+    "faixasOk": 8,
+    "faixasOff": 5,
+    "afericoesVenc60": 5,
+    "faixasSample": [
+      {
+        "serie": "1",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "7",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "8",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "9",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6204",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6205",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6209",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6210",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6214",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6215",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6216",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6217",
+        "id": "1",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      300,
+      221,
+      194,
+      193,
+      219,
+      231,
+      318,
+      316,
+      213,
+      232,
+      274,
+      324,
+      340,
+      317,
+      355,
+      28
+    ],
+    "cor": "#0ea5e9",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Mon)"
+  },
+  {
+    "id": "DETRAN-DF",
+    "nome": "DETRAN-DF",
+    "arquivo": "dashboard_DETRAN-DF.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 65,
+    "totalFaixas": 188,
+    "fluxoHoje": 173515,
+    "lapMedio": 83.5,
+    "aprovMedio": 0.962,
+    "funcMedio": 99.9,
+    "faixasCrit": 17,
+    "faixasWarn": 35,
+    "faixasOk": 134,
+    "faixasOff": 2,
+    "afericoesVenc60": 28,
+    "faixasSample": [
+      {
+        "serie": "6035",
+        "id": "4",
+        "status": "ok"
+      },
+      {
+        "serie": "6035",
+        "id": "5",
+        "status": "ok"
+      },
+      {
+        "serie": "6035",
+        "id": "6",
+        "status": "ok"
+      },
+      {
+        "serie": "6036",
+        "id": "4",
+        "status": "ok"
+      },
+      {
+        "serie": "6036",
+        "id": "5",
+        "status": "ok"
+      },
+      {
+        "serie": "6036",
+        "id": "6",
+        "status": "ok"
+      },
+      {
+        "serie": "6238",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6238",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6238",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6240",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6240",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6240",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "6241",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6241",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "6241",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "6242",
+        "id": "1",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      1243354,
+      911093,
+      652241,
+      173515
+    ],
+    "cor": "#22d3a0",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Mon)"
+  },
+  {
+    "id": "DETRAN-MS",
+    "nome": "DETRAN-MS",
+    "arquivo": "dashboard_DETRAN-MS.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 25,
+    "totalFaixas": 31,
+    "fluxoHoje": 3487,
+    "lapMedio": 81.3,
+    "aprovMedio": 0,
+    "funcMedio": 93.8,
+    "faixasCrit": 6,
+    "faixasWarn": 5,
+    "faixasOk": 20,
+    "faixasOff": 0,
+    "afericoesVenc60": 17,
+    "faixasSample": [
+      {
+        "serie": "6828",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6889",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6890",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6908",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6909",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6910",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6912",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7022",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "7185",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7380",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "7381",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7381",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "7382",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7382",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "7383",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7383",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      29511,
+      42867,
+      45303,
+      25710,
+      48039,
+      53167,
+      44477,
+      34379,
+      45247,
+      46646,
+      47941,
+      47890,
+      51090,
+      43203,
+      32824,
+      3487
+    ],
+    "cor": "#f59e0b",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "ECO101",
+    "nome": "ECO101",
+    "arquivo": "dashboard_ECO101.html",
+    "rodovias": [
+      "BR-101"
+    ],
+    "uf": "PR",
+    "totalEquip": 114,
+    "totalFaixas": 149,
+    "fluxoHoje": 751549,
+    "lapMedio": 76.7,
+    "aprovMedio": 0,
+    "funcMedio": 0,
+    "faixasCrit": 11,
+    "faixasWarn": 33,
+    "faixasOk": 89,
+    "faixasOff": 16,
+    "afericoesVenc60": 54,
+    "faixasSample": [
+      {
+        "serie": "6086",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6087",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6088",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6089",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6090",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6091",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6092",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6093",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6094",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6095",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6096",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6097",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6098",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6099",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6100",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6101",
+        "id": "1",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      806300,
+      816393,
+      781310,
+      779402,
+      882626,
+      764946,
+      623936,
+      786288,
+      812764,
+      823025,
+      853041,
+      935928,
+      805826,
+      667328,
+      798042,
+      757660,
+      789949,
+      865759,
+      943882,
+      874413,
+      709147,
+      879496,
+      975272,
+      882430,
+      540852,
+      803009,
+      766512,
+      729342,
+      822636,
+      875118,
+      751549
+    ],
+    "cor": "#8b5cf6",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (31 Qua)"
+  },
+  {
+    "id": "ECOPONTE",
+    "nome": "ECOPONTE",
+    "arquivo": "dashboard_ECOPONTE.html",
+    "rodovias": [
+      "BR-101"
+    ],
+    "uf": "PR",
+    "totalEquip": 8,
+    "totalFaixas": 32,
+    "fluxoHoje": 777,
+    "lapMedio": 80.1,
+    "aprovMedio": 0.824,
+    "funcMedio": 100.0,
+    "faixasCrit": 5,
+    "faixasWarn": 22,
+    "faixasOk": 5,
+    "faixasOff": 0,
+    "afericoesVenc60": 2,
+    "faixasSample": [
+      {
+        "serie": "4013",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "4013",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "4013",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "4013",
+        "id": "4",
+        "status": "warn"
+      },
+      {
+        "serie": "4014",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "4014",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "4014",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "4014",
+        "id": "4",
+        "status": "ok"
+      },
+      {
+        "serie": "4015",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "4015",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "4015",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "4015",
+        "id": "4",
+        "status": "warn"
+      },
+      {
+        "serie": "4016",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "4016",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "4016",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "4016",
+        "id": "4",
+        "status": "warn"
+      }
+    ],
+    "fluxoSpark": [
+      1640,
+      2472,
+      2578,
+      777
+    ],
+    "cor": "#f43f5e",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "EIXO-SP",
+    "nome": "EIXO-SP",
+    "arquivo": "dashboard_EIXO-SP.html",
+    "rodovias": [
+      "SP-191",
+      "SP-197",
+      "SP-225",
+      "SP-261",
+      "SP-284"
+    ],
+    "uf": "PR",
+    "totalEquip": 90,
+    "totalFaixas": 152,
+    "fluxoHoje": 74889,
+    "lapMedio": 82.7,
+    "aprovMedio": 0.966,
+    "funcMedio": 94.3,
+    "faixasCrit": 11,
+    "faixasWarn": 41,
+    "faixasOk": 69,
+    "faixasOff": 31,
+    "afericoesVenc60": 57,
+    "faixasSample": [
+      {
+        "serie": "6521",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6522",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6523",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6524",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6525",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6526",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6527",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6528",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6529",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6530",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6531",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6532",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6533",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6534",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6536",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6536",
+        "id": "2",
+        "status": "off"
+      }
+    ],
+    "fluxoSpark": [
+      324855,
+      444669,
+      435018,
+      469793,
+      491227,
+      543936,
+      434690,
+      364097,
+      460960,
+      474413,
+      466010,
+      463776,
+      485512,
+      370469,
+      290661,
+      74889
+    ],
+    "cor": "#fb923c",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "EPR-IGUACU",
+    "nome": "EPR-IGUACU",
+    "arquivo": "dashboard_EPR-IGUACU.html",
+    "rodovias": [
+      "BR-163",
+      "BR-277",
+      "PR-182",
+      "PR-483"
+    ],
+    "uf": "PR",
+    "totalEquip": 32,
+    "totalFaixas": 46,
+    "fluxoHoje": 60633,
+    "lapMedio": 75.9,
+    "aprovMedio": 0,
+    "funcMedio": 80.1,
+    "faixasCrit": 11,
+    "faixasWarn": 10,
+    "faixasOk": 7,
+    "faixasOff": 18,
+    "afericoesVenc60": 26,
+    "faixasSample": [
+      {
+        "serie": "796",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "796",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "797",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "798",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "798",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "799",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "799",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "800",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "801",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "802",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "803",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "804",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "805",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "806",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "807",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "807",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      45804,
+      57973,
+      60103,
+      62458,
+      69916,
+      76061,
+      74451,
+      59106,
+      80556,
+      90909,
+      94375,
+      93341,
+      98879,
+      82430,
+      74055,
+      60633
+    ],
+    "cor": "#38bdf8",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "FOZIGUACU",
+    "nome": "FOZIGUACU",
+    "arquivo": "dashboard_FOZIGUACU.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 40,
+    "totalFaixas": 89,
+    "fluxoHoje": 67522,
+    "lapMedio": 90.6,
+    "aprovMedio": 0.966,
+    "funcMedio": 99.4,
+    "faixasCrit": 3,
+    "faixasWarn": 8,
+    "faixasOk": 67,
+    "faixasOff": 11,
+    "afericoesVenc60": 8,
+    "faixasSample": [
+      {
+        "serie": "510",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "510",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "510",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "511",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "511",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "513",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "513",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "513",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "514",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "514",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "514",
+        "id": "3",
+        "status": "off"
+      },
+      {
+        "serie": "516",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "516",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "516",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "517",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "517",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      322542,
+      267865,
+      195895,
+      67522
+    ],
+    "cor": "#4ade80",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Mon)"
+  },
+  {
+    "id": "GOINFRA",
+    "nome": "GOINFRA",
+    "arquivo": "dashboard_GOINFRA.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 113,
+    "totalFaixas": 123,
+    "fluxoHoje": 246137,
+    "lapMedio": 68.8,
+    "aprovMedio": 0,
+    "funcMedio": 98.2,
+    "faixasCrit": 24,
+    "faixasWarn": 59,
+    "faixasOk": 40,
+    "faixasOff": 0,
+    "afericoesVenc60": 14,
+    "faixasSample": [
+      {
+        "serie": "190",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "214",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "215",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "217",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "218",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "220",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "222",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "223",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "224",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "226",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "227",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "228",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "229",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "230",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "231",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "232",
+        "id": "1",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      237381,
+      284143,
+      275718,
+      280758,
+      281437,
+      321368,
+      279624,
+      235804,
+      247435,
+      272743,
+      284355,
+      284240,
+      315229,
+      279487,
+      246137
+    ],
+    "cor": "#22d3a0",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (15 Dom)"
+  },
+  {
+    "id": "IMIGRANTES",
+    "nome": "IMIGRANTES",
+    "arquivo": "dashboard_IMIGRANTES.html",
+    "rodovias": [
+      "SP-055",
+      "SP-150"
+    ],
+    "uf": "PR",
+    "totalEquip": 18,
+    "totalFaixas": 53,
+    "fluxoHoje": 146308,
+    "lapMedio": 76.6,
+    "aprovMedio": 0,
+    "funcMedio": 84.9,
+    "faixasCrit": 17,
+    "faixasWarn": 18,
+    "faixasOk": 8,
+    "faixasOff": 10,
+    "afericoesVenc60": 8,
+    "faixasSample": [
+      {
+        "serie": "6406",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6406",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6406",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6406",
+        "id": "4",
+        "status": "ok"
+      },
+      {
+        "serie": "6407",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6407",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "6407",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "6407",
+        "id": "4",
+        "status": "crit"
+      },
+      {
+        "serie": "6408",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6408",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "6408",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "6409",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6409",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6409",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "6410",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6410",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      270192,
+      283773,
+      292338,
+      291947,
+      305833,
+      404578,
+      354369,
+      285981,
+      287854,
+      265447,
+      278822,
+      286712,
+      351209,
+      273157,
+      241689,
+      146308
+    ],
+    "cor": "#f59e0b",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
   {
     "id": "LITORALPIONEIRO",
     "nome": "LITORALPIONEIRO",
@@ -273,13 +2180,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 28,
     "totalFaixas": 43,
-    "fluxoHoje": 50807,
-    "lapMedio": 70.6,
-    "aprovMedio": 0.887,
+    "fluxoHoje": 92360,
+    "lapMedio": 70.9,
+    "aprovMedio": 0.889,
     "funcMedio": 92.4,
-    "faixasCrit": 13,
+    "faixasCrit": 12,
     "faixasWarn": 20,
-    "faixasOk": 10,
+    "faixasOk": 11,
     "faixasOff": 0,
     "afericoesVenc60": 3,
     "faixasSample": [
@@ -380,135 +2287,253 @@ const CONTRATOS = [
       208610,
       189503,
       175388,
-      50807
+      92360
     ],
-    "cor": "#0ea5e9",
-    "atualizado": "16/03/2026 12:01",
+    "cor": "#8b5cf6",
+    "atualizado": "16/03/2026 18:40",
     "referencia": "D-1 (16 Seg)"
   },
   {
-    "id": "PNCV-L3_DNIT-PB",
-    "nome": "PNCV-L3_DNIT-PB",
-    "arquivo": "dashboard_PNCV-L3_DNIT-PB.html",
-    "rodovias": [
-      "BR-101",
-      "BR-230"
-    ],
+    "id": "LONDRINA",
+    "nome": "LONDRINA",
+    "arquivo": "dashboard_LONDRINA.html",
+    "rodovias": [],
     "uf": "PR",
-    "totalEquip": 110,
-    "totalFaixas": 182,
-    "fluxoHoje": 413,
-    "lapMedio": 82.2,
-    "aprovMedio": 0.965,
-    "funcMedio": 94.2,
-    "faixasCrit": 23,
-    "faixasWarn": 48,
-    "faixasOk": 102,
-    "faixasOff": 9,
-    "afericoesVenc60": 8,
+    "totalEquip": 31,
+    "totalFaixas": 67,
+    "fluxoHoje": 124875,
+    "lapMedio": 79.0,
+    "aprovMedio": 0,
+    "funcMedio": 100.0,
+    "faixasCrit": 5,
+    "faixasWarn": 28,
+    "faixasOk": 32,
+    "faixasOff": 2,
+    "afericoesVenc60": 11,
     "faixasSample": [
       {
-        "serie": "481",
+        "serie": "199",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "482",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "483",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "483",
+        "serie": "199",
         "id": "2",
         "status": "ok"
       },
       {
-        "serie": "484",
+        "serie": "199",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "200",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "484",
+        "serie": "200",
         "id": "2",
         "status": "ok"
       },
       {
-        "serie": "486",
+        "serie": "200",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "201",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "487",
+        "serie": "201",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "201",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "202",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "202",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "203",
         "id": "1",
         "status": "warn"
       },
       {
-        "serie": "488",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "488",
+        "serie": "203",
         "id": "2",
-        "status": "ok"
+        "status": "crit"
       },
       {
-        "serie": "493",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "493",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "494",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "494",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "495",
+        "serie": "204",
         "id": "1",
         "status": "warn"
       },
       {
-        "serie": "495",
+        "serie": "204",
         "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "205",
+        "id": "1",
         "status": "warn"
       }
     ],
     "fluxoSpark": [
-      1350,
-      1325,
-      1431,
-      1520,
-      1516,
-      1605,
-      1810,
-      1932,
-      1564,
-      1642,
-      1759,
-      1736,
-      1955,
-      2205,
-      2336,
-      413
+      155954,
+      194401,
+      202854,
+      197143,
+      204720,
+      211780,
+      204373,
+      161420,
+      195483,
+      195241,
+      187820,
+      198460,
+      210633,
+      200443,
+      147085,
+      124875
     ],
-    "cor": "#22d3a0",
-    "atualizado": "16/03/2026 12:01",
-    "referencia": "D-1 (16 Mon)"
+    "cor": "#f43f5e",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "NATAL",
+    "nome": "NATAL",
+    "arquivo": "dashboard_NATAL.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 21,
+    "totalFaixas": 53,
+    "fluxoHoje": 416614,
+    "lapMedio": 71.3,
+    "aprovMedio": 0,
+    "funcMedio": 96.6,
+    "faixasCrit": 10,
+    "faixasWarn": 33,
+    "faixasOk": 8,
+    "faixasOff": 2,
+    "afericoesVenc60": 0,
+    "faixasSample": [
+      {
+        "serie": "6038",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6038",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6038",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "6038",
+        "id": "4",
+        "status": "warn"
+      },
+      {
+        "serie": "6373",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "6373",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6374",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6374",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6375",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6375",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6376",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6376",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "6377",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6377",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6378",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6378",
+        "id": "2",
+        "status": "crit"
+      }
+    ],
+    "fluxoSpark": [
+      282507,
+      460692,
+      435095,
+      444254,
+      489211,
+      535942,
+      517876,
+      358411,
+      551520,
+      545108,
+      529676,
+      521885,
+      548592,
+      498727,
+      365861,
+      416614
+    ],
+    "cor": "#fb923c",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
   },
   {
     "id": "PNCV-L7_DNIT-MS",
@@ -524,14 +2549,14 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 58,
     "totalFaixas": 73,
-    "fluxoHoje": 77,
-    "lapMedio": 82.9,
-    "aprovMedio": 0.926,
-    "funcMedio": 94.9,
-    "faixasCrit": 12,
-    "faixasWarn": 27,
-    "faixasOk": 33,
-    "faixasOff": 1,
+    "fluxoHoje": 68216,
+    "lapMedio": 84.8,
+    "aprovMedio": 0.916,
+    "funcMedio": 96.6,
+    "faixasCrit": 8,
+    "faixasWarn": 25,
+    "faixasOk": 40,
+    "faixasOff": 0,
     "afericoesVenc60": 5,
     "faixasSample": [
       {
@@ -562,7 +2587,7 @@ const CONTRATOS = [
       {
         "serie": "7244",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7245",
@@ -616,150 +2641,622 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      576,
-      471,
-      570,
-      513,
-      526,
-      444,
-      548,
-      554,
-      373,
-      433,
-      482,
-      460,
-      549,
-      496,
-      563,
-      77
+      124014,
+      157033,
+      160520,
+      166681,
+      170998,
+      188949,
+      161148,
+      131549,
+      159329,
+      165869,
+      163028,
+      172462,
+      183956,
+      155127,
+      128999,
+      68216
     ],
-    "cor": "#f59e0b",
-    "atualizado": "16/03/2026 12:01",
+    "cor": "#4ade80",
+    "atualizado": "16/03/2026 18:40",
     "referencia": "D-1 (16 Mon)"
   },
   {
-    "id": "PRVIAS",
-    "nome": "PRVIAS",
-    "arquivo": "dashboard_PRVIAS.html",
+    "id": "PORTOVELHO",
+    "nome": "PORTOVELHO",
+    "arquivo": "dashboard_PORTOVELHO.html",
     "rodovias": [
-      "BR-373",
-      "BR-376",
-      "PR-445"
+      "BR-364"
     ],
     "uf": "PR",
-    "totalEquip": 28,
-    "totalFaixas": 54,
-    "fluxoHoje": 44010,
-    "lapMedio": 82.3,
-    "aprovMedio": 0.984,
-    "funcMedio": 76.9,
+    "totalEquip": 40,
+    "totalFaixas": 85,
+    "fluxoHoje": 105871,
+    "lapMedio": 66.2,
+    "aprovMedio": 0,
+    "funcMedio": 98.5,
     "faixasCrit": 25,
-    "faixasWarn": 13,
-    "faixasOk": 16,
-    "faixasOff": 0,
+    "faixasWarn": 37,
+    "faixasOk": 21,
+    "faixasOff": 2,
+    "afericoesVenc60": 27,
+    "faixasSample": [
+      {
+        "serie": "444",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "444",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "445",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "445",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "446",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "446",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "447",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "447",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "448",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "448",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "449",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "449",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "450",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "450",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "451",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "451",
+        "id": "2",
+        "status": "ok"
+      }
+    ],
+    "fluxoSpark": [
+      136005,
+      206558,
+      206075,
+      202503,
+      208916,
+      218128,
+      192062,
+      155699,
+      196075,
+      184793,
+      198882,
+      190915,
+      202159,
+      160127,
+      129498,
+      105871
+    ],
+    "cor": "#0ea5e9",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "SEEC-DF",
+    "nome": "SEEC-DF",
+    "arquivo": "dashboard_SEEC-DF.html",
+    "rodovias": [
+      "BR-020",
+      "BR-040",
+      "BR-070",
+      "BR-080"
+    ],
+    "uf": "PR",
+    "totalEquip": 7,
+    "totalFaixas": 13,
+    "fluxoHoje": 15583,
+    "lapMedio": 93.9,
+    "aprovMedio": 0,
+    "funcMedio": 100.0,
+    "faixasCrit": 0,
+    "faixasWarn": 0,
+    "faixasOk": 12,
+    "faixasOff": 1,
     "afericoesVenc60": 0,
     "faixasSample": [
       {
-        "serie": "7515",
+        "serie": "75",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "76",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "76",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "79",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "79",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "80",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "80",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "81",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "81",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "82",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "82",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "83",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "83",
+        "id": "2",
+        "status": "off"
+      }
+    ],
+    "fluxoSpark": [
+      90412,
+      104279,
+      101452,
+      100240,
+      97239,
+      113959,
+      118191,
+      92980,
+      97788,
+      103333,
+      101956,
+      105077,
+      105192,
+      109194,
+      92727,
+      15583
+    ],
+    "cor": "#f59e0b",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "SEINFRA",
+    "nome": "SEINFRA",
+    "arquivo": "dashboard_SEINFRA.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 36,
+    "totalFaixas": 52,
+    "fluxoHoje": 211052,
+    "lapMedio": 77.2,
+    "aprovMedio": 0,
+    "funcMedio": 93.0,
+    "faixasCrit": 11,
+    "faixasWarn": 22,
+    "faixasOk": 18,
+    "faixasOff": 1,
+    "afericoesVenc60": 17,
+    "faixasSample": [
+      {
+        "serie": "6218",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6218",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6219",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6219",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6220",
         "id": "1",
         "status": "crit"
       },
       {
-        "serie": "7515",
+        "serie": "6220",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       },
       {
-        "serie": "7516",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7516",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7517",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7517",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7518",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7518",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7519",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7519",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7520",
+        "serie": "6221",
         "id": "1",
         "status": "crit"
       },
       {
-        "serie": "7520",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7521",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7521",
+        "serie": "6221",
         "id": "2",
         "status": "warn"
       },
       {
-        "serie": "7522",
+        "serie": "6222",
         "id": "1",
         "status": "warn"
       },
       {
-        "serie": "7522",
+        "serie": "6222",
         "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6223",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "6223",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6224",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6225",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6226",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6227",
+        "id": "1",
+        "status": "crit"
+      }
+    ],
+    "fluxoSpark": [
+      249289,
+      275926,
+      253808,
+      252736,
+      262324,
+      318206,
+      298032,
+      272320,
+      285609,
+      283388,
+      277341,
+      264530,
+      313030,
+      296483,
+      285805,
+      211052
+    ],
+    "cor": "#8b5cf6",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "SERGET-CAIABA",
+    "nome": "SERGET-CAIABA",
+    "arquivo": "dashboard_SERGET-CAIABA.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 30,
+    "totalFaixas": 74,
+    "fluxoHoje": 107238,
+    "lapMedio": 74.0,
+    "aprovMedio": 1.0,
+    "funcMedio": 90.1,
+    "faixasCrit": 15,
+    "faixasWarn": 22,
+    "faixasOk": 22,
+    "faixasOff": 15,
+    "afericoesVenc60": 14,
+    "faixasSample": [
+      {
+        "serie": "230",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "230",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "231",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "231",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "233",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "233",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "234",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "234",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "235",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "235",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "235",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "236",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "236",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "236",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "237",
+        "id": "3",
+        "status": "crit"
+      },
+      {
+        "serie": "237",
+        "id": "4",
+        "status": "crit"
+      }
+    ],
+    "fluxoSpark": [
+      142273,
+      218350,
+      234061,
+      235430,
+      216194,
+      210642,
+      186778,
+      143775,
+      201721,
+      210365,
+      201616,
+      195439,
+      207534,
+      188235,
+      136777,
+      107238
+    ],
+    "cor": "#f43f5e",
+    "atualizado": "16/03/2026 18:40",
+    "referencia": "D-1 (16 Seg)"
+  },
+  {
+    "id": "SIGVIAS-GOIANIA",
+    "nome": "SIGVIAS-GOIANIA",
+    "arquivo": "dashboard_SIGVIAS-GOIANIA.html",
+    "rodovias": [],
+    "uf": "PR",
+    "totalEquip": 60,
+    "totalFaixas": 132,
+    "fluxoHoje": 334628,
+    "lapMedio": 83.0,
+    "aprovMedio": 0.848,
+    "funcMedio": 93.8,
+    "faixasCrit": 18,
+    "faixasWarn": 73,
+    "faixasOk": 25,
+    "faixasOff": 16,
+    "afericoesVenc60": 15,
+    "faixasSample": [
+      {
+        "serie": "544",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "544",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "577",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "577",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "578",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "578",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "579",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "579",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "580",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "580",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "581",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "581",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "582",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "582",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "582",
+        "id": "3",
+        "status": "warn"
+      },
+      {
+        "serie": "583",
+        "id": "1",
         "status": "warn"
       }
     ],
     "fluxoSpark": [
-      136486,
-      161029,
-      176755,
-      181656,
-      170947,
-      204584,
-      171781,
-      172996,
-      222987,
-      238671,
-      265714,
-      272010,
-      295268,
-      252207,
-      235581,
-      44010
+      299427,
+      392552,
+      438650,
+      476410,
+      521909,
+      525012,
+      412958,
+      308987,
+      470563,
+      461262,
+      443737,
+      446731,
+      470116,
+      279304,
+      289252,
+      334628
     ],
-    "cor": "#8b5cf6",
-    "atualizado": "16/03/2026 12:01",
+    "cor": "#fb923c",
+    "atualizado": "16/03/2026 18:40",
     "referencia": "D-1 (16 Seg)"
   }
 ];
