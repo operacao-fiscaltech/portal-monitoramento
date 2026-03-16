@@ -513,7 +513,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 // ══════════════════════════════════════════════════════════════
 //  AGENT_URL — injetado automaticamente pelo agente ao iniciar
 // ══════════════════════════════════════════════════════════════
-const AGENT_URL = "http://localhost:5001";
+// AGENT_URL: se servido pelo agente já foi definida no <head>
+if(typeof AGENT_URL === "undefined"){
+  var AGENT_URL = "http://localhost:5001"; // fallback para acesso local
+}
 
 // ══════════════════════════════════════════════════════════════
 //  ESTADO
