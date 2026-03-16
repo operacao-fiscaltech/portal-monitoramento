@@ -163,6 +163,14 @@ const USUARIOS = {
 };
 
 // ──────────────────────────────────────────────────────────────
+// Detecta se está sendo servido pelo agente (/app/) ou GitHub Pages
+// e retorna o caminho correto para o portal
+function _urlPortal() {
+  return window.location.pathname.startsWith('/app')
+    ? '/app/portal'
+    : 'portal.html';
+}
+
 const SESSION_KEY = 'ft_session';
 
 function sha256(str){
@@ -204,7 +212,7 @@ async function fazerLogin(){
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
 
     btn.textContent = '✓ Acessando…';
-    window.location.href = 'portal.html';
+    window.location.href = _urlPortal();
 
   } catch(e) {
     mostrarErro('Erro ao processar login. Tente novamente.');
@@ -226,7 +234,7 @@ document.addEventListener('keydown', e => {
 // Se já tem sessão válida, vai direto para o portal
 try {
   const s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
-  if(s && s.user && s.nivel) window.location.href = 'portal.html';
+  if(s && s.user && s.nivel) window.location.href = _urlPortal();
 } catch(e){}
 </script>
 </body>
