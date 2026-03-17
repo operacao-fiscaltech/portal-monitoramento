@@ -440,14 +440,41 @@ async function init() {
 
   // Testa conexão
   try {
-    await fetch(AGENT_URL + '/status');
+    var r = await fetch(AGENT_URL + '/status');
+    if (!r.ok) throw new Error('status ' + r.status);
     setOnline();
-    await carregarDados();
-    iniciarPoll();
   } catch(e) {
     setOffline();
-    toast('Agente offline em ' + AGENT_URL, 'err');
+    toast('Agente offline em ' + AGENT_URL + '. Verifique se está rodando.', 'err');
+    return;
   }
+
+  // Se ainda sem token, tenta auth agora
+  if (!_token) {
+    var s2 = getSessao();
+    if (s2 && s2.h) {
+      try {
+        var ar = await fetch(AGENT_URL + '/auth', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({user: s2.user, hash: s2.h})
+        });
+        if (ar.ok) {
+          var ad = await ar.json();
+          if (ad.token) { _token = ad.token; sessionStorage.setItem(ATK, _token); }
+        }
+      } catch(e) {}
+    }
+  }
+
+  if (!_token) {
+    toast('Não foi possível obter token de autenticação. Faça login novamente.', 'err');
+    setTimeout(function(){ window.location.href = _isAgent() ? '/app/login' : 'login.html'; }, 2000);
+    return;
+  }
+
+  await carregarDados();
+  iniciarPoll();
 }
 
 function setOnline() {
