@@ -105,6 +105,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:20px}
 .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
 #toastArea{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.sync-btn{display:flex;align-items:center;gap:6px;padding:5px 13px;border-radius:6px;
+  font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display);border:none;
+  background:rgba(255,255,255,.15);color:white;transition:.15s}
+.sync-btn:hover{background:rgba(255,255,255,.25)}
+.sync-btn:disabled{opacity:.5;cursor:not-allowed}
+.sync-ico{display:inline-block;transition:.3s}
+.sync-ico.girando{animation:spin .8s linear infinite}
 .toast{padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.12);
   display:flex;align-items:center;gap:8px;animation:sIn .2s ease;min-width:260px}
 @keyframes sIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -133,6 +140,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
     <div class="header-right">
       <div class="agent-badge"><div class="dot wait" id="dot"></div><span id="agLbl">Conectando…</span></div>
       <span class="user-lbl" id="userLbl"></span>
+      <button class="sync-btn" id="btnSync" onclick="sincronizar()" title="Sincronizar usuários e contratos no GitHub">
+        <span class="sync-ico" id="syncIco">⟳</span> Sincronizar
+      </button>
       <button class="hbtn hbtn-back" onclick="irPortal()">← Portal</button>
       <button class="hbtn hbtn-sair" onclick="sair()">Sair</button>
     </div>
@@ -225,7 +235,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <div class="card">
         <div class="card-head">
           <div class="card-title">🐙 GitHub</div>
-          <button class="btn bp bs" onclick="salvarGithub()">Salvar</button>
+          <div style="display:flex;gap:8px">
+            <button class="btn bg bs" id="btnSyncGH" onclick="sincronizar()">⟳ Sincronizar</button>
+            <button class="btn bp bs" onclick="salvarGithub()">Salvar</button>
+          </div>
         </div>
         <div class="card-body">
           <div class="fg">
@@ -369,7 +382,7 @@ var _logOffset = 0;
 var _pollLog   = null;
 
 function getSessao(){ try{return JSON.parse(sessionStorage.getItem(SK))||null;}catch(e){return null;} }
-function getToken() { return sessionStorage.getItem(ATK)||''; }
+function getToken() { return localStorage.getItem(ATK)||sessionStorage.getItem(ATK)||''; }
 
 function sair(){
   sessionStorage.clear();
@@ -401,7 +414,7 @@ async function api(path, method, body) {
         var ad = await ar.json();
         if (ad.token) {
           _token = ad.token;
-          sessionStorage.setItem(ATK, _token);
+          localStorage.setItem(ATK, _token);
           // Repete a chamada original
           opts.headers['X-Agent-Token'] = _token;
           r = await fetch(AGENT_URL + path, opts);
@@ -433,7 +446,7 @@ async function init() {
       });
       if (r.ok) {
         var d = await r.json();
-        if (d.token) { _token = d.token; sessionStorage.setItem(ATK, _token); }
+        if (d.token) { _token = d.token; localStorage.setItem(ATK, _token); }
       }
     } catch(e) {}
   }
@@ -461,7 +474,7 @@ async function init() {
         });
         if (ar.ok) {
           var ad = await ar.json();
-          if (ad.token) { _token = ad.token; sessionStorage.setItem(ATK, _token); }
+          if (ad.token) { _token = ad.token; localStorage.setItem(ATK, _token); }
         }
       } catch(e) {}
     }
@@ -758,6 +771,37 @@ async function removerUser(login) {
     toast('Usuário removido ✓', 'ok');
     renderUsers();
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── SINCRONIZAR ──
+async function sincronizar() {
+  var btns = [document.getElementById('btnSync'), document.getElementById('btnSyncGH')];
+  var icos = [document.getElementById('syncIco')];
+  btns.forEach(function(b){ if(b){ b.disabled = true; } });
+  icos.forEach(function(i){ if(i) i.classList.add('girando'); });
+
+  // Arquivos que carregam dados de configuração
+  var arquivos = ['login.html', 'configurar_fiscaltech.html'];
+
+  try {
+    var r = await api('/sincronizar', 'POST', { arquivos: arquivos });
+    toast('Sincronizando no GitHub… acompanhe nos Logs', 'ok');
+    // Poll nos logs para mostrar progresso
+    _logOffset = 0;
+    iniciarPollLogs();
+  } catch(e) {
+    if (e.message && e.message.includes('GitHub não configurado')) {
+      toast('Configure o GitHub primeiro (seção GitHub)', 'warn');
+    } else {
+      toast('Erro ao sincronizar: ' + e.message, 'err');
+    }
+  }
+
+  // Reabilita botões após 3s
+  setTimeout(function(){
+    btns.forEach(function(b){ if(b) b.disabled = false; });
+    icos.forEach(function(i){ if(i) i.classList.remove('girando'); });
+  }, 3000);
 }
 
 // ── GITHUB ──
