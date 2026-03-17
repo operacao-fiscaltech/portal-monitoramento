@@ -77,15 +77,15 @@ h2{font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px}
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 // Usar "var" para evitar conflito de redeclaração se o arquivo for carregado novamente.
-var AGENT_URL = "http://192.168.30.187:5001";
+var AGENT_URL = "http://localhost:5001";
 
 // Usuários: bloco substituído pelo agente ao salvar novos usuários
 const USUARIOS = {
-  "wellinton.silva": {
-    hash: "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-    nivel: "analista",
-    criadoPor: "admin"
-  },
+  "admin": {
+    hash: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+    nivel: "adm_sis",
+    criadoPor: "sistema"
+  }
 };
 
 // SHA-256 puro em JS (sem crypto.subtle — funciona em HTTP simples)
@@ -182,7 +182,7 @@ async function fazerLogin() {
           if (d.token) {
             var sessao = { user: user, nivel: d.nivel, h: h };
             sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
-            sessionStorage.setItem(AGENT_TK_KEY, d.token);
+            localStorage.setItem(AGENT_TK_KEY, d.token);
             window.location.href = urlPortal();
             return;
           }
@@ -208,7 +208,7 @@ function _tentarTokenAgente(user, h) {
   }).then(function(r) {
     if (r.ok) return r.json();
   }).then(function(d) {
-    if (d && d.token) sessionStorage.setItem(AGENT_TK_KEY, d.token);
+    if (d && d.token) localStorage.setItem(AGENT_TK_KEY, d.token);
   }).catch(function() {});
 }
 
