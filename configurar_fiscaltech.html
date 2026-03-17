@@ -303,22 +303,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 <!-- Modal Usuário -->
 <div class="modal-bg" id="mUser">
   <div class="modal">
-    <div class="modal-title">Novo Usuário</div>
+    <div class="modal-title" id="mUserTitle">Novo Usuário</div>
     <div class="fg">
       <div class="field"><label>Login</label><input id="uLogin" placeholder="joao.silva"></div>
       <div class="field"><label>Nível</label>
         <select id="uNivel">
           <option value="analista">Analista — só visualização</option>
           <option value="adm">ADM — configurador</option>
-          <option value="adm_sis">ADM SIS — acesso total</option>
+          <option value="adm_sis" id="optAdmSis">ADM SIS — acesso total</option>
         </select>
       </div>
-      <div class="field fc"><label>Senha</label><input type="password" id="uSenha" placeholder="Mínimo 6 caracteres"></div>
+      <div class="field fc">
+        <label>Nova Senha <span id="senhaOpcional" style="font-weight:400;color:var(--muted2)">(deixe vazio para manter)</span></label>
+        <input type="password" id="uSenha" placeholder="Mínimo 6 caracteres">
+      </div>
       <div class="field fc"><label>Confirmar Senha</label><input type="password" id="uConf" placeholder="Repita a senha"></div>
     </div>
     <div class="modal-foot">
       <button class="btn bg" onclick="fecharModal('mUser')">Cancelar</button>
-      <button class="btn bp" onclick="salvarUser()">Criar Usuário</button>
+      <button class="btn bp" id="btnSalvarUser" onclick="salvarUser()">Criar Usuário</button>
     </div>
   </div>
 </div>
@@ -349,7 +352,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://172.16.79.63:5001";
+var AGENT_URL = "http://localhost:5001";
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -833,16 +836,46 @@ function renderUsers() {
       '<div class="uavatar">' + login[0].toUpperCase() + '</div>' +
       '<div class="uinfo"><div class="uname">' + esc(login) + '</div><div class="ulvl">Criado por: ' + esc(u.criadoPor||'sistema') + '</div></div>' +
       '<span class="nbadge ' + (cls[u.nivel]||'nb3') + '">' + (map[u.nivel]||u.nivel) + '</span>' +
-      '<button class="btn bd bs" style="margin-left:8px" onclick="removerUser(\'' + login + '\')">✕</button>' +
+      '<button class="btn bg bs" style="margin-left:4px" onclick="editarUser(\'' + login + '\')">✎ Editar</button>' +
+      '<button class="btn bd bs" style="margin-left:4px" onclick="removerUser(\'' + login + '\')">✕</button>' +
     '</div>';
   }).join('');
 }
 
+var _editUser = null; // null = novo, string = login sendo editado
+
 function abrirModalUser() {
-  document.getElementById('uLogin').value = '';
-  document.getElementById('uSenha').value = '';
-  document.getElementById('uConf').value  = '';
-  document.getElementById('uNivel').value = 'analista';
+  _editUser = null;
+  var s = getSessao();
+  document.getElementById('mUserTitle').textContent = 'Novo Usuário';
+  document.getElementById('btnSalvarUser').textContent = 'Criar Usuário';
+  document.getElementById('uLogin').value    = '';
+  document.getElementById('uLogin').disabled = false;
+  document.getElementById('uSenha').value    = '';
+  document.getElementById('uConf').value     = '';
+  document.getElementById('uNivel').value    = 'analista';
+  document.getElementById('senhaOpcional').style.display = 'none';
+  // Só ADM SIS pode criar ADM SIS
+  var opt = document.getElementById('optAdmSis');
+  if (opt) opt.disabled = (s && s.nivel !== 'adm_sis');
+  document.getElementById('mUser').classList.add('show');
+}
+
+function editarUser(login) {
+  _editUser = login;
+  var s  = getSessao();
+  var u  = _users[login] || {};
+  document.getElementById('mUserTitle').textContent = 'Editar: ' + login;
+  document.getElementById('btnSalvarUser').textContent = 'Salvar Alterações';
+  document.getElementById('uLogin').value    = login;
+  document.getElementById('uLogin').disabled = true; // login imutável em edição
+  document.getElementById('uSenha').value    = '';
+  document.getElementById('uConf').value     = '';
+  document.getElementById('uNivel').value    = u.nivel || 'analista';
+  document.getElementById('senhaOpcional').style.display = 'inline';
+  // Só ADM SIS pode definir ADM SIS
+  var opt = document.getElementById('optAdmSis');
+  if (opt) opt.disabled = (s && s.nivel !== 'adm_sis');
   document.getElementById('mUser').classList.add('show');
 }
 
@@ -852,15 +885,43 @@ async function salvarUser() {
   var conf  = document.getElementById('uConf').value;
   var nivel = document.getElementById('uNivel').value;
   var s     = getSessao();
+
   if (!login) { toast('Login é obrigatório', 'err'); return; }
-  if (senha.length < 6) { toast('Senha mínima: 6 caracteres', 'err'); return; }
-  if (senha !== conf) { toast('Senhas não conferem', 'err'); return; }
-  var h = sha256(senha);
-  _users[login] = {hash: h, nivel: nivel, criadoPor: s ? s.user : 'adm'};
+
+  // Restrição: só ADM SIS pode criar/editar ADM SIS
+  if (nivel === 'adm_sis' && s && s.nivel !== 'adm_sis') {
+    toast('Apenas ADM SIS pode criar usuários ADM SIS', 'err'); return;
+  }
+
+  var h = null;
+  if (_editUser) {
+    // Edição — senha opcional
+    if (senha) {
+      if (senha.length < 6) { toast('Senha mínima: 6 caracteres', 'err'); return; }
+      if (senha !== conf)   { toast('Senhas não conferem', 'err'); return; }
+      h = sha256(senha);
+    } else {
+      h = (_users[login] || {}).hash || null; // mantém hash existente
+    }
+  } else {
+    // Criação — senha obrigatória
+    if (senha.length < 6) { toast('Senha mínima: 6 caracteres', 'err'); return; }
+    if (senha !== conf)   { toast('Senhas não conferem', 'err'); return; }
+    h = sha256(senha);
+  }
+
+  if (!h) { toast('Não foi possível obter hash da senha', 'err'); return; }
+
+  _users[login] = {
+    hash: h,
+    nivel: nivel,
+    criadoPor: (_users[login] && _users[login].criadoPor) || (s ? s.user : 'adm')
+  };
+
   fecharModal('mUser');
   try {
     await api('/salvar/usuarios', 'POST', {usuarios: _users});
-    toast('Usuário criado ✓', 'ok');
+    toast(_editUser ? 'Usuário atualizado ✓' : 'Usuário criado ✓', 'ok');
     renderUsers();
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
