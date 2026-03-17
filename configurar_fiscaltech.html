@@ -7,223 +7,119 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f0f4f8;--surface:#fff;--card:#fff;--card2:#f8fafc;
-  --border:#dde3ed;--border2:#c5cfe0;
-  --accent:#0066cc;--accent2:#0052a3;--accent3:#e8f0fc;--accent-light:#cce0ff;
+  --bg:#f0f4f8;--surface:#fff;--card2:#f8fafc;
+  --border:#dde3ed;--accent:#0066cc;--accent2:#0052a3;--accent3:#e8f0fc;--accent-light:#cce0ff;
   --header:#0052a3;--header2:#003d7a;
   --green:#059669;--green-bg:#ecfdf5;--green-b:#a7f3d0;
   --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
   --red:#dc2626;--red-bg:#fef2f2;--red-b:#fecaca;
-  --purple:#7c3aed;--purple-bg:#f5f3ff;
-  --text:#0f1b2d;--text2:#374151;--muted:#6b7280;--muted2:#9ca3af;
-  --display:'Plus Jakarta Sans',sans-serif;
-  --mono:'IBM Plex Mono',monospace;
+  --text:#0f1b2d;--muted:#6b7280;--muted2:#9ca3af;
+  --display:'Plus Jakarta Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh}
-
-/* ── HEADER ── */
 .header{background:var(--header);position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.18)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;max-width:1400px;margin:0 auto}
 .brand{display:flex;align-items:center;gap:12px}
-.brand-logo{width:38px;height:38px;background:white;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.brand-logo{width:38px;height:38px;background:white;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:4px}
 .brand-logo svg{width:100%;height:100%}
 .brand-text{font-size:18px;font-weight:800;color:white;letter-spacing:.04em}
 .brand-text span{color:#7dd3fc;font-weight:300}
 .brand-sub{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
 .header-right{display:flex;align-items:center;gap:14px}
-.agent-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;transition:.3s}
-.agent-dot.off{background:#f87171}
-.agent-dot.checking{background:#fbbf24}
-.agent-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px}
-.user-badge{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7)}
-.header-btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display);border:none;transition:.15s}
-.btn-back{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
-.btn-back:hover{background:rgba(255,255,255,.2);color:white}
-.btn-sair{background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3)!important}
-
-/* ── LAYOUT ── */
-.wrap{max-width:1400px;margin:0 auto;padding:28px 32px 60px;display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.agent-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;
+  color:rgba(255,255,255,.7);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;transition:.3s}
+.dot.off{background:#f87171}.dot.wait{background:#fbbf24}
+.user-lbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7)}
+.hbtn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display);border:none;transition:.15s}
+.hbtn-back{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
+.hbtn-back:hover{background:rgba(255,255,255,.2);color:white}
+.hbtn-sair{background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3)!important}
+.wrap{max-width:1400px;margin:0 auto;padding:28px 32px 60px;display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
 .sidebar{display:flex;flex-direction:column;gap:8px;position:sticky;top:76px}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;
-  cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:.15s;
-  border:1px solid transparent;
-}
-.nav-item:hover{background:var(--surface);color:var(--text);border-color:var(--border)}
-.nav-item.active{background:var(--accent3);color:var(--accent2);border-color:var(--accent-light);font-weight:700}
-.nav-item .nav-ico{font-size:15px;flex-shrink:0}
-
+.nav{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--muted);transition:.15s;border:1px solid transparent}
+.nav:hover{background:var(--surface);color:var(--text);border-color:var(--border)}
+.nav.active{background:var(--accent3);color:var(--accent2);border-color:var(--accent-light);font-weight:700}
 .content{display:flex;flex-direction:column;gap:20px}
-
-/* ── CARDS ── */
+.sec{display:none}.sec.on{display:flex;flex-direction:column;gap:20px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
 .card-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .card-body{padding:20px}
-
-/* ── SEÇÕES ── */
-.secao{display:none}
-.secao.ativa{display:flex;flex-direction:column;gap:20px}
-
-/* ── FORM FIELDS ── */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-grid.cols3{grid-template-columns:1fr 1fr 1fr}
-.form-full{grid-column:1/-1}
-.field label{display:block;font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
-.field input,.field select,.field textarea{
-  width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;
-  font-family:var(--display);font-size:13px;color:var(--text);background:var(--card2);
-  outline:none;transition:.15s;
-}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(0,102,204,.08)}
-.field textarea{resize:vertical;min-height:70px}
-
-/* ── BOTÕES ── */
-.btn{padding:9px 18px;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:7px}
-.btn-primary{background:var(--accent2);color:white}
-.btn-primary:hover{background:var(--header2)}
-.btn-success{background:var(--green);color:white}
-.btn-success:hover{background:#047857}
-.btn-danger{background:var(--red);color:white}
-.btn-danger:hover{background:#b91c1c}
-.btn-ghost{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}
-.btn-ghost:hover{background:var(--accent-light)}
-.btn-sm{padding:6px 13px;font-size:12px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fc{grid-column:1/-1}
+.field label{display:block;font-family:var(--mono);font-size:10px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:var(--display);font-size:13px;color:var(--text);background:var(--card2);outline:none;transition:.15s}
+.field input:focus,.field select:focus{border-color:var(--accent);background:#fff}
+.btn{padding:9px 18px;border-radius:8px;font-family:var(--display);font-size:13px;font-weight:700;
+  cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.bp{background:var(--accent2);color:white}.bp:hover{background:var(--header2)}
+.bg{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}.bg:hover{background:var(--accent-light)}
+.bd{background:var(--red);color:white}.bd:hover{background:#b91c1c}
+.bs{padding:6px 13px;font-size:12px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* ── TABELA CONTRATOS ── */
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
+.tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
 .tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:hover td{background:#f8fafc}
-.status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700}
-.sp-ativo{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
-.sp-inativo{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
-
-/* ── USUARIO ── */
-.user-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.user-row:last-child{border-bottom:none}
-.user-avatar{width:34px;height:34px;border-radius:8px;background:var(--accent3);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
-.user-info{flex:1}
-.user-name{font-size:13px;font-weight:700;color:var(--text)}
-.user-nivel{font-family:var(--mono);font-size:10px;color:var(--muted)}
-.nivel-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700}
-.nb-adm_sis{background:#f5f3ff;color:#7c3aed}
-.nb-adm{background:#eff6ff;color:#0066cc}
-.nb-analista{background:#ecfdf5;color:#059669}
-
-/* ── LOG ── */
-.log-box{
-  background:#0d1117;border-radius:10px;padding:14px;
-  font-family:var(--mono);font-size:11px;line-height:1.7;
-  height:320px;overflow-y:auto;color:#c9d1d9;
-}
-.log-box::-webkit-scrollbar{width:5px}
-.log-box::-webkit-scrollbar-track{background:transparent}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700}
+.pill-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.pill-off{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.urow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.urow:last-child{border-bottom:none}
+.uavatar{width:34px;height:34px;border-radius:8px;background:var(--accent3);color:var(--accent2);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.uinfo{flex:1}.uname{font-size:13px;font-weight:700;color:var(--text)}
+.ulvl{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.nbadge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700}
+.nb1{background:#f5f3ff;color:#7c3aed}.nb2{background:#eff6ff;color:#0066cc}.nb3{background:#ecfdf5;color:#059669}
+.log-box{background:#0d1117;border-radius:10px;padding:14px;font-family:var(--mono);font-size:11px;
+  line-height:1.7;height:320px;overflow-y:auto;color:#c9d1d9}
+.log-box::-webkit-scrollbar{width:5px}.log-box::-webkit-scrollbar-track{background:transparent}
 .log-box::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
-.log-ok{color:#56d364}.log-erro{color:#f87171}.log-warn{color:#e3b341}.log-info{color:#79c0ff}
-
-/* ── BADGES EXECUÇÃO ── */
-.exec-status{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
-.exec-idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
-.exec-running{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
-.exec-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
-.exec-erro{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.lok{color:#56d364}.lerro{color:#f87171}.lwarn{color:#e3b341}.linfo{color:#79c0ff}
+.exec-st{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
+.st-idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.st-run{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.st-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.st-err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
 .spin{animation:spin .8s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── MODAL ── */
+.sel-panel{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.sel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sel-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sel-grid{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--surface);cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);transition:.15s}
+.chip:hover{border-color:var(--accent);color:var(--accent2);background:var(--accent3)}
+.chip.on{background:var(--accent2);color:white;border-color:var(--accent2)}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:var(--surface);border-radius:16px;padding:28px;width:100%;max-width:520px;box-shadow:0 20px 50px rgba(0,0,0,.2)}
 .modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:20px}
 .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-
-/* ── SELEÇÃO DE CONTRATOS ── */
-.sel-panel{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px}
-.sel-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.sel-panel-title{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.sel-actions{display:flex;gap:6px}
-.sel-grid{display:flex;flex-wrap:wrap;gap:7px}
-.sel-chip{
-  display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;
-  border:1.5px solid var(--border);background:var(--surface);cursor:pointer;
-  font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);
-  transition:.15s;user-select:none;
-}
-.sel-chip:hover{border-color:var(--accent);color:var(--accent2);background:var(--accent3)}
-.sel-chip.selecionado{background:var(--accent2);color:white;border-color:var(--accent2)}
-.sel-chip input[type=checkbox]{display:none}
-.sel-chip .sc-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7;flex-shrink:0}
-.sel-aviso{font-family:var(--mono);font-size:10px;color:var(--yellow);background:var(--yellow-bg);border:1px solid var(--yellow-b);border-radius:6px;padding:6px 10px;margin-bottom:12px;display:none}
-.sel-aviso.show{display:block}
-
-/* ── TOASTS ── */
 #toastArea{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
-.toast{
-  padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;
-  box-shadow:0 4px 16px rgba(0,0,0,.12);display:flex;align-items:center;gap:8px;
-  animation:slideIn .2s ease;min-width:260px;
-}
-@keyframes slideIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
-.toast-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
-.toast-erro{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
-.toast-info{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}
-.toast-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
-
-/* ── OFFLINE OVERLAY ── */
-#offlineOverlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;
-  align-items:center;justify-content:center;flex-direction:column;gap:16px;
-}
-#offlineOverlay.show{display:flex}
-.offline-box{background:var(--surface);border-radius:16px;padding:36px;text-align:center;max-width:380px}
-.offline-ico{font-size:40px;margin-bottom:12px}
-.offline-title{font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px}
-.offline-sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px}
+.toast{padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.12);
+  display:flex;align-items:center;gap:8px;animation:sIn .2s ease;min-width:260px}
+@keyframes sIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+.tok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.terr{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.tinf{background:var(--accent3);color:var(--accent2);border:1px solid var(--accent-light)}
+.twrn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
 </style>
 </head>
 <body>
-
-<!-- ── OFFLINE OVERLAY ── -->
-<div id="offlineOverlay">
-  <div class="offline-box">
-    <div class="offline-ico">🔌</div>
-    <div class="offline-title">Agente não encontrado</div>
-    <div class="offline-sub" id="offlineSub">Não foi possível conectar ao agente.</div>
-    <div style="margin:16px 0;text-align:left">
-      <label style="font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:7px">
-        Endereço do agente
-      </label>
-      <input
-        id="inputAgentUrl"
-        type="text"
-        placeholder="http://172.16.79.63:5001"
-        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
-               font-family:var(--mono);font-size:13px;color:var(--text);background:var(--card2);
-               outline:none;margin-bottom:10px"
-        onkeydown="if(event.key==='Enter') tentarReconectar()"
-      >
-      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2);margin-bottom:14px">
-        IP da máquina onde o agente está rodando + porta 5001
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:center">
-      <button class="btn btn-primary" onclick="tentarReconectar()">↺ Conectar</button>
-      <button class="btn btn-ghost" onclick="usarLocalhost()" style="font-size:12px">Usar localhost</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── HEADER ── -->
 <header class="header">
   <div class="header-inner">
     <div class="brand">
       <div class="brand-logo">
-        <svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 80 50" fill="none">
           <path d="M5 35 L20 15 L28 22 L38 8 L55 28" stroke="#0052a3" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           <rect x="5" y="38" width="70" height="4" rx="2" fill="#0052a3"/>
           <path d="M38 8 L55 28 L68 18" stroke="#0066cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -235,114 +131,74 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       </div>
     </div>
     <div class="header-right">
-      <div class="agent-badge">
-        <div class="agent-dot checking" id="agentDot"></div>
-        <span id="agentLabel">Conectando…</span>
-      </div>
-      <span class="user-badge" id="cfgUserLabel"></span>
-      <button class="header-btn btn-back" onclick="window.location.href=_urlPortal()">← Portal</button>
-      <button class="header-btn btn-sair" onclick="sair()">Sair</button>
+      <div class="agent-badge"><div class="dot wait" id="dot"></div><span id="agLbl">Conectando…</span></div>
+      <span class="user-lbl" id="userLbl"></span>
+      <button class="hbtn hbtn-back" onclick="irPortal()">← Portal</button>
+      <button class="hbtn hbtn-sair" onclick="sair()">Sair</button>
     </div>
   </div>
 </header>
 
-<!-- ── LAYOUT ── -->
 <div class="wrap">
-
-  <!-- SIDEBAR -->
   <nav class="sidebar">
-    <div class="nav-item active" onclick="mostrarSecao('contratos',this)">
-      <span class="nav-ico">🗂️</span> Contratos
-    </div>
-    <div class="nav-item" onclick="mostrarSecao('automacao',this)">
-      <span class="nav-ico">⚡</span> Automação
-    </div>
-    <div class="nav-item" onclick="mostrarSecao('usuarios',this)">
-      <span class="nav-ico">👥</span> Usuários
-    </div>
-    <div class="nav-item" onclick="mostrarSecao('github',this)">
-      <span class="nav-ico">🐙</span> GitHub
-    </div>
-    <div class="nav-item" onclick="mostrarSecao('logs',this)">
-      <span class="nav-ico">📋</span> Logs do Agente
-    </div>
+    <div class="nav active" onclick="mostrarSec('contratos',this)">🗂️ Contratos</div>
+    <div class="nav" onclick="mostrarSec('automacao',this)">⚡ Automação</div>
+    <div class="nav" onclick="mostrarSec('usuarios',this)">👥 Usuários</div>
+    <div class="nav" onclick="mostrarSec('github',this)">🐙 GitHub</div>
+    <div class="nav" onclick="mostrarSec('logs',this)">📋 Logs</div>
   </nav>
 
-  <!-- CONTENT -->
   <div class="content">
 
-    <!-- ════ CONTRATOS ════ -->
-    <div class="secao ativa" id="sec-contratos">
+    <!-- CONTRATOS -->
+    <div class="sec on" id="sec-contratos">
       <div class="card">
         <div class="card-head">
-          <div class="card-title">🗂️ Contratos Ativos</div>
+          <div class="card-title" id="titleContratos">🗂️ Contratos</div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="carregarConfig()" title="Recarregar do servidor">↺ Atualizar</button>
-            <button class="btn btn-primary btn-sm" onclick="abrirModalContrato(null)">+ Novo Contrato</button>
+            <button class="btn bg bs" onclick="carregarDados()">↺</button>
+            <button class="btn bp bs" onclick="abrirModal(null)">+ Novo</button>
           </div>
         </div>
         <div class="card-body" style="padding:0">
           <table class="tbl">
-            <thead>
-              <tr>
-                <th>ID</th><th>Nome</th><th>Concessão</th><th>UF</th><th>Modelo</th><th>Status</th><th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tblContratos">
-              <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Carregando…</td></tr>
-            </tbody>
+            <thead><tr><th>ID</th><th>Nome</th><th>Concessão</th><th>UF</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="tblContratos"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Carregando…</td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ════ AUTOMAÇÃO ════ -->
-    <div class="secao" id="sec-automacao">
+    <!-- AUTOMAÇÃO -->
+    <div class="sec" id="sec-automacao">
       <div class="card">
         <div class="card-head">
           <div class="card-title">⚡ Execução Manual</div>
-          <div id="execStatus" class="exec-status exec-idle">⏸ Aguardando</div>
+          <div class="exec-st st-idle" id="execSt">⏸ Aguardando</div>
         </div>
         <div class="card-body">
-
-          <!-- Painel de seleção de contratos -->
           <div class="sel-panel">
-            <div class="sel-panel-head">
-              <span class="sel-panel-title">Contratos a executar</span>
-              <div class="sel-actions">
-                <button class="btn btn-ghost btn-sm" onclick="selTodos()">Todos</button>
-                <button class="btn btn-ghost btn-sm" onclick="selNenhum()">Nenhum</button>
+            <div class="sel-head">
+              <span class="sel-lbl">Contratos</span>
+              <div style="display:flex;gap:6px">
+                <button class="btn bg bs" onclick="selTodos()">Todos</button>
+                <button class="btn bg bs" onclick="selNenhum()">Nenhum</button>
               </div>
             </div>
-            <div class="sel-grid" id="selGrid">
-              <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Carregando contratos…</span>
-            </div>
+            <div class="sel-grid" id="selGrid"></div>
           </div>
-          <div class="sel-aviso" id="selAviso">⚠ Selecione ao menos um contrato para executar.</div>
-
-          <!-- Botões de ação -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-            <button class="btn btn-primary" onclick="executarSel('ciclo')">
-              🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small>
-            </button>
-            <button class="btn btn-ghost" onclick="executarSel('baixar')">
-              ⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small>
-            </button>
-            <button class="btn btn-ghost" onclick="executarSel('atualizar')">
-              📊 Só Atualizar<br><small style="font-weight:400;opacity:.8">Gerar dashboards</small>
-            </button>
+            <button class="btn bp" onclick="executar('ciclo')">🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small></button>
+            <button class="btn bg" onclick="executar('baixar')">⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small></button>
+            <button class="btn bg" onclick="executar('atualizar')">📊 Só Atualizar<br><small style="font-weight:400;opacity:.8">Gerar dashboards</small></button>
           </div>
-          <button class="btn btn-ghost btn-sm" onclick="executar('publicar')">
-            📤 Publicar no GitHub agora
-          </button>
+          <button class="btn bg bs" onclick="executar('publicar')">📤 Publicar no GitHub</button>
         </div>
       </div>
       <div class="card">
         <div class="card-head">
           <div class="card-title">📋 Log de Execução</div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="limparLogs()">Limpar</button>
-          </div>
+          <button class="btn bg bs" onclick="limparLog()">Limpar</button>
         </div>
         <div class="card-body" style="padding:12px">
           <div class="log-box" id="logBox">Aguardando execução…</div>
@@ -350,60 +206,46 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       </div>
     </div>
 
-    <!-- ════ USUÁRIOS ════ -->
-    <div class="secao" id="sec-usuarios">
+    <!-- USUÁRIOS -->
+    <div class="sec" id="sec-usuarios">
       <div class="card">
         <div class="card-head">
           <div class="card-title">👥 Usuários do Portal</div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="carregarConfig()" title="Recarregar do servidor">↺ Atualizar</button>
-            <button class="btn btn-primary btn-sm" onclick="abrirModalUsuario()">+ Novo Usuário</button>
+            <button class="btn bg bs" onclick="carregarDados()">↺</button>
+            <button class="btn bp bs" onclick="abrirModalUser()">+ Novo</button>
           </div>
         </div>
-        <div class="card-body">
-          <div id="listaUsuarios">Carregando…</div>
-        </div>
+        <div class="card-body"><div id="listaUsers">Carregando…</div></div>
       </div>
     </div>
 
-    <!-- ════ GITHUB ════ -->
-    <div class="secao" id="sec-github">
+    <!-- GITHUB -->
+    <div class="sec" id="sec-github">
       <div class="card">
         <div class="card-head">
-          <div class="card-title">🐙 Configuração GitHub</div>
-          <button class="btn btn-primary btn-sm" onclick="salvarGithub()">Salvar</button>
+          <div class="card-title">🐙 GitHub</div>
+          <button class="btn bp bs" onclick="salvarGithub()">Salvar</button>
         </div>
         <div class="card-body">
-          <div class="form-grid">
-            <div class="field">
-              <label>Usuário GitHub</label>
-              <input type="text" id="ghUsuario" placeholder="seu-usuario">
-            </div>
-            <div class="field">
-              <label>Repositório</label>
-              <input type="text" id="ghRepo" placeholder="portal-monitoramento">
-            </div>
-            <div class="field form-full">
-              <label>Token (Personal Access Token)</label>
-              <input type="password" id="ghToken" placeholder="ghp_…">
-            </div>
-            <div class="field">
-              <label>Branch</label>
-              <input type="text" id="ghBranch" placeholder="main" value="main">
-            </div>
+          <div class="fg">
+            <div class="field"><label>Usuário GitHub</label><input id="ghUser" placeholder="seu-usuario"></div>
+            <div class="field"><label>Repositório</label><input id="ghRepo" placeholder="portal-monitoramento"></div>
+            <div class="field fc"><label>Token (Personal Access Token)</label><input type="password" id="ghToken" placeholder="ghp_…"></div>
+            <div class="field"><label>Branch</label><input id="ghBranch" value="main"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ════ LOGS ════ -->
-    <div class="secao" id="sec-logs">
+    <!-- LOGS -->
+    <div class="sec" id="sec-logs">
       <div class="card">
         <div class="card-head">
           <div class="card-title">📋 Logs do Agente</div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="carregarLogs()">↺ Atualizar</button>
-            <button class="btn btn-ghost btn-sm" onclick="limparLogs()">Limpar</button>
+            <button class="btn bg bs" onclick="carregarLogs()">↺ Atualizar</button>
+            <button class="btn bg bs" onclick="limparLog()">Limpar</button>
           </div>
         </div>
         <div class="card-body" style="padding:12px">
@@ -412,801 +254,530 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /wrap -->
+  </div>
+</div>
 
-<!-- ── MODAL CONTRATO ── -->
-<div class="modal-bg" id="modalContrato">
+<!-- Modal Contrato -->
+<div class="modal-bg" id="mContrato">
   <div class="modal">
-    <div class="modal-title" id="modalContratoTitulo">Novo Contrato</div>
-    <div class="form-grid">
-      <div class="field">
-        <label>ID (sem espaços)</label>
-        <input type="text" id="cId" placeholder="MINHA_CONCESSIONARIA">
+    <div class="modal-title" id="mContratoTitle">Novo Contrato</div>
+    <div class="fg">
+      <div class="field"><label>ID</label><input id="cId" placeholder="MINHA_CONCESSIONARIA"></div>
+      <div class="field"><label>Nome</label><input id="cNome" placeholder="Minha Concessão"></div>
+      <div class="field"><label>URL do Portal</label><input id="cUrl" placeholder="https://contrato.fiscaltech.ind.br"></div>
+      <div class="field"><label>Concessão</label><input id="cConcessao" placeholder="EPR / DNIT…"></div>
+      <div class="field"><label>UF</label>
+        <select id="cUf"><option value="PR">PR</option><option value="SP">SP</option><option value="SC">SC</option>
+          <option value="RS">RS</option><option value="MS">MS</option><option value="MG">MG</option>
+          <option value="ES">ES</option><option value="RJ">RJ</option><option value="GO">GO</option>
+          <option value="MT">MT</option><option value="BA">BA</option><option value="PB">PB</option></select>
       </div>
-      <div class="field">
-        <label>Nome Exibição</label>
-        <input type="text" id="cNome" placeholder="Minha Concessão">
+      <div class="field"><label>Status</label>
+        <select id="cStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
       </div>
-      <div class="field">
-        <label>URL do Portal</label>
-        <input type="text" id="cUrl" placeholder="https://contrato.fiscaltech.ind.br">
-      </div>
-      <div class="field">
-        <label>Concessão</label>
-        <input type="text" id="cConcessao" placeholder="EPR / DNIT / ECOVIAS…">
-      </div>
-      <div class="field">
-        <label>UF</label>
-        <select id="cUf">
-          <option value="PR">PR</option><option value="SP">SP</option>
-          <option value="SC">SC</option><option value="RS">RS</option>
-          <option value="MS">MS</option><option value="MG">MG</option>
-          <option value="ES">ES</option><option value="RJ">RJ</option>
-          <option value="GO">GO</option><option value="MT">MT</option>
-          <option value="BA">BA</option><option value="PB">PB</option>
-          <option value="PE">PE</option><option value="CE">CE</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Status</label>
-        <select id="cStatus">
-          <option value="ativo">Ativo</option>
-          <option value="inativo">Inativo</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Usuário Portal</label>
-        <input type="text" id="cUsuario" value="portal.monitoramento">
-      </div>
-      <div class="field">
-        <label>Senha Portal</label>
-        <input type="password" id="cSenha" placeholder="Fiscal@123">
-      </div>
-      <div class="field">
-        <label>Horário Download</label>
-        <input type="time" id="cHrDl" value="06:30">
-      </div>
-      <div class="field">
-        <label>Horário Atualização</label>
-        <input type="time" id="cHrAt" value="07:00">
-      </div>
+      <div class="field"><label>Usuário Portal</label><input id="cUser" value="portal.monitoramento"></div>
+      <div class="field"><label>Senha Portal</label><input type="password" id="cSenha" placeholder="Fiscal@123"></div>
+      <div class="field"><label>Horário Download</label><input type="time" id="cHrDl" value="06:30"></div>
+      <div class="field"><label>Horário Atualização</label><input type="time" id="cHrAt" value="07:00"></div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="fecharModal('modalContrato')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarContrato()">Salvar Contrato</button>
+      <button class="btn bg" onclick="fecharModal('mContrato')">Cancelar</button>
+      <button class="btn bp" onclick="salvarContrato()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- ── MODAL USUÁRIO ── -->
-<div class="modal-bg" id="modalUsuario">
+<!-- Modal Usuário -->
+<div class="modal-bg" id="mUser">
   <div class="modal">
     <div class="modal-title">Novo Usuário</div>
-    <div class="form-grid">
-      <div class="field">
-        <label>Login</label>
-        <input type="text" id="uLogin" placeholder="joao.silva">
-      </div>
-      <div class="field">
-        <label>Nível de Acesso</label>
+    <div class="fg">
+      <div class="field"><label>Login</label><input id="uLogin" placeholder="joao.silva"></div>
+      <div class="field"><label>Nível</label>
         <select id="uNivel">
           <option value="analista">Analista — só visualização</option>
           <option value="adm">ADM — configurador</option>
           <option value="adm_sis">ADM SIS — acesso total</option>
         </select>
       </div>
-      <div class="field form-full">
-        <label>Senha</label>
-        <input type="password" id="uSenha" placeholder="Mínimo 6 caracteres">
-      </div>
-      <div class="field form-full">
-        <label>Confirmar Senha</label>
-        <input type="password" id="uSenhaConf" placeholder="Repita a senha">
-      </div>
+      <div class="field fc"><label>Senha</label><input type="password" id="uSenha" placeholder="Mínimo 6 caracteres"></div>
+      <div class="field fc"><label>Confirmar Senha</label><input type="password" id="uConf" placeholder="Repita a senha"></div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="fecharModal('modalUsuario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarUsuario()">Criar Usuário</button>
+      <button class="btn bg" onclick="fecharModal('mUser')">Cancelar</button>
+      <button class="btn bp" onclick="salvarUser()">Criar Usuário</button>
     </div>
   </div>
 </div>
 
-<!-- ── TOASTS ── -->
 <div id="toastArea"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  AGENT_URL — injetado automaticamente pelo agente ao iniciar
-// ══════════════════════════════════════════════════════════════
-// AGENT_URL: se servido pelo agente já foi definida no <head>
-if(typeof AGENT_URL === "undefined"){
-  var AGENT_URL = "http://localhost:5001"; // fallback para acesso local
-}
+// AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
+var AGENT_URL = "http://localhost:5001";
 
-// Navegação inteligente — detecta agente (/app/) vs GitHub Pages
-function _urlLogin()  { return window.location.pathname.startsWith('/app') ? '/app/login'  : 'login.html'; }
-function _urlPortal() { return window.location.pathname.startsWith('/app') ? '/app/portal' : 'portal.html'; }
-
-// ══════════════════════════════════════════════════════════════
-//  ESTADO
-// ══════════════════════════════════════════════════════════════
-const SESSION_KEY      = 'ft_session';
-const AGENT_TOKEN_KEY  = 'ft_agent_token';
-const AGENT_URL_KEY    = 'ft_agent_url';     // URL salva na session
-let   _agentToken      = '';
-let   _config          = null;
-let   _logInterval     = null;
-let   _logOffset       = 0;
-
-// Resolve AGENT_URL em ordem de prioridade:
-// 1. URL salva na session (digitada pelo ADM)
-// 2. AGENT_URL embutida no HTML (injetada pelo agente localmente)
-// 3. Fallback: localhost
-function resolverAgentUrl() {
-    return sessionStorage.getItem(AGENT_URL_KEY)
-        || AGENT_URL
-        || 'http://localhost:5001';
-}
-
-// Torna AGENT_URL dinâmico — sempre usa resolverAgentUrl()
-// Sobrescreve a constante com um proxy para não quebrar chamadas existentes
-let _agentUrlAtual = resolverAgentUrl();
-
-// ══════════════════════════════════════════════════════════════
-//  AUTENTICAÇÃO AUTOMÁTICA
-// ══════════════════════════════════════════════════════════════
-function getSessao(){
-  try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY))||null; }catch(e){ return null; }
-}
-function sair(){
-  sessionStorage.removeItem(SESSION_KEY);
-  sessionStorage.removeItem(AGENT_TOKEN_KEY);
-  window.location.href = _urlLogin();
-}
-
-// SHA-256 puro em JS — funciona em HTTP e HTTPS (não depende de crypto.subtle)
-function sha256(str){
-  function rr32(v,n){return(v>>>n)|(v<<(32-n))}
-  function safe_add(x,y){var lsw=(x&0xFFFF)+(y&0xFFFF),msw=(x>>16)+(y>>16)+(lsw>>16);return(msw<<16)|(lsw&0xFFFF)}
+// ── SHA-256 puro em JS ──
+function sha256(str) {
+  function rr(v,n){return(v>>>n)|(v<<(32-n))}
+  function add(x,y){var l=(x&0xFFFF)+(y&0xFFFF),m=(x>>16)+(y>>16)+(l>>16);return(m<<16)|(l&0xFFFF)}
   var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
-         0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
-         0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
-         0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
-         0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
-         0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
-         0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
-         0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
-  var utf8=unescape(encodeURIComponent(str));
-  var msg=[];
-  for(var i=0;i<utf8.length;i++) msg.push(utf8.charCodeAt(i));
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var u=unescape(encodeURIComponent(str)),msg=[];
+  for(var i=0;i<u.length;i++)msg.push(u.charCodeAt(i));
   msg.push(0x80);
-  while(msg.length%64!==56) msg.push(0);
-  var len=utf8.length*8;
+  while(msg.length%64!==56)msg.push(0);
+  var len=u.length*8;
   msg.push(0,0,0,0,(len>>>24)&0xff,(len>>>16)&0xff,(len>>>8)&0xff,len&0xff);
-  var h0=0x6a09e667,h1=0xbb67ae85,h2=0x3c6ef372,h3=0xa54ff53a;
-  var h4=0x510e527f,h5=0x9b05688c,h6=0x1f83d9ab,h7=0x5be0cd19;
+  var h0=0x6a09e667,h1=0xbb67ae85,h2=0x3c6ef372,h3=0xa54ff53a,
+      h4=0x510e527f,h5=0x9b05688c,h6=0x1f83d9ab,h7=0x5be0cd19;
   for(var blk=0;blk<msg.length;blk+=64){
     var w=[];
-    for(var t=0;t<16;t++) w[t]=(msg[blk+t*4]<<24)|(msg[blk+t*4+1]<<16)|(msg[blk+t*4+2]<<8)|msg[blk+t*4+3];
-    for(var t=16;t<64;t++){var s0=rr32(w[t-15],7)^rr32(w[t-15],18)^(w[t-15]>>>3);var s1=rr32(w[t-2],17)^rr32(w[t-2],19)^(w[t-2]>>>10);w[t]=safe_add(safe_add(safe_add(w[t-16],s0),w[t-7]),s1)}
-    var a=h0,b=h1,c=h2,d=h3,e=h4,f=h5,g=h6,h=h7;
+    for(var t=0;t<16;t++)w[t]=(msg[blk+t*4]<<24)|(msg[blk+t*4+1]<<16)|(msg[blk+t*4+2]<<8)|msg[blk+t*4+3];
+    for(var t=16;t<64;t++){
+      var s0=rr(w[t-15],7)^rr(w[t-15],18)^(w[t-15]>>>3);
+      var s1=rr(w[t-2],17)^rr(w[t-2],19)^(w[t-2]>>>10);
+      w[t]=add(add(add(w[t-16],s0),w[t-7]),s1);
+    }
+    var a=h0,b=h1,c=h2,d=h3,e=h4,f=h5,g=h6,hh=h7;
     for(var t=0;t<64;t++){
-      var S1=rr32(e,6)^rr32(e,11)^rr32(e,25);
-      var ch=(e&f)^(~e&g);
-      var tmp1=safe_add(safe_add(safe_add(safe_add(h,S1),ch),K[t]),w[t]);
-      var S0=rr32(a,2)^rr32(a,13)^rr32(a,22);
-      var maj=(a&b)^(a&c)^(b&c);
-      var tmp2=safe_add(S0,maj);
-      h=g;g=f;f=e;e=safe_add(d,tmp1);d=c;c=b;b=a;a=safe_add(tmp1,tmp2);
+      var S1=rr(e,6)^rr(e,11)^rr(e,25),ch=(e&f)^(~e&g);
+      var t1=add(add(add(add(hh,S1),ch),K[t]),w[t]);
+      var S0=rr(a,2)^rr(a,13)^rr(a,22),mj=(a&b)^(a&c)^(b&c);
+      var t2=add(S0,mj);
+      hh=g;g=f;f=e;e=add(d,t1);d=c;c=b;b=a;a=add(t1,t2);
     }
-    h0=safe_add(h0,a);h1=safe_add(h1,b);h2=safe_add(h2,c);h3=safe_add(h3,d);
-    h4=safe_add(h4,e);h5=safe_add(h5,f);h6=safe_add(h6,g);h7=safe_add(h7,h);
+    h0=add(h0,a);h1=add(h1,b);h2=add(h2,c);h3=add(h3,d);
+    h4=add(h4,e);h5=add(h5,f);h6=add(h6,g);h7=add(h7,hh);
   }
-  var hex=[h0,h1,h2,h3,h4,h5,h6,h7].map(function(n){return('00000000'+((n>>>0).toString(16))).slice(-8)}).join('');
-  return Promise.resolve(hex);
+  return [h0,h1,h2,h3,h4,h5,h6,h7].map(function(n){return('00000000'+((n>>>0).toString(16))).slice(-8)}).join('');
 }
 
-async function iniciarAuth(){
-  // 1. Verifica sessão do portal
-  const s = getSessao();
-  if(!s){ window.location.href = _urlLogin(); return; }
-  if(s.nivel === 'analista'){ window.location.href = _urlPortal(); return; }
-  document.getElementById('cfgUserLabel').textContent = '👤 '+s.user+' ('+s.nivel+')';
+// ── ESTADO ──
+var SK  = 'ft_session';
+var ATK = 'ft_agent_token';
+var _token  = '';
+var _config = {global:{},contratos:[]};
+var _users  = {};
+var _selContratados = new Set();
+var _logOffset = 0;
+var _pollLog   = null;
 
-  // 2. Token já na session? Tenta conectar direto
-  const tokenCached = sessionStorage.getItem(AGENT_TOKEN_KEY);
-  if(tokenCached){
-    _agentToken = tokenCached;
-    const ok = await conectar(false); // false = não mostra overlay se falhar
-    if(ok) return;
-    // Token pode ter expirado — limpa e tenta de novo
-    sessionStorage.removeItem(AGENT_TOKEN_KEY);
-    _agentToken = '';
-  }
+function getSessao(){ try{return JSON.parse(sessionStorage.getItem(SK))||null;}catch(e){return null;} }
+function getToken() { return sessionStorage.getItem(ATK)||''; }
 
-  // 3. Monta lista de URLs para tentar em ordem
-  const urlsSalvas   = sessionStorage.getItem(AGENT_URL_KEY);
-  const urlsParaTentar = [];
-  if(urlsSalvas)          urlsParaTentar.push(urlsSalvas);
-  if(AGENT_URL && AGENT_URL !== 'http://localhost:5001') urlsParaTentar.push(AGENT_URL);
-  urlsParaTentar.push('http://localhost:5001');
-  // Remove duplicatas mantendo ordem
-  const urlsUnicas = [...new Set(urlsParaTentar)];
-
-  // 4. Tenta cada URL
-  for(const url of urlsUnicas){
-    _agentUrlAtual = url;
-    const ok = await _tentarAuth(s, url);
-    if(ok) return;
-  }
-
-  // 5. Todas falharam — mostra overlay com campo para digitar o IP
-  const inputEl = document.getElementById('inputAgentUrl');
-  if(inputEl) inputEl.value = _agentUrlAtual || '';
-  mostrarOffline(
-    'Não foi possível conectar automaticamente.<br>' +
-    'Digite o endereço do agente (IP da máquina servidora).'
-  );
+function sair(){
+  sessionStorage.clear();
+  window.location.href = window.location.port==='5001' ? '/app/login' : 'login.html';
+}
+function irPortal(){
+  window.location.href = window.location.port==='5001' ? '/app/portal' : 'portal.html';
 }
 
-async function _tentarAuth(s, url){
-  if(!s.h) return false;
-  try{
-    const ctrl = new AbortController();
-    const tid  = setTimeout(() => ctrl.abort(), 4000); // timeout de 4s por tentativa
-    const r = await fetch(url+'/auth',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user: s.user, hash: s.h}),
-      signal: ctrl.signal
-    });
-    clearTimeout(tid);
-    if(!r.ok) return false;
-    const d = await r.json();
-    if(!d.token) return false;
-    _agentToken    = d.token;
-    _agentUrlAtual = url;
-    sessionStorage.setItem(AGENT_TOKEN_KEY, d.token);
-    sessionStorage.setItem(AGENT_URL_KEY,   url);
-    await conectar();
-    return true;
-  }catch(e){
-    return false;
-  }
-}
-
-async function conectar(mostrarErro=true){
-  try{
-    const ctrl = new AbortController();
-    const tid  = setTimeout(() => ctrl.abort(), 5000);
-    const r    = await fetch(_agentUrlAtual+'/status', {signal: ctrl.signal});
-    clearTimeout(tid);
-    if(!r.ok) throw new Error('status '+r.status);
-    const d = await r.json();
-    document.getElementById('offlineOverlay').classList.remove('show');
-    setAgentOnline(d.versao||'2.1');
-    await carregarConfig();
-    iniciarPoll();
-    return true;
-  }catch(e){
-    if(mostrarErro){
-      mostrarOffline(
-        'Não foi possível conectar em <b>'+_agentUrlAtual+'</b>.<br>' +
-        'Digite o endereço correto abaixo.'
-      );
-    }
-    return false;
-  }
-}
-
-function mostrarOffline(msg){
-  document.getElementById('offlineSub').innerHTML = msg;
-  document.getElementById('offlineOverlay').classList.add('show');
-  setAgentOffline();
-}
-
-function usarLocalhost(){
-  const inp = document.getElementById('inputAgentUrl');
-  if(inp) inp.value = 'http://localhost:5001';
-}
-
-async function tentarReconectar(){
-  // Lê o campo digitado pelo ADM
-  const inp = document.getElementById('inputAgentUrl');
-  if(inp && inp.value.trim()){
-    const novaUrl = inp.value.trim().replace(/\/$/, ''); // remove barra final
-    sessionStorage.setItem(AGENT_URL_KEY, novaUrl);
-    _agentUrlAtual = novaUrl;
-  }
-  document.getElementById('offlineOverlay').classList.remove('show');
-  document.getElementById('agentDot').className = 'agent-dot checking';
-  document.getElementById('agentLabel').textContent = 'Conectando…';
-
-  // Tenta auth com a URL digitada
-  const s = getSessao();
-  if(s){
-    const ok = await _tentarAuth(s, _agentUrlAtual);
-    if(ok) return;
-  }
-  // Se falhou, mostra o overlay novamente
-  mostrarOffline('Não foi possível conectar em <b>'+_agentUrlAtual+'</b>.<br>Verifique o IP e se o agente está em execução.');
-}
-
-function setAgentOnline(v){
-  document.getElementById('agentDot').className  = 'agent-dot';
-  document.getElementById('agentLabel').textContent = 'Agente v'+v+' — Online';
-}
-function setAgentOffline(){
-  document.getElementById('agentDot').className  = 'agent-dot off';
-  document.getElementById('agentLabel').textContent = 'Offline';
-}
-
-// ══════════════════════════════════════════════════════════════
-//  CHAMADA AO AGENTE — helper com token automático
-// ══════════════════════════════════════════════════════════════
-async function agente(path, method='GET', body=null){
-  const opts = {
-    method,
-    headers:{
-      'Content-Type':'application/json',
-      'X-Agent-Token': _agentToken
-    }
+// ── CHAMADA AO AGENTE ──
+async function api(path, method, body) {
+  method = method || 'GET';
+  var opts = {
+    method: method,
+    headers: { 'Content-Type': 'application/json', 'X-Agent-Token': _token }
   };
-  if(body) opts.body = JSON.stringify(body);
-  const r = await fetch(_agentUrlAtual+path, opts);
-  const d = await r.json();
-  if(r.status === 401){
-    // Token expirou — re-autentica
-    sessionStorage.removeItem(AGENT_TOKEN_KEY);
-    _agentToken = '';
-    await iniciarAuth();
-    throw new Error('re-auth');
+  if (body) opts.body = JSON.stringify(body);
+  var r = await fetch(AGENT_URL + path, opts);
+  if (r.status === 401) {
+    // Token expirou — tenta re-autenticar
+    var s = getSessao();
+    if (s && s.h) {
+      var ar = await fetch(AGENT_URL + '/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: s.user, hash: s.h })
+      });
+      if (ar.ok) {
+        var ad = await ar.json();
+        if (ad.token) {
+          _token = ad.token;
+          sessionStorage.setItem(ATK, _token);
+          // Repete a chamada original
+          opts.headers['X-Agent-Token'] = _token;
+          r = await fetch(AGENT_URL + path, opts);
+        }
+      }
+    }
   }
-  if(!r.ok) throw new Error(d.erro || 'Erro '+r.status);
+  var d = await r.json();
+  if (!r.ok) throw new Error(d.erro || 'Erro ' + r.status);
   return d;
 }
 
-// ══════════════════════════════════════════════════════════════
-//  CONFIGURAÇÃO
-// ══════════════════════════════════════════════════════════════
-async function carregarConfig(){
-  try{
-    // Carrega config.json completo do servidor
-    const dc = await agente('/config');
-    _config = dc.config || { global:{}, contratos:[], usuarios:{} };
-    if(!_config.global)    _config.global    = {};
-    if(!_config.contratos) _config.contratos = [];
-  }catch(e){
-    if(!_config) _config = { global:{}, contratos:[], usuarios:{} };
-    toast('Não foi possível carregar config do servidor: '+e.message, 'warn');
+// ── INICIALIZAÇÃO ──
+async function init() {
+  var s = getSessao();
+  if (!s) { window.location.href = window.location.port==='5001' ? '/app/login' : 'login.html'; return; }
+  if (s.nivel === 'analista') { irPortal(); return; }
+
+  document.getElementById('userLbl').textContent = '👤 ' + s.user + ' (' + s.nivel + ')';
+
+  // Pega token da sessão ou re-autentica
+  _token = getToken();
+  if (!_token && s.h) {
+    try {
+      var r = await fetch(AGENT_URL + '/auth', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: s.user, hash: s.h})
+      });
+      if (r.ok) {
+        var d = await r.json();
+        if (d.token) { _token = d.token; sessionStorage.setItem(ATK, _token); }
+      }
+    } catch(e) {}
   }
 
-  try{
-    // Carrega usuários do servidor
-    const du = await agente('/usuarios');
-    _usuarios = du.usuarios || {};
-  }catch(e){
-    if(!_usuarios) _usuarios = {};
+  // Testa conexão
+  try {
+    await fetch(AGENT_URL + '/status');
+    setOnline();
+    await carregarDados();
+    iniciarPoll();
+  } catch(e) {
+    setOffline();
+    toast('Agente offline em ' + AGENT_URL, 'err');
   }
+}
 
+function setOnline() {
+  document.getElementById('dot').className = 'dot';
+  document.getElementById('agLbl').textContent = 'Agente Online';
+}
+function setOffline() {
+  document.getElementById('dot').className = 'dot off';
+  document.getElementById('agLbl').textContent = 'Offline';
+}
+
+async function carregarDados() {
+  try {
+    var dc = await api('/config');
+    _config = dc.config || {global:{},contratos:[]};
+    if (!_config.global) _config.global = {};
+    if (!_config.contratos) _config.contratos = [];
+  } catch(e) {
+    toast('Erro ao carregar config: ' + e.message, 'err');
+    if (!_config) _config = {global:{},contratos:[]};
+  }
+  try {
+    var du = await api('/usuarios');
+    _users = du.usuarios || {};
+  } catch(e) {
+    if (!_users) _users = {};
+  }
   renderContratos();
   renderSelGrid();
-  renderUsuarios();
+  renderUsers();
   renderGithub();
-  renderResumoContratos();
 }
 
-function renderResumoContratos(){
-  // Atualiza o contador no menu lateral
-  const n = (_config.contratos||[]).filter(c=>c.status==='ativo').length;
-  const t = (_config.contratos||[]).length;
-  const nav = document.querySelector('.nav-item[onclick*="contratos"] .nav-ico');
-  if(nav) nav.parentElement.querySelector('.nav-ico').title = t + ' contratos';
-  // Atualiza título da tabela
-  const head = document.querySelector('#sec-contratos .card-title');
-  if(head) head.innerHTML = '🗂️ Contratos Ativos <span style="font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);margin-left:6px">'+n+' ativo(s) / '+t+' total</span>';
-}
-
-// ══════════════════════════════════════════════════════════════
-//  NAVEGAÇÃO
-// ══════════════════════════════════════════════════════════════
-function mostrarSecao(id, el){
-  document.querySelectorAll('.secao').forEach(s=>s.classList.remove('ativa'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('sec-'+id).classList.add('ativa');
+// ── NAVEGAÇÃO ──
+function mostrarSec(id, el) {
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.nav').forEach(function(n){n.classList.remove('active');});
+  document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
-  if(id==='logs') carregarLogs();
+  if (id === 'logs') carregarLogs();
 }
 
-// ══════════════════════════════════════════════════════════════
-//  CONTRATOS
-// ══════════════════════════════════════════════════════════════
-let _editIdx = null;
+// ── CONTRATOS ──
+var _editIdx = null;
 
-function renderContratos(){
-  const tbody = document.getElementById('tblContratos');
-  const lista = _config.contratos||[];
-  if(!lista.length){
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px">Nenhum contrato cadastrado.</td></tr>';
+function renderContratos() {
+  var lista = _config.contratos || [];
+  var ativos = lista.filter(function(c){return c.status==='ativo';}).length;
+  document.getElementById('titleContratos').innerHTML =
+    '🗂️ Contratos <span style="font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);margin-left:6px">' +
+    ativos + ' ativo(s) / ' + lista.length + ' total</span>';
+
+  var tbody = document.getElementById('tblContratos');
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Nenhum contrato cadastrado.</td></tr>';
     return;
   }
-  tbody.innerHTML = lista.map((c,i)=>`
-    <tr>
-      <td><span style="font-family:var(--mono);font-size:12px;font-weight:600">${c.id}</span></td>
-      <td>${c.nome||c.id}</td>
-      <td>${c.concessao||'—'}</td>
-      <td><span style="font-family:var(--mono);font-size:11px">${c.uf||'—'}</span></td>
-      <td><span style="font-family:var(--mono);font-size:11px">${c.modelo||'ARES'}</span></td>
-      <td><span class="status-pill ${c.status==='ativo'?'sp-ativo':'sp-inativo'}">${c.status==='ativo'?'● ATIVO':'○ INATIVO'}</span></td>
-      <td style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" onclick="abrirModalContrato(${i})">Editar</button>
-        <button class="btn btn-sm" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)" onclick="removerContrato(${i})">✕</button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = lista.map(function(c, i) {
+    return '<tr>' +
+      '<td><span style="font-family:var(--mono);font-size:12px;font-weight:600">' + esc(c.id) + '</span></td>' +
+      '<td>' + esc(c.nome||c.id) + '</td>' +
+      '<td>' + esc(c.concessao||'—') + '</td>' +
+      '<td><span style="font-family:var(--mono);font-size:11px">' + esc(c.uf||'—') + '</span></td>' +
+      '<td><span class="pill ' + (c.status==='ativo'?'pill-ok':'pill-off') + '">' + (c.status==='ativo'?'● ATIVO':'○ INATIVO') + '</span></td>' +
+      '<td style="display:flex;gap:6px">' +
+        '<button class="btn bg bs" onclick="abrirModal(' + i + ')">Editar</button>' +
+        '<button class="btn bd bs" onclick="removerContrato(' + i + ')">✕</button>' +
+      '</td></tr>';
+  }).join('');
 }
 
-function abrirModalContrato(idx){
+function abrirModal(idx) {
   _editIdx = idx;
-  const c = idx !== null ? (_config.contratos||[])[idx] : null;
-  document.getElementById('modalContratoTitulo').textContent = c ? 'Editar: '+c.id : 'Novo Contrato';
-  document.getElementById('cId').value       = c?.id        || '';
-  document.getElementById('cNome').value     = c?.nome      || '';
-  document.getElementById('cUrl').value      = c?.url       || '';
-  document.getElementById('cConcessao').value= c?.concessao || '';
-  document.getElementById('cUf').value       = c?.uf        || 'PR';
-  document.getElementById('cStatus').value   = c?.status    || 'ativo';
-  document.getElementById('cUsuario').value  = c?.usuario   || 'portal.monitoramento';
-  document.getElementById('cSenha').value    = c?.senha     || '';
-  document.getElementById('cHrDl').value     = c?.hr_dl     || '06:30';
-  document.getElementById('cHrAt').value     = c?.hr_at     || '07:00';
-  document.getElementById('cId').disabled    = idx !== null; // ID imutável em edição
-  document.getElementById('modalContrato').classList.add('show');
+  var c = idx !== null ? _config.contratos[idx] : null;
+  document.getElementById('mContratoTitle').textContent = c ? 'Editar: ' + c.id : 'Novo Contrato';
+  document.getElementById('cId').value       = c ? c.id        : '';
+  document.getElementById('cNome').value     = c ? c.nome      : '';
+  document.getElementById('cUrl').value      = c ? c.url       : '';
+  document.getElementById('cConcessao').value= c ? (c.concessao||'') : '';
+  document.getElementById('cUf').value       = c ? (c.uf||'PR')      : 'PR';
+  document.getElementById('cStatus').value   = c ? (c.status||'ativo'): 'ativo';
+  document.getElementById('cUser').value     = c ? (c.usuario||'portal.monitoramento') : 'portal.monitoramento';
+  document.getElementById('cSenha').value    = c ? (c.senha||'')       : '';
+  document.getElementById('cHrDl').value     = c ? (c.hr_dl||'06:30')  : '06:30';
+  document.getElementById('cHrAt').value     = c ? (c.hr_at||'07:00')  : '07:00';
+  document.getElementById('cId').disabled    = idx !== null;
+  document.getElementById('mContrato').classList.add('show');
 }
 
-async function salvarContrato(){
-  const id = document.getElementById('cId').value.trim().toUpperCase().replace(/\s/g,'_');
-  if(!id){ toast('ID é obrigatório','erro'); return; }
-
-  const c = {
-    id,
-    nome:      document.getElementById('cNome').value.trim()     || id,
+async function salvarContrato() {
+  var id = document.getElementById('cId').value.trim().toUpperCase().replace(/\s/g,'_');
+  if (!id) { toast('ID é obrigatório', 'err'); return; }
+  var c = {
+    id: id,
+    nome:      document.getElementById('cNome').value.trim() || id,
     modelo:    'ARES',
     status:    document.getElementById('cStatus').value,
     concessao: document.getElementById('cConcessao').value.trim(),
     uf:        document.getElementById('cUf').value,
     url:       document.getElementById('cUrl').value.trim(),
-    usuario:   document.getElementById('cUsuario').value.trim()  || 'portal.monitoramento',
+    usuario:   document.getElementById('cUser').value.trim() || 'portal.monitoramento',
     senha:     document.getElementById('cSenha').value,
-    pasta_raiz:(_config.global?.pasta_raiz || 'C:\\fiscaltech\\relatorios'),
-    pasta_portal:(_config.global?.pasta_portal || 'C:\\fiscaltech\\portal'),
+    pasta_raiz: _config.global.pasta_raiz || 'C:\\fiscaltech\\relatorios',
+    pasta_portal: _config.global.pasta_portal || 'C:\\fiscaltech\\portal',
     hr_dl:     document.getElementById('cHrDl').value,
     hr_at:     document.getElementById('cHrAt').value,
     obs:       ''
   };
-
-  if(!_config.contratos) _config.contratos = [];
-  if(_editIdx !== null) _config.contratos[_editIdx] = c;
+  if (!_config.contratos) _config.contratos = [];
+  if (_editIdx !== null) _config.contratos[_editIdx] = c;
   else _config.contratos.push(c);
-
-  fecharModal('modalContrato');
-
-  try{
-    await agente('/salvar/contrato','POST',{ config: _config });
-    toast('Contrato salvo e scripts regenerados ✓','ok');
+  fecharModal('mContrato');
+  try {
+    await api('/salvar/contrato', 'POST', {config: _config});
+    toast('Contrato salvo ✓', 'ok');
     renderContratos();
     renderSelGrid();
-    renderResumoContratos();
-  }catch(e){
-    toast('Erro ao salvar: '+e.message,'erro');
-  }
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-async function removerContrato(idx){
-  if(!confirm('Remover este contrato?')) return;
-  _config.contratos.splice(idx,1);
-  try{
-    await agente('/salvar/contrato','POST',{ config: _config });
-    toast('Contrato removido ✓','ok');
+async function removerContrato(idx) {
+  if (!confirm('Remover este contrato?')) return;
+  _config.contratos.splice(idx, 1);
+  try {
+    await api('/salvar/contrato', 'POST', {config: _config});
+    toast('Contrato removido ✓', 'ok');
     renderContratos();
     renderSelGrid();
-    renderResumoContratos();
-  }catch(e){
-    toast('Erro: '+e.message,'erro');
-  }
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-// ══════════════════════════════════════════════════════════════
-//  USUÁRIOS
-// ══════════════════════════════════════════════════════════════
-let _usuarios = {};
-
-function renderUsuarios(){
-  const div = document.getElementById('listaUsuarios');
-  const users = Object.entries(_usuarios);
-  if(!users.length){
-    div.innerHTML = '<p style="color:var(--muted);font-size:13px">Nenhum usuário cadastrado.</p>';
-    return;
-  }
-  div.innerHTML = users.map(([login, u])=>`
-    <div class="user-row">
-      <div class="user-avatar">${login[0].toUpperCase()}</div>
-      <div class="user-info">
-        <div class="user-name">${login}</div>
-        <div class="user-nivel">Criado por: ${u.criadoPor||'sistema'}</div>
-      </div>
-      <span class="nivel-badge nb-${u.nivel}">${{adm_sis:'ADM SIS',adm:'ADM',analista:'ANALISTA'}[u.nivel]||u.nivel}</span>
-      <button class="btn btn-sm" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-b);margin-left:8px" onclick="removerUsuario('${login}')">✕</button>
-    </div>
-  `).join('');
-}
-
-function abrirModalUsuario(){
-  document.getElementById('uLogin').value   = '';
-  document.getElementById('uSenha').value   = '';
-  document.getElementById('uSenhaConf').value = '';
-  document.getElementById('uNivel').value   = 'analista';
-  document.getElementById('modalUsuario').classList.add('show');
-}
-
-async function salvarUsuario(){
-  const login  = document.getElementById('uLogin').value.trim().toLowerCase();
-  const senha  = document.getElementById('uSenha').value;
-  const conf   = document.getElementById('uSenhaConf').value;
-  const nivel  = document.getElementById('uNivel').value;
-  const s      = getSessao();
-
-  if(!login){ toast('Login é obrigatório','erro'); return; }
-  if(senha.length < 6){ toast('Senha mínima: 6 caracteres','erro'); return; }
-  if(senha !== conf){ toast('Senhas não conferem','erro'); return; }
-
-  const h = await sha256(senha);
-  _usuarios[login] = { hash: h, nivel, criadoPor: s?.user||'adm' };
-
-  fecharModal('modalUsuario');
-  try{
-    await agente('/salvar/usuarios','POST',{ usuarios: _usuarios });
-    toast('Usuário criado — login.html e config.json atualizados ✓','ok');
-    renderUsuarios();
-  }catch(e){
-    toast('Erro: '+e.message,'erro');
-  }
-}
-
-async function removerUsuario(login){
-  if(!confirm('Remover usuário "'+login+'"?')) return;
-  delete _usuarios[login];
-  try{
-    await agente('/salvar/usuarios','POST',{ usuarios: _usuarios });
-    toast('Usuário removido — portal atualizado ✓','ok');
-    renderUsuarios();
-  }catch(e){
-    toast('Erro: '+e.message,'erro');
-  }
-}
-
-// ══════════════════════════════════════════════════════════════
-//  GITHUB
-// ══════════════════════════════════════════════════════════════
-function renderGithub(){
-  const g = _config.global||{};
-  document.getElementById('ghUsuario').value = g.github_usuario||'';
-  document.getElementById('ghRepo').value    = g.github_repo||'';
-  document.getElementById('ghToken').value   = g.github_token||'';
-  document.getElementById('ghBranch').value  = g.github_branch||'main';
-}
-
-async function salvarGithub(){
-  if(!_config.global) _config.global = {};
-  _config.global.github_usuario = document.getElementById('ghUsuario').value.trim();
-  _config.global.github_repo    = document.getElementById('ghRepo').value.trim();
-  _config.global.github_token   = document.getElementById('ghToken').value.trim();
-  _config.global.github_branch  = document.getElementById('ghBranch').value.trim()||'main';
-  try{
-    await agente('/salvar/config','POST',{ config: _config });
-    toast('Configuração GitHub salva ✓','ok');
-  }catch(e){ toast('Erro: '+e.message,'erro'); }
-}
-
-// ══════════════════════════════════════════════════════════════
-//  SELEÇÃO DE CONTRATOS
-// ══════════════════════════════════════════════════════════════
-let _contratosSelecionados = new Set();
-
-function renderSelGrid(){
-  const grid = document.getElementById('selGrid');
-  if(!grid) return;
-  const lista = (_config.contratos||[]).filter(c=>c.status==='ativo');
-  if(!lista.length){
-    grid.innerHTML='<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>';
-    return;
-  }
-  // Inicializa todos selecionados se vazio
-  if(_contratosSelecionados.size===0) lista.forEach(c=>_contratosSelecionados.add(c.id));
-
-  grid.innerHTML = lista.map(c=>{
-    const sel = _contratosSelecionados.has(c.id);
-    return `<label class="sel-chip ${sel?'selecionado':''}" onclick="toggleContrato('${c.id}',this)">
-      <span class="sc-dot"></span>${c.id}
-    </label>`;
+// ── SELEÇÃO DE CONTRATOS ──
+function renderSelGrid() {
+  var grid  = document.getElementById('selGrid');
+  var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
+  if (!lista.length) { grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>'; return; }
+  if (_selContratados.size === 0) lista.forEach(function(c){_selContratados.add(c.id);});
+  grid.innerHTML = lista.map(function(c) {
+    var on = _selContratados.has(c.id);
+    return '<div class="chip ' + (on?'on':'') + '" onclick="toggleSel(\'' + c.id + '\',this)">' + esc(c.id) + '</div>';
   }).join('');
 }
 
-function toggleContrato(id, el){
-  if(_contratosSelecionados.has(id)){
-    _contratosSelecionados.delete(id);
-    el.classList.remove('selecionado');
-  } else {
-    _contratosSelecionados.add(id);
-    el.classList.add('selecionado');
+function toggleSel(id, el) {
+  if (_selContratados.has(id)) { _selContratados.delete(id); el.classList.remove('on'); }
+  else { _selContratados.add(id); el.classList.add('on'); }
+}
+function selTodos() { (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);}); renderSelGrid(); }
+function selNenhum() { _selContratados.clear(); renderSelGrid(); }
+
+// ── AUTOMAÇÃO ──
+async function executar(tipo) {
+  var ids   = Array.from(_selContratados);
+  var todos = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
+  var eTodos = ids.length === todos.length;
+  var mapa  = {ciclo:'executar/ciclo',baixar:'executar/baixar',atualizar:'executar/atualizar',publicar:'publicar'};
+  var rota  = '/' + mapa[tipo];
+  var body  = {};
+  // Se seleção parcial e não é publicar, usa rota de selecionados
+  if (!eTodos && tipo !== 'publicar') {
+    rota = rota + '/selecionados';
+    body = {contratos: ids};
   }
-  document.getElementById('selAviso').classList.toggle('show', _contratosSelecionados.size===0);
-}
-
-function selTodos(){
-  (_config.contratos||[]).filter(c=>c.status==='ativo').forEach(c=>_contratosSelecionados.add(c.id));
-  renderSelGrid();
-  document.getElementById('selAviso').classList.remove('show');
-}
-
-function selNenhum(){
-  _contratosSelecionados.clear();
-  renderSelGrid();
-  document.getElementById('selAviso').classList.add('show');
-}
-
-// ══════════════════════════════════════════════════════════════
-//  AUTOMAÇÃO
-// ══════════════════════════════════════════════════════════════
-
-// Execução global (sem filtro) — usado apenas pelo botão Publicar
-async function executar(tipo){
-  const mapa = { publicar:'publicar' };
-  const path = '/'+mapa[tipo];
-  if(!path){ toast('Tipo desconhecido: '+tipo,'erro'); return; }
-  try{
-    await agente(path,'POST',{});
-    toast('Iniciado: '+tipo,'info');
+  try {
+    await api(rota, 'POST', body);
+    toast('Iniciado: ' + tipo, 'inf');
     _logOffset = 0;
     iniciarPollLogs();
-  }catch(e){ toast('Erro: '+e.message,'erro'); }
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-// Execução com seleção de contratos
-async function executarSel(tipo){
-  const aviso = document.getElementById('selAviso');
-  if(_contratosSelecionados.size===0){
-    aviso.classList.add('show'); return;
-  }
-  aviso.classList.remove('show');
-
-  const ids = Array.from(_contratosSelecionados);
-  const todosAtivos = (_config.contratos||[]).filter(c=>c.status==='ativo').map(c=>c.id);
-  const eTodos = ids.length === todosAtivos.length && ids.every(id=>todosAtivos.includes(id));
-
-  // Se todos selecionados, usa rota normal (sem filtro)
-  if(eTodos){
-    const mapa = { ciclo:'executar/ciclo', baixar:'executar/baixar', atualizar:'executar/atualizar' };
-    try{
-      await agente('/'+mapa[tipo],'POST',{});
-      toast('Iniciado: todos os contratos','info');
-    }catch(e){ toast('Erro: '+e.message,'erro'); return; }
-  } else {
-    // Usa rota selecionada
-    const mapa = { ciclo:'executar/ciclo/selecionados', baixar:'executar/baixar/selecionados', atualizar:'executar/atualizar/selecionados' };
-    try{
-      await agente('/'+mapa[tipo],'POST',{ contratos: ids });
-      toast('Iniciado: '+ids.join(', '),'info');
-    }catch(e){ toast('Erro: '+e.message,'erro'); return; }
-  }
-  _logOffset = 0;
-  iniciarPollLogs();
+async function limparLog() {
+  try { await api('/logs/limpar', 'GET'); document.getElementById('logBox').textContent = ''; document.getElementById('logBoxAgente').textContent = ''; _logOffset = 0; }
+  catch(e) {}
+  toast('Logs limpos', 'inf');
 }
 
-async function limparLogs(){
-  try{
-    await agente('/logs/limpar','GET');
-    document.getElementById('logBox').textContent = '';
-    document.getElementById('logBoxAgente').textContent = '';
-    _logOffset = 0;
-    toast('Logs limpos','info');
-  }catch(e){ toast('Erro: '+e.message,'erro'); }
+// ── LOGS ──
+async function carregarLogs() {
+  try {
+    var d = await api('/logs?desde=0');
+    renderLog(d.logs, document.getElementById('logBoxAgente'), true);
+  } catch(e) {}
 }
 
-// ══════════════════════════════════════════════════════════════
-//  LOGS
-// ══════════════════════════════════════════════════════════════
-async function carregarLogs(){
-  try{
-    const d = await agente('/logs?desde=0');
-    renderLogs(d.logs, document.getElementById('logBoxAgente'), true);
-  }catch(e){}
-}
-
-function renderLogs(logs, el, substituir=false){
-  if(!logs?.length) return;
-  const map = { OK:'log-ok', ERRO:'log-erro', WARN:'log-warn', INFO:'log-info' };
-  const html = logs.map(l=>{
-    const cls = map[l.nivel]||'log-info';
-    return `<span class="${cls}">[${l.ts}] ${escHtml(l.msg)}</span>`;
+function renderLog(logs, el, subst) {
+  if (!logs || !logs.length) return;
+  var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
+  var html = logs.map(function(l){
+    return '<span class="' + (map[l.nivel]||'linfo') + '">[' + l.ts + '] ' + esc(l.msg) + '</span>';
   }).join('\n');
-  if(substituir) el.innerHTML = html;
-  else el.innerHTML += (el.innerHTML?'\n':'')+html;
+  if (subst) el.innerHTML = html;
+  else el.innerHTML += (el.innerHTML ? '\n' : '') + html;
   el.scrollTop = el.scrollHeight;
 }
 
-function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
-
-let _pollLogs = null;
-function iniciarPollLogs(){
-  if(_pollLogs) clearInterval(_pollLogs);
-  _pollLogs = setInterval(async()=>{
-    try{
-      const d = await agente('/logs?desde='+_logOffset);
-      if(d.logs?.length){
-        renderLogs(d.logs, document.getElementById('logBox'));
-        _logOffset = d.total;
+var _pollLogs = null;
+function iniciarPollLogs() {
+  if (_pollLogs) clearInterval(_pollLogs);
+  _pollLogs = setInterval(async function(){
+    try {
+      var d  = await api('/logs?desde=' + _logOffset);
+      if (d.logs && d.logs.length) { renderLog(d.logs, document.getElementById('logBox')); _logOffset = d.total; }
+      var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();});
+      var el = document.getElementById('execSt');
+      if (st.rodando) {
+        el.className = 'exec-st st-run';
+        el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
+      } else if (st.erro) {
+        el.className = 'exec-st st-err';
+        el.textContent = '✗ Erro na última execução';
+        clearInterval(_pollLogs); _pollLogs = null;
+      } else if (st.ultimo_ok) {
+        el.className = 'exec-st st-ok';
+        el.textContent = '✓ Concluído com sucesso';
+        clearInterval(_pollLogs); _pollLogs = null;
       }
-      // Atualiza status de execução
-      const st = await fetch(AGENT_URL+'/status').then(r=>r.json());
-      const el = document.getElementById('execStatus');
-      if(st.rodando){
-        el.className='exec-status exec-running';
-        el.innerHTML='<span class="spin">⟳</span> '+escHtml(st.script_atual||'Executando…');
-      } else if(st.erro){
-        el.className='exec-status exec-erro';
-        el.textContent='✗ Erro na última execução';
-        clearInterval(_pollLogs); _pollLogs=null;
-      } else if(st.ultimo_ok){
-        el.className='exec-status exec-ok';
-        el.textContent='✓ Concluído com sucesso';
-        clearInterval(_pollLogs); _pollLogs=null;
-      }
-    }catch(e){}
+    } catch(e) {}
   }, 2000);
 }
 
-function iniciarPoll(){
-  setInterval(async()=>{
-    try{
-      const ctrl = new AbortController();
-      const tid  = setTimeout(()=>ctrl.abort(), 4000);
-      const r    = await fetch(_agentUrlAtual+'/status', {signal: ctrl.signal});
-      clearTimeout(tid);
-      if(r.ok){ const d=await r.json(); setAgentOnline(d.versao||'2.1'); }
-      else setAgentOffline();
-    }catch(e){ setAgentOffline(); }
+function iniciarPoll() {
+  setInterval(async function(){
+    try {
+      var r = await fetch(AGENT_URL + '/status');
+      if (r.ok) setOnline(); else setOffline();
+    } catch(e) { setOffline(); }
   }, 15000);
 }
 
-// ══════════════════════════════════════════════════════════════
-//  MODAIS
-// ══════════════════════════════════════════════════════════════
-function fecharModal(id){
-  document.getElementById(id).classList.remove('show');
+// ── USUÁRIOS ──
+function renderUsers() {
+  var div = document.getElementById('listaUsers');
+  var entries = Object.entries(_users);
+  if (!entries.length) { div.innerHTML = '<p style="color:var(--muted);font-size:13px">Nenhum usuário cadastrado.</p>'; return; }
+  var map = {adm_sis:'ADM SIS',adm:'ADM',analista:'ANALISTA'};
+  var cls = {adm_sis:'nb1',adm:'nb2',analista:'nb3'};
+  div.innerHTML = entries.map(function(e) {
+    var login = e[0], u = e[1];
+    return '<div class="urow">' +
+      '<div class="uavatar">' + login[0].toUpperCase() + '</div>' +
+      '<div class="uinfo"><div class="uname">' + esc(login) + '</div><div class="ulvl">Criado por: ' + esc(u.criadoPor||'sistema') + '</div></div>' +
+      '<span class="nbadge ' + (cls[u.nivel]||'nb3') + '">' + (map[u.nivel]||u.nivel) + '</span>' +
+      '<button class="btn bd bs" style="margin-left:8px" onclick="removerUser(\'' + login + '\')">✕</button>' +
+    '</div>';
+  }).join('');
 }
-// Clique fora fecha
-document.querySelectorAll('.modal-bg').forEach(m=>{
-  m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('show'); });
+
+function abrirModalUser() {
+  document.getElementById('uLogin').value = '';
+  document.getElementById('uSenha').value = '';
+  document.getElementById('uConf').value  = '';
+  document.getElementById('uNivel').value = 'analista';
+  document.getElementById('mUser').classList.add('show');
+}
+
+async function salvarUser() {
+  var login = document.getElementById('uLogin').value.trim().toLowerCase();
+  var senha = document.getElementById('uSenha').value;
+  var conf  = document.getElementById('uConf').value;
+  var nivel = document.getElementById('uNivel').value;
+  var s     = getSessao();
+  if (!login) { toast('Login é obrigatório', 'err'); return; }
+  if (senha.length < 6) { toast('Senha mínima: 6 caracteres', 'err'); return; }
+  if (senha !== conf) { toast('Senhas não conferem', 'err'); return; }
+  var h = sha256(senha);
+  _users[login] = {hash: h, nivel: nivel, criadoPor: s ? s.user : 'adm'};
+  fecharModal('mUser');
+  try {
+    await api('/salvar/usuarios', 'POST', {usuarios: _users});
+    toast('Usuário criado ✓', 'ok');
+    renderUsers();
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+async function removerUser(login) {
+  if (!confirm('Remover usuário "' + login + '"?')) return;
+  delete _users[login];
+  try {
+    await api('/salvar/usuarios', 'POST', {usuarios: _users});
+    toast('Usuário removido ✓', 'ok');
+    renderUsers();
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── GITHUB ──
+function renderGithub() {
+  var g = _config.global || {};
+  document.getElementById('ghUser').value   = g.github_usuario || '';
+  document.getElementById('ghRepo').value   = g.github_repo    || '';
+  document.getElementById('ghToken').value  = g.github_token   || '';
+  document.getElementById('ghBranch').value = g.github_branch  || 'main';
+}
+
+async function salvarGithub() {
+  if (!_config.global) _config.global = {};
+  _config.global.github_usuario = document.getElementById('ghUser').value.trim();
+  _config.global.github_repo    = document.getElementById('ghRepo').value.trim();
+  _config.global.github_token   = document.getElementById('ghToken').value.trim();
+  _config.global.github_branch  = document.getElementById('ghBranch').value.trim() || 'main';
+  try {
+    await api('/salvar/config', 'POST', {config: _config});
+    toast('GitHub salvo ✓', 'ok');
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// ── MODAIS ──
+function fecharModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-bg').forEach(function(m){
+  m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('show'); });
 });
 
-// ══════════════════════════════════════════════════════════════
-//  TOASTS
-// ══════════════════════════════════════════════════════════════
-function toast(msg, tipo='info'){
-  const ico = {ok:'✓',erro:'✗',info:'ℹ',warn:'⚠'}[tipo]||'ℹ';
-  const div = document.createElement('div');
-  div.className = 'toast toast-'+tipo;
-  div.innerHTML = `<span>${ico}</span><span>${msg}</span>`;
-  document.getElementById('toastArea').appendChild(div);
-  setTimeout(()=>div.remove(), 3500);
+// ── TOASTS ──
+function toast(msg, tipo) {
+  tipo = tipo || 'inf';
+  var map = {ok:'tok',err:'terr',inf:'tinf',warn:'twrn'};
+  var ico = {ok:'✓',err:'✗',inf:'ℹ',warn:'⚠'}[tipo]||'ℹ';
+  var d = document.createElement('div');
+  d.className = 'toast ' + (map[tipo]||'tinf');
+  d.innerHTML = '<span>' + ico + '</span><span>' + esc(msg) + '</span>';
+  document.getElementById('toastArea').appendChild(d);
+  setTimeout(function(){d.remove();}, 3500);
 }
 
-// ══════════════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════════════
-iniciarAuth();
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INÍCIO ──
+init();
 </script>
 </body>
 </html>
