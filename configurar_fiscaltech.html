@@ -323,6 +323,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   </div>
 </div>
 
+<!-- Modal Re-autenticação (quando sessão não tem hash) -->
+<div class="modal-bg" id="mReauth" style="z-index:400">
+  <div class="modal" style="max-width:380px;text-align:center">
+    <div style="font-size:32px;margin-bottom:12px">🔐</div>
+    <div class="modal-title" style="text-align:center">Confirme sua senha</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Para conectar ao agente, confirme sua senha de acesso.</p>
+    <div class="field" style="text-align:left">
+      <label>Senha</label>
+      <input type="password" id="reauthSenha" placeholder="••••••••" style="font-size:14px">
+    </div>
+    <div id="reauthErro" style="color:var(--red);font-size:12px;margin:8px 0;display:none"></div>
+    <div class="modal-foot" style="justify-content:center;gap:12px">
+      <button class="btn bg" onclick="sair()">Cancelar</button>
+      <button class="btn bp" id="reauthBtn" onclick="confirmarReauth()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toastArea"></div>
 
 <script>
@@ -428,64 +446,134 @@ async function api(path, method, body) {
 }
 
 // ── INICIALIZAÇÃO ──
+// SHA-256 (mesma função do login.html)
+function sha256(str) {
+  function rr(v,n){return(v>>>n)|(v<<(32-n))}
+  function add(x,y){var l=(x&0xFFFF)+(y&0xFFFF),m=(x>>16)+(y>>16)+(l>>16);return(m<<16)|(l&0xFFFF)}
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var u=unescape(encodeURIComponent(str)),msg=[];
+  for(var i=0;i<u.length;i++)msg.push(u.charCodeAt(i));
+  msg.push(0x80);while(msg.length%64!==56)msg.push(0);
+  var len=u.length*8;msg.push(0,0,0,0,(len>>>24)&0xff,(len>>>16)&0xff,(len>>>8)&0xff,len&0xff);
+  var h0=0x6a09e667,h1=0xbb67ae85,h2=0x3c6ef372,h3=0xa54ff53a,
+      h4=0x510e527f,h5=0x9b05688c,h6=0x1f83d9ab,h7=0x5be0cd19;
+  for(var blk=0;blk<msg.length;blk+=64){
+    var w=[];
+    for(var t=0;t<16;t++)w[t]=(msg[blk+t*4]<<24)|(msg[blk+t*4+1]<<16)|(msg[blk+t*4+2]<<8)|msg[blk+t*4+3];
+    for(var t=16;t<64;t++){var s0=rr(w[t-15],7)^rr(w[t-15],18)^(w[t-15]>>>3);var s1=rr(w[t-2],17)^rr(w[t-2],19)^(w[t-2]>>>10);w[t]=add(add(add(w[t-16],s0),w[t-7]),s1);}
+    var a=h0,b=h1,c=h2,d=h3,e=h4,f=h5,g=h6,hh=h7;
+    for(var t=0;t<64;t++){var S1=rr(e,6)^rr(e,11)^rr(e,25),ch=(e&f)^(~e&g),t1=add(add(add(add(hh,S1),ch),K[t]),w[t]);var S0=rr(a,2)^rr(a,13)^rr(a,22),mj=(a&b)^(a&c)^(b&c),t2=add(S0,mj);hh=g;g=f;f=e;e=add(d,t1);d=c;c=b;b=a;a=add(t1,t2);}
+    h0=add(h0,a);h1=add(h1,b);h2=add(h2,c);h3=add(h3,d);h4=add(h4,e);h5=add(h5,f);h6=add(h6,g);h7=add(h7,hh);
+  }
+  return [h0,h1,h2,h3,h4,h5,h6,h7].map(function(n){return('00000000'+((n>>>0).toString(16))).slice(-8);}).join('');
+}
+
+var _reauthResolve = null;
+
+function pedirSenha() {
+  return new Promise(function(resolve) {
+    _reauthResolve = resolve;
+    document.getElementById('reauthSenha').value = '';
+    document.getElementById('reauthErro').style.display = 'none';
+    document.getElementById('mReauth').classList.add('show');
+    setTimeout(function(){ document.getElementById('reauthSenha').focus(); }, 100);
+  });
+}
+
+async function confirmarReauth() {
+  var senha = document.getElementById('reauthSenha').value;
+  if (!senha) return;
+  var btn = document.getElementById('reauthBtn');
+  btn.disabled = true; btn.textContent = 'Verificando…';
+  var h = sha256(senha);
+  var s = getSessao();
+  try {
+    var r = await fetch(AGENT_URL + '/auth', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({user: s.user, hash: h})
+    });
+    var d = await r.json();
+    if (r.ok && d.token) {
+      // Atualiza sessão com hash
+      s.h = h;
+      sessionStorage.setItem(SK, JSON.stringify(s));
+      localStorage.setItem(ATK, d.token);
+      document.getElementById('mReauth').classList.remove('show');
+      if (_reauthResolve) { _reauthResolve(d.token); _reauthResolve = null; }
+    } else {
+      document.getElementById('reauthErro').textContent = d.erro || 'Senha incorreta.';
+      document.getElementById('reauthErro').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('reauthErro').textContent = 'Erro de conexão: ' + e.message;
+    document.getElementById('reauthErro').style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Confirmar';
+}
+
+// Enter no campo de senha
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && document.getElementById('mReauth').classList.contains('show')) {
+    confirmarReauth();
+  }
+});
+
 async function init() {
   var s = getSessao();
-  if (!s) { window.location.href = window.location.port==='5001' ? '/app/login' : 'login.html'; return; }
+  if (!s) { window.location.href = _isAgent() ? '/app/login' : 'login.html'; return; }
   if (s.nivel === 'analista') { irPortal(); return; }
 
   document.getElementById('userLbl').textContent = '👤 ' + s.user + ' (' + s.nivel + ')';
+  console.log('[FT] AGENT_URL:', AGENT_URL, '| user:', s.user, '| hash:', !!s.h);
 
-  // Pega token da sessão ou re-autentica
-  _token = getToken();
-  if (!_token && s.h) {
-    try {
-      var r = await fetch(AGENT_URL + '/auth', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({user: s.user, hash: s.h})
-      });
-      if (r.ok) {
-        var d = await r.json();
-        if (d.token) { _token = d.token; localStorage.setItem(ATK, _token); }
-      }
-    } catch(e) {}
-  }
-
-  // Testa conexão
+  // Testa ping do agente
   try {
-    var r = await fetch(AGENT_URL + '/status');
-    if (!r.ok) throw new Error('status ' + r.status);
+    var pr = await fetch(AGENT_URL + '/ping');
+    if (!pr.ok) throw new Error('ping falhou');
     setOnline();
   } catch(e) {
     setOffline();
-    toast('Agente offline em ' + AGENT_URL + '. Verifique se está rodando.', 'err');
+    toast('Agente offline em ' + AGENT_URL + ' — verifique se está rodando', 'err');
     return;
   }
 
-  // Se ainda sem token, tenta auth agora
+  // Obtém token
+  _token = getToken();
+  console.log('[FT] Token do storage:', _token ? _token.substring(0,8)+'...' : 'VAZIO');
+
   if (!_token) {
-    var s2 = getSessao();
-    if (s2 && s2.h) {
+    if (s.h) {
+      // Tem hash — tenta auth direto
       try {
         var ar = await fetch(AGENT_URL + '/auth', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({user: s2.user, hash: s2.h})
+          body: JSON.stringify({user: s.user, hash: s.h})
         });
-        if (ar.ok) {
-          var ad = await ar.json();
-          if (ad.token) { _token = ad.token; localStorage.setItem(ATK, _token); }
+        var ad = await ar.json();
+        if (ar.ok && ad.token) {
+          _token = ad.token;
+          localStorage.setItem(ATK, _token);
         }
       } catch(e) {}
     }
+
+    // Ainda sem token — pede senha (sessão antiga sem hash)
+    if (!_token) {
+      _token = await pedirSenha();
+      if (!_token) return;
+    }
   }
 
-  if (!_token) {
-    toast('Não foi possível obter token de autenticação. Faça login novamente.', 'err');
-    setTimeout(function(){ window.location.href = _isAgent() ? '/app/login' : 'login.html'; }, 2000);
-    return;
-  }
-
+  console.log('[FT] Token OK, carregando dados...');
   await carregarDados();
   iniciarPoll();
 }
