@@ -328,10 +328,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   <div class="modal" style="max-width:380px;text-align:center">
     <div style="font-size:32px;margin-bottom:12px">🔐</div>
     <div class="modal-title" style="text-align:center">Confirme sua senha</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Para conectar ao agente, confirme sua senha de acesso.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Para conectar ao agente, informe suas credenciais.</p>
+    <div class="field" style="text-align:left">
+      <label>Usuário</label>
+      <input type="text" id="reauthUser" placeholder="admin" style="font-size:14px" autocomplete="username">
+    </div>
     <div class="field" style="text-align:left">
       <label>Senha</label>
-      <input type="password" id="reauthSenha" placeholder="••••••••" style="font-size:14px">
+      <input type="password" id="reauthSenha" placeholder="••••••••" style="font-size:14px" autocomplete="current-password">
     </div>
     <div id="reauthErro" style="color:var(--red);font-size:12px;margin:8px 0;display:none"></div>
     <div class="modal-foot" style="justify-content:center;gap:12px">
@@ -345,7 +349,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://192.168.30.187:5001";
+var AGENT_URL = "http://localhost:5001";
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -480,6 +484,9 @@ var _reauthResolve = null;
 function pedirSenha() {
   return new Promise(function(resolve) {
     _reauthResolve = resolve;
+    var s = getSessao();
+    var userEl = document.getElementById('reauthUser');
+    if (userEl) userEl.value = s ? (s.user || '') : '';
     document.getElementById('reauthSenha').value = '';
     document.getElementById('reauthErro').style.display = 'none';
     document.getElementById('mReauth').classList.add('show');
@@ -488,23 +495,30 @@ function pedirSenha() {
 }
 
 async function confirmarReauth() {
-  var senha = document.getElementById('reauthSenha').value;
-  if (!senha) return;
+  var senhaEl = document.getElementById('reauthSenha');
+  var userEl  = document.getElementById('reauthUser');
+  var senha = senhaEl ? senhaEl.value : '';
+  if (!senha) { senhaEl && senhaEl.focus(); return; }
   var btn = document.getElementById('reauthBtn');
   btn.disabled = true; btn.textContent = 'Verificando…';
   var h = sha256(senha);
   var s = getSessao();
+  // Usa o campo usuário se preenchido, senão usa o da sessão
+  var user = (userEl && userEl.value.trim()) ? userEl.value.trim() : (s ? s.user : 'admin');
   try {
     var r = await fetch(AGENT_URL + '/auth', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({user: s.user, hash: h})
+      body: JSON.stringify({user: user, hash: h})
     });
     var d = await r.json();
     if (r.ok && d.token) {
-      // Atualiza sessão com hash
-      s.h = h;
-      sessionStorage.setItem(SK, JSON.stringify(s));
+      // Atualiza sessão com user e hash corretos
+      var sAtual = getSessao() || {};
+      sAtual.user = user;
+      sAtual.h = h;
+      sAtual.nivel = d.nivel || sAtual.nivel || 'adm';
+      sessionStorage.setItem(SK, JSON.stringify(sAtual));
       localStorage.setItem(ATK, d.token);
       document.getElementById('mReauth').classList.remove('show');
       if (_reauthResolve) { _reauthResolve(d.token); _reauthResolve = null; }
