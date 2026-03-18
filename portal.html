@@ -156,6 +156,37 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .cfg-btn{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-size:12px;font-weight:700;font-family:var(--display);text-decoration:none;transition:.2s;letter-spacing:.02em;}
 .cfg-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);}
 @media(max-width:760px){.cfg-btn span{display:none}}
+
+/* ── MENU SANDUÍCHE ── */
+.menu-wrap{position:relative}
+.menu-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:8px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:white;cursor:pointer;transition:.2s;flex-shrink:0;
+}
+.menu-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4)}
+.menu-btn svg{pointer-events:none}
+.menu-dropdown{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:white;border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.16);
+  padding:6px;min-width:200px;z-index:500;
+  opacity:0;transform:translateY(-8px) scale(.97);
+  pointer-events:none;transition:opacity .15s,transform .15s;
+}
+.menu-dropdown.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.menu-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 13px;border-radius:8px;
+  font-size:13px;font-weight:600;color:var(--text2);
+  cursor:pointer;transition:.12s;text-decoration:none;
+}
+.menu-item:hover{background:var(--accent3);color:var(--accent2)}
+.menu-item svg{flex-shrink:0;color:var(--muted)}
+.menu-item:hover svg{color:var(--accent)}
+.menu-divider{height:1px;background:var(--border);margin:4px 6px}
+.menu-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);padding:6px 13px 2px}
 @media(max-width:500px){.kpi-strip{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -191,12 +222,32 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
         <span id="portalUserLabel"></span>
         <span id="portalNivelBadge" style="padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700"></span>
       </div>
-      <a href="#" onclick="abrirConfigurador();return false;" class="cfg-btn" id="btnConfigurador" title="Configurador de Contratos">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-        Configurador
-      </a>
+      <!-- ── MENU SANDUÍCHE ── -->
+      <div class="menu-wrap" id="menuWrap">
+        <button class="menu-btn" onclick="toggleMenu()" title="Menu" aria-label="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+          <div class="menu-label">Navegar</div>
+          <a href="#" onclick="toggleMenu();abrirConfigurador();return false;" class="menu-item" id="btnConfigurador">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Configurador
+          </a>
+          <a href="#" onclick="toggleMenu();abrirAtendimentos();return false;" class="menu-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Atendimentos
+          </a>
+        </div>
+      </div>
       <button onclick="logoutPortal()" style="padding:5px 12px;background:rgba(220,38,38,.15);color:#fca5a5;border:1px solid rgba(220,38,38,.3);border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--display)">Sair</button>
     </div>
   </div>
@@ -273,13 +324,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 35,
     "totalFaixas": 92,
-    "fluxoHoje": 131541,
-    "lapMedio": 81.7,
-    "aprovMedio": 0.776,
+    "fluxoHoje": 149977,
+    "lapMedio": 84.4,
+    "aprovMedio": 0.779,
     "funcMedio": 97.1,
-    "faixasCrit": 27,
-    "faixasWarn": 51,
-    "faixasOk": 14,
+    "faixasCrit": 24,
+    "faixasWarn": 55,
+    "faixasOk": 13,
     "faixasOff": 0,
     "afericoesVenc60": 6,
     "faixasSample": [
@@ -326,7 +377,7 @@ const CONTRATOS = [
       {
         "serie": "708",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "708",
@@ -381,11 +432,12 @@ const CONTRATOS = [
       260731,
       177891,
       276702,
-      131541
+      277052,
+      149977
     ],
     "cor": "#0ea5e9",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "BELEM",
@@ -395,13 +447,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 52,
     "totalFaixas": 118,
-    "fluxoHoje": 187365,
-    "lapMedio": 81.4,
+    "fluxoHoje": 261171,
+    "lapMedio": 81.7,
     "aprovMedio": 0,
     "funcMedio": 98.1,
-    "faixasCrit": 8,
-    "faixasWarn": 24,
-    "faixasOk": 80,
+    "faixasCrit": 7,
+    "faixasWarn": 22,
+    "faixasOk": 83,
     "faixasOff": 6,
     "afericoesVenc60": 10,
     "faixasSample": [
@@ -503,11 +555,12 @@ const CONTRATOS = [
       515060,
       419924,
       478548,
-      187365
+      490292,
+      261171
     ],
     "cor": "#f59e0b",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "CAMPINAGRANDE",
@@ -517,15 +570,15 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 16,
     "totalFaixas": 34,
-    "fluxoHoje": 90530,
-    "lapMedio": 70.8,
+    "fluxoHoje": 96139,
+    "lapMedio": 71.4,
     "aprovMedio": 0,
     "funcMedio": 100.0,
-    "faixasCrit": 9,
-    "faixasWarn": 14,
-    "faixasOk": 11,
+    "faixasCrit": 8,
+    "faixasWarn": 16,
+    "faixasOk": 10,
     "faixasOff": 0,
-    "afericoesVenc60": 12,
+    "afericoesVenc60": 10,
     "faixasSample": [
       {
         "serie": "2",
@@ -625,11 +678,12 @@ const CONTRATOS = [
       148809,
       110338,
       159459,
-      90530
+      156498,
+      96139
     ],
     "cor": "#8b5cf6",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "CASCAVEL",
@@ -639,13 +693,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 57,
     "totalFaixas": 127,
-    "fluxoHoje": 260171,
-    "lapMedio": 75.4,
+    "fluxoHoje": 289128,
+    "lapMedio": 75.8,
     "aprovMedio": 0.99,
-    "funcMedio": 98.7,
-    "faixasCrit": 23,
-    "faixasWarn": 13,
-    "faixasOk": 86,
+    "funcMedio": 99.1,
+    "faixasCrit": 24,
+    "faixasWarn": 11,
+    "faixasOk": 87,
     "faixasOff": 5,
     "afericoesVenc60": 19,
     "faixasSample": [
@@ -747,11 +801,12 @@ const CONTRATOS = [
       412565,
       266197,
       486130,
-      260171
+      489501,
+      289128
     ],
     "cor": "#f43f5e",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "CCRMSVIA",
@@ -763,20 +818,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 39,
     "totalFaixas": 46,
-    "fluxoHoje": 14892,
-    "lapMedio": 81.8,
-    "aprovMedio": 0.979,
-    "funcMedio": 98.5,
-    "faixasCrit": 2,
-    "faixasWarn": 7,
-    "faixasOk": 29,
-    "faixasOff": 8,
+    "fluxoHoje": 54493,
+    "lapMedio": 81.1,
+    "aprovMedio": 0.98,
+    "funcMedio": 91.7,
+    "faixasCrit": 8,
+    "faixasWarn": 12,
+    "faixasOk": 21,
+    "faixasOff": 5,
     "afericoesVenc60": 7,
     "faixasSample": [
       {
         "serie": "7399",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7400",
@@ -826,17 +881,17 @@ const CONTRATOS = [
       {
         "serie": "7409",
         "id": "1",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "7410",
         "id": "1",
-        "status": "off"
+        "status": "ok"
       },
       {
         "serie": "7411",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7412",
@@ -855,12 +910,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
+      76327,
+      90386,
+      90251,
+      95363,
+      87988,
+      91774,
+      83764,
+      60921,
+      85500,
+      80518,
+      88671,
+      93968,
+      98886,
+      81962,
+      72492,
       88331,
-      14892
+      89839,
+      54493
     ],
     "cor": "#fb923c",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "CNL-RADARES",
@@ -874,12 +945,12 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 14,
     "totalFaixas": 31,
-    "fluxoHoje": 61194,
-    "lapMedio": 50.4,
+    "fluxoHoje": 75715,
+    "lapMedio": 48.7,
     "aprovMedio": 1.0,
-    "funcMedio": 98.3,
-    "faixasCrit": 15,
-    "faixasWarn": 3,
+    "funcMedio": 98.9,
+    "faixasCrit": 16,
+    "faixasWarn": 2,
     "faixasOk": 13,
     "faixasOff": 0,
     "afericoesVenc60": 0,
@@ -957,7 +1028,7 @@ const CONTRATOS = [
       {
         "serie": "7470",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "7471",
@@ -981,12 +1052,13 @@ const CONTRATOS = [
       130144,
       112734,
       117192,
-      111220,
-      61194
+      111244,
+      104607,
+      75715
     ],
     "cor": "#38bdf8",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "CONSORCIOBANDEIRANTES",
@@ -996,13 +1068,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 60,
     "totalFaixas": 115,
-    "fluxoHoje": 453337,
-    "lapMedio": 62.8,
-    "aprovMedio": 0.073,
-    "funcMedio": 97.3,
+    "fluxoHoje": 525369,
+    "lapMedio": 63.9,
+    "aprovMedio": 0.072,
+    "funcMedio": 97.4,
     "faixasCrit": 83,
-    "faixasWarn": 4,
-    "faixasOk": 6,
+    "faixasWarn": 5,
+    "faixasOk": 5,
     "faixasOff": 22,
     "afericoesVenc60": 17,
     "faixasSample": [
@@ -1104,11 +1176,12 @@ const CONTRATOS = [
       886997,
       755120,
       840431,
-      453337
+      870427,
+      525369
     ],
     "cor": "#4ade80",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "DETRAN-DF",
@@ -1118,14 +1191,14 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 65,
     "totalFaixas": 188,
-    "fluxoHoje": 739675,
+    "fluxoHoje": 789155,
     "lapMedio": 86.6,
-    "aprovMedio": 0.958,
-    "funcMedio": 93.5,
-    "faixasCrit": 25,
-    "faixasWarn": 30,
-    "faixasOk": 132,
-    "faixasOff": 1,
+    "aprovMedio": 0.949,
+    "funcMedio": 93.2,
+    "faixasCrit": 26,
+    "faixasWarn": 27,
+    "faixasOk": 135,
+    "faixasOff": 0,
     "afericoesVenc60": 28,
     "faixasSample": [
       {
@@ -1226,11 +1299,12 @@ const CONTRATOS = [
       911093,
       652241,
       1187692,
-      739675
+      1225265,
+      789155
     ],
     "cor": "#22d3a0",
-    "atualizado": "17/03/2026 22:38",
-    "referencia": "D-1 (17 Tue)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Wed)"
   },
   {
     "id": "DETRAN-MS",
@@ -1240,13 +1314,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 25,
     "totalFaixas": 31,
-    "fluxoHoje": 3083,
-    "lapMedio": 83.5,
+    "fluxoHoje": 24161,
+    "lapMedio": 80.4,
     "aprovMedio": 0,
-    "funcMedio": 94.1,
-    "faixasCrit": 5,
-    "faixasWarn": 6,
-    "faixasOk": 20,
+    "funcMedio": 94.4,
+    "faixasCrit": 7,
+    "faixasWarn": 8,
+    "faixasOk": 16,
     "faixasOff": 0,
     "afericoesVenc60": 17,
     "faixasSample": [
@@ -1313,7 +1387,7 @@ const CONTRATOS = [
       {
         "serie": "7382",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7382",
@@ -1348,11 +1422,12 @@ const CONTRATOS = [
       43203,
       32824,
       44731,
-      3083
+      46315,
+      24161
     ],
     "cor": "#f59e0b",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "ECO101",
@@ -1364,14 +1439,14 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 114,
     "totalFaixas": 149,
-    "fluxoHoje": 153018,
-    "lapMedio": 71.8,
+    "fluxoHoje": 326410,
+    "lapMedio": 76.1,
     "aprovMedio": 0,
-    "funcMedio": 100.0,
-    "faixasCrit": 12,
-    "faixasWarn": 45,
-    "faixasOk": 29,
-    "faixasOff": 63,
+    "funcMedio": 94.0,
+    "faixasCrit": 14,
+    "faixasWarn": 38,
+    "faixasOk": 42,
+    "faixasOff": 55,
     "afericoesVenc60": 54,
     "faixasSample": [
       {
@@ -1392,7 +1467,7 @@ const CONTRATOS = [
       {
         "serie": "6089",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6090",
@@ -1422,7 +1497,7 @@ const CONTRATOS = [
       {
         "serie": "6095",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6096",
@@ -1456,12 +1531,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
+      356661,
+      480877,
+      479857,
+      476094,
+      489498,
+      556114,
+      440002,
+      386149,
+      484492,
+      476041,
+      501010,
+      508284,
+      556797,
+      409214,
+      377768,
       478301,
-      153018
+      482814,
+      326410
     ],
     "cor": "#8b5cf6",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "ECOPONTE",
@@ -1473,13 +1564,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 8,
     "totalFaixas": 32,
-    "fluxoHoje": 1197,
-    "lapMedio": 79.1,
+    "fluxoHoje": 364394,
+    "lapMedio": 85.3,
     "aprovMedio": 0.817,
     "funcMedio": 100.0,
-    "faixasCrit": 7,
-    "faixasWarn": 21,
-    "faixasOk": 4,
+    "faixasCrit": 4,
+    "faixasWarn": 23,
+    "faixasOk": 5,
     "faixasOff": 0,
     "afericoesVenc60": 2,
     "faixasSample": [
@@ -1501,7 +1592,7 @@ const CONTRATOS = [
       {
         "serie": "4013",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "4014",
@@ -1521,7 +1612,7 @@ const CONTRATOS = [
       {
         "serie": "4014",
         "id": "4",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "4015",
@@ -1565,12 +1656,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      2113,
-      1197
+      451347,
+      544723,
+      464334,
+      572368,
+      586413,
+      604895,
+      538242,
+      501648,
+      537295,
+      554823,
+      548532,
+      558227,
+      521685,
+      537197,
+      494903,
+      558269,
+      573654,
+      364394
     ],
     "cor": "#f43f5e",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "EIXO-SP",
@@ -1586,13 +1693,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 90,
     "totalFaixas": 152,
-    "fluxoHoje": 104193,
-    "lapMedio": 85.1,
+    "fluxoHoje": 229502,
+    "lapMedio": 86.0,
     "aprovMedio": 0.966,
-    "funcMedio": 93.7,
-    "faixasCrit": 12,
-    "faixasWarn": 28,
-    "faixasOk": 81,
+    "funcMedio": 92.9,
+    "faixasCrit": 15,
+    "faixasWarn": 27,
+    "faixasOk": 79,
     "faixasOff": 31,
     "afericoesVenc60": 57,
     "faixasSample": [
@@ -1691,14 +1798,15 @@ const CONTRATOS = [
       466010,
       463776,
       485512,
-      370469,
-      290661,
+      370676,
+      290714,
       370553,
-      104193
+      365968,
+      229502
     ],
     "cor": "#fb923c",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "EPR-IGUACU",
@@ -1712,21 +1820,21 @@ const CONTRATOS = [
     ],
     "uf": "PR",
     "totalEquip": 32,
-    "totalFaixas": 49,
-    "fluxoHoje": 652,
-    "lapMedio": 74.1,
+    "totalFaixas": 50,
+    "fluxoHoje": 65472,
+    "lapMedio": 74.6,
     "aprovMedio": 0,
-    "funcMedio": 95.2,
-    "faixasCrit": 5,
-    "faixasWarn": 11,
-    "faixasOk": 13,
-    "faixasOff": 20,
-    "afericoesVenc60": 26,
+    "funcMedio": 78.0,
+    "faixasCrit": 13,
+    "faixasWarn": 10,
+    "faixasOk": 9,
+    "faixasOff": 18,
+    "afericoesVenc60": 25,
     "faixasSample": [
       {
         "serie": "796",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "796",
@@ -1786,12 +1894,12 @@ const CONTRATOS = [
       {
         "serie": "805",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "805",
         "id": "2",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "806",
@@ -1805,15 +1913,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      593,
-      591,
-      581,
-      609,
-      652
+      51082,
+      64288,
+      66567,
+      69006,
+      76757,
+      83441,
+      80308,
+      64386,
+      87229,
+      97571,
+      101070,
+      100196,
+      107049,
+      89032,
+      80106,
+      101159,
+      93400,
+      65472
     ],
     "cor": "#38bdf8",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (16 Seg)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "FOZIGUACU",
@@ -1823,20 +1944,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 40,
     "totalFaixas": 89,
-    "fluxoHoje": 99370,
-    "lapMedio": 91.6,
-    "aprovMedio": 0.961,
-    "funcMedio": 100.0,
-    "faixasCrit": 0,
-    "faixasWarn": 10,
-    "faixasOk": 68,
+    "fluxoHoje": 170525,
+    "lapMedio": 90.3,
+    "aprovMedio": 0.96,
+    "funcMedio": 99.2,
+    "faixasCrit": 2,
+    "faixasWarn": 13,
+    "faixasOk": 63,
     "faixasOff": 11,
     "afericoesVenc60": 8,
     "faixasSample": [
       {
         "serie": "510",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "510",
@@ -1915,12 +2036,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
+      212216,
+      320414,
+      307312,
+      298168,
+      296097,
+      316983,
+      293551,
+      217562,
+      310286,
+      313372,
+      312613,
+      320068,
+      322542,
+      267865,
+      195895,
       287613,
-      99370
+      307293,
+      170525
     ],
     "cor": "#4ade80",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Tue)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Wed)"
   },
   {
     "id": "GOINFRA",
@@ -1930,13 +2067,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 113,
     "totalFaixas": 123,
-    "fluxoHoje": 184768,
-    "lapMedio": 71.5,
+    "fluxoHoje": 182755,
+    "lapMedio": 69.8,
     "aprovMedio": 0,
     "funcMedio": 98.1,
-    "faixasCrit": 23,
-    "faixasWarn": 40,
-    "faixasOk": 60,
+    "faixasCrit": 26,
+    "faixasWarn": 45,
+    "faixasOk": 52,
     "faixasOff": 0,
     "afericoesVenc60": 14,
     "faixasSample": [
@@ -1948,7 +2085,7 @@ const CONTRATOS = [
       {
         "serie": "214",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "215",
@@ -1958,7 +2095,7 @@ const CONTRATOS = [
       {
         "serie": "217",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "218",
@@ -1968,7 +2105,7 @@ const CONTRATOS = [
       {
         "serie": "220",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "222",
@@ -2036,13 +2173,14 @@ const CONTRATOS = [
       284240,
       315229,
       280407,
-      247467,
-      282549,
-      184768
+      247469,
+      283269,
+      269014,
+      182755
     ],
     "cor": "#22d3a0",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:32",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "IMIGRANTES",
@@ -2055,13 +2193,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 18,
     "totalFaixas": 53,
-    "fluxoHoje": 214109,
-    "lapMedio": 77.7,
-    "aprovMedio": 0.947,
-    "funcMedio": 94.3,
-    "faixasCrit": 10,
+    "fluxoHoje": 199802,
+    "lapMedio": 79.9,
+    "aprovMedio": 0.948,
+    "funcMedio": 93.6,
+    "faixasCrit": 9,
     "faixasWarn": 14,
-    "faixasOk": 19,
+    "faixasOk": 20,
     "faixasOff": 10,
     "afericoesVenc60": 7,
     "faixasSample": [
@@ -2078,12 +2216,12 @@ const CONTRATOS = [
       {
         "serie": "6406",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6406",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6407",
@@ -2108,17 +2246,17 @@ const CONTRATOS = [
       {
         "serie": "6408",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6408",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6408",
         "id": "3",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6409",
@@ -2138,7 +2276,7 @@ const CONTRATOS = [
       {
         "serie": "6410",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6410",
@@ -2163,124 +2301,135 @@ const CONTRATOS = [
       437233,
       369847,
       345848,
-      214109
+      331848,
+      199802
     ],
     "cor": "#f59e0b",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   },
   {
-    "id": "LITORALPIONEIRO",
-    "nome": "LITORALPIONEIRO",
-    "arquivo": "dashboard_LITORALPIONEIRO.html",
-    "rodovias": [
-      "BR-153",
-      "BR-277",
-      "BR-369",
-      "PR-092",
-      "PR-151"
-    ],
+    "id": "LONDRINA",
+    "nome": "LONDRINA",
+    "arquivo": "dashboard_LONDRINA.html",
+    "rodovias": [],
     "uf": "PR",
-    "totalEquip": 28,
-    "totalFaixas": 43,
-    "fluxoHoje": 50784,
-    "lapMedio": 69.8,
-    "aprovMedio": 0.892,
-    "funcMedio": 98.8,
-    "faixasCrit": 7,
-    "faixasWarn": 28,
-    "faixasOk": 8,
-    "faixasOff": 0,
-    "afericoesVenc60": 3,
+    "totalEquip": 31,
+    "totalFaixas": 67,
+    "fluxoHoje": 123626,
+    "lapMedio": 85.1,
+    "aprovMedio": 0,
+    "funcMedio": 99.8,
+    "faixasCrit": 1,
+    "faixasWarn": 17,
+    "faixasOk": 47,
+    "faixasOff": 2,
+    "afericoesVenc60": 8,
     "faixasSample": [
       {
-        "serie": "545",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "545",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "546",
+        "serie": "199",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "547",
+        "serie": "199",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "199",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "200",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "548",
-        "id": "1",
+        "serie": "200",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "200",
+        "id": "3",
         "status": "warn"
       },
       {
-        "serie": "548",
+        "serie": "201",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "201",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "201",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "202",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "202",
         "id": "2",
         "status": "warn"
       },
       {
-        "serie": "549",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "549",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "550",
+        "serie": "203",
         "id": "1",
         "status": "warn"
       },
       {
-        "serie": "550",
+        "serie": "203",
         "id": "2",
         "status": "warn"
       },
       {
-        "serie": "551",
+        "serie": "204",
         "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "204",
+        "id": "2",
         "status": "warn"
       },
       {
-        "serie": "551",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "552",
+        "serie": "205",
         "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "552",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "553",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "553",
-        "id": "2",
         "status": "warn"
       }
     ],
     "fluxoSpark": [
-      182125,
-      50784
+      155954,
+      194401,
+      202854,
+      197143,
+      204720,
+      211780,
+      204373,
+      161420,
+      195483,
+      195241,
+      187820,
+      198460,
+      210633,
+      200443,
+      147085,
+      196062,
+      197679,
+      123626
     ],
-    "cor": "#8b5cf6",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "cor": "#f43f5e",
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "NATAL",
@@ -2290,13 +2439,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 21,
     "totalFaixas": 53,
-    "fluxoHoje": 1336,
-    "lapMedio": 76.8,
+    "fluxoHoje": 386299,
+    "lapMedio": 75.0,
     "aprovMedio": 0,
-    "funcMedio": 100.0,
-    "faixasCrit": 4,
-    "faixasWarn": 21,
-    "faixasOk": 26,
+    "funcMedio": 96.8,
+    "faixasCrit": 9,
+    "faixasWarn": 24,
+    "faixasOk": 18,
     "faixasOff": 2,
     "afericoesVenc60": 0,
     "faixasSample": [
@@ -2323,12 +2472,12 @@ const CONTRATOS = [
       {
         "serie": "6373",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6373",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6374",
@@ -2363,7 +2512,7 @@ const CONTRATOS = [
       {
         "serie": "6377",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6377",
@@ -2373,20 +2522,37 @@ const CONTRATOS = [
       {
         "serie": "6378",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6378",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       }
     ],
     "fluxoSpark": [
-      1336
+      282507,
+      460692,
+      435095,
+      444254,
+      489211,
+      535942,
+      517876,
+      358411,
+      551520,
+      545108,
+      529676,
+      521885,
+      548592,
+      498727,
+      365861,
+      562057,
+      537774,
+      386299
     ],
     "cor": "#fb923c",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (16 Seg)"
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "PNCV-L3_DNIT-PB",
@@ -2399,13 +2565,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 110,
     "totalFaixas": 182,
-    "fluxoHoje": 458929,
-    "lapMedio": 83.1,
-    "aprovMedio": 0.965,
-    "funcMedio": 94.6,
-    "faixasCrit": 25,
-    "faixasWarn": 35,
-    "faixasOk": 113,
+    "fluxoHoje": 572091,
+    "lapMedio": 83.3,
+    "aprovMedio": 0.963,
+    "funcMedio": 94.7,
+    "faixasCrit": 23,
+    "faixasWarn": 44,
+    "faixasOk": 106,
     "faixasOff": 9,
     "afericoesVenc60": 8,
     "faixasSample": [
@@ -2437,7 +2603,7 @@ const CONTRATOS = [
       {
         "serie": "484",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "486",
@@ -2507,377 +2673,137 @@ const CONTRATOS = [
       846913,
       730686,
       944568,
-      458929
+      903227,
+      572091
     ],
     "cor": "#38bdf8",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Tue)"
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Wed)"
   },
   {
-    "id": "PNCV-L7_DNIT-MS",
-    "nome": "PNCV-L7_DNIT-MS",
-    "arquivo": "dashboard_PNCV-L7_DNIT-MS.html",
+    "id": "PORTOVELHO",
+    "nome": "PORTOVELHO",
+    "arquivo": "dashboard_PORTOVELHO.html",
     "rodovias": [
-      "BR-060",
-      "BR-070",
-      "BR-158",
-      "BR-262",
-      "BR-267"
+      "BR-364"
     ],
     "uf": "PR",
-    "totalEquip": 58,
-    "totalFaixas": 73,
-    "fluxoHoje": 496,
-    "lapMedio": 83.3,
-    "aprovMedio": 0.912,
-    "funcMedio": 94.5,
-    "faixasCrit": 12,
-    "faixasWarn": 27,
-    "faixasOk": 33,
-    "faixasOff": 1,
-    "afericoesVenc60": 5,
-    "faixasSample": [
-      {
-        "serie": "7241",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7242",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7243",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7243",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7244",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7244",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7245",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7245",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7246",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7246",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7247",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7247",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7248",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7248",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7249",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7249",
-        "id": "2",
-        "status": "ok"
-      }
-    ],
-    "fluxoSpark": [
-      1585,
-      1578,
-      1433,
-      1541,
-      1613,
-      1592,
-      1567,
-      1542,
-      1560,
-      1613,
-      1639,
-      1640,
-      1659,
-      1628,
-      1588,
-      1516,
-      496
-    ],
-    "cor": "#4ade80",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Tue)"
-  },
-  {
-    "id": "PRVIAS",
-    "nome": "PRVIAS",
-    "arquivo": "dashboard_PRVIAS.html",
-    "rodovias": [
-      "BR-373",
-      "BR-376",
-      "PR-445"
-    ],
-    "uf": "PR",
-    "totalEquip": 28,
-    "totalFaixas": 54,
-    "fluxoHoje": 144904,
-    "lapMedio": 80.6,
-    "aprovMedio": 0.984,
-    "funcMedio": 78.4,
-    "faixasCrit": 25,
-    "faixasWarn": 12,
-    "faixasOk": 17,
-    "faixasOff": 0,
-    "afericoesVenc60": 0,
-    "faixasSample": [
-      {
-        "serie": "7515",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7515",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7516",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7516",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7517",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7517",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7518",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7518",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7519",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7519",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7520",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7520",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7521",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7521",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7522",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7522",
-        "id": "2",
-        "status": "ok"
-      }
-    ],
-    "fluxoSpark": [
-      136486,
-      161029,
-      176755,
-      181656,
-      170947,
-      204584,
-      171781,
-      172996,
-      222987,
-      238671,
-      265718,
-      272010,
-      295268,
-      252207,
-      235865,
-      301135,
-      144904
-    ],
-    "cor": "#22d3a0",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
-  },
-  {
-    "id": "SEEC-DF",
-    "nome": "SEEC-DF",
-    "arquivo": "dashboard_SEEC-DF.html",
-    "rodovias": [
-      "BR-020",
-      "BR-040",
-      "BR-070",
-      "BR-080"
-    ],
-    "uf": "PR",
-    "totalEquip": 7,
-    "totalFaixas": 13,
-    "fluxoHoje": 93048,
-    "lapMedio": 92.9,
+    "totalEquip": 40,
+    "totalFaixas": 85,
+    "fluxoHoje": 109809,
+    "lapMedio": 65.6,
     "aprovMedio": 0,
-    "funcMedio": 100.0,
-    "faixasCrit": 0,
-    "faixasWarn": 1,
-    "faixasOk": 11,
-    "faixasOff": 1,
-    "afericoesVenc60": 0,
+    "funcMedio": 98.3,
+    "faixasCrit": 28,
+    "faixasWarn": 34,
+    "faixasOk": 21,
+    "faixasOff": 2,
+    "afericoesVenc60": 27,
     "faixasSample": [
       {
-        "serie": "75",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "76",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "76",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "79",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "79",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "80",
+        "serie": "444",
         "id": "1",
         "status": "warn"
       },
       {
-        "serie": "80",
+        "serie": "444",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "445",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "445",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "446",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "446",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "447",
+        "id": "1",
+        "status": "crit"
+      },
+      {
+        "serie": "447",
+        "id": "2",
+        "status": "crit"
+      },
+      {
+        "serie": "448",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "448",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "449",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "449",
         "id": "2",
         "status": "ok"
       },
       {
-        "serie": "81",
+        "serie": "450",
+        "id": "1",
+        "status": "warn"
+      },
+      {
+        "serie": "450",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "451",
         "id": "1",
         "status": "ok"
       },
       {
-        "serie": "81",
+        "serie": "451",
         "id": "2",
         "status": "ok"
-      },
-      {
-        "serie": "82",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "82",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "83",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "83",
-        "id": "2",
-        "status": "off"
       }
     ],
     "fluxoSpark": [
-      90412,
-      104279,
-      101452,
-      100240,
-      97239,
-      113959,
-      118191,
-      92980,
-      97788,
-      103333,
-      101956,
-      105077,
-      105192,
-      109194,
-      92727,
-      100722,
-      93048
+      136005,
+      206558,
+      206075,
+      202503,
+      208916,
+      218128,
+      192062,
+      155699,
+      196075,
+      184793,
+      198882,
+      190915,
+      202159,
+      160127,
+      129498,
+      181360,
+      186841,
+      109809
     ],
-    "cor": "#f59e0b",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "cor": "#0ea5e9",
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "SEINFRA",
@@ -2998,7 +2924,7 @@ const CONTRATOS = [
       247966
     ],
     "cor": "#8b5cf6",
-    "atualizado": "17/03/2026 22:39",
+    "atualizado": "18/03/2026 17:33",
     "referencia": "D-1 (17 Ter)"
   },
   {
@@ -3009,20 +2935,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 30,
     "totalFaixas": 74,
-    "fluxoHoje": 111993,
-    "lapMedio": 73.0,
+    "fluxoHoje": 122085,
+    "lapMedio": 75.0,
     "aprovMedio": 1.0,
-    "funcMedio": 89.8,
-    "faixasCrit": 14,
-    "faixasWarn": 25,
-    "faixasOk": 20,
+    "funcMedio": 89.5,
+    "faixasCrit": 13,
+    "faixasWarn": 24,
+    "faixasOk": 22,
     "faixasOff": 15,
     "afericoesVenc60": 14,
     "faixasSample": [
       {
         "serie": "230",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "230",
@@ -3077,7 +3003,7 @@ const CONTRATOS = [
       {
         "serie": "236",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "236",
@@ -3117,11 +3043,12 @@ const CONTRATOS = [
       188235,
       136777,
       199289,
-      111993
+      199618,
+      122085
     ],
     "cor": "#f43f5e",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   },
   {
     "id": "SIGVIAS-GOIANIA",
@@ -3131,13 +3058,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 60,
     "totalFaixas": 132,
-    "fluxoHoje": 1430,
-    "lapMedio": 85.4,
-    "aprovMedio": 0.833,
-    "funcMedio": 91.9,
-    "faixasCrit": 22,
-    "faixasWarn": 70,
-    "faixasOk": 27,
+    "fluxoHoje": 373761,
+    "lapMedio": 84.2,
+    "aprovMedio": 0.819,
+    "funcMedio": 92.2,
+    "faixasCrit": 25,
+    "faixasWarn": 74,
+    "faixasOk": 20,
     "faixasOff": 13,
     "afericoesVenc60": 16,
     "faixasSample": [
@@ -3154,7 +3081,7 @@ const CONTRATOS = [
       {
         "serie": "577",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "577",
@@ -3223,27 +3150,28 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      2565,
-      2239,
-      2246,
-      2438,
-      2571,
-      2539,
-      2511,
-      2559,
-      2482,
-      2464,
-      2403,
-      2355,
-      2422,
-      1997,
-      2490,
-      2481,
-      1430
+      306269,
+      405571,
+      452147,
+      488900,
+      534370,
+      537530,
+      424725,
+      317053,
+      482954,
+      473707,
+      456362,
+      459767,
+      483665,
+      283503,
+      298323,
+      507480,
+      511354,
+      373761
     ],
     "cor": "#fb923c",
-    "atualizado": "17/03/2026 22:39",
-    "referencia": "D-1 (17 Ter)"
+    "atualizado": "18/03/2026 17:33",
+    "referencia": "D-1 (18 Qua)"
   }
 ];
 
@@ -3507,6 +3435,23 @@ async function abrirConfigurador(){
   const jaTemToken = !!getAgentToken();
   if(!jaTemToken) await agenteAuth(s);
   window.location.href = _urlConfigurador();
+}
+
+function toggleMenu(){
+  const drop = document.getElementById('menuDropdown');
+  drop.classList.toggle('open');
+}
+// Fecha ao clicar fora
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('menuWrap');
+  if(wrap && !wrap.contains(e.target)){
+    document.getElementById('menuDropdown').classList.remove('open');
+  }
+});
+
+function abrirAtendimentos(){
+  const url = _isAgent() ? '/app/atendimentos' : 'dashboard_atendimentos.html';
+  window.location.href = url;
 }
 
 function verificarSessaoPortal(){
