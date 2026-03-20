@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 11:33">
+<meta name="gerado" content="20/03/2026 11:45">
 <script>
 var _THR_APROV_OK=0.9;var _THR_APROV_WARN=0.8;var _THR_APROV_CRIT=0.7;var _THR_FUNC_OK=95;var _THR_FUNC_WARN=80;var _THR_LAP_OK=80;var _THR_LAP_WARN=60;var _RELATORIOS_ATIVOS={"lap_integral":true,"lap_tr_manha":true,"lap_diurno":true,"lap_tr_tarde":true,"lap_noturno":true,"aproveitamento":true,"fluxo":true,"infracoes":true,"teste":true,"horario":true,"csv_consulta":true};
 </script>
@@ -1141,7 +1141,7 @@ function buildPainel(){
     const horasTeste=vals.reduce((a,b)=>a+b,0);
     const pct=horasEsp>0?horasTeste/horasEsp*100:0;
     if(pct>0){funcSum+=pct;funcN++;}
-    if(pct>=THR_FUNC_OK)tsOkP++;else if(pct>=THR_FUNC_WARN)tsWarnP++;else{tsCritP++;funcCritList.push({...fx,funcPct:pct});}
+    if(!fx.desativado){if(pct>=THR_FUNC_OK)tsOkP++;else if(pct>=THR_FUNC_WARN)tsWarnP++;else{tsCritP++;funcCritList.push({...fx,funcPct:pct});}}
   });
 
   // Referência de atualização
@@ -1171,8 +1171,11 @@ function buildPainel(){
 
   funcCritList.sort((a,b)=>a.funcPct-b.funcPct);
   setHTML$('pFuncCritList',funcCritList.length?funcCritList.slice(0,6).map((fx,i)=>{
-    const cor=fx.funcPct>=80?'var(--yellow)':'var(--red)';
-    return rankRow(i,fx._serie,fx.id,fx._local,`<span style="color:${cor}">${fx.funcPct>0?fx.funcPct.toFixed(1)+'%':'Sem dados'}</span>`);
+    const pct=fx.funcPct||0;
+    const cor=pct>=THR_FUNC_OK?'var(--green)':pct>=THR_FUNC_WARN?'var(--yellow)':'var(--red)';
+    const lbl=pct>=THR_FUNC_OK?'Ótimo':pct>=THR_FUNC_WARN?'Atenção':'Crítico';
+    const badge=`<span style="display:inline-flex;align-items:center;gap:6px"><span style="font-family:var(--mono);font-size:12px;color:${cor};font-weight:700">${pct>0?pct.toFixed(1)+'%':'Sem dados'}</span><span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:${cor}18;color:${cor}">${pct>0?lbl:'—'}</span></span>`;
+    return rankRow(i,fx._serie,fx.id,fx._local,badge);
   }).join(''):'<div style="padding:12px;color:var(--green);font-size:12px">✅ Todas as faixas OK</div>');
 }
 
