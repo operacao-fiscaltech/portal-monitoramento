@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 11:04">
+<meta name="gerado" content="20/03/2026 11:12">
 <script>
 var _THR_APROV_OK=1;var _THR_APROV_WARN=0.85;var _THR_APROV_CRIT=0.7000000000000001;var _THR_FUNC_OK=100;var _THR_FUNC_WARN=80;var _THR_LAP_OK=80;var _THR_LAP_WARN=60;var _RELATORIOS_ATIVOS={"lap_integral":true,"lap_tr_manha":true,"lap_diurno":true,"lap_tr_tarde":true,"lap_noturno":true,"aproveitamento":true,"fluxo":true,"infracoes":false,"teste":true,"horario":true,"csv_consulta":true};
 </script>
@@ -1238,7 +1238,7 @@ function buildAvTable(){
     <td style="text-align:right;font-family:var(--mono);color:var(--red);font-weight:700">${f.inc_tec}</td>
     <td>${indCell(f.indice_aprov)}</td>
   </tr>`;
-}).join(''));
+}).join('');
   const el=document.getElementById('avBody');
   if(el) el.innerHTML=rows||'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:16px">Sem resultados</td></tr>';
 
@@ -1690,7 +1690,7 @@ function buildTopInc(){
     <td style="background:rgba(220,38,38,.04)">${barC(f.csv_tec,f.csv_total,'var(--red)')}</td>
     <td style="background:rgba(220,38,38,.04);min-width:180px;padding:6px 10px">${top3(f.csv_tec_top,'var(--red)')}</td>
   </tr>`;
-}).join(''))||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">Sem dados</td></tr>';
+}).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">Sem dados</td></tr>';
 
   makeSortable('avInfraTable');
 }
@@ -1736,7 +1736,7 @@ function buildInfraDiario(){
     ${showN?`<td style="background:rgba(217,119,6,.04)">${barC(f.csv_ntec,f.csv_total,'var(--yellow)')}</td>`:''}
     ${showT?`<td style="background:rgba(220,38,38,.04)">${barC(f.csv_tec,f.csv_total,'var(--red)')}</td>`:''}
   </tr>`;
-}).join(''));
+}).join('');
 
   const geralHtml=`<div style="margin-bottom:20px">
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px">
