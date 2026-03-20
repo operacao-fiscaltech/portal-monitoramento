@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 11:45">
+<meta name="gerado" content="20/03/2026 11:52">
 <script>
 var _THR_APROV_OK=0.9;var _THR_APROV_WARN=0.8;var _THR_APROV_CRIT=0.7;var _THR_FUNC_OK=95;var _THR_FUNC_WARN=80;var _THR_LAP_OK=80;var _THR_LAP_WARN=60;var _RELATORIOS_ATIVOS={"lap_integral":true,"lap_tr_manha":true,"lap_diurno":true,"lap_tr_tarde":true,"lap_noturno":true,"aproveitamento":true,"fluxo":true,"infracoes":true,"teste":true,"horario":true,"csv_consulta":true};
 </script>
@@ -413,6 +413,7 @@ var _THR_APROV_OK=0.9;var _THR_APROV_WARN=0.8;var _THR_APROV_CRIT=0.7;var _THR_F
             <th style="color:var(--yellow)">Inc. N-Técnica</th>
             <th style="color:var(--red)">Inc. Técnica</th>
             <th>Índice Aprov.</th>
+            <th>Status</th>
           </tr></thead>
           <tbody id="avBody"></tbody>
         </table>
@@ -1230,7 +1231,7 @@ function buildAvTable(){
     </div>`;
   }
   const rows=faixas.map(f=>{
-  if(f.desativado)return rowDesativado(f.serie,f.faixa,f.local,7);
+  if(f.desativado)return rowDesativado(f.serie,f.faixa,f.local,8);
   return `<tr>
     <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${f.serie}</td>
     <td style="text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
@@ -1240,6 +1241,7 @@ function buildAvTable(){
     <td style="text-align:right;font-family:var(--mono);color:var(--yellow);font-weight:700">${f.inc_ntec}</td>
     <td style="text-align:right;font-family:var(--mono);color:var(--red);font-weight:700">${f.inc_tec}</td>
     <td>${indCell(f.indice_aprov)}</td>
+    <td><span class="badge ${bAprov(f.indice_aprov)}">${f.indice_aprov>=THR_APROV_OK?'Ótimo':f.indice_aprov>=THR_APROV_WARN?'Atenção':'Crítico'}</span></td>
   </tr>`;
 }).join('');
   const el=document.getElementById('avBody');
