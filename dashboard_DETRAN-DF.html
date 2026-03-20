@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 09:23">
+<meta name="gerado" content="20/03/2026 09:34">
 </head>
 <body>
 <div class="layout">
@@ -1055,7 +1055,7 @@ const HIST_BUCKETS_FUNC = [
 // ══════════════════════════════════════════════
 function hmColor(val,prev,tipo){
   if(val==null||val===0)return{bg:'#f1f5f9',txt:'#9ca3af'};
-  if(tipo==='lap')return{bg:val>=90?'#bbf7d0':val>=80?'#fde68a':'#fecaca',txt:val>=90?'#166534':val>=80?'#92400e':'#991b1b'};
+  if(tipo==='lap')return{bg:val>=THR_LAP_OK?'#bbf7d0':val>=THR_LAP_WARN?'#fde68a':'#fecaca',txt:val>=THR_LAP_OK?'#166534':val>=THR_LAP_WARN?'#92400e':'#991b1b'};
   if(tipo==='aprov')return{bg:val>=(THR_APROV_OK*100)?'#bbf7d0':val>=(THR_APROV_WARN*100)?'#fde68a':'#fecaca',txt:val>=(THR_APROV_OK*100)?'#166534':val>=(THR_APROV_WARN*100)?'#92400e':'#991b1b'};
   // fluxo/infra: mapa de calor relativo ao anterior
   if(prev==null||prev===0)return{bg:'#dbeafe',txt:'#1e40af'};
@@ -1113,7 +1113,7 @@ function buildPainel(){
     if(lap>0){lapSum+=lap;lapN++;}
     if(aprov>=THR_APROV_OK)ok++;else if(aprov>=THR_APROV_WARN)warn++;else if(aprov>0)crit++;
     if(aprov>0&&aprov<THR_APROV_OK)aprovCritList.push(fx);
-    if(lap>0&&lap<80)lapCritList.push({...fx,lapVal:lap});
+    if(lap>0&&lap<THR_LAP_OK)lapCritList.push({...fx,lapVal:lap});
   });
 
   let afVencP=0,afUrgP=0,afAtP=0;
