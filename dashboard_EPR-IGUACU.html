@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 10:19">
+<meta name="gerado" content="20/03/2026 10:44">
 </head>
 <body>
 <div class="layout">
@@ -808,6 +808,18 @@ const corLap     = v=>v>=THR_LAP_OK?'var(--green)':v>=THR_LAP_WARN?'var(--yellow
 const corLapBg   = v=>v>=THR_LAP_OK?'var(--green-bg)':v>=THR_LAP_WARN?'var(--yellow-bg)':'var(--red-bg)';
 const bAprov     = v=>v>=THR_APROV_OK?'b-g':v>=THR_APROV_WARN?'b-y':'b-r';
 const bLap       = v=>v>=THR_LAP_OK?'b-g':v>=THR_LAP_WARN?'b-y':'b-r';
+
+// Helper: linha cinza para faixa desativada — usada em todas as tabelas
+function rowDesativado(serie, faixa, local, nCols){
+  const empties=Array(Math.max(0,nCols-3)).fill('<td style="text-align:center;color:#cbd5e1">—</td>').join('');
+  return `<tr style="background:#f8fafc">
+    <td style="font-family:var(--mono);font-weight:600;color:#94a3b8">${serie}</td>
+    <td style="text-align:center"><span style="background:#e2e8f0;color:#94a3b8;border-radius:4px;padding:2px 6px;font-size:10px">F${faixa}</span></td>
+    <td style="font-size:11px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">${local||'—'}</td>
+    ${empties}
+    <td><span style="background:#e2e8f0;color:#94a3b8;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700">DESATIVADO</span></td>
+  </tr>`;
+}
 const bAfer      = d=>d<=30?'b-r':d<=90?'b-y':'b-g';
 const lblAfer    = d=>d<=30?'Urgente':d<=90?'Atenção':'OK';
 const set$       = (id,v)=>{ const e=document.getElementById(id);if(e)e.textContent=v; };
@@ -1542,6 +1554,7 @@ function buildHorario(){
 
   // Linhas SEM dados
   const rowsSem=semDados.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,horas.length+1);
     const cells=horas.map(()=>`<td style="background:rgba(220,38,38,.07);color:rgba(220,38,38,.4);font-size:9px;text-align:center">—</td>`).join('');
     return`<tr style="background:rgba(220,38,38,.04)">
       <td class="eq-lbl" style="color:var(--red);font-weight:700">${fx._serie} F${fx.id} — ${fx._local.slice(0,18)}</td>
@@ -1729,7 +1742,9 @@ function buildTopInc(){
         `<div style="font-size:9px;line-height:1.5;color:var(--muted2)"><b style="color:${col}">${n}</b> ${d.length>28?d.slice(0,28)+'…':d}</div>`
       ).join('')+'</div>';
   }
-  el.innerHTML=faixas.map(f=>`<tr>
+  el.innerHTML=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,4);
+    return `<tr>
     <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${f.serie}</td>
     <td style="text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
     <td style="font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.local||'—'}</td>
@@ -1739,7 +1754,7 @@ function buildTopInc(){
     <td style="background:rgba(217,119,6,.04);min-width:180px;padding:6px 10px">${top3(f.csv_ntec_top,'var(--yellow)')}</td>
     <td style="background:rgba(220,38,38,.04)">${barC(f.csv_tec,f.csv_total,'var(--red)')}</td>
     <td style="background:rgba(220,38,38,.04);min-width:180px;padding:6px 10px">${top3(f.csv_tec_top,'var(--red)')}</td>
-  </tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">Sem dados</td></tr>';
+  </tr>`; }).join(''))||'<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:16px">Sem dados</td></tr>';
 
   makeSortable('avInfraTable');
 }
@@ -1774,7 +1789,9 @@ function buildInfraDiario(){
   const showT=tipoSel===''||tipoSel==='tec';
 
   // ── Tabela resumo — mesma fonte das demais tabelas ──
-  const geralRows=faixas.map(f=>`<tr>
+  const geralRows=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,7);
+    return `<tr>
     <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${f.serie}</td>
     <td style="text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
     <td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.local||'—'}</td>
@@ -1782,7 +1799,7 @@ function buildInfraDiario(){
     ${showC?`<td style="background:rgba(5,150,105,.04)">${barC(f.csv_consist,f.csv_total,'var(--green)')}</td>`:''}
     ${showN?`<td style="background:rgba(217,119,6,.04)">${barC(f.csv_ntec,f.csv_total,'var(--yellow)')}</td>`:''}
     ${showT?`<td style="background:rgba(220,38,38,.04)">${barC(f.csv_tec,f.csv_total,'var(--red)')}</td>`:''}
-  </tr>`).join('');
+  </tr>`; }).join(''));
 
   const geralHtml=`<div style="margin-bottom:20px">
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px">
@@ -1811,6 +1828,7 @@ function buildInfraDiario(){
     <th style="text-align:center;background:#991b1b;color:white;font-size:9px;padding:4px;min-width:44px">Téc.</th>`).join('');
 
   const diaRows=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,datas.length+1);
     const bd=f.by_date||{};
     const cells=datas.map(d=>{
       const dv=bd[d]||{};
@@ -1873,6 +1891,7 @@ function buildTeste(){
 
   // Geral por faixa (só para renderizar a tabela)
   const geralRows=faixas.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,5);
     const testeObj=fx.teste||{};
     const vals=dias.map(d=>testeObj[d]||0);
     const horasEsp=dias.length*24;
@@ -1904,6 +1923,7 @@ function buildTeste(){
   // Dia a dia — mapa de calor (horas/24 = %)
   const headers=dias.map(d=>`<th style="min-width:65px">${fmtDia(d)}</th>`).join('');
   const diaRows=faixas.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,dias.length+1);
     const cells=dias.map((d,i)=>{
       const v=fx.teste?.[d];
       if(v==null)return`<td class="center" style="color:var(--muted2)">—</td>`;
@@ -2393,7 +2413,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 10:19">
+<meta name="gerado" content="20/03/2026 10:44">
 </head>
 <body>
 <div class="layout">
@@ -2951,6 +2971,18 @@ const corLap     = v=>v>=THR_LAP_OK?'var(--green)':v>=THR_LAP_WARN?'var(--yellow
 const corLapBg   = v=>v>=THR_LAP_OK?'var(--green-bg)':v>=THR_LAP_WARN?'var(--yellow-bg)':'var(--red-bg)';
 const bAprov     = v=>v>=THR_APROV_OK?'b-g':v>=THR_APROV_WARN?'b-y':'b-r';
 const bLap       = v=>v>=THR_LAP_OK?'b-g':v>=THR_LAP_WARN?'b-y':'b-r';
+
+// Helper: linha cinza para faixa desativada — usada em todas as tabelas
+function rowDesativado(serie, faixa, local, nCols){
+  const empties=Array(Math.max(0,nCols-3)).fill('<td style="text-align:center;color:#cbd5e1">—</td>').join('');
+  return `<tr style="background:#f8fafc">
+    <td style="font-family:var(--mono);font-weight:600;color:#94a3b8">${serie}</td>
+    <td style="text-align:center"><span style="background:#e2e8f0;color:#94a3b8;border-radius:4px;padding:2px 6px;font-size:10px">F${faixa}</span></td>
+    <td style="font-size:11px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">${local||'—'}</td>
+    ${empties}
+    <td><span style="background:#e2e8f0;color:#94a3b8;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700">DESATIVADO</span></td>
+  </tr>`;
+}
 const bAfer      = d=>d<=30?'b-r':d<=90?'b-y':'b-g';
 const lblAfer    = d=>d<=30?'Urgente':d<=90?'Atenção':'OK';
 const set$       = (id,v)=>{ const e=document.getElementById(id);if(e)e.textContent=v; };
@@ -3685,6 +3717,7 @@ function buildHorario(){
 
   // Linhas SEM dados
   const rowsSem=semDados.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,horas.length+1);
     const cells=horas.map(()=>`<td style="background:rgba(220,38,38,.07);color:rgba(220,38,38,.4);font-size:9px;text-align:center">—</td>`).join('');
     return`<tr style="background:rgba(220,38,38,.04)">
       <td class="eq-lbl" style="color:var(--red);font-weight:700">${fx._serie} F${fx.id} — ${fx._local.slice(0,18)}</td>
@@ -3872,7 +3905,9 @@ function buildTopInc(){
         `<div style="font-size:9px;line-height:1.5;color:var(--muted2)"><b style="color:${col}">${n}</b> ${d.length>28?d.slice(0,28)+'…':d}</div>`
       ).join('')+'</div>';
   }
-  el.innerHTML=faixas.map(f=>`<tr>
+  el.innerHTML=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,4);
+    return `<tr>
     <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${f.serie}</td>
     <td style="text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
     <td style="font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.local||'—'}</td>
@@ -3917,7 +3952,9 @@ function buildInfraDiario(){
   const showT=tipoSel===''||tipoSel==='tec';
 
   // ── Tabela resumo — mesma fonte das demais tabelas ──
-  const geralRows=faixas.map(f=>`<tr>
+  const geralRows=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,7);
+    return `<tr>
     <td style="font-family:var(--mono);font-weight:700;color:var(--accent)">${f.serie}</td>
     <td style="text-align:center"><span style="background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.25);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700">F${f.faixa}</span></td>
     <td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.local||'—'}</td>
@@ -3954,6 +3991,7 @@ function buildInfraDiario(){
     <th style="text-align:center;background:#991b1b;color:white;font-size:9px;padding:4px;min-width:44px">Téc.</th>`).join('');
 
   const diaRows=faixas.map(f=>{
+    if(f.desativado) return rowDesativado(f.serie,f.faixa,f.local,datas.length+1);
     const bd=f.by_date||{};
     const cells=datas.map(d=>{
       const dv=bd[d]||{};
@@ -4016,6 +4054,7 @@ function buildTeste(){
 
   // Geral por faixa (só para renderizar a tabela)
   const geralRows=faixas.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,5);
     const testeObj=fx.teste||{};
     const vals=dias.map(d=>testeObj[d]||0);
     const horasEsp=dias.length*24;
@@ -4047,6 +4086,7 @@ function buildTeste(){
   // Dia a dia — mapa de calor (horas/24 = %)
   const headers=dias.map(d=>`<th style="min-width:65px">${fmtDia(d)}</th>`).join('');
   const diaRows=faixas.map(fx=>{
+    if(fx.desativado) return rowDesativado(fx._serie,fx.id,fx._local,dias.length+1);
     const cells=dias.map((d,i)=>{
       const v=fx.teste?.[d];
       if(v==null)return`<td class="center" style="color:var(--muted2)">—</td>`;
