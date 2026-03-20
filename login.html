@@ -201,10 +201,10 @@ function sha256(str) {
 var SESSION_KEY    = 'ft_session';
 var AGENT_TK_KEY  = 'ft_agent_token';
 
-// Detecta contexto: agente (porta 5001) ou GitHub Pages
+// Detecta contexto: agente (servido via HTTP/HTTPS) ou arquivo local (file://)
 function _isAgent() {
-  // Aceita qualquer porta HTTP local (5001 produção, 5002 teste, etc)
-  return window.location.protocol === 'http:' && window.location.hostname !== '';
+  // Funciona com HTTP e HTTPS — rejeita apenas file://
+  return window.location.protocol !== 'file:';
 }
 function urlPortal() {
   return _isAgent() ? '/app/portal' : 'portal.html';
@@ -279,7 +279,6 @@ function _tentarTokenAgente(user, h) {
       localStorage.setItem(AGENT_TK_KEY, d.token);
       localStorage.setItem('agent_token', d.token);  // compatibilidade
     }
-            localStorage.setItem('agent_token', d.token);  // compatibilidade com configurar_contratos
   }).catch(function() {});
 }
 
