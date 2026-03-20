@@ -403,6 +403,7 @@ var _token  = '';
 var _config = {global:{},contratos:[]};
 var _users  = {};
 var _selContratados = new Set();
+var _selIniciado = false;
 var _logOffset = 0;
 var _pollLog   = null;
 
@@ -729,19 +730,46 @@ function renderSelGrid() {
   var grid  = document.getElementById('selGrid');
   var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
   if (!lista.length) { grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>'; return; }
-  if (_selContratados.size === 0) lista.forEach(function(c){_selContratados.add(c.id);});
+  // Inicializa com todos selecionados só na primeira vez
+  if (!_selIniciado) { lista.forEach(function(c){_selContratados.add(c.id);}); _selIniciado = true; }
+  var total = lista.length;
+  var selecionados = lista.filter(function(c){return _selContratados.has(c.id);}).length;
+  // Atualiza contador
+  var badge = document.getElementById('selBadge');
+  if (badge) badge.textContent = selecionados + '/' + total;
   grid.innerHTML = lista.map(function(c) {
     var on = _selContratados.has(c.id);
-    return '<div class="chip ' + (on?'on':'') + '" onclick="toggleSel(\'' + c.id + '\',this)">' + esc(c.id) + '</div>';
+    return '<label class="chip ' + (on?'on':'') + '" style="cursor:pointer;user-select:none">' +
+      '<input type="checkbox"' + (on?' checked':'') + ' style="display:none" onchange="toggleSel(\'' + c.id + '\',this.parentElement)">' +
+      '<span style="font-size:10px;margin-right:2px">' + (on?'☑':'☐') + '</span>' +
+      esc(c.id) + '</label>';
   }).join('');
 }
 
 function toggleSel(id, el) {
-  if (_selContratados.has(id)) { _selContratados.delete(id); el.classList.remove('on'); }
-  else { _selContratados.add(id); el.classList.add('on'); }
+  if (_selContratados.has(id)) {
+    _selContratados.delete(id);
+    el.classList.remove('on');
+    var icon = el.querySelector('span');
+    if (icon) icon.textContent = '☐';
+  } else {
+    _selContratados.add(id);
+    el.classList.add('on');
+    var icon = el.querySelector('span');
+    if (icon) icon.textContent = '☑';
+  }
+  var badge = document.getElementById('selBadge');
+  var total = (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).length;
+  if (badge) badge.textContent = _selContratados.size + '/' + total;
 }
-function selTodos() { (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);}); renderSelGrid(); }
-function selNenhum() { _selContratados.clear(); renderSelGrid(); }
+function selTodos() {
+  (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);});
+  renderSelGrid();
+}
+function selNenhum() {
+  _selContratados.clear();
+  renderSelGrid();
+}
 
 // ── AUTOMAÇÃO ──
 async function executar(tipo) {
