@@ -240,6 +240,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
             </svg>
             Configurador
           </a>
+          <a href="#" onclick="toggleMenu();abrirConfigurarContratos();return false;" class="menu-item" id="btnConfigurarContratos" style="display:none">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <path d="M8 21h8M12 17v4"/>
+            </svg>
+            Configurar Contratos
+          </a>
           <a href="#" onclick="toggleMenu();abrirAtendimentos();return false;" class="menu-item">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -258,7 +265,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
   <div class="hero-inner">
     <div class="hero-top">
       <div>
-        <div class="hero-title">Visão Geral — <span>Todos os Contratos</span></div>
+        <div class="hero-title" id="heroTitle">Visão Geral — <span id="heroTitleSpan">Todos os Contratos</span></div>
         <div class="hero-sub" id="heroSub">Carregando…</div>
       </div>
     </div>
@@ -818,7 +825,7 @@ const CONTRATOS = [
       35539
     ],
     "cor": "#0ea5e9",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -1453,7 +1460,7 @@ const CONTRATOS = [
       0
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -1668,7 +1675,7 @@ const CONTRATOS = [
       35207
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2348,7 +2355,7 @@ const CONTRATOS = [
       84578
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2625,7 +2632,7 @@ const CONTRATOS = [
       23329
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2805,7 +2812,7 @@ const CONTRATOS = [
       0
     ],
     "cor": "#38bdf8",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -4600,7 +4607,7 @@ const CONTRATOS = [
       474009
     ],
     "cor": "#4ade80",
-    "atualizado": "20/03/2026 16:47",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -4714,7 +4721,7 @@ const CONTRATOS = [
       8978
     ],
     "cor": "#0ea5e9",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -6649,7 +6656,7 @@ const CONTRATOS = [
       1083485
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:22",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -6849,7 +6856,7 @@ const CONTRATOS = [
       6826
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -7641,7 +7648,7 @@ const CONTRATOS = [
       117055
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -7848,7 +7855,7 @@ const CONTRATOS = [
       72296
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -8148,7 +8155,7 @@ const CONTRATOS = [
       42235
     ],
     "cor": "#38bdf8",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -8638,7 +8645,7 @@ const CONTRATOS = [
       63001
     ],
     "cor": "#4ade80",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -9298,7 +9305,7 @@ const CONTRATOS = [
       72830
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -9611,7 +9618,7 @@ const CONTRATOS = [
       92669
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -9877,7 +9884,7 @@ const CONTRATOS = [
       29130
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10257,7 +10264,7 @@ const CONTRATOS = [
       47849
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10567,7 +10574,7 @@ const CONTRATOS = [
       201496
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10886,7 +10893,7 @@ const CONTRATOS = [
       29892
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -11301,7 +11308,7 @@ const CONTRATOS = [
       34605
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:23",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -12131,7 +12138,7 @@ const CONTRATOS = [
       147593
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:48",
+    "atualizado": "20/03/2026 17:24",
     "referencia": "D-1 (20 Sex)"
   }
 ];
@@ -12170,6 +12177,12 @@ function buildConsolidado() {
   const dt = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   document.getElementById('heroSub').textContent =
     `${dt}  ·  ${CONTRATOS.length} contratos ativos  ·  ${nCrit} em situação crítica`;
+
+  // Título dinâmico: se só há 1 contrato, exibe o nome dele
+  const spanTitulo = document.getElementById('heroTitleSpan');
+  if(spanTitulo){
+    spanTitulo.textContent = CONTRATOS.length === 1 ? CONTRATOS[0].nome : 'Todos os Contratos';
+  }
 
   if(nCrit>0){
     const al=document.getElementById('statusAlerta');
@@ -12329,7 +12342,11 @@ function getSessaoPortal(){
   try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY))||null; }catch(e){ return null; }
 }
 function getAgentToken(){
-  return sessionStorage.getItem(AGENT_TOKEN_KEY)||'';
+  // Busca em sessionStorage e localStorage (login.html salva em ambos)
+  return sessionStorage.getItem(AGENT_TOKEN_KEY)
+      || localStorage.getItem(AGENT_TOKEN_KEY)
+      || localStorage.getItem('agent_token')
+      || '';
 }
 function logoutPortal(){
   sessionStorage.removeItem(SESSION_KEY);
@@ -12398,6 +12415,14 @@ async function abrirConfigurador(){
   window.location.href = _urlConfigurador();
 }
 
+async function abrirConfigurarContratos(){
+  const s = getSessaoPortal();
+  if(!s) return;
+  const jaTemToken = !!getAgentToken();
+  if(!jaTemToken) await agenteAuth(s);
+  window.location.href = _isAgent() ? '/app/configurar_contratos' : 'configurar_contratos.html';
+}
+
 function toggleMenu(){
   const drop = document.getElementById('menuDropdown');
   drop.classList.toggle('open');
@@ -12431,9 +12456,15 @@ function verificarSessaoPortal(){
     badge.style.color    = 'white';
   }
 
-  // Esconde configurador para analistas
+  // Esconde configurador para analistas; mostra Configurar Contratos só para adm_sis
   const btnCfg = document.getElementById('btnConfigurador');
-  if(btnCfg && s.nivel === 'analista') btnCfg.style.display='none';
+  const btnCfgContratos = document.getElementById('btnConfigurarContratos');
+  if(s.nivel === 'analista'){
+    if(btnCfg) btnCfg.style.display='none';
+    if(btnCfgContratos) btnCfgContratos.style.display='none';
+  } else if(s.nivel === 'adm_sis'){
+    if(btnCfgContratos) btnCfgContratos.style.display='flex';
+  }
 
   // Autentica silenciosamente no agente em background
   if(s.nivel !== 'analista') agenteAuth(s);
