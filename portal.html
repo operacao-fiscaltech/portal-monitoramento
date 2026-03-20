@@ -306,8 +306,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 // ══════════════════════════════════════════════════════
 var AGENT_URL = "http://172.16.79.63:5001"; // substituído pelo agente
 
-// Navegação inteligente — detecta se está no agente (/app/) ou GitHub Pages
-function _isAgent()         { return window.location.port === '5001'; }
+// Navegação inteligente — detecta se está no agente (HTTP/HTTPS) ou arquivo local (file://)
+function _isAgent()         { return window.location.protocol !== 'file:'; }
 function _urlLogin()        { return _isAgent() ? '/app/login'      : 'login.html'; }
 function _urlPortal()       { return _isAgent() ? '/app/portal'     : 'portal.html'; }
 function _urlConfigurador() { return _isAgent() ? '/app/configurar' : 'configurar_fiscaltech.html'; }
@@ -818,7 +818,7 @@ const CONTRATOS = [
       35539
     ],
     "cor": "#0ea5e9",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -1453,7 +1453,7 @@ const CONTRATOS = [
       0
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -1668,7 +1668,7 @@ const CONTRATOS = [
       35207
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2348,7 +2348,7 @@ const CONTRATOS = [
       84578
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2625,7 +2625,7 @@ const CONTRATOS = [
       23329
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -2805,7 +2805,7 @@ const CONTRATOS = [
       0
     ],
     "cor": "#38bdf8",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -4600,7 +4600,7 @@ const CONTRATOS = [
       474009
     ],
     "cor": "#4ade80",
-    "atualizado": "20/03/2026 16:17",
+    "atualizado": "20/03/2026 16:47",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -4714,7 +4714,7 @@ const CONTRATOS = [
       8978
     ],
     "cor": "#0ea5e9",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -6649,7 +6649,7 @@ const CONTRATOS = [
       1083485
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -6849,7 +6849,7 @@ const CONTRATOS = [
       6826
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -7641,7 +7641,7 @@ const CONTRATOS = [
       117055
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -7848,7 +7848,7 @@ const CONTRATOS = [
       72296
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -8148,7 +8148,7 @@ const CONTRATOS = [
       42235
     ],
     "cor": "#38bdf8",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -8638,7 +8638,7 @@ const CONTRATOS = [
       63001
     ],
     "cor": "#4ade80",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Fri)"
   },
   {
@@ -9298,7 +9298,7 @@ const CONTRATOS = [
       72830
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -9611,7 +9611,7 @@ const CONTRATOS = [
       92669
     ],
     "cor": "#f59e0b",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -9877,7 +9877,7 @@ const CONTRATOS = [
       29130
     ],
     "cor": "#8b5cf6",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10257,7 +10257,7 @@ const CONTRATOS = [
       47849
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10567,7 +10567,7 @@ const CONTRATOS = [
       201496
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -10886,7 +10886,7 @@ const CONTRATOS = [
       29892
     ],
     "cor": "#22d3a0",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -11301,7 +11301,7 @@ const CONTRATOS = [
       34605
     ],
     "cor": "#f43f5e",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   },
   {
@@ -12131,7 +12131,7 @@ const CONTRATOS = [
       147593
     ],
     "cor": "#fb923c",
-    "atualizado": "20/03/2026 16:18",
+    "atualizado": "20/03/2026 16:48",
     "referencia": "D-1 (20 Sex)"
   }
 ];
