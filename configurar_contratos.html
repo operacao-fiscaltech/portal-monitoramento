@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscaltech — Configuração de Contratos</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f0f4f8;--surface:#fff;--border:#dde3ed;--border2:#c5cfe0;
+    --accent:#0066cc;--accent2:#0052a3;--accent3:#e8f0fc;
+    --green:#059669;--green-bg:#ecfdf5;--green-b:#a7f3d0;
+    --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
+    --red:#dc2626;--red-bg:#fef2f2;--red-b:#fecaca;
+    --text:#0f1b2d;--text2:#374151;--muted:#6b7280;
+    --body:'Plus Jakarta Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh}
+
+  /* HEADER */
+  .header{background:var(--accent);color:#fff;padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .header-logo{font-weight:700;font-size:16px;letter-spacing:-.3px}
+  .header-sep{opacity:.4;font-size:18px}
+  .header-title{font-size:14px;opacity:.9}
+  .header-actions{margin-left:auto;display:flex;gap:8px}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+  .btn-primary{background:#fff;color:var(--accent)}
+  .btn-primary:hover{background:#e8f0fc}
+  .btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.25)}
+  .btn-danger{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+  .btn-danger:hover{background:#fee2e2}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* LAYOUT */
+  .layout{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 56px)}
+
+  /* SIDEBAR */
+  .sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+  .sidebar-search{padding:12px;border-bottom:1px solid var(--border)}
+  .search-input{width:100%;padding:7px 10px;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:var(--body);background:var(--bg);color:var(--text);outline:none}
+  .search-input:focus{border-color:var(--accent);background:#fff}
+  .contract-list{flex:1;overflow-y:auto}
+  .contract-item{padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;transition:background .1s}
+  .contract-item:hover{background:var(--accent3)}
+  .contract-item.active{background:var(--accent3);border-left:3px solid var(--accent)}
+  .contract-item.active .ci-name{color:var(--accent);font-weight:600}
+  .ci-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .ci-name{font-size:13px;font-weight:500;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ci-badge{font-size:10px;background:var(--bg);color:var(--muted);padding:2px 6px;border-radius:10px;font-family:var(--mono);white-space:nowrap}
+
+  /* MAIN */
+  .main{overflow-y:auto;padding:24px}
+  .empty-state{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--muted)}
+  .empty-icon{font-size:48px;opacity:.3}
+
+  /* FORM */
+  .form-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .form-title{font-size:20px;font-weight:700}
+  .form-subtitle{font-size:13px;color:var(--muted);margin-top:2px}
+  .status-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+
+  .section{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .section-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:#fafbfc}
+  .section-icon{font-size:16px}
+  .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2)}
+  .section-body{padding:18px}
+
+  /* FIELDS */
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
+  .field input[type=text],.field input[type=number]{padding:8px 10px;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:var(--body);color:var(--text);outline:none;transition:border .15s}
+  .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,102,204,.1)}
+  .field-hint{font-size:11px;color:var(--muted)}
+
+  /* TOGGLE GRID */
+  .toggle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+  .toggle-card{border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s;user-select:none}
+  .toggle-card:hover{border-color:var(--accent);background:var(--accent3)}
+  .toggle-card.on{border-color:var(--green-b);background:var(--green-bg)}
+  .toggle-card.off{background:#f8fafc;opacity:.7}
+  .toggle-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;background:var(--border2)}
+  .toggle-card.on .toggle-dot{background:var(--green)}
+  .tc-label{font-size:12px;font-weight:600;flex:1}
+  .tc-badge{font-size:10px;color:var(--muted);font-family:var(--mono)}
+
+  /* THRESHOLD TABLE */
+  .thr-table{width:100%;border-collapse:collapse;font-size:13px}
+  .thr-table th{text-align:left;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:1px solid var(--border);background:#fafbfc}
+  .thr-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .thr-table tr:last-child td{border-bottom:none}
+  .thr-table tr.disabled-row td{opacity:.4}
+  .thr-label{font-weight:500}
+  .thr-input{width:80px;padding:5px 8px;border:1px solid var(--border2);border-radius:5px;font-size:13px;font-family:var(--mono);text-align:center;outline:none}
+  .thr-input:focus{border-color:var(--accent)}
+  .thr-unit{color:var(--muted);font-size:11px;margin-left:2px}
+  .thr-status{display:inline-flex;gap:4px}
+  .thr-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+  /* FAIXAS */
+  .faixas-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .faixas-search{flex:1;padding:7px 10px;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:var(--body);outline:none}
+  .faixas-search:focus{border-color:var(--accent)}
+  .faixas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-height:320px;overflow-y:auto;padding:2px}
+  .faixa-item{border:1px solid var(--border);border-radius:7px;padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .15s}
+  .faixa-item:hover{border-color:var(--accent)}
+  .faixa-item.desativada{background:var(--red-bg);border-color:var(--red-b)}
+  .faixa-item.desativada .fi-serie{color:var(--red)}
+  .fi-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
+  .faixa-item.desativada .fi-check{background:var(--red);border-color:var(--red);color:#fff}
+  .fi-serie{font-family:var(--mono);font-size:12px;font-weight:500;flex:1}
+  .fi-local{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
+  .faixas-count{font-size:12px;color:var(--muted);font-family:var(--mono)}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:8px}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast.success{background:#065f46}
+  .toast.error{background:#7f1d1d}
+
+  /* LOADING */
+  .loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .save-bar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-24px;margin-top:16px}
+  .save-bar-info{font-size:12px;color:var(--muted)}
+  .badge-changed{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-logo">⚙ Fiscaltech</span>
+  <span class="header-sep">|</span>
+  <span class="header-title">Configuração de Contratos</span>
+  <div class="header-actions">
+    <a href="javascript:history.back()" class="btn btn-ghost" title="Voltar ao dashboard">← Voltar</a>
+    <button class="btn btn-ghost" onclick="recarregarConfig()">↺ Recarregar</button>
+    <button class="btn btn-ghost" id="btn-sincronizar" onclick="sincronizarContrato()" disabled title="Salvar e atualizar dashboard deste contrato">🔄 Salvar e Atualizar</button>
+    <button class="btn btn-primary" id="btn-salvar-global" onclick="salvarTudo()" disabled>💾 Salvar</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-search">
+      <input class="search-input" type="text" placeholder="Buscar contrato..." id="search-contrato" oninput="filtrarContratos()">
+    </div>
+    <div class="contract-list" id="contract-list">
+      <div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Carregando...</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="main-content">
+    <div class="empty-state">
+      <div class="empty-icon">⚙</div>
+      <div style="font-weight:600;font-size:15px">Selecione um contrato</div>
+      <div style="font-size:13px;color:var(--muted)">Escolha um contrato na lista para configurar</div>
+    </div>
+    <div id="painel-falhas" style="display:none;margin-top:16px"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var AGENT_URL = "http://172.16.79.63:5002";  // substituído automaticamente pelo agente
+var AGENT = AGENT_URL;
+// Busca token em todas as chaves possíveis usadas pelo login.html
+let agentToken = localStorage.getItem('agent_token')
+  || localStorage.getItem('ft_agent_token')
+  || sessionStorage.getItem('agent_token')
+  || sessionStorage.getItem('ft_agent_token')
+  || '';
+
+// Verificação de acesso — apenas ADM e ADM_SIS
+(function verificarAcesso() {
+  try {
+    const sessao = JSON.parse(sessionStorage.getItem('ft_session') || '{}');
+    const nivel = (sessao.nivel || '').toLowerCase();
+    if (!nivel || (nivel !== 'adm' && nivel !== 'adm_sis')) {
+      document.body.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#f0f4f8;font-family:'Plus Jakarta Sans',sans-serif">
+          <div style="background:#fff;border-radius:12px;padding:40px 48px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1);max-width:400px">
+            <div style="font-size:48px;margin-bottom:16px">🔒</div>
+            <div style="font-size:20px;font-weight:700;color:#0f1b2d;margin-bottom:8px">Acesso Restrito</div>
+            <div style="font-size:14px;color:#6b7280;margin-bottom:24px">
+              Apenas usuários <strong>ADM</strong> e <strong>ADM SIS</strong> podem acessar o configurador de contratos.
+            </div>
+            <button onclick="window.history.back()" style="background:#0066cc;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;font-weight:600;cursor:pointer">
+              ← Voltar
+            </button>
+          </div>
+        </div>`;
+      return;
+    }
+  } catch(e) {
+    // Se não tem sessão, redireciona para login
+    window.location.href = (window.location.protocol === 'http:' ? window.location.origin : 'http://' + window.location.hostname + ':5001') + '/app/login';
+  }
+})();
+let config = {};
+let faixasDisponiveis = {}; // cid -> [{serie, id, local}]
+let contratoAtivo = null;
+let alteracoes = new Set();
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+async function init() {
+  // Garante que AGENT usa o AGENT_URL atual (injetado pelo agente ao servir)
+  AGENT = AGENT_URL;
+  await carregarConfig();
+  renderSidebar();
+  await carregarUltimoDownload();
+}
+
+async function carregarUltimoDownload() {
+  try {
+    const r = await fetch(`${AGENT}/ultimo_download`, {
+      headers: {'X-Agent-Token': agentToken}
+    });
+    if (!r.ok) return;
+    const d = await r.json();
+    renderPainelFalhas(d);
+  } catch(e) { /* sem dados ainda */ }
+}
+
+function renderPainelFalhas(d) {
+  const el = document.getElementById('painel-falhas');
+  if (!el) return;
+  if (!d || !d.falhas) return;
+
+  if (d.falhas.length === 0) {
+    el.style.display = 'block';
+    el.innerHTML = `
+      <div style="background:var(--green-bg);border:1px solid var(--green-b);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+        <span style="font-size:20px">✅</span>
+        <div>
+          <div style="font-weight:700;color:var(--green);font-size:13px">Último Download OK</div>
+          <div style="font-size:12px;color:var(--muted)">${d.periodo} · ${new Date(d.timestamp).toLocaleString('pt-BR')}</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const rows = d.falhas.map(f => `
+    <tr>
+      <td style="font-family:var(--mono);font-weight:700;font-size:12px;padding:8px 12px;color:var(--text)">${f.contrato}</td>
+      <td style="padding:8px 12px;font-size:12px">${f.sucesso}/${f.sucesso+f.falha} OK</td>
+      <td style="padding:8px 12px;font-size:12px;color:var(--red)">${f.relatorios.map(r=>`<code style="background:#fee2e2;padding:1px 5px;border-radius:3px;font-size:11px">${r}</code>`).join(' ')}</td>
+    </tr>`).join('');
+
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div style="background:var(--yellow-bg);border:1px solid var(--yellow-b);border-radius:10px;overflow:hidden">
+      <div style="padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--yellow-b)">
+        <span style="font-size:18px">⚠</span>
+        <div style="flex:1">
+          <div style="font-weight:700;color:var(--yellow);font-size:13px">Falhas no Último Download</div>
+          <div style="font-size:12px;color:var(--muted)">${d.periodo} · ${new Date(d.timestamp).toLocaleString('pt-BR')}</div>
+        </div>
+        <button onclick="this.closest('[id=painel-falhas]').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px">×</button>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--bg)">
+          <th style="text-align:left;padding:6px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)">Contrato</th>
+          <th style="text-align:left;padding:6px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)">Taxa</th>
+          <th style="text-align:left;padding:6px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)">Relatórios com Falha</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+async function carregarConfig() {
+  try {
+    const r = await fetch(`${AGENT}/contratos_config`, {headers: {'X-Agent-Token': agentToken}});
+    if (r.ok) {
+      const txt = await r.text();
+      config = JSON.parse(txt);
+    } else {
+      config = {};
+    }
+  } catch(e) {
+    toast('Erro ao carregar configuração: ' + e.message, 'error');
+    config = {};
+  }
+}
+
+function recarregarConfig() {
+  alteracoes.clear();
+  document.getElementById('btn-salvar-global').disabled = true;
+  contratoAtivo = null;
+  document.getElementById('main-content').innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">⚙</div>
+      <div style="font-weight:600;font-size:15px">Selecione um contrato</div>
+      <div style="font-size:13px;color:var(--muted)">Escolha um contrato na lista para configurar</div>
+    </div>
+    <div id="painel-falhas" style="display:none;margin-top:16px"></div>`;
+  carregarConfig().then(() => renderSidebar());
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
+function renderSidebar(filtro = '') {
+  const list = document.getElementById('contract-list');
+  const contratos = Object.keys(config).filter(c =>
+    !filtro || c.toLowerCase().includes(filtro.toLowerCase())
+  );
+
+  if (!contratos.length) {
+    list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Nenhum contrato encontrado</div>`;
+    return;
+  }
+
+  list.innerHTML = contratos.map(cid => {
+    const cfg = config[cid];
+    const desativ = (cfg.faixas_desativadas || []).length;
+    const changed = alteracoes.has(cid);
+    const relAtivos = Object.values(cfg.relatorios || {}).filter(Boolean).length;
+    const relTotal  = Object.keys(cfg.relatorios || {}).length;
+    return `
+    <div class="contract-item ${cid === contratoAtivo ? 'active' : ''}" onclick="selecionarContrato('${cid}')">
+      <div class="ci-dot" style="background:${changed ? '#f59e0b' : '#22c55e'}"></div>
+      <div class="ci-name">${cid}</div>
+      ${desativ ? `<div class="ci-badge">${desativ} desativ.</div>` : ''}
+      ${changed ? `<div class="ci-badge" style="background:#fffbeb;color:#d97706">●</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function filtrarContratos() {
+  renderSidebar(document.getElementById('search-contrato').value);
+}
+
+// ─── SELECIONAR CONTRATO ──────────────────────────────────────────────────────
+async function selecionarContrato(cid) {
+  contratoAtivo = cid;
+  renderSidebar(document.getElementById('search-contrato').value);
+
+  const cfg = config[cid];
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div style="padding:40px;text-align:center;color:var(--muted);font-size:13px">Carregando dados do contrato...</div>`;
+
+  // Tentar carregar lista de faixas disponíveis do Funcionamento_Teste
+  if (!faixasDisponiveis[cid]) {
+    await carregarFaixas(cid);
+  }
+
+  renderFormContrato(cid);
+}
+
+async function carregarFaixas(cid) {
+  try {
+    const r = await fetch(`${AGENT}/listar_faixas?contrato=${encodeURIComponent(cid)}`, {headers: {'X-Agent-Token': agentToken}});
+    if (r.ok) {
+      faixasDisponiveis[cid] = await r.json();
+    }
+  } catch(e) {
+    // fallback: gerar lista a partir dos dados existentes
+    faixasDisponiveis[cid] = [];
+  }
+}
+
+// ─── RENDER FORM ─────────────────────────────────────────────────────────────
+function renderFormContrato(cid) {
+  const cfg = config[cid];
+  const main = document.getElementById('main-content');
+  const thr = cfg.thresholds || {};
+  const rel = cfg.relatorios || {};
+  const desativ = new Set(cfg.faixas_desativadas || []);
+
+  const relatoriosConfig = [
+    { key: 'lap_integral',   label: 'LAP Integral 24h',      grupo: 'lap' },
+    { key: 'lap_tr_manha',   label: 'LAP Transição Manhã',   grupo: 'lap' },
+    { key: 'lap_diurno',     label: 'LAP Diurno',            grupo: 'lap' },
+    { key: 'lap_tr_tarde',   label: 'LAP Transição Tarde',   grupo: 'lap' },
+    { key: 'lap_noturno',    label: 'LAP Noturno',           grupo: 'lap' },
+    { key: 'aproveitamento', label: 'Aproveitamento',        grupo: 'outros' },
+    { key: 'fluxo',          label: 'Fluxo de Veículos',     grupo: 'outros' },
+    { key: 'infracoes',      label: 'Infrações',             grupo: 'outros' },
+    { key: 'teste',          label: 'Imagem Teste',          grupo: 'outros' },
+    { key: 'horario',        label: 'Horário',               grupo: 'outros' },
+    { key: 'csv_consulta',   label: 'Consulta Infrações CSV', grupo: 'outros' },
+  ];
+
+  const thresholdRows = [
+    { key: 'aproveitamento', label: 'Aproveitamento',        unit: '%', mult: 100, dec: 0, ativo: rel.aproveitamento },
+    { key: 'lap_integral',   label: 'LAP Integral',          unit: '%', mult: 1,   dec: 0, ativo: rel.lap_integral  },
+    { key: 'lap_tr_manha',   label: 'LAP Trans. Manhã',      unit: '%', mult: 1,   dec: 0, ativo: rel.lap_tr_manha  },
+    { key: 'lap_diurno',     label: 'LAP Diurno',            unit: '%', mult: 1,   dec: 0, ativo: rel.lap_diurno    },
+    { key: 'lap_tr_tarde',   label: 'LAP Trans. Tarde',      unit: '%', mult: 1,   dec: 0, ativo: rel.lap_tr_tarde  },
+    { key: 'lap_noturno',    label: 'LAP Noturno',           unit: '%', mult: 1,   dec: 0, ativo: rel.lap_noturno   },
+    { key: 'funcionamento',  label: 'Funcionamento (Teste)', unit: '%', mult: 1,   dec: 0, ativo: rel.teste         },
+  ];
+
+  const faixas = faixasDisponiveis[cid] || [];
+
+  main.innerHTML = `
+    <div class="form-header">
+      <div>
+        <div class="form-title">${cfg.nome_exibicao || cid}</div>
+        <div class="form-subtitle">Configure os relatórios, parâmetros e equipamentos deste contrato</div>
+      </div>
+      ${alteracoes.has(cid) ? '<span class="badge-changed">● Alterações pendentes</span>' : ''}
+    </div>
+
+    <!-- GERAL -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">📋</span>
+        <span class="section-title">Dados Gerais</span>
+      </div>
+      <div class="section-body">
+        <div class="field-row">
+          <div class="field">
+            <label>Nome de Exibição</label>
+            <input type="text" id="f-nome" value="${cfg.nome_exibicao || cid}" oninput="marcarAlterado()">
+          </div>
+          <div class="field">
+            <label>Valor por Faixa (R$)</label>
+            <input type="number" id="f-valor" value="${cfg.valor_por_faixa || 0}" step="0.01" min="0" oninput="marcarAlterado()">
+            <span class="field-hint">Usado para cálculo de impacto financeiro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIOS -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        <span class="section-title">Relatórios Aplicáveis</span>
+      </div>
+      <div class="section-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Clique para ativar ou desativar cada relatório neste contrato</div>
+        <div class="toggle-grid">
+          ${relatoriosConfig.map(r => `
+            <div class="toggle-card ${rel[r.key] !== false ? 'on' : 'off'}" id="tc-${r.key}" onclick="toggleRelatorio('${cid}','${r.key}')">
+              <div class="toggle-dot"></div>
+              <div>
+                <div class="tc-label">${r.label}</div>
+                <div class="tc-badge">${r.grupo}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- THRESHOLDS -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🎯</span>
+        <span class="section-title">Faixas de Corte por Relatório</span>
+      </div>
+      <div class="section-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">
+          Relatórios desativados aparecem em cinza. Os valores são percentuais (%).
+        </div>
+        <table class="thr-table">
+          <thead>
+            <tr>
+              <th>Relatório</th>
+              <th>🟢 OK (≥)</th>
+              <th>🟡 Atenção (entre)</th>
+              <th>🔴 Crítico (&lt;)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${thresholdRows.map(row => {
+              const t = thr[row.key] || {};
+              const ok   = row.mult === 100 ? Math.round((t.ok   ?? 0.90) * 100) : (t.ok   ?? 80);
+              const crit = row.mult === 100 ? Math.round((t.crit ?? 0.70) * 100) : (t.crit ?? 60);
+              return `
+              <tr class="${!row.ativo ? 'disabled-row' : ''}" id="thr-row-${row.key}">
+                <td class="thr-label">${row.label}</td>
+                <td>
+                  <input class="thr-input" type="number" id="thr-ok-${row.key}" value="${ok}" min="0" max="100"
+                    oninput="marcarAlterado()" ${!row.ativo ? 'disabled' : ''}>
+                  <span class="thr-unit">%</span>
+                </td>
+                <td style="color:var(--muted);font-size:12px">entre ${crit}% e ${ok}%</td>
+                <td>
+                  <input class="thr-input" type="number" id="thr-crit-${row.key}" value="${crit}" min="0" max="100"
+                    oninput="marcarAlterado(); atualizarEntre('${row.key}')" ${!row.ativo ? 'disabled' : ''}>
+                  <span class="thr-unit">%</span>
+                </td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FAIXAS DESATIVADAS -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">🚫</span>
+        <span class="section-title">Equipamentos e Faixas</span>
+        <span style="margin-left:auto;font-size:12px;color:var(--muted)" id="desativ-count">
+          ${desativ.size} desativada(s) de ${faixas.length} faixas
+        </span>
+      </div>
+      <div class="section-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">
+          Faixas desativadas são removidas completamente dos relatórios e cálculos.
+          ${faixas.length === 0 ? '<br><strong>⚠ Execute uma atualização primeiro para carregar as faixas disponíveis.</strong>' : ''}
+        </div>
+        <div class="faixas-toolbar">
+          <input class="faixas-search" type="text" placeholder="Filtrar por série ou local..." id="faixas-search" oninput="filtrarFaixas('${cid}')">
+          <button class="btn btn-ghost" style="font-size:12px" onclick="desativarTodas('${cid}')">Desativar todas</button>
+          <button class="btn btn-ghost" style="font-size:12px" onclick="ativarTodas('${cid}')">Ativar todas</button>
+        </div>
+        <div class="faixas-grid" id="faixas-grid-${cid}">
+          ${renderFaixasGrid(cid, faixas, desativ)}
+        </div>
+        ${faixas.length === 0 ? `
+        <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:8px;font-size:12px;color:var(--muted)">
+          <strong>Faixas desativadas manualmente:</strong><br>
+          ${desativ.size > 0 ? [...desativ].map(f => `<code style="font-family:var(--mono)">${f}</code>`).join(', ') : 'Nenhuma'}
+        </div>` : ''}
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <div class="save-bar-info">
+        ${alteracoes.has(cid) ? `<span class="badge-changed">● Alterações não salvas em ${cid}</span>` : '✓ Sem alterações pendentes'}
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-danger" onclick="resetarContrato('${cid}')">↺ Restaurar padrões</button>
+        <button class="btn btn-primary" style="background:var(--accent);color:#fff" onclick="salvarContrato('${cid}')">
+          💾 Salvar ${cid}
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Atualizar textos de "entre"
+  thresholdRows.forEach(r => atualizarEntre(r.key));
+}
+
+function renderFaixasGrid(cid, faixas, desativ, filtro = '') {
+  if (!faixas.length) return '';
+  const filtradas = filtro
+    ? faixas.filter(f => f.serie.includes(filtro) || (f.local||'').toLowerCase().includes(filtro.toLowerCase()))
+    : faixas;
+
+  return filtradas.map(f => {
+    const key = `${f.serie}-F${f.id}`;
+    const off = desativ.has(key);
+    return `
+    <div class="faixa-item ${off ? 'desativada' : ''}" onclick="toggleFaixa('${cid}','${key}')" id="fi-${key.replace(/[^a-z0-9]/gi,'_')}">
+      <div class="fi-check">${off ? '✕' : ''}</div>
+      <div style="flex:1;min-width:0">
+        <div class="fi-serie">${f.serie} · F${f.id}</div>
+        <div class="fi-local" title="${f.local||''}">${f.local||'—'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filtrarFaixas(cid) {
+  const filtro = document.getElementById('faixas-search').value;
+  const faixas = faixasDisponiveis[cid] || [];
+  const desativ = new Set(config[cid].faixas_desativadas || []);
+  const grid = document.getElementById(`faixas-grid-${cid}`);
+  if (grid) grid.innerHTML = renderFaixasGrid(cid, faixas, desativ, filtro);
+}
+
+// ─── TOGGLE RELATÓRIO ─────────────────────────────────────────────────────────
+function toggleRelatorio(cid, key) {
+  if (!config[cid].relatorios) config[cid].relatorios = {};
+  const atual = config[cid].relatorios[key] !== false;
+  config[cid].relatorios[key] = !atual;
+  marcarAlterado();
+
+  // Atualizar visual do card
+  const card = document.getElementById(`tc-${key}`);
+  if (card) {
+    card.classList.toggle('on', !atual);
+    card.classList.toggle('off', atual);
+  }
+
+  // Atualizar linha de threshold
+  const row = document.getElementById(`thr-row-${key}`);
+  const okInp = document.getElementById(`thr-ok-${key}`);
+  const critInp = document.getElementById(`thr-crit-${key}`);
+  if (row) {
+    row.classList.toggle('disabled-row', atual);
+    if (okInp) okInp.disabled = atual;
+    if (critInp) critInp.disabled = atual;
+  }
+}
+
+// ─── TOGGLE FAIXA ────────────────────────────────────────────────────────────
+function toggleFaixa(cid, key) {
+  if (!config[cid].faixas_desativadas) config[cid].faixas_desativadas = [];
+  const idx = config[cid].faixas_desativadas.indexOf(key);
+  if (idx >= 0) {
+    config[cid].faixas_desativadas.splice(idx, 1);
+  } else {
+    config[cid].faixas_desativadas.push(key);
+  }
+  marcarAlterado();
+
+  // Update visual
+  const id = `fi-${key.replace(/[^a-z0-9]/gi,'_')}`;
+  const el = document.getElementById(id);
+  if (el) {
+    const off = config[cid].faixas_desativadas.includes(key);
+    el.classList.toggle('desativada', off);
+    const check = el.querySelector('.fi-check');
+    if (check) check.textContent = off ? '✕' : '';
+  }
+  // Update count
+  const cnt = document.getElementById('desativ-count');
+  if (cnt) {
+    const faixas = faixasDisponiveis[cid] || [];
+    cnt.textContent = `${config[cid].faixas_desativadas.length} desativada(s) de ${faixas.length} faixas`;
+  }
+}
+
+function desativarTodas(cid) {
+  const faixas = faixasDisponiveis[cid] || [];
+  config[cid].faixas_desativadas = faixas.map(f => `${f.serie}-F${f.id}`);
+  marcarAlterado();
+  renderFormContrato(cid);
+}
+
+function ativarTodas(cid) {
+  config[cid].faixas_desativadas = [];
+  marcarAlterado();
+  renderFormContrato(cid);
+}
+
+// ─── THRESHOLD ───────────────────────────────────────────────────────────────
+function atualizarEntre(key) {
+  const ok = document.getElementById(`thr-ok-${key}`)?.value || '';
+  const crit = document.getElementById(`thr-crit-${key}`)?.value || '';
+  const row = document.getElementById(`thr-row-${key}`);
+  if (row) {
+    const td = row.querySelectorAll('td')[2];
+    if (td) td.textContent = `entre ${crit}% e ${ok}%`;
+  }
+}
+
+// ─── SALVAR ──────────────────────────────────────────────────────────────────
+function coletarDadosFormulario(cid) {
+  const cfg = config[cid];
+
+  cfg.nome_exibicao  = document.getElementById('f-nome')?.value || cid;
+  cfg.valor_por_faixa = parseFloat(document.getElementById('f-valor')?.value || 0);
+
+  // Thresholds
+  const thresholdRows = ['aproveitamento','lap_integral','lap_tr_manha','lap_diurno','lap_tr_tarde','lap_noturno','funcionamento'];
+  if (!cfg.thresholds) cfg.thresholds = {};
+  thresholdRows.forEach(key => {
+    const okEl   = document.getElementById(`thr-ok-${key}`);
+    const critEl = document.getElementById(`thr-crit-${key}`);
+    if (!okEl || !critEl) return;
+    const mult = key === 'aproveitamento' ? 0.01 : 1;
+    cfg.thresholds[key] = {
+      ok:   parseFloat(okEl.value) * mult,
+      crit: parseFloat(critEl.value) * mult,
+    };
+  });
+}
+
+async function salvarContrato(cid) {
+  coletarDadosFormulario(cid);
+  await salvarTudo();
+}
+
+async function salvarTudo() {
+  if (contratoAtivo) coletarDadosFormulario(contratoAtivo);
+
+  const btn = document.getElementById('btn-salvar-global');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<span class="loading"></span> Salvando...';
+  btn.disabled = true;
+
+  try {
+    const body = JSON.stringify(config, null, 2);
+    const r = await fetch(`${AGENT}/salvar/contratos_config`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Agent-Token': agentToken},
+      body: JSON.stringify({ config: config })
+    });
+    if (r.ok) {
+      alteracoes.clear();
+      document.getElementById('btn-sincronizar').disabled = true;
+      toast('Configuração salva com sucesso!', 'success');
+      renderSidebar(document.getElementById('search-contrato').value);
+      if (contratoAtivo) renderFormContrato(contratoAtivo);
+    } else {
+      toast('Erro ao salvar: ' + await r.text(), 'error');
+    }
+  } catch(e) {
+    toast('Erro de conexão com o agente: ' + e.message, 'error');
+  } finally {
+    btn.innerHTML = orig;
+    btn.disabled = alteracoes.size === 0;
+  }
+}
+
+function resetarContrato(cid) {
+  if (!confirm(`Restaurar configurações padrão para ${cid}?`)) return;
+  // Manter apenas faixas_desativadas, resetar o resto
+  const desativ = config[cid].faixas_desativadas || [];
+  config[cid] = {
+    nome_exibicao: cid,
+    valor_por_faixa: 0,
+    relatorios: {
+      lap_integral:true, lap_tr_manha:true, lap_diurno:true,
+      lap_tr_tarde:true, lap_noturno:true, aproveitamento:true,
+      fluxo:true, infracoes:true, teste:true, horario:true, csv_consulta:true
+    },
+    thresholds: {
+      aproveitamento:{ok:0.90,crit:0.70},
+      lap_integral:{ok:80,crit:60}, lap_tr_manha:{ok:80,crit:60},
+      lap_diurno:{ok:80,crit:60},   lap_tr_tarde:{ok:80,crit:60},
+      lap_noturno:{ok:80,crit:60},  funcionamento:{ok:95,crit:80}
+    },
+    faixas_desativadas: desativ
+  };
+  marcarAlterado();
+  renderFormContrato(cid);
+  toast(`${cid} restaurado para os padrões`, 'success');
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function marcarAlterado() {
+  if (contratoAtivo) {
+    alteracoes.add(contratoAtivo);
+    document.getElementById('btn-salvar-global').disabled = false;
+    document.getElementById('btn-sincronizar').disabled = false;
+  }
+}
+
+// ─── SINCRONIZAR ─────────────────────────────────────────────
+async function sincronizarContrato(cid) {
+  cid = cid || contratoAtivo;
+  if (!cid) return;
+
+  // Primeiro salva
+  coletarDadosFormulario(cid);
+  const btnSync = document.getElementById('btn-sincronizar');
+  const origSync = btnSync?.innerHTML || '';
+  if (btnSync) { btnSync.innerHTML = '<span class="loading" style="border-color:rgba(0,0,0,.2);border-top-color:var(--accent)"></span> Salvando...'; btnSync.disabled = true; }
+
+  try {
+    const body = JSON.stringify(config, null, 2);
+    const r = await fetch(`${AGENT}/salvar/contratos_config`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Agent-Token': agentToken},
+      body: JSON.stringify({ config: config })
+    });
+    if (!r.ok) { toast('Erro ao salvar: ' + await r.text(), 'error'); return; }
+
+    alteracoes.delete(cid);
+    toast('Salvo! Iniciando atualização do dashboard...', 'success');
+    renderSidebar(document.getElementById('search-contrato').value);
+    if (contratoAtivo === cid) renderFormContrato(cid);
+
+    // Agora dispara atualização do contrato
+    if (btnSync) btnSync.innerHTML = '<span class="loading" style="border-color:rgba(0,0,0,.2);border-top-color:var(--accent)"></span> Atualizando...';
+
+    const r2 = await fetch(`${AGENT}/executar/atualizar/selecionados`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Agent-Token': agentToken},
+      body: JSON.stringify({contratos: [cid]})
+    });
+
+    if (r2.ok) {
+      toast(`Dashboard ${cid} sendo atualizado em background...`, 'success');
+      monitorarExecucao();
+    } else {
+      toast('Configuração salva, mas erro ao iniciar atualização: ' + await r2.text(), 'error');
+    }
+  } catch(e) {
+    toast('Erro: ' + e.message, 'error');
+  } finally {
+    if (btnSync) { btnSync.innerHTML = origSync; btnSync.disabled = alteracoes.size === 0; }
+  }
+}
+
+// Monitor execução em background
+function monitorarExecucao(onConcluido) {
+  const maxTentativas = 120; // 10 minutos
+  let tentativas = 0;
+  let ultimoLog = 0;
+
+  const interval = setInterval(async () => {
+    tentativas++;
+    if (tentativas > maxTentativas) {
+      clearInterval(interval);
+      toast('Tempo máximo de espera atingido', 'error');
+      return;
+    }
+    try {
+      // Busca status + novos logs
+      const [rStatus, rLogs] = await Promise.all([
+        fetch(`${AGENT}/status`, {headers: {'X-Agent-Token': agentToken}}),
+        fetch(`${AGENT}/logs?desde=${ultimoLog}`, {headers: {'X-Agent-Token': agentToken}})
+      ]);
+
+      if (rLogs.ok) {
+        const ld = await rLogs.json();
+        if (ld.logs && ld.logs.length) {
+          ultimoLog = ld.total;
+          // Atualiza badge de logs se houver elemento
+          const logBadge = document.getElementById('log-count');
+          if (logBadge) logBadge.textContent = ultimoLog;
+        }
+      }
+
+      if (!rStatus.ok) return;
+      const s = await rStatus.json();
+      if (!s.rodando) {
+        clearInterval(interval);
+        if (s.erro) {
+          toast('Concluído com erros — verifique os logs', 'error');
+        } else {
+          toast('✓ Concluído com sucesso!', 'success');
+        }
+        if (onConcluido) onConcluido();
+        await carregarUltimoDownload();
+      }
+    } catch(e) { /* ignora erros de rede */ }
+  }, 5000);
+}
+
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.className = `toast ${type}`;
+  el.innerHTML = (type === 'success' ? '✓ ' : type === 'error' ? '✕ ' : 'ℹ ') + msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ─── START ───────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
