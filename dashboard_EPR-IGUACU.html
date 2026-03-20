@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="19/03/2026 16:52">
+<meta name="gerado" content="20/03/2026 08:53">
 </head>
 <body>
 <div class="layout">
@@ -672,6 +672,10 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 var _THR_APROV_OK   = 0.9;
 var _THR_APROV_WARN = 0.8;
 var _THR_APROV_CRIT = 0.7;
+var _THR_FUNC_OK    = 95;
+var _THR_FUNC_WARN  = 80;
+var _THR_LAP_OK     = 80;
+var _THR_LAP_WARN   = 60;
 
 const CONSULTA_INFRA = {"EPR796|2":{"cod":"EPR796","pista":"2","nome":"BR-163 KM 151+460","sentido":"DECRESCENTE","total":1093,"tec":0,"ntec":0,"consist":1093,"incons":0,"desc":{}},"EPR803|1":{"cod":"EPR803","pista":"1","nome":"BR-277 km 415+010","sentido":"CRESCENTE","total":433,"tec":0,"ntec":0,"consist":433,"incons":0,"desc":{}},"EPR820|1":{"cod":"EPR820","pista":"1","nome":"PRC-280 km 251+700","sentido":"CRESCENTE","total":491,"tec":0,"ntec":0,"consist":491,"incons":0,"desc":{}},"EPR822|1":{"cod":"EPR822","pista":"1","nome":"BR-163 km 139+900","sentido":"DECRESCENTE","total":276,"tec":0,"ntec":0,"consist":276,"incons":0,"desc":{}},"EPR823|2":{"cod":"EPR823","pista":"2","nome":"BR-163 km 159+070 SENTIDO CRESCENTE","sentido":"CRESCENTE","total":3259,"tec":0,"ntec":0,"consist":3259,"incons":0,"desc":{}},"EPR820|2":{"cod":"EPR820","pista":"2","nome":"PRC-280 km 251+700","sentido":"CRESCENTE","total":933,"tec":0,"ntec":0,"consist":933,"incons":0,"desc":{}},"EPR827|1":{"cod":"EPR827","pista":"1","nome":"PR-182 km 502+330 SENTIDO DECRESCENTE","sentido":"DECRESCENTE","total":490,"tec":0,"ntec":0,"consist":490,"incons":0,"desc":{}},"EPR798|1":{"cod":"EPR798","pista":"1","nome":"BR-277 km 613+050","sentido":"DECRESCENTE","total":566,"tec":0,"ntec":0,"consist":566,"incons":0,"desc":{}},"EPR815|2":{"cod":"EPR815","pista":"2","nome":"BR-277 km 689+050","sentido":"CRESCENTE","total":64,"tec":0,"ntec":0,"consist":64,"incons":0,"desc":{}},"EPR808|1":{"cod":"EPR808","pista":"1","nome":"BR-277 km 457+585","sentido":"DECRESCENTE","total":1753,"tec":0,"ntec":0,"consist":1753,"incons":0,"desc":{}},"EPR805|1":{"cod":"EPR805","pista":"1","nome":"BR-277 km 454+840","sentido":"CRESCENTE","total":130,"tec":0,"ntec":0,"consist":130,"incons":0,"desc":{}},"EPR808|2":{"cod":"EPR808","pista":"2","nome":"BR-277 km 457+585","sentido":"DECRESCENTE","total":29,"tec":0,"ntec":0,"consist":29,"incons":0,"desc":{}},"EPR824|1":{"cod":"EPR824","pista":"1","nome":"BR-277 km 586+660","sentido":"CRESCENTE","total":219,"tec":0,"ntec":0,"consist":219,"incons":0,"desc":{}},"EPR807|1":{"cod":"EPR807","pista":"1","nome":"BR-277 km 457+290","sentido":"CRESCENTE","total":382,"tec":0,"ntec":0,"consist":382,"incons":0,"desc":{}},"EPR806|1":{"cod":"EPR806","pista":"1","nome":"BR-277 km 455+075","sentido":"DECRESCENTE","total":1366,"tec":0,"ntec":0,"consist":1366,"incons":0,"desc":{}},"EPR796|1":{"cod":"EPR796","pista":"1","nome":"BR-163 KM 151+460","sentido":"DECRESCENTE","total":457,"tec":0,"ntec":0,"consist":457,"incons":0,"desc":{}},"EPR823|1":{"cod":"EPR823","pista":"1","nome":"BR-163 km 159+070 SENTIDO CRESCENTE","sentido":"CRESCENTE","total":874,"tec":0,"ntec":0,"consist":874,"incons":0,"desc":{}},"EPR815|1":{"cod":"EPR815","pista":"1","nome":"BR-277 km 689+050","sentido":"CRESCENTE","total":557,"tec":0,"ntec":0,"consist":557,"incons":0,"desc":{}},"EPR825|1":{"cod":"EPR825","pista":"1","nome":"BR-277 km 586+855 SENTIDO DECRESCENTE","sentido":"DECRESCENTE","total":538,"tec":0,"ntec":0,"consist":538,"incons":0,"desc":{}},"EPR815|3":{"cod":"EPR815","pista":"3","nome":"BR-277 km 689+050","sentido":"CRESCENTE","total":5,"tec":0,"ntec":0,"consist":5,"incons":0,"desc":{}},"EPR813|2":{"cod":"EPR813","pista":"2","nome":"BR-277 KM 673+315","sentido":"DECRESCENTE","total":18,"tec":0,"ntec":0,"consist":18,"incons":0,"desc":{}},"EPR813|1":{"cod":"EPR813","pista":"1","nome":"BR-277 KM 673+315","sentido":"DECRESCENTE","total":20,"tec":0,"ntec":0,"consist":20,"incons":0,"desc":{}},"EPR826|1":{"cod":"EPR826","pista":"1","nome":"PR-182 km 502+185","sentido":"CRESCENTE","total":133,"tec":0,"ntec":0,"consist":133,"incons":0,"desc":{}},"EPR826|2":{"cod":"EPR826","pista":"2","nome":"PR-182 km 502+185","sentido":"CRESCENTE","total":1,"tec":0,"ntec":0,"consist":1,"incons":0,"desc":{}},"EPR797|1":{"cod":"EPR797","pista":"1","nome":"BR-277 km 612+900","sentido":"CRESCENTE","total":802,"tec":0,"ntec":0,"consist":802,"incons":0,"desc":{}},"EPR827|2":{"cod":"EPR827","pista":"2","nome":"PR-182 km 502+330","sentido":"DECRESCENTE","total":1,"tec":0,"ntec":0,"consist":1,"incons":0,"desc":{}}};
 
@@ -748,13 +752,17 @@ const diasRest   = v=>{ if(!v)return 9999; const h=new Date();h.setHours(0,0,0,0
 var THR_APROV_OK   = typeof _THR_APROV_OK   !== 'undefined' ? _THR_APROV_OK   : 0.95;
 var THR_APROV_WARN = typeof _THR_APROV_WARN !== 'undefined' ? _THR_APROV_WARN : 0.85;
 var THR_APROV_CRIT = typeof _THR_APROV_CRIT !== 'undefined' ? _THR_APROV_CRIT : 0.70;
+var THR_FUNC_OK    = typeof _THR_FUNC_OK    !== 'undefined' ? _THR_FUNC_OK    : 95;
+var THR_FUNC_WARN  = typeof _THR_FUNC_WARN  !== 'undefined' ? _THR_FUNC_WARN  : 80;
+var THR_LAP_OK     = typeof _THR_LAP_OK     !== 'undefined' ? _THR_LAP_OK     : 80;
+var THR_LAP_WARN   = typeof _THR_LAP_WARN   !== 'undefined' ? _THR_LAP_WARN   : 60;
 
 const corAprov   = v=>v>=THR_APROV_OK?'var(--green)':v>=THR_APROV_WARN?'var(--yellow)':'var(--red)';
 const corAprovBg = v=>v>=THR_APROV_OK?'var(--green-bg)':v>=THR_APROV_WARN?'var(--yellow-bg)':'var(--red-bg)';
-const corLap     = v=>v>=90?'var(--green)':v>=80?'var(--yellow)':'var(--red)';
-const corLapBg   = v=>v>=90?'var(--green-bg)':v>=80?'var(--yellow-bg)':'var(--red-bg)';
+const corLap     = v=>v>=THR_LAP_OK?'var(--green)':v>=THR_LAP_WARN?'var(--yellow)':'var(--red)';
+const corLapBg   = v=>v>=THR_LAP_OK?'var(--green-bg)':v>=THR_LAP_WARN?'var(--yellow-bg)':'var(--red-bg)';
 const bAprov     = v=>v>=THR_APROV_OK?'b-g':v>=THR_APROV_WARN?'b-y':'b-r';
-const bLap       = v=>v>=90?'b-g':v>=80?'b-y':'b-r';
+const bLap       = v=>v>=THR_LAP_OK?'b-g':v>=THR_LAP_WARN?'b-y':'b-r';
 const bAfer      = d=>d<=30?'b-r':d<=90?'b-y':'b-g';
 const lblAfer    = d=>d<=30?'Urgente':d<=90?'Atenção':'OK';
 const set$       = (id,v)=>{ const e=document.getElementById(id);if(e)e.textContent=v; };
@@ -1047,7 +1055,7 @@ const HIST_BUCKETS_FUNC = [
 function hmColor(val,prev,tipo){
   if(val==null||val===0)return{bg:'#f1f5f9',txt:'#9ca3af'};
   if(tipo==='lap')return{bg:val>=90?'#bbf7d0':val>=80?'#fde68a':'#fecaca',txt:val>=90?'#166534':val>=80?'#92400e':'#991b1b'};
-  if(tipo==='aprov')return{bg:val>=95?'#bbf7d0':val>=85?'#fde68a':'#fecaca',txt:val>=95?'#166534':val>=85?'#92400e':'#991b1b'};
+  if(tipo==='aprov')return{bg:val>=(THR_APROV_OK*100)?'#bbf7d0':val>=(THR_APROV_WARN*100)?'#fde68a':'#fecaca',txt:val>=(THR_APROV_OK*100)?'#166534':val>=(THR_APROV_WARN*100)?'#92400e':'#991b1b'};
   // fluxo/infra: mapa de calor relativo ao anterior
   if(prev==null||prev===0)return{bg:'#dbeafe',txt:'#1e40af'};
   const d=(val-prev)/prev;
@@ -1123,7 +1131,7 @@ function buildPainel(){
     const horasTeste=vals.reduce((a,b)=>a+b,0);
     const pct=horasEsp>0?horasTeste/horasEsp*100:0;
     if(pct>0){funcSum+=pct;funcN++;}
-    if(pct>=95)tsOkP++;else if(pct>=80)tsWarnP++;else{tsCritP++;funcCritList.push({...fx,funcPct:pct});}
+    if(pct>=THR_FUNC_OK)tsOkP++;else if(pct>=THR_FUNC_WARN)tsWarnP++;else{tsCritP++;funcCritList.push({...fx,funcPct:pct});}
   });
 
   // Referência de atualização
@@ -1236,7 +1244,7 @@ function buildLap(){
   faixas.forEach(fx=>{
     const v=mediaPeriodo(fx.lap?.[lapSub]||{});
     if(v>0){sum+=v;n++;}
-    if(v>=90)ok++;else if(v>=80)warn++;else crit++;  // sem dados = crítico
+    if(v>=THR_LAP_OK)ok++;else if(v>=THR_LAP_WARN)warn++;else crit++;  // sem dados = crítico
     if(v>0)piores.push({...fx,lapVal:v});
   });
   piores.sort((a,b)=>a.lapVal-b.lapVal);
@@ -1792,7 +1800,7 @@ function buildTeste(){
     const horasTeste2=vals2.reduce((a,b)=>a+b,0);
     const pct2=horasEsp2>0?horasTeste2/horasEsp2*100:0;
     if(pct2>0){sumPct+=pct2;nPct++;}
-    if(pct2>=95)ok++;else if(pct2>=80)warn++;else crit++;
+    if(pct2>=THR_FUNC_OK)ok++;else if(pct2>=THR_FUNC_WARN)warn++;else crit++;
   });
 
   // Geral por faixa (só para renderizar a tabela)
@@ -1803,7 +1811,7 @@ function buildTeste(){
     const horasTeste=vals.reduce((a,b)=>a+b,0);
     const pct=horasEsp>0?horasTeste/horasEsp*100:0;
     const semDados=pct<=0;
-    const cor=semDados?'var(--red)':pct>=95?'var(--green)':pct>=80?'var(--yellow)':'var(--red)';
+    const cor=semDados?'var(--red)':pct>=THR_FUNC_OK?'var(--green)':pct>=THR_FUNC_WARN?'var(--yellow)':'var(--red)';
     const bw=Math.round(pct);
     return `<tr>
       <td><span style="font-family:var(--mono);font-weight:800;color:var(--accent)">${fx._serie}</span></td>
@@ -1816,7 +1824,7 @@ function buildTeste(){
         <div style="color:${cor};font-weight:800">${semDados?'—':pct.toFixed(1)+'%'}</div>
         ${semDados?'':'<div class="idx-bar-wrap"><div class="idx-bar" style="width:'+bw+'%;background:'+cor+'"></div></div>'}
       </td>
-      <td><span class="badge ${semDados?'b-off':pct>=95?'b-g':pct>=80?'b-y':'b-r'}">${semDados?'Sem dados':pct>=95?'Ótimo':pct>=80?'Atenção':'Crítico'}</span></td>
+      <td><span class="badge ${semDados?'b-off':pct>=THR_FUNC_OK?'b-g':pct>=THR_FUNC_WARN?'b-y':'b-r'}">${semDados?'Sem dados':pct>=THR_FUNC_OK?'Ótimo':pct>=THR_FUNC_WARN?'Atenção':'Crítico'}</span></td>
     </tr>`;
 
   });
@@ -1832,13 +1840,13 @@ function buildTeste(){
       const v=fx.teste?.[d];
       if(v==null)return`<td class="center" style="color:var(--muted2)">—</td>`;
       const pct=v/24*100;
-      const cor=pct>=95?'#bbf7d0':pct>=80?'#fde68a':'#fecaca';
-      const tcor=pct>=95?'#166534':pct>=80?'#92400e':'#991b1b';
+      const cor=pct>=THR_FUNC_OK?'#bbf7d0':pct>=THR_FUNC_WARN?'#fde68a':'#fecaca';
+      const tcor=pct>=THR_FUNC_OK?'#166534':pct>=THR_FUNC_WARN?'#92400e':'#991b1b';
       return`<td class="center" style="background:${cor};color:${tcor};font-weight:700">${v}h</td>`;
     }).join('');
     const totH=dias.reduce((a,d)=>a+(fx.teste?.[d]||0),0);
     const totPct=dias.length>0?totH/(dias.length*24)*100:0;
-    const corTot=totPct>=95?'var(--green)':totPct>=80?'var(--yellow)':'var(--red)';
+    const corTot=totPct>=THR_FUNC_OK?'var(--green)':totPct>=THR_FUNC_WARN?'var(--yellow)':'var(--red)';
     return`<tr>
       <td class="eq-c">${fx._serie}·F${fx.id}</td>
       <td style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px">${fx._local.slice(0,20)}</td>
