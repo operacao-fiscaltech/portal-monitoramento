@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="19/03/2026 17:13">
+<meta name="gerado" content="20/03/2026 08:53">
 </head>
 <body>
 <div class="layout">
@@ -759,10 +759,10 @@ var THR_LAP_WARN   = typeof _THR_LAP_WARN   !== 'undefined' ? _THR_LAP_WARN   : 
 
 const corAprov   = v=>v>=THR_APROV_OK?'var(--green)':v>=THR_APROV_WARN?'var(--yellow)':'var(--red)';
 const corAprovBg = v=>v>=THR_APROV_OK?'var(--green-bg)':v>=THR_APROV_WARN?'var(--yellow-bg)':'var(--red-bg)';
-const corLap     = v=>v>=90?'var(--green)':v>=80?'var(--yellow)':'var(--red)';
-const corLapBg   = v=>v>=90?'var(--green-bg)':v>=80?'var(--yellow-bg)':'var(--red-bg)';
+const corLap     = v=>v>=THR_LAP_OK?'var(--green)':v>=THR_LAP_WARN?'var(--yellow)':'var(--red)';
+const corLapBg   = v=>v>=THR_LAP_OK?'var(--green-bg)':v>=THR_LAP_WARN?'var(--yellow-bg)':'var(--red-bg)';
 const bAprov     = v=>v>=THR_APROV_OK?'b-g':v>=THR_APROV_WARN?'b-y':'b-r';
-const bLap       = v=>v>=90?'b-g':v>=80?'b-y':'b-r';
+const bLap       = v=>v>=THR_LAP_OK?'b-g':v>=THR_LAP_WARN?'b-y':'b-r';
 const bAfer      = d=>d<=30?'b-r':d<=90?'b-y':'b-g';
 const lblAfer    = d=>d<=30?'Urgente':d<=90?'Atenção':'OK';
 const set$       = (id,v)=>{ const e=document.getElementById(id);if(e)e.textContent=v; };
@@ -1244,7 +1244,7 @@ function buildLap(){
   faixas.forEach(fx=>{
     const v=mediaPeriodo(fx.lap?.[lapSub]||{});
     if(v>0){sum+=v;n++;}
-    if(v>=90)ok++;else if(v>=80)warn++;else crit++;  // sem dados = crítico
+    if(v>=THR_LAP_OK)ok++;else if(v>=THR_LAP_WARN)warn++;else crit++;  // sem dados = crítico
     if(v>0)piores.push({...fx,lapVal:v});
   });
   piores.sort((a,b)=>a.lapVal-b.lapVal);
