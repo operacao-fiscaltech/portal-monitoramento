@@ -240,7 +240,7 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 .fluxo-alerta{background:#7f1d1d!important;color:#fef2f2!important;font-weight:800!important}
 .fluxo-alerta-leve{background:#fee2e2!important;color:#991b1b!important;font-weight:700!important}
 </style>
-<meta name="gerado" content="20/03/2026 09:38">
+<meta name="gerado" content="20/03/2026 09:56">
 </head>
 <body>
 <div class="layout">
@@ -361,6 +361,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
     <!-- ══ APROVEITAMENTO DE IMAGENS ══ -->
   <div class="view" id="view-aproveitamento">
+<div id="view-aproveitamento-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
 
     <!-- KPIs -->
     <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
@@ -469,6 +475,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ LAP / OCR ══ -->
   <div class="view" id="view-lap">
+<div id="view-lap-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
     <div class="kpi-row kpi-4">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">LAP Médio</div><div class="kpi-val" id="lapMedia">—</div><div class="kpi-sub">subperíodo selecionado</div></div>
       <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 90%)</div><div class="kpi-val" id="lapOk">—</div><div class="kpi-sub">faixas</div></div>
@@ -500,6 +512,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ FLUXO ══ -->
   <div class="view" id="view-fluxo">
+<div id="view-fluxo-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
     <div class="kpi-row kpi-3">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Total</div><div class="kpi-val" id="fxTotal">—</div><div class="kpi-sub">período</div></div>
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Fluxo Hoje</div><div class="kpi-val" id="fxHoje">—</div><div class="kpi-sub">último dia</div></div>
@@ -534,6 +552,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ INFRAÇÕES ══ -->
   <div class="view" id="view-infracoes">
+<div id="view-infracoes-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
     <div class="kpi-row kpi-3">
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Total Infrações</div><div class="kpi-val" id="infTotal">—</div><div class="kpi-sub">período</div></div>
       <div class="kpi" style="--kc:var(--red)"><div class="kpi-lbl">Hoje</div><div class="kpi-val" id="infHoje">—</div><div class="kpi-sub">último dia</div></div>
@@ -576,6 +600,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ FLUXO HORÁRIO ══ -->
   <div class="view" id="view-horario">
+<div id="view-horario-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
     <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Pico Hora</div><div class="kpi-val" id="hrPico">—</div><div class="kpi-sub">hora de maior fluxo</div></div>
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Total Hoje</div><div class="kpi-val" id="hrTotal">—</div><div class="kpi-sub">veículos</div></div>
@@ -631,6 +661,12 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 
   <!-- ══ IMAGEM TESTE ══ -->
   <div class="view" id="view-teste">
+<div id="view-teste-na" style="display:none;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;color:var(--muted)">
+  <div style="font-size:48px;opacity:.3">🚫</div>
+  <div style="font-size:18px;font-weight:700;color:var(--text2)">Não aplicável</div>
+  <div style="font-size:13px">Este relatório não está configurado para este contrato.</div>
+</div>
+
     <div class="kpi-row kpi-4">
       <div class="kpi" style="--kc:var(--accent)"><div class="kpi-lbl">Funcionamento Médio</div><div class="kpi-val" id="tsMedia">—</div><div class="kpi-sub">% horas com imagem teste</div></div>
       <div class="kpi" style="--kc:var(--green)"><div class="kpi-lbl">Ótimo (≥ 95%)</div><div class="kpi-val" id="tsOk">—</div><div class="kpi-sub">faixas</div></div>
@@ -670,6 +706,8 @@ table.fd-tbl tr:hover td{filter:brightness(.97)}
 </div><!-- /layout -->
 
 <script>
+var _RELATORIOS_ATIVOS = {"lap_integral":true,"lap_tr_manha":true,"lap_diurno":true,"lap_tr_tarde":true,"lap_noturno":true,"aproveitamento":true,"fluxo":true,"infracoes":true,"teste":true,"horario":true,"csv_consulta":true};
+
 var _THR_APROV_OK   = 0.9;
 var _THR_APROV_WARN = 0.8;
 var _THR_APROV_CRIT = 0.7;
@@ -757,6 +795,12 @@ var THR_FUNC_OK    = typeof _THR_FUNC_OK    !== 'undefined' ? _THR_FUNC_OK    : 
 var THR_FUNC_WARN  = typeof _THR_FUNC_WARN  !== 'undefined' ? _THR_FUNC_WARN  : 80;
 var THR_LAP_OK     = typeof _THR_LAP_OK     !== 'undefined' ? _THR_LAP_OK     : 80;
 var THR_LAP_WARN   = typeof _THR_LAP_WARN   !== 'undefined' ? _THR_LAP_WARN   : 60;
+// Relatórios ativos — injetados pelo atualizar_todos.py
+var RELATORIOS_ATIVOS = typeof _RELATORIOS_ATIVOS !== 'undefined' ? _RELATORIOS_ATIVOS : {
+  lap_integral:true, lap_tr_manha:true, lap_diurno:true, lap_tr_tarde:true, lap_noturno:true,
+  aproveitamento:true, fluxo:true, infracoes:true, teste:true, horario:true, csv_consulta:true
+};
+function relAtivo(key){ return RELATORIOS_ATIVOS[key] !== false; }
 
 const corAprov   = v=>v>=THR_APROV_OK?'var(--green)':v>=THR_APROV_WARN?'var(--yellow)':'var(--red)';
 const corAprovBg = v=>v>=THR_APROV_OK?'var(--green-bg)':v>=THR_APROV_WARN?'var(--yellow-bg)':'var(--red-bg)';
@@ -795,6 +839,29 @@ setInterval(tickClock,1000);tickClock();
 // ══════════════════════════════════════════════
 const pageTitles={painel:'Central de Operações',aproveitamento:'Aproveitamento de Imagens',lap:'LAP / OCR',fluxo:'Fluxo',infracoes:'Infrações',horario:'Fluxo Horário',teste:'Funcionamento',afericoes:'Aferições'};
 function navTo(view,el){
+  // Verifica se relatório está ativo
+  const relMap={aproveitamento:'aproveitamento',lap:'lap_integral',fluxo:'fluxo',
+                infracoes:'infracoes',horario:'horario',teste:'teste'};
+  const relKey=relMap[view];
+  if(relKey && !relAtivo(relKey)){
+    // Mostra overlay, esconde conteúdo real
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const vEl=document.getElementById('view-'+view);
+    if(vEl){
+      vEl.classList.add('active');
+      const na=document.getElementById('view-'+view+'-na');
+      if(na){
+        na.style.display='flex';
+        // Esconde demais filhos
+        Array.from(vEl.children).forEach(c=>{ if(c!==na) c.style.display='none'; });
+      }
+    }
+    if(el) el.classList.add('active');
+    document.getElementById('pageTitle').innerHTML=pageTitles[view]||view;
+    viewAtual=view;
+    return;
+  }
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
@@ -2058,5 +2125,30 @@ function buildInfraEnq(){
 // ══════════════════════════════════════════════
 buildPainel();
 </script>
+
+<script>
+// Dimming nav items for inactive reports
+(function(){
+  var navRel = {
+    'navTo(\'teste\'': 'teste',
+    'navTo(\'aproveitamento\'': 'aproveitamento', 
+    'navTo(\'lap\'': 'lap_integral',
+    'navTo(\'fluxo\'': 'fluxo',
+    'navTo(\'infracoes\'': 'infracoes',
+    'navTo(\'horario\'': 'horario'
+  };
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    var oc = el.getAttribute('onclick') || '';
+    for(var k in navRel){
+      if(oc.indexOf(k) >= 0 && !relAtivo(navRel[k])){
+        el.style.opacity = '0.45';
+        el.title = 'Não aplicável para este contrato';
+        break;
+      }
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
