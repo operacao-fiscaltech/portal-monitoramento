@@ -491,7 +491,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://192.168.15.10:5001";
+var AGENT_URL = "http://172.16.79.63:5001";
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -710,7 +710,7 @@ async function init() {
   } catch(e) {
     setOffline();
     toast('Agente offline em ' + AGENT_URL + ' — verifique se está rodando', 'err');
-    return;
+    // Não interrompe — tenta carregar dados mesmo assim
   }
 
   // Obtém token
