@@ -546,15 +546,26 @@ var _selIniciado = false;
 var _logOffset = 0;
 var _pollLog   = null;
 
-function getSessao(){ try{return JSON.parse(sessionStorage.getItem(SK))||null;}catch(e){return null;} }
+function _isAgent(){ return window.location.protocol !== 'file:'; }
+function getSessao(){
+  try {
+    var s = JSON.parse(sessionStorage.getItem(SK));
+    if (s) return s;
+    // fallback: nova aba — copia do localStorage
+    s = JSON.parse(localStorage.getItem(SK));
+    if (s) { sessionStorage.setItem(SK, JSON.stringify(s)); return s; }
+  } catch(e) {}
+  return null;
+}
 function getToken() { return localStorage.getItem(ATK)||sessionStorage.getItem(ATK)||''; }
 
 function sair(){
   sessionStorage.clear();
-  window.location.href = window.location.port==='5001' ? '/app/login' : 'login.html';
+  localStorage.removeItem(SK);
+  window.location.href = _isAgent() ? '/app/login' : 'login.html';
 }
 function irPortal(){
-  window.location.href = window.location.port==='5001' ? '/app/portal' : 'portal.html';
+  window.location.href = _isAgent() ? '/app/portal' : 'portal.html';
 }
 
 // ── CHAMADA AO AGENTE ──
