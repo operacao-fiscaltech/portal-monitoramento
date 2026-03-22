@@ -84,6 +84,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .ag-toggle::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;
   background:white;top:3px;left:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .ag-toggle.on::after{left:19px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;
   color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
 .tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -211,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
         <div class="card-body">
           <div class="sel-panel">
             <div class="sel-head">
-              <span class="sel-lbl">Contratos</span>
+              <span class="sel-lbl">Contratos <span id="selBadge" style="color:var(--accent2);margin-left:4px"></span></span>
               <div style="display:flex;gap:6px">
                 <button class="btn bg bs" onclick="selTodos()">Todos</button>
                 <button class="btn bg bs" onclick="selNenhum()">Nenhum</button>
@@ -796,6 +797,10 @@ function mostrarSec(id, el) {
   document.querySelectorAll('.nav').forEach(function(n){n.classList.remove('active');});
   document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
+  // Para poll de logs ao sair da seção
+  if (id !== 'logs' && id !== 'automacao' && _pollLogs) {
+    clearInterval(_pollLogs); _pollLogs = null;
+  }
   if (id === 'logs') carregarLogs();
   if (id === 'agendamento') iniciarPollAgend();
   else if (_agendPollTimer) { clearInterval(_agendPollTimer); _agendPollTimer = null; }
@@ -989,7 +994,7 @@ function iniciarPollLogs() {
     try {
       var d  = await api('/logs?desde=' + _logOffset);
       if (d.logs && d.logs.length) { renderLog(d.logs, document.getElementById('logBox')); _logOffset = d.total; }
-      var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();});
+      var st = await api('/status');
       var el = document.getElementById('execSt');
       if (st.rodando) {
         el.className = 'exec-st st-run';
@@ -1010,7 +1015,7 @@ function iniciarPollLogs() {
 function iniciarPoll() {
   setInterval(async function(){
     try {
-      var r = await fetch(AGENT_URL + '/status');
+      var r = await fetch(AGENT_URL + '/ping');
       if (r.ok) setOnline(); else setOffline();
     } catch(e) { setOffline(); }
   }, 15000);
@@ -1367,28 +1372,27 @@ async function toggleAgendador() {
 
 async function atualizarStatusAgend() {
   try {
-    var r = await api('/agendamento/status');
-    _agendStatus = r;
-    var rodando = r.rodando;
-    var st = document.getElementById('agendSt');
+    var r = await fetch(AGENT_URL + '/agendamento/status');
+    if (!r.ok) return;
+    var data = await r.json();
+    _agendStatus = data;
+    var rodando = data.rodando;
+    var st  = document.getElementById('agendSt');
     var btn = document.getElementById('btnAgendToggle');
     var svl = document.getElementById('agendStatusVal');
-    st.className  = 'exec-st ' + (rodando ? 'st-run' : 'st-idle');
+    st.className   = 'exec-st ' + (rodando ? 'st-run' : 'st-idle');
     st.textContent = rodando ? '▶ Rodando' : '⏸ Parado';
     btn.textContent = rodando ? '⏹ Parar' : '▶ Iniciar';
     btn.className   = rodando ? 'btn bd bs' : 'btn bp bs';
     svl.textContent = rodando ? '▶ Ativo' : '—';
     svl.style.color = rodando ? 'var(--green)' : 'var(--muted)';
-    document.getElementById('agendProximo').textContent = r.proximo || '—';
-    document.getElementById('agendUltimo').textContent  = r.ultimo  || '—';
-    // Carrega config salva
-    if (r.config) {
-      _agendConfig = Object.assign(_agendConfig, r.config);
+    document.getElementById('agendProximo').textContent = data.proximo || '—';
+    document.getElementById('agendUltimo').textContent  = data.ultimo  || '—';
+    if (data.config) {
+      _agendConfig = Object.assign(_agendConfig, data.config);
       renderAgendamento();
     }
-  } catch(e) {
-    // agente offline — mantém estado atual
-  }
+  } catch(e) {}
 }
 
 function iniciarPollAgend() {
