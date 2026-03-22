@@ -491,7 +491,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://172.16.79.63:5001";
+var AGENT_URL = "http://192.168.15.10:5001";
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -571,6 +571,8 @@ function irPortal(){
 // ── CHAMADA AO AGENTE ──
 async function api(path, method, body) {
   method = method || 'GET';
+  // Sempre pega o token mais atual do storage
+  if (!_token) _token = getToken();
   var opts = {
     method: method,
     headers: { 'Content-Type': 'application/json', 'X-Agent-Token': _token }
@@ -742,6 +744,8 @@ async function init() {
   }
 
   console.log('[FT] Token OK, carregando dados...');
+  // Aguarda um tick para garantir que o token está propagado
+  await new Promise(function(r){ setTimeout(r, 100); });
   await carregarDados();
   iniciarPoll();
 }
