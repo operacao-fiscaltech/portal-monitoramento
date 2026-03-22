@@ -79,6 +79,18 @@ h2{font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px}
 // Usar "var" para evitar conflito de redeclaração se o arquivo for carregado novamente.
 var AGENT_URL = "http://192.168.15.10:5001";
 
+// Auto-detecta URL do agente baseado em onde está sendo acessado
+(function(){
+  var host = window.location.hostname;
+  var proto = window.location.protocol;
+  var port = window.location.port;
+  if (proto === 'https:' || (host !== 'localhost' && host !== '127.0.0.1' && !host.match(/^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[01])\./))) {
+    AGENT_URL = proto + '//' + window.location.host;
+  } else if (port && port !== '80' && port !== '443') {
+    AGENT_URL = proto + '//' + host + ':' + port;
+  }
+})();
+
 // Usuários: bloco substituído pelo agente ao salvar novos usuários
 const USUARIOS = {
   "wellinton.silva": {
@@ -230,8 +242,23 @@ async function fazerLogin() {
       var sessao = { user: user, nivel: ud.nivel, h: h };
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
       localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
-      // Tenta obter token do agente em background (não bloqueia)
-      _tentarTokenAgente(user, h);
+      // Obtém token do agente ANTES de redirecionar
+      if (_isAgent()) {
+        try {
+          var ar = await fetch(AGENT_URL + '/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: user, hash: h })
+          });
+          if (ar.ok) {
+            var ad = await ar.json();
+            if (ad.token) {
+              localStorage.setItem(AGENT_TK_KEY, ad.token);
+              localStorage.setItem('agent_token', ad.token);
+            }
+          }
+        } catch(e) {}
+      }
       window.location.href = urlPortal();
       return;
     }
@@ -279,9 +306,8 @@ function _tentarTokenAgente(user, h) {
   }).then(function(d) {
     if (d && d.token) {
       localStorage.setItem(AGENT_TK_KEY, d.token);
-      localStorage.setItem('agent_token', d.token);  // compatibilidade
+      localStorage.setItem('agent_token', d.token);
     }
-            localStorage.setItem('agent_token', d.token);  // compatibilidade com configurar_contratos
   }).catch(function() {});
 }
 
