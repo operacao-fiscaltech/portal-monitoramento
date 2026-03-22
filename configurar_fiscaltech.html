@@ -697,6 +697,9 @@ document.addEventListener('keydown', function(e){
 });
 
 async function init() {
+  // Carrega token imediatamente antes de qualquer coisa
+  _token = getToken();
+
   var s = getSessao();
   if (!s) { window.location.href = _isAgent() ? '/app/login' : 'login.html'; return; }
   if (s.nivel === 'analista') { irPortal(); return; }
