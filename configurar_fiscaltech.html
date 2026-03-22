@@ -493,6 +493,22 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 var AGENT_URL = "http://192.168.15.10:5001";
 
+// Auto-detecta URL do agente baseado em onde está sendo acessado
+(function(){
+  var host = window.location.hostname;
+  var proto = window.location.protocol;
+  var port = window.location.port;
+  // Se acessado via ngrok ou qualquer host externo (não localhost/IP interno)
+  if (proto === 'https:' || (host !== 'localhost' && host !== '127.0.0.1' && !host.match(/^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[01])\./))) {
+    // Usa o mesmo host/protocolo da página — ngrok já faz o proxy
+    AGENT_URL = proto + '//' + window.location.host;
+  } else if (port && port !== '80' && port !== '443') {
+    // Acesso local com porta — usa host:porta atual
+    AGENT_URL = proto + '//' + host + ':' + port;
+  }
+  console.log('[FT] AGENT_URL detectado:', AGENT_URL);
+})();
+
 // ── SHA-256 puro em JS ──
 function sha256(str) {
   function rr(v,n){return(v>>>n)|(v<<(32-n))}
@@ -697,7 +713,7 @@ document.addEventListener('keydown', function(e){
 });
 
 async function init() {
-  // Carrega token imediatamente antes de qualquer coisa
+  // Carrega token imediatamente
   _token = getToken();
 
   var s = getSessao();
@@ -705,50 +721,35 @@ async function init() {
   if (s.nivel === 'analista') { irPortal(); return; }
 
   document.getElementById('userLbl').textContent = '👤 ' + s.user + ' (' + s.nivel + ')';
-  console.log('[FT] AGENT_URL:', AGENT_URL, '| user:', s.user, '| hash:', !!s.h);
 
-  // Testa ping do agente
+  // Ping
   try {
     var pr = await fetch(AGENT_URL + '/ping');
-    if (!pr.ok) throw new Error('ping falhou');
-    setOnline();
-  } catch(e) {
-    setOffline();
-    toast('Agente offline em ' + AGENT_URL + ' — verifique se está rodando', 'err');
-    // Não interrompe — tenta carregar dados mesmo assim
+    if (pr.ok) setOnline(); else setOffline();
+  } catch(e) { setOffline(); }
+
+  // Sempre tenta reautenticar para garantir token válido
+  if (s.h) {
+    try {
+      var ar = await fetch(AGENT_URL + '/auth', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: s.user, hash: s.h})
+      });
+      var ad = await ar.json();
+      if (ar.ok && ad.token) {
+        _token = ad.token;
+        localStorage.setItem(ATK, _token);
+      }
+    } catch(e) {}
   }
 
-  // Obtém token
-  _token = getToken();
-  console.log('[FT] Token do storage:', _token ? _token.substring(0,8)+'...' : 'VAZIO');
-
+  // Se ainda sem token, pede senha
   if (!_token) {
-    if (s.h) {
-      // Tem hash — tenta auth direto
-      try {
-        var ar = await fetch(AGENT_URL + '/auth', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({user: s.user, hash: s.h})
-        });
-        var ad = await ar.json();
-        if (ar.ok && ad.token) {
-          _token = ad.token;
-          localStorage.setItem(ATK, _token);
-        }
-      } catch(e) {}
-    }
-
-    // Ainda sem token — pede senha (sessão antiga sem hash)
-    if (!_token) {
-      _token = await pedirSenha();
-      if (!_token) return;
-    }
+    _token = await pedirSenha();
+    if (!_token) return;
   }
 
-  console.log('[FT] Token OK, carregando dados...');
-  // Aguarda um tick para garantir que o token está propagado
-  await new Promise(function(r){ setTimeout(r, 100); });
   await carregarDados();
   iniciarPoll();
 }
@@ -1395,7 +1396,8 @@ function iniciarPollAgend() {
   _agendPollTimer = setInterval(atualizarStatusAgend, 10000);
 }
 
-// ── AGENDAMENTO ──
+// ── INÍCIO ──
+init();
 </script>
 </body>
 </html>
