@@ -752,6 +752,21 @@ async function init() {
   }
 
   await carregarDados();
+  // Consulta status inicial ao abrir o configurador
+  try {
+    var st = await api('/status');
+    var el = document.getElementById('execSt');
+    if (el) {
+      if (st.rodando) {
+        el.className = 'exec-st st-run';
+        el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
+        iniciarPollLogs();
+      } else if (st.ultimo_ok) {
+        el.className = 'exec-st st-ok';
+        el.textContent = '✓ Último: ' + st.ultimo_ok.substring(11, 16);
+      }
+    }
+  } catch(e) {}
   iniciarPoll();
 }
 
@@ -797,13 +812,34 @@ function mostrarSec(id, el) {
   document.querySelectorAll('.nav').forEach(function(n){n.classList.remove('active');});
   document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
-  // Para poll de logs ao sair da seção
-  if (id !== 'logs' && id !== 'automacao' && _pollLogs) {
+  // Para poll de logs ao sair da seção de automação
+  if (id !== 'automacao' && _pollLogs) {
     clearInterval(_pollLogs); _pollLogs = null;
   }
   if (id === 'logs') carregarLogs();
   if (id === 'agendamento') iniciarPollAgend();
   else if (_agendPollTimer) { clearInterval(_agendPollTimer); _agendPollTimer = null; }
+  // Ao entrar em Automação, consulta status imediatamente
+  if (id === 'automacao') {
+    api('/status').then(function(st) {
+      var el2 = document.getElementById('execSt');
+      if (!el2) return;
+      if (st.rodando) {
+        el2.className = 'exec-st st-run';
+        el2.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
+        iniciarPollLogs();
+      } else if (st.erro) {
+        el2.className = 'exec-st st-err';
+        el2.textContent = '✗ Erro: ' + esc(st.erro).substring(0, 60);
+      } else if (st.ultimo_ok) {
+        el2.className = 'exec-st st-ok';
+        el2.textContent = '✓ Concluído às ' + st.ultimo_ok.substring(11, 16);
+      } else {
+        el2.className = 'exec-st st-idle';
+        el2.textContent = '⏸ Aguardando';
+      }
+    }).catch(function(){});
+  }
 }
 
 // ── CONTRATOS ──
@@ -988,25 +1024,37 @@ function renderLog(logs, el, subst) {
 }
 
 var _pollLogs = null;
+var _pollLogsParadas = 0; // conta ticks sem execução ativa para parar o poll
 function iniciarPollLogs() {
   if (_pollLogs) clearInterval(_pollLogs);
+  _pollLogsParadas = 0;
   _pollLogs = setInterval(async function(){
     try {
       var d  = await api('/logs?desde=' + _logOffset);
       if (d.logs && d.logs.length) { renderLog(d.logs, document.getElementById('logBox')); _logOffset = d.total; }
       var st = await api('/status');
       var el = document.getElementById('execSt');
+      if (!el) return;
       if (st.rodando) {
+        _pollLogsParadas = 0;
         el.className = 'exec-st st-run';
         el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
       } else if (st.erro) {
         el.className = 'exec-st st-err';
-        el.textContent = '✗ Erro na última execução';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✗ Erro: ' + esc(st.erro).substring(0, 60);
+        _pollLogsParadas++;
+        // Para o poll após 3 ticks sem execução para não consumir recursos
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
       } else if (st.ultimo_ok) {
         el.className = 'exec-st st-ok';
-        el.textContent = '✓ Concluído com sucesso';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✓ Concluído às ' + st.ultimo_ok.substring(11, 16);
+        _pollLogsParadas++;
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
+      } else {
+        el.className = 'exec-st st-idle';
+        el.textContent = '⏸ Aguardando';
+        _pollLogsParadas++;
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
       }
     } catch(e) {}
   }, 2000);
@@ -1372,14 +1420,14 @@ async function toggleAgendador() {
 
 async function atualizarStatusAgend() {
   try {
-    var r = await fetch(AGENT_URL + '/agendamento/status');
-    if (!r.ok) return;
-    var data = await r.json();
+    // Usa api() para enviar X-Agent-Token automaticamente
+    var data = await api('/agendamento/status');
     _agendStatus = data;
     var rodando = data.rodando;
     var st  = document.getElementById('agendSt');
     var btn = document.getElementById('btnAgendToggle');
     var svl = document.getElementById('agendStatusVal');
+    if (!st) return;
     st.className   = 'exec-st ' + (rodando ? 'st-run' : 'st-idle');
     st.textContent = rodando ? '▶ Rodando' : '⏸ Parado';
     btn.textContent = rodando ? '⏹ Parar' : '▶ Iniciar';
@@ -1388,16 +1436,21 @@ async function atualizarStatusAgend() {
     svl.style.color = rodando ? 'var(--green)' : 'var(--muted)';
     document.getElementById('agendProximo').textContent = data.proximo || '—';
     document.getElementById('agendUltimo').textContent  = data.ultimo  || '—';
-    if (data.config) {
+    if (data.config && Object.keys(data.config).length) {
       _agendConfig = Object.assign(_agendConfig, data.config);
       renderAgendamento();
     }
-  } catch(e) {}
+  } catch(e) {
+    // Falha silenciosa — agente pode estar offline
+    var st = document.getElementById('agendSt');
+    if (st) { st.className = 'exec-st st-err'; st.textContent = '⚠ Sem resposta do agente'; }
+  }
 }
 
 function iniciarPollAgend() {
-  atualizarStatusAgend();
-  _agendPollTimer = setInterval(atualizarStatusAgend, 10000);
+  if (_agendPollTimer) { clearInterval(_agendPollTimer); _agendPollTimer = null; }
+  atualizarStatusAgend(); // executa imediatamente
+  _agendPollTimer = setInterval(atualizarStatusAgend, 8000);
 }
 
 // ── INÍCIO ──
