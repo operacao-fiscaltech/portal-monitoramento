@@ -201,10 +201,10 @@ function sha256(str) {
 var SESSION_KEY    = 'ft_session';
 var AGENT_TK_KEY  = 'ft_agent_token';
 
-// Detecta contexto: agente (servido via HTTP/HTTPS) ou arquivo local (file://)
+// Detecta contexto: agente (porta 5001) ou GitHub Pages
 function _isAgent() {
-  // Funciona com HTTP e HTTPS — rejeita apenas file://
-  return window.location.protocol !== 'file:';
+  // Aceita qualquer porta HTTP local (5001 produção, 5002 teste, etc)
+  return window.location.protocol === 'http:' && window.location.hostname !== '';
 }
 function urlPortal() {
   return _isAgent() ? '/app/portal' : 'portal.html';
@@ -229,7 +229,7 @@ async function fazerLogin() {
     if (ud && ud.hash === h) {
       var sessao = { user: user, nivel: ud.nivel, h: h };
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
-      localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));  // compartilha com novas abas
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
       // Tenta obter token do agente em background (não bloqueia)
       _tentarTokenAgente(user, h);
       window.location.href = urlPortal();
@@ -249,7 +249,7 @@ async function fazerLogin() {
           if (d.token) {
             var sessao = { user: user, nivel: d.nivel, h: h };
             sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
-            localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));  // compartilha com novas abas
+            localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
             localStorage.setItem(AGENT_TK_KEY, d.token);
             localStorage.setItem('agent_token', d.token);  // compatibilidade com configurar_contratos
             window.location.href = urlPortal();
@@ -281,6 +281,7 @@ function _tentarTokenAgente(user, h) {
       localStorage.setItem(AGENT_TK_KEY, d.token);
       localStorage.setItem('agent_token', d.token);  // compatibilidade
     }
+            localStorage.setItem('agent_token', d.token);  // compatibilidade com configurar_contratos
   }).catch(function() {});
 }
 
