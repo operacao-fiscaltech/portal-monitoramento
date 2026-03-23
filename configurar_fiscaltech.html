@@ -165,9 +165,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <button class="sync-btn" id="btnSync" onclick="sincronizar()" title="Sincronizar usuários e contratos no GitHub">
         <span class="sync-ico" id="syncIco">⟳</span> Sincronizar
       </button>
-      <button class="sync-btn" id="btnReiniciar" onclick="reiniciarAgente()" title="Reiniciar o agente Fiscaltech" style="background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3)">
-        <span id="reiniciarIco">↺</span> Reiniciar
-      </button>
       <button class="hbtn hbtn-back" onclick="irPortal()">← Portal</button>
       <button class="hbtn hbtn-sair" onclick="sair()">Sair</button>
     </div>
@@ -423,10 +420,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <div class="field"><label>URL do Portal</label><input id="cUrl" placeholder="https://contrato.fiscaltech.ind.br"></div>
       <div class="field"><label>Concessão</label><input id="cConcessao" placeholder="EPR / DNIT…"></div>
       <div class="field"><label>UF</label>
-        <select id="cUf"><option value="PR">PR</option><option value="SP">SP</option><option value="SC">SC</option>
-          <option value="RS">RS</option><option value="MS">MS</option><option value="MG">MG</option>
-          <option value="ES">ES</option><option value="RJ">RJ</option><option value="GO">GO</option>
-          <option value="MT">MT</option><option value="BA">BA</option><option value="PB">PB</option></select>
+        <select id="cUf">
+          <option value="AC">AC — Acre</option>
+          <option value="AL">AL — Alagoas</option>
+          <option value="AP">AP — Amapá</option>
+          <option value="AM">AM — Amazonas</option>
+          <option value="BA">BA — Bahia</option>
+          <option value="CE">CE — Ceará</option>
+          <option value="DF">DF — Distrito Federal</option>
+          <option value="ES">ES — Espírito Santo</option>
+          <option value="GO">GO — Goiás</option>
+          <option value="MA">MA — Maranhão</option>
+          <option value="MT">MT — Mato Grosso</option>
+          <option value="MS">MS — Mato Grosso do Sul</option>
+          <option value="MG">MG — Minas Gerais</option>
+          <option value="PA">PA — Pará</option>
+          <option value="PB">PB — Paraíba</option>
+          <option value="PR">PR — Paraná</option>
+          <option value="PE">PE — Pernambuco</option>
+          <option value="PI">PI — Piauí</option>
+          <option value="RJ">RJ — Rio de Janeiro</option>
+          <option value="RN">RN — Rio Grande do Norte</option>
+          <option value="RS">RS — Rio Grande do Sul</option>
+          <option value="RO">RO — Rondônia</option>
+          <option value="RR">RR — Roraima</option>
+          <option value="SC">SC — Santa Catarina</option>
+          <option value="SP">SP — São Paulo</option>
+          <option value="SE">SE — Sergipe</option>
+          <option value="TO">TO — Tocantins</option>
+        </select>
       </div>
       <div class="field"><label>Status</label>
         <select id="cStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
@@ -495,7 +517,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://172.16.79.63:5001";
+var AGENT_URL = "http://192.168.15.10:5001";
 
 // Auto-detecta URL do agente baseado em onde está sendo acessado
 (function(){
@@ -1183,53 +1205,6 @@ async function removerUser(login) {
     toast('Usuário removido ✓', 'ok');
     renderUsers();
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
-}
-
-// ── REINICIAR AGENTE ──
-async function reiniciarAgente() {
-  if (!confirm('Reiniciar o agente Fiscaltech?\n\nO configurador ficará offline por alguns segundos enquanto o agente reinicia.')) return;
-  var btn = document.getElementById('btnReiniciar');
-  var ico = document.getElementById('reiniciarIco');
-  btn.disabled = true;
-  ico.classList.add('girando');
-  btn.style.opacity = '.6';
-  try {
-    await api('/reiniciar', 'POST', {});
-    toast('🔄 Agente reiniciando… aguarde alguns segundos', 'warn');
-    // Aguarda 4s e tenta reconectar
-    setTimeout(async function() {
-      var tentativas = 0;
-      var poll = setInterval(async function() {
-        tentativas++;
-        try {
-          var r = await fetch(AGENT_URL + '/ping');
-          if (r.ok) {
-            clearInterval(poll);
-            setOnline();
-            toast('✓ Agente reiniciado com sucesso!', 'ok');
-            btn.disabled = false;
-            ico.classList.remove('girando');
-            btn.style.opacity = '1';
-          }
-        } catch(e) {
-          setOffline();
-          if (tentativas >= 20) { // desiste após 20 tentativas (~40s)
-            clearInterval(poll);
-            toast('⚠ Agente não respondeu — verifique o servidor', 'err');
-            btn.disabled = false;
-            ico.classList.remove('girando');
-            btn.style.opacity = '1';
-          }
-        }
-      }, 2000);
-    }, 4000);
-  } catch(e) {
-    // Erro esperado — o agente pode ter fechado antes de responder
-    toast('🔄 Agente reiniciando… aguardando reconexão', 'warn');
-    btn.disabled = false;
-    ico.classList.remove('girando');
-    btn.style.opacity = '1';
-  }
 }
 
 // ── SINCRONIZAR ──
