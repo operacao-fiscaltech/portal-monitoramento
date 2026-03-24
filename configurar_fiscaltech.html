@@ -42,9 +42,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   font-size:13px;font-weight:500;color:var(--muted);transition:.15s;border:1px solid transparent}
 .nav:hover{background:var(--surface);color:var(--text);border-color:var(--border)}
 .nav.active{background:var(--accent3);color:var(--accent2);border-color:var(--accent-light);font-weight:700}
-.content{display:flex;flex-direction:column;gap:20px;min-width:0;overflow:hidden}
+.content{display:flex;flex-direction:column;gap:20px}
 .sec{display:none}.sec.on{display:flex;flex-direction:column;gap:20px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;min-width:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
 .card-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .card-body{padding:20px}
@@ -84,27 +84,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .ag-toggle::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;
   background:white;top:3px;left:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .ag-toggle.on::after{left:19px}
-.tbl{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;
-  color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:hover td{background:#f8fafc}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700}
 .pill-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
 .pill-off{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
-.urow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);min-width:0}
+.urow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
 .urow:last-child{border-bottom:none}
 .uavatar{width:34px;height:34px;border-radius:8px;background:var(--accent3);color:var(--accent2);
   display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
-.uinfo{flex:1;min-width:0}.uname{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uinfo{flex:1}.uname{font-size:13px;font-weight:700;color:var(--text)}
 .ulvl{font-family:var(--mono);font-size:10px;color:var(--muted)}
-.nbadge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;flex-shrink:0}
+.nbadge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700}
 .nb1{background:#f5f3ff;color:#7c3aed}.nb2{background:#eff6ff;color:#0066cc}.nb3{background:#ecfdf5;color:#059669}
 .log-box{background:#0d1117;border-radius:10px;padding:14px;font-family:var(--mono);font-size:11px;
-  line-height:1.7;height:320px;overflow:auto;color:#c9d1d9;white-space:pre;
-  word-break:normal;word-wrap:normal;max-width:100%;box-sizing:border-box}
-.log-box::-webkit-scrollbar{width:5px;height:5px}.log-box::-webkit-scrollbar-track{background:transparent}
+  line-height:1.7;height:320px;overflow-y:auto;color:#c9d1d9}
+.log-box::-webkit-scrollbar{width:5px}.log-box::-webkit-scrollbar-track{background:transparent}
 .log-box::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
 .lok{color:#56d364}.lerro{color:#f87171}.lwarn{color:#e3b341}.linfo{color:#79c0ff}
 .exec-st{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
@@ -222,15 +221,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
             <div class="sel-grid" id="selGrid"></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-            <button class="btn bp" onclick="executar('ciclo')" style="flex-direction:column;align-items:center;padding:14px 10px;text-align:center;height:64px;justify-content:center">
-              <span>🔄 Ciclo Completo</span><small style="font-weight:400;opacity:.8;font-size:11px">Download + Atualizar</small>
-            </button>
-            <button class="btn bg" onclick="executar('baixar')" style="flex-direction:column;align-items:center;padding:14px 10px;text-align:center;height:64px;justify-content:center">
-              <span>⬇️ Só Download</span><small style="font-weight:400;opacity:.8;font-size:11px">Baixar relatórios</small>
-            </button>
-            <button class="btn bg" onclick="executar('atualizar')" style="flex-direction:column;align-items:center;padding:14px 10px;text-align:center;height:64px;justify-content:center">
-              <span>📊 Só Atualizar</span><small style="font-weight:400;opacity:.8;font-size:11px">Gerar dashboards</small>
-            </button>
+            <button class="btn bp" onclick="executar('ciclo')">🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small></button>
+            <button class="btn bg" onclick="executar('baixar')">⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small></button>
+            <button class="btn bg" onclick="executar('atualizar')">📊 Só Atualizar<br><small style="font-weight:400;opacity:.8">Gerar dashboards</small></button>
           </div>
           <button class="btn bg bs" onclick="executar('publicar')">📤 Publicar no GitHub</button>
         </div>
@@ -260,17 +253,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
         </div>
         <div class="card-body">
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
-            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;min-height:80px;display:flex;flex-direction:column;justify-content:center">
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
               <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Status</div>
-              <div id="agendStatusVal" style="font-size:16px;font-weight:800;color:var(--muted)">—</div>
+              <div id="agendStatusVal" style="font-size:18px;font-weight:800;color:var(--muted)">—</div>
             </div>
-            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;min-height:80px;display:flex;flex-direction:column;justify-content:center">
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
               <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Próximo Ciclo</div>
-              <div id="agendProximo" style="font-size:13px;font-weight:700;color:var(--text)">—</div>
+              <div id="agendProximo" style="font-size:14px;font-weight:700;color:var(--text)">—</div>
             </div>
-            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;min-height:80px;display:flex;flex-direction:column;justify-content:center">
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
               <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Último Ciclo</div>
-              <div id="agendUltimo" style="font-size:13px;font-weight:700;color:var(--text)">—</div>
+              <div id="agendUltimo" style="font-size:14px;font-weight:700;color:var(--text)">—</div>
             </div>
           </div>
         </div>
@@ -285,16 +278,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
         <div class="card-body">
           <div style="margin-bottom:16px">
             <label style="font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px">Modo de Agendamento</label>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;min-width:160px;transition:.15s" id="lblModoIntervalo">
-                <input type="radio" name="agendModo" value="intervalo" id="radIntervalo" onchange="trocarModo()" style="accent-color:var(--accent);flex-shrink:0">
+            <div style="display:flex;gap:10px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;transition:.15s" id="lblModoIntervalo">
+                <input type="radio" name="agendModo" value="intervalo" id="radIntervalo" onchange="trocarModo()" style="accent-color:var(--accent)">
                 <div>
                   <div style="font-size:13px;font-weight:700">Intervalo fixo</div>
                   <div style="font-size:11px;color:var(--muted)">A cada X horas continuamente</div>
                 </div>
               </label>
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;min-width:160px;transition:.15s" id="lblModoHorarios">
-                <input type="radio" name="agendModo" value="horarios" id="radHorarios" onchange="trocarModo()" style="accent-color:var(--accent);flex-shrink:0">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;transition:.15s" id="lblModoHorarios">
+                <input type="radio" name="agendModo" value="horarios" id="radHorarios" onchange="trocarModo()" style="accent-color:var(--accent)">
                 <div>
                   <div style="font-size:13px;font-weight:700">Horários fixos</div>
                   <div style="font-size:11px;color:var(--muted)">Define horários específicos do dia</div>
@@ -355,7 +348,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           </div>
         </div>
         <div class="card-body">
-          <div id="listaAgendContratos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">
+          <div id="listaAgendContratos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
             Carregando…
           </div>
         </div>
@@ -392,7 +385,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
             <div class="field"><label>Usuário GitHub</label><input id="ghUser" placeholder="seu-usuario"></div>
             <div class="field"><label>Repositório</label><input id="ghRepo" placeholder="portal-monitoramento"></div>
             <div class="field fc"><label>Token (Personal Access Token)</label><input type="password" id="ghToken" placeholder="ghp_…"></div>
-            <div class="field fc"><label>Branch</label><input id="ghBranch" value="main"></div>
+            <div class="field"><label>Branch</label><input id="ghBranch" value="main"></div>
           </div>
         </div>
       </div>
@@ -427,10 +420,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <div class="field"><label>URL do Portal</label><input id="cUrl" placeholder="https://contrato.fiscaltech.ind.br"></div>
       <div class="field"><label>Concessão</label><input id="cConcessao" placeholder="EPR / DNIT…"></div>
       <div class="field"><label>UF</label>
-        <select id="cUf"><option value="PR">PR</option><option value="SP">SP</option><option value="SC">SC</option>
-          <option value="RS">RS</option><option value="MS">MS</option><option value="MG">MG</option>
-          <option value="ES">ES</option><option value="RJ">RJ</option><option value="GO">GO</option>
-          <option value="MT">MT</option><option value="BA">BA</option><option value="PB">PB</option></select>
+        <select id="cUf">
+          <option value="AC">AC — Acre</option>
+          <option value="AL">AL — Alagoas</option>
+          <option value="AP">AP — Amapá</option>
+          <option value="AM">AM — Amazonas</option>
+          <option value="BA">BA — Bahia</option>
+          <option value="CE">CE — Ceará</option>
+          <option value="DF">DF — Distrito Federal</option>
+          <option value="ES">ES — Espírito Santo</option>
+          <option value="GO">GO — Goiás</option>
+          <option value="MA">MA — Maranhão</option>
+          <option value="MT">MT — Mato Grosso</option>
+          <option value="MS">MS — Mato Grosso do Sul</option>
+          <option value="MG">MG — Minas Gerais</option>
+          <option value="PA">PA — Pará</option>
+          <option value="PB">PB — Paraíba</option>
+          <option value="PR">PR — Paraná</option>
+          <option value="PE">PE — Pernambuco</option>
+          <option value="PI">PI — Piauí</option>
+          <option value="RJ">RJ — Rio de Janeiro</option>
+          <option value="RN">RN — Rio Grande do Norte</option>
+          <option value="RS">RS — Rio Grande do Sul</option>
+          <option value="RO">RO — Rondônia</option>
+          <option value="RR">RR — Roraima</option>
+          <option value="SC">SC — Santa Catarina</option>
+          <option value="SP">SP — São Paulo</option>
+          <option value="SE">SE — Sergipe</option>
+          <option value="TO">TO — Tocantins</option>
+        </select>
       </div>
       <div class="field"><label>Status</label>
         <select id="cStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
@@ -1023,10 +1041,10 @@ function renderLog(logs, el, subst) {
   if (!logs || !logs.length) return;
   var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
   var html = logs.map(function(l){
-    return '<span class="' + (map[l.nivel]||'linfo') + '" style="display:block">[' + l.ts + '] ' + esc(l.msg) + '</span>';
-  }).join('');
+    return '<span class="' + (map[l.nivel]||'linfo') + '">[' + l.ts + '] ' + esc(l.msg) + '</span>';
+  }).join('\n');
   if (subst) el.innerHTML = html;
-  else el.innerHTML += html;
+  else el.innerHTML += (el.innerHTML ? '\n' : '') + html;
   el.scrollTop = el.scrollHeight;
 }
 
@@ -1089,8 +1107,8 @@ function renderUsers() {
       '<div class="uavatar">' + login[0].toUpperCase() + '</div>' +
       '<div class="uinfo"><div class="uname">' + esc(login) + '</div><div class="ulvl">Criado por: ' + esc(u.criadoPor||'sistema') + '</div></div>' +
       '<span class="nbadge ' + (cls[u.nivel]||'nb3') + '">' + (map[u.nivel]||u.nivel) + '</span>' +
-      '<button class="btn bg bs" style="margin-left:4px;flex-shrink:0" onclick="editarUser(\'' + login + '\')">✎ Editar</button>' +
-      '<button class="btn bd bs" style="margin-left:4px;flex-shrink:0" onclick="removerUser(\'' + login + '\')">✕</button>' +
+      '<button class="btn bg bs" style="margin-left:4px" onclick="editarUser(\'' + login + '\')">✎ Editar</button>' +
+      '<button class="btn bd bs" style="margin-left:4px" onclick="removerUser(\'' + login + '\')">✕</button>' +
     '</div>';
   }).join('');
 }
