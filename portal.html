@@ -299,7 +299,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 </main>
 
 <script>
-var AGENT_URL = "http://192.168.30.187:5001";
+var AGENT_URL = "http://172.16.79.63:5001";
 (function(){
   var h=window.location.hostname,pr=window.location.protocol,po=window.location.port;
   if(pr==='https:'||(h!=='localhost'&&h!=='127.0.0.1'&&!h.match(/^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[01])\./)))
@@ -324,13 +324,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 35,
     "totalFaixas": 92,
-    "fluxoHoje": 9275,
-    "lapMedio": 78.3,
-    "aprovMedio": 0.781,
-    "funcMedio": 97.0,
-    "faixasCrit": 28,
+    "fluxoHoje": 112408,
+    "lapMedio": 85.1,
+    "aprovMedio": 0.782,
+    "funcMedio": 97.3,
+    "faixasCrit": 24,
     "faixasWarn": 51,
-    "faixasOk": 13,
+    "faixasOk": 17,
     "faixasOff": 0,
     "afericoesVenc60": 6,
     "faixasSample": [
@@ -422,12 +422,12 @@ const CONTRATOS = [
       {
         "serie": "710",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "710",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "711",
@@ -447,7 +447,7 @@ const CONTRATOS = [
       {
         "serie": "712",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "712",
@@ -457,7 +457,7 @@ const CONTRATOS = [
       {
         "serie": "728",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "728",
@@ -477,7 +477,7 @@ const CONTRATOS = [
       {
         "serie": "729",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "730",
@@ -547,7 +547,7 @@ const CONTRATOS = [
       {
         "serie": "734",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "735",
@@ -818,812 +818,11 @@ const CONTRATOS = [
       308669,
       262546,
       194917,
-      260998,
-      9275
+      261153,
+      112408
     ],
     "cor": "#0ea5e9",
-    "atualizado": "24/03/2026 10:06",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "AMUB",
-    "nome": "AMUB",
-    "arquivo": "dashboard_AMUB.html",
-    "rodovias": [],
-    "uf": "PR",
-    "totalEquip": 9,
-    "totalFaixas": 21,
-    "fluxoHoje": 11185,
-    "lapMedio": 86.6,
-    "aprovMedio": 0.973,
-    "funcMedio": 98.2,
-    "faixasCrit": 1,
-    "faixasWarn": 5,
-    "faixasOk": 15,
-    "faixasOff": 0,
-    "afericoesVenc60": 9,
-    "faixasSample": [
-      {
-        "serie": "7164",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7164",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7164",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "7165",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7165",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7165",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "7166",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7166",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7166",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "7167",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7167",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7167",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "7168",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7168",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7169",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7169",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7170",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7170",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7171",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7175",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7175",
-        "id": "2",
-        "status": "ok"
-      }
-    ],
-    "fluxoSpark": [
-      173574,
-      234852,
-      230505,
-      232133,
-      217188,
-      212057,
-      213447,
-      175652,
-      199188,
-      188109,
-      169803,
-      204390,
-      212008,
-      195921,
-      144634,
-      193014,
-      195948,
-      199686,
-      203010,
-      205141,
-      166103,
-      130892,
-      166892,
-      11185
-    ],
-    "cor": "#22d3a0",
-    "atualizado": "24/03/2026 10:07",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "BELEM",
-    "nome": "BELEM",
-    "arquivo": "dashboard_BELEM.html",
-    "rodovias": [],
-    "uf": "PR",
-    "totalEquip": 52,
-    "totalFaixas": 118,
-    "fluxoHoje": 44954,
-    "lapMedio": 73.1,
-    "aprovMedio": 0,
-    "funcMedio": 98.0,
-    "faixasCrit": 20,
-    "faixasWarn": 31,
-    "faixasOk": 61,
-    "faixasOff": 6,
-    "afericoesVenc60": 17,
-    "faixasSample": [
-      {
-        "serie": "299",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "299",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "299",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "369",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "369",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "369",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "370",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "370",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "370",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "371",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "371",
-        "id": "4",
-        "status": "ok"
-      },
-      {
-        "serie": "372",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "372",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "373",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "373",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "373",
-        "id": "4",
-        "status": "off"
-      },
-      {
-        "serie": "374",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "374",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "374",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "375",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "375",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "375",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "378",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "378",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "378",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "379",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "379",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "379",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "383",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "383",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "383",
-        "id": "3",
-        "status": "off"
-      },
-      {
-        "serie": "384",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "384",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "384",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "388",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "388",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "388",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "389",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "389",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "389",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "390",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "390",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "390",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "391",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "391",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "391",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "392",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "392",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "392",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "397",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "397",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "397",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "399",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "399",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "400",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "400",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "403",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "403",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "410",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "411",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "412",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "413",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "414",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "415",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "416",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "417",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "418",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "419",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "420",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "420",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "421",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "421",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "422",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "422",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "422",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "467",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "467",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "468",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "468",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "469",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "469",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "470",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "470",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "470",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "472",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "472",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "473",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "473",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "474",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "474",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "474",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "475",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "475",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "476",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "476",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "476",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "478",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "478",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "480",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "480",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "480",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "642",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "643",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "644",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "644",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "645",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "645",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "4031",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "4031",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "4031",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "4031",
-        "id": "4",
-        "status": "crit"
-      },
-      {
-        "serie": "4032",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "4032",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "4032",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "4033",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "4033",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "4033",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "4033",
-        "id": "4",
-        "status": "crit"
-      }
-    ],
-    "fluxoSpark": [
-      414833,
-      500790,
-      462846,
-      453700,
-      459543,
-      479991,
-      508203,
-      437219,
-      501544,
-      483572,
-      464235,
-      497748,
-      526297,
-      515060,
-      419924,
-      478548,
-      490292,
-      494719,
-      478236,
-      485093,
-      489251,
-      430715,
-      501105,
-      44954
-    ],
-    "cor": "#f59e0b",
-    "atualizado": "24/03/2026 10:07",
+    "atualizado": "24/03/2026 15:05",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -1638,13 +837,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 16,
     "totalFaixas": 34,
-    "fluxoHoje": 11622,
-    "lapMedio": 52.9,
+    "fluxoHoje": 83571,
+    "lapMedio": 66.5,
     "aprovMedio": 0,
     "funcMedio": 99.3,
-    "faixasCrit": 21,
-    "faixasWarn": 9,
-    "faixasOk": 4,
+    "faixasCrit": 8,
+    "faixasWarn": 20,
+    "faixasOk": 6,
     "faixasOff": 0,
     "afericoesVenc60": 10,
     "faixasSample": [
@@ -1661,7 +860,7 @@ const CONTRATOS = [
       {
         "serie": "2",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "3",
@@ -1681,7 +880,7 @@ const CONTRATOS = [
       {
         "serie": "4",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "5",
@@ -1701,7 +900,7 @@ const CONTRATOS = [
       {
         "serie": "6",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7",
@@ -1711,12 +910,12 @@ const CONTRATOS = [
       {
         "serie": "7",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "8",
@@ -1731,12 +930,12 @@ const CONTRATOS = [
       {
         "serie": "9",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "9",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "423",
@@ -1751,7 +950,7 @@ const CONTRATOS = [
       {
         "serie": "423",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "424",
@@ -1766,17 +965,17 @@ const CONTRATOS = [
       {
         "serie": "425",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "425",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "427",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "438",
@@ -1806,12 +1005,12 @@ const CONTRATOS = [
       {
         "serie": "441",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "441",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "441",
@@ -1843,698 +1042,10 @@ const CONTRATOS = [
       151276,
       109603,
       166582,
-      11622
+      83571
     ],
     "cor": "#8b5cf6",
-    "atualizado": "24/03/2026 10:07",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "CASCAVEL",
-    "nome": "CASCAVEL",
-    "arquivo": "dashboard_CASCAVEL.html",
-    "rodovias": [],
-    "uf": "PR",
-    "totalEquip": 57,
-    "totalFaixas": 127,
-    "fluxoHoje": 12001,
-    "lapMedio": 68.7,
-    "aprovMedio": 0.99,
-    "funcMedio": 99.3,
-    "faixasCrit": 28,
-    "faixasWarn": 18,
-    "faixasOk": 74,
-    "faixasOff": 7,
-    "afericoesVenc60": 22,
-    "faixasSample": [
-      {
-        "serie": "1",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "1",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "1016",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "1016",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6474",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6475",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6476",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6477",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6477",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6477",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6478",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6478",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6478",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6480",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6480",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6480",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6481",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6481",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6481",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6482",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6482",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6482",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6483",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6483",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6483",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6484",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6484",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6484",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6485",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6485",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6485",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6486",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6486",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6486",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6487",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6488",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6488",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6489",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6490",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6491",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6492",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6492",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6492",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6493",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6493",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6494",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6495",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6496",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6496",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6497",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6497",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6498",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6499",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6499",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6499",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6500",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6500",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6500",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6501",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6501",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6501",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "6502",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6502",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6504",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6504",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6504",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6505",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6505",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6506",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6506",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6506",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "6506",
-        "id": "4",
-        "status": "crit"
-      },
-      {
-        "serie": "6507",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6507",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6507",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6508",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6508",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6509",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6509",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6509",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6510",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6510",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6511",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6511",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6511",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6512",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6512",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6513",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6513",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6513",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6514",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6514",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6515",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6515",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6515",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6516",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6516",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6516",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6517",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6517",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6518",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6518",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6518",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6519",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6519",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6520",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6520",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6520",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6520",
-        "id": "4",
-        "status": "crit"
-      },
-      {
-        "serie": "6644",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6644",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6645",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6645",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6646",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6646",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6646",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "6647",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6647",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6647",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "6648",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6648",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7495",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7496",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7497",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7536",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7538",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7538",
-        "id": "2",
-        "status": "crit"
-      }
-    ],
-    "fluxoSpark": [
-      270745,
-      490645,
-      497428,
-      466344,
-      491270,
-      531094,
-      437733,
-      281874,
-      472468,
-      497371,
-      480859,
-      485835,
-      506234,
-      412565,
-      266197,
-      486130,
-      489501,
-      500202,
-      502152,
-      522500,
-      407105,
-      263574,
-      484547,
-      12001
-    ],
-    "cor": "#f43f5e",
-    "atualizado": "24/03/2026 10:07",
+    "atualizado": "24/03/2026 15:05",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -2551,20 +1062,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 39,
     "totalFaixas": 46,
-    "fluxoHoje": 6512,
-    "lapMedio": 66.0,
-    "aprovMedio": 0.979,
-    "funcMedio": 91.6,
-    "faixasCrit": 14,
-    "faixasWarn": 10,
-    "faixasOk": 17,
-    "faixasOff": 5,
+    "fluxoHoje": 0,
+    "lapMedio": 80.4,
+    "aprovMedio": 0.98,
+    "funcMedio": 91.7,
+    "faixasCrit": 6,
+    "faixasWarn": 14,
+    "faixasOk": 20,
+    "faixasOff": 6,
     "afericoesVenc60": 8,
     "faixasSample": [
       {
         "serie": "7399",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7400",
@@ -2574,7 +1085,7 @@ const CONTRATOS = [
       {
         "serie": "7401",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7402",
@@ -2604,7 +1115,7 @@ const CONTRATOS = [
       {
         "serie": "7407",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7408",
@@ -2634,7 +1145,7 @@ const CONTRATOS = [
       {
         "serie": "7413",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7414",
@@ -2644,7 +1155,7 @@ const CONTRATOS = [
       {
         "serie": "7414",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7415",
@@ -2654,7 +1165,7 @@ const CONTRATOS = [
       {
         "serie": "7415",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7416",
@@ -2674,7 +1185,7 @@ const CONTRATOS = [
       {
         "serie": "7417",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7418",
@@ -2684,12 +1195,12 @@ const CONTRATOS = [
       {
         "serie": "7419",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7420",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7421",
@@ -2704,7 +1215,7 @@ const CONTRATOS = [
       {
         "serie": "7422",
         "id": "1",
-        "status": "crit"
+        "status": "off"
       },
       {
         "serie": "7423",
@@ -2739,7 +1250,7 @@ const CONTRATOS = [
       {
         "serie": "7427",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7428",
@@ -2779,7 +1290,7 @@ const CONTRATOS = [
       {
         "serie": "7435",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "7436",
@@ -2793,245 +1304,33 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      76327,
-      90386,
-      90251,
-      95363,
-      87988,
-      91774,
-      83764,
-      60921,
-      85500,
-      80518,
-      88671,
-      93968,
-      98886,
-      81962,
-      72492,
-      88331,
-      89839,
-      86595,
-      90925,
-      89771,
-      80894,
-      71959,
-      84630,
-      6512
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
     "cor": "#fb923c",
-    "atualizado": "24/03/2026 10:07",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "CNL-RADARES",
-    "nome": "CNL-RADARES",
-    "arquivo": "dashboard_CNL-RADARES.html",
-    "rodovias": [
-      "SP-055",
-      "SP-088",
-      "SP-098"
-    ],
-    "uf": "PR",
-    "totalEquip": 14,
-    "totalFaixas": 31,
-    "fluxoHoje": 9288,
-    "lapMedio": 46.2,
-    "aprovMedio": 1.0,
-    "funcMedio": 98.7,
-    "faixasCrit": 17,
-    "faixasWarn": 2,
-    "faixasOk": 12,
-    "faixasOff": 0,
-    "afericoesVenc60": 0,
-    "faixasSample": [
-      {
-        "serie": "7463",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7463",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7464",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7464",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7465",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7465",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7466",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7466",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7467",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7467",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7468",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7468",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7469",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7469",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "7470",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7471",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7471",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7471",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "7472",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7472",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7472",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "7473",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7473",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7473",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "7474",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7474",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7474",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "7475",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7475",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7476",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7476",
-        "id": "2",
-        "status": "crit"
-      }
-    ],
-    "fluxoSpark": [
-      96088,
-      105634,
-      100041,
-      105716,
-      113094,
-      135754,
-      103298,
-      113051,
-      108385,
-      102035,
-      104688,
-      104669,
-      130144,
-      112734,
-      117192,
-      111244,
-      104607,
-      113486,
-      112451,
-      128529,
-      109389,
-      120528,
-      117031,
-      9288
-    ],
-    "cor": "#38bdf8",
-    "atualizado": "24/03/2026 10:07",
+    "atualizado": "24/03/2026 15:05",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -3046,13 +1345,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 164,
     "totalFaixas": 350,
-    "fluxoHoje": 294122,
-    "lapMedio": 62.0,
-    "aprovMedio": 0.074,
+    "fluxoHoje": 1226958,
+    "lapMedio": 67.3,
+    "aprovMedio": 0.075,
     "funcMedio": 98.6,
-    "faixasCrit": 282,
-    "faixasWarn": 17,
-    "faixasOk": 14,
+    "faixasCrit": 279,
+    "faixasWarn": 18,
+    "faixasOk": 16,
     "faixasOff": 37,
     "afericoesVenc60": 50,
     "faixasSample": [
@@ -3359,7 +1658,7 @@ const CONTRATOS = [
       {
         "serie": "4050",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "4050",
@@ -3434,7 +1733,7 @@ const CONTRATOS = [
       {
         "serie": "4057",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "4058",
@@ -3619,7 +1918,7 @@ const CONTRATOS = [
       {
         "serie": "6840",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6841",
@@ -3739,12 +2038,12 @@ const CONTRATOS = [
       {
         "serie": "6861",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6861",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6861",
@@ -3854,12 +2153,12 @@ const CONTRATOS = [
       {
         "serie": "6938",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6939",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6940",
@@ -3944,7 +2243,7 @@ const CONTRATOS = [
       {
         "serie": "6948",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6948",
@@ -4024,7 +2323,7 @@ const CONTRATOS = [
       {
         "serie": "6955",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6955",
@@ -4099,7 +2398,7 @@ const CONTRATOS = [
       {
         "serie": "6962",
         "id": "1",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "6963",
@@ -4109,7 +2408,7 @@ const CONTRATOS = [
       {
         "serie": "6963",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6964",
@@ -4204,7 +2503,7 @@ const CONTRATOS = [
       {
         "serie": "6970",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6971",
@@ -4214,7 +2513,7 @@ const CONTRATOS = [
       {
         "serie": "6971",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6971",
@@ -4449,7 +2748,7 @@ const CONTRATOS = [
       {
         "serie": "6994",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6994",
@@ -4459,7 +2758,7 @@ const CONTRATOS = [
       {
         "serie": "6994",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6995",
@@ -4574,7 +2873,7 @@ const CONTRATOS = [
       {
         "serie": "7004",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "7005",
@@ -4589,7 +2888,7 @@ const CONTRATOS = [
       {
         "serie": "7006",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7006",
@@ -4664,7 +2963,7 @@ const CONTRATOS = [
       {
         "serie": "7012",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7012",
@@ -4831,10 +3130,10 @@ const CONTRATOS = [
       2977198,
       2446225,
       2824008,
-      294122
+      1226958
     ],
     "cor": "#4ade80",
-    "atualizado": "24/03/2026 10:07",
+    "atualizado": "24/03/2026 15:05",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -4853,35 +3152,35 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 13,
     "totalFaixas": 13,
-    "fluxoHoje": 651,
-    "lapMedio": 90.3,
+    "fluxoHoje": 0,
+    "lapMedio": 90.9,
     "aprovMedio": 1.0,
     "funcMedio": 100.0,
     "faixasCrit": 0,
     "faixasWarn": 1,
-    "faixasOk": 11,
-    "faixasOff": 1,
+    "faixasOk": 7,
+    "faixasOff": 5,
     "afericoesVenc60": 5,
     "faixasSample": [
       {
         "serie": "1",
         "id": "1",
-        "status": "ok"
+        "status": "off"
       },
       {
         "serie": "6",
         "id": "1",
-        "status": "ok"
+        "status": "off"
       },
       {
         "serie": "7",
         "id": "1",
-        "status": "ok"
+        "status": "off"
       },
       {
         "serie": "8",
         "id": "1",
-        "status": "ok"
+        "status": "off"
       },
       {
         "serie": "9",
@@ -4930,33 +3229,33 @@ const CONTRATOS = [
       }
     ],
     "fluxoSpark": [
-      32711,
-      38898,
-      38629,
-      39328,
-      41678,
-      44544,
-      33344,
-      31475,
-      41787,
-      41343,
-      42761,
-      43415,
-      47207,
-      34071,
-      32445,
-      36865,
-      32054,
-      32092,
-      34912,
-      41422,
-      32939,
-      28130,
-      24166,
-      651
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
     "cor": "#0ea5e9",
-    "atualizado": "24/03/2026 10:07",
+    "atualizado": "24/03/2026 15:06",
     "referencia": "D-1 (24 Tue)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -4971,13 +3270,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 133,
     "totalFaixas": 378,
-    "fluxoHoje": 85551,
-    "lapMedio": 79.9,
-    "aprovMedio": 0.944,
-    "funcMedio": 94.6,
-    "faixasCrit": 78,
-    "faixasWarn": 107,
-    "faixasOk": 187,
+    "fluxoHoje": 1116887,
+    "lapMedio": 0,
+    "aprovMedio": 0.947,
+    "funcMedio": 94.9,
+    "faixasCrit": 40,
+    "faixasWarn": 75,
+    "faixasOk": 257,
     "faixasOff": 6,
     "afericoesVenc60": 48,
     "faixasSample": [
@@ -5009,7 +3308,7 @@ const CONTRATOS = [
       {
         "serie": "6036",
         "id": "6",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6238",
@@ -5034,12 +3333,12 @@ const CONTRATOS = [
       {
         "serie": "6240",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6240",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6241",
@@ -5064,7 +3363,7 @@ const CONTRATOS = [
       {
         "serie": "6242",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6242",
@@ -5104,7 +3403,7 @@ const CONTRATOS = [
       {
         "serie": "6245",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6245",
@@ -5159,7 +3458,7 @@ const CONTRATOS = [
       {
         "serie": "6248",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6250",
@@ -5169,12 +3468,12 @@ const CONTRATOS = [
       {
         "serie": "6250",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6250",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6251",
@@ -5204,7 +3503,7 @@ const CONTRATOS = [
       {
         "serie": "6252",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6253",
@@ -5239,7 +3538,7 @@ const CONTRATOS = [
       {
         "serie": "6255",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6255",
@@ -5274,7 +3573,7 @@ const CONTRATOS = [
       {
         "serie": "6257",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6258",
@@ -5289,12 +3588,12 @@ const CONTRATOS = [
       {
         "serie": "6258",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6259",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6259",
@@ -5339,12 +3638,12 @@ const CONTRATOS = [
       {
         "serie": "6262",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6262",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6262",
@@ -5424,7 +3723,7 @@ const CONTRATOS = [
       {
         "serie": "6267",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6268",
@@ -5444,7 +3743,7 @@ const CONTRATOS = [
       {
         "serie": "6269",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6269",
@@ -5494,12 +3793,12 @@ const CONTRATOS = [
       {
         "serie": "6272",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6273",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6273",
@@ -5509,12 +3808,12 @@ const CONTRATOS = [
       {
         "serie": "6273",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6274",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6274",
@@ -5529,7 +3828,7 @@ const CONTRATOS = [
       {
         "serie": "6275",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6275",
@@ -5539,7 +3838,7 @@ const CONTRATOS = [
       {
         "serie": "6275",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6276",
@@ -5574,7 +3873,7 @@ const CONTRATOS = [
       {
         "serie": "6278",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6278",
@@ -5619,27 +3918,27 @@ const CONTRATOS = [
       {
         "serie": "6281",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6281",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6282",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6282",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6282",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6283",
@@ -5654,7 +3953,7 @@ const CONTRATOS = [
       {
         "serie": "6283",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6284",
@@ -5709,7 +4008,7 @@ const CONTRATOS = [
       {
         "serie": "6287",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6287",
@@ -5724,12 +4023,12 @@ const CONTRATOS = [
       {
         "serie": "6288",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6288",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6289",
@@ -5744,62 +4043,62 @@ const CONTRATOS = [
       {
         "serie": "6290",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6290",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6290",
         "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6291",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6291",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6291",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6292",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6292",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6292",
+        "id": "3",
+        "status": "ok"
+      },
+      {
+        "serie": "6293",
+        "id": "1",
         "status": "warn"
       },
       {
-        "serie": "6291",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6291",
+        "serie": "6293",
         "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6291",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6292",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6292",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6292",
-        "id": "3",
         "status": "warn"
       },
       {
         "serie": "6293",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6293",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6293",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6294",
@@ -5809,7 +4108,7 @@ const CONTRATOS = [
       {
         "serie": "6294",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6294",
@@ -5824,7 +4123,7 @@ const CONTRATOS = [
       {
         "serie": "6296",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6296",
@@ -5894,7 +4193,7 @@ const CONTRATOS = [
       {
         "serie": "6301",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6301",
@@ -5964,7 +4263,7 @@ const CONTRATOS = [
       {
         "serie": "6306",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6306",
@@ -5989,7 +4288,7 @@ const CONTRATOS = [
       {
         "serie": "6307",
         "id": "6",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6308",
@@ -6009,7 +4308,7 @@ const CONTRATOS = [
       {
         "serie": "6309",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6309",
@@ -6039,12 +4338,12 @@ const CONTRATOS = [
       {
         "serie": "6311",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6311",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6311",
@@ -6074,7 +4373,7 @@ const CONTRATOS = [
       {
         "serie": "6313",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6313",
@@ -6124,17 +4423,17 @@ const CONTRATOS = [
       {
         "serie": "6317",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6317",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6317",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6318",
@@ -6154,7 +4453,7 @@ const CONTRATOS = [
       {
         "serie": "6319",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6319",
@@ -6164,12 +4463,12 @@ const CONTRATOS = [
       {
         "serie": "6319",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6320",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6320",
@@ -6194,7 +4493,7 @@ const CONTRATOS = [
       {
         "serie": "6321",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6322",
@@ -6209,7 +4508,7 @@ const CONTRATOS = [
       {
         "serie": "6322",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6323",
@@ -6234,32 +4533,32 @@ const CONTRATOS = [
       {
         "serie": "6325",
         "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6325",
-        "id": "2",
         "status": "ok"
       },
       {
         "serie": "6325",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6325",
         "id": "3",
         "status": "ok"
       },
       {
         "serie": "6326",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6326",
         "id": "5",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6326",
         "id": "6",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6327",
@@ -6279,22 +4578,22 @@ const CONTRATOS = [
       {
         "serie": "6328",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6328",
         "id": "5",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6328",
         "id": "6",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6329",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6329",
@@ -6319,7 +4618,7 @@ const CONTRATOS = [
       {
         "serie": "6330",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6331",
@@ -6359,12 +4658,12 @@ const CONTRATOS = [
       {
         "serie": "6333",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6333",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6334",
@@ -6399,27 +4698,27 @@ const CONTRATOS = [
       {
         "serie": "6336",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6336",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6336",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6337",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6337",
         "id": "5",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6337",
@@ -6434,7 +4733,7 @@ const CONTRATOS = [
       {
         "serie": "6338",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6338",
@@ -6449,17 +4748,17 @@ const CONTRATOS = [
       {
         "serie": "6339",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6339",
         "id": "3",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6339",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6340",
@@ -6539,12 +4838,12 @@ const CONTRATOS = [
       {
         "serie": "6346",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6346",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6347",
@@ -6564,7 +4863,7 @@ const CONTRATOS = [
       {
         "serie": "6348",
         "id": "4",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6348",
@@ -6574,24 +4873,24 @@ const CONTRATOS = [
       {
         "serie": "6348",
         "id": "6",
+        "status": "ok"
+      },
+      {
+        "serie": "6349",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6349",
+        "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "6349",
+        "id": "3",
         "status": "crit"
       },
       {
-        "serie": "6349",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6349",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6349",
-        "id": "3",
-        "status": "warn"
-      },
-      {
         "serie": "6350",
         "id": "1",
         "status": "ok"
@@ -6619,7 +4918,7 @@ const CONTRATOS = [
       {
         "serie": "6351",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6352",
@@ -6739,7 +5038,7 @@ const CONTRATOS = [
       {
         "serie": "6361",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6361",
@@ -6754,17 +5053,17 @@ const CONTRATOS = [
       {
         "serie": "6362",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6362",
         "id": "5",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6362",
         "id": "6",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6363",
@@ -6799,7 +5098,7 @@ const CONTRATOS = [
       {
         "serie": "6365",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6366",
@@ -6834,17 +5133,17 @@ const CONTRATOS = [
       {
         "serie": "6368",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6368",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6368",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6369",
@@ -6891,15 +5190,15 @@ const CONTRATOS = [
       2291869,
       2401343,
       2443140,
-      2425146,
+      2425460,
       2343185,
-      1706312,
+      1706324,
       1155870,
-      2160072,
-      85551
+      2160178,
+      1116887
     ],
     "cor": "#22d3a0",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:07",
     "referencia": "D-1 (24 Tue)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -6914,13 +5213,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 25,
     "totalFaixas": 31,
-    "fluxoHoje": 1531,
-    "lapMedio": 0,
+    "fluxoHoje": 20573,
+    "lapMedio": 78.7,
     "aprovMedio": 0,
-    "funcMedio": 94.6,
-    "faixasCrit": 4,
-    "faixasWarn": 2,
-    "faixasOk": 25,
+    "funcMedio": 94.8,
+    "faixasCrit": 6,
+    "faixasWarn": 10,
+    "faixasOk": 15,
     "faixasOff": 0,
     "afericoesVenc60": 17,
     "faixasSample": [
@@ -6932,7 +5231,7 @@ const CONTRATOS = [
       {
         "serie": "6889",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6890",
@@ -6957,7 +5256,7 @@ const CONTRATOS = [
       {
         "serie": "6912",
         "id": "1",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "7022",
@@ -6982,27 +5281,27 @@ const CONTRATOS = [
       {
         "serie": "7381",
         "id": "2",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "7382",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7382",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7383",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7383",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7384",
@@ -7032,7 +5331,7 @@ const CONTRATOS = [
       {
         "serie": "7387",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7388",
@@ -7042,7 +5341,7 @@ const CONTRATOS = [
       {
         "serie": "7388",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7389",
@@ -7052,7 +5351,7 @@ const CONTRATOS = [
       {
         "serie": "7393",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7454",
@@ -7103,11 +5402,11 @@ const CONTRATOS = [
       51792,
       43862,
       34231,
-      47198,
-      1531
+      47245,
+      20573
     ],
     "cor": "#f59e0b",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:07",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -7124,20 +5423,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 114,
     "totalFaixas": 149,
-    "fluxoHoje": 58480,
-    "lapMedio": 72.9,
-    "aprovMedio": 0,
-    "funcMedio": 93.0,
-    "faixasCrit": 16,
-    "faixasWarn": 45,
-    "faixasOk": 33,
+    "fluxoHoje": 237602,
+    "lapMedio": 75.8,
+    "aprovMedio": 0.942,
+    "funcMedio": 93.1,
+    "faixasCrit": 19,
+    "faixasWarn": 39,
+    "faixasOk": 36,
     "faixasOff": 55,
     "afericoesVenc60": 54,
     "faixasSample": [
       {
         "serie": "6086",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6087",
@@ -7152,7 +5451,7 @@ const CONTRATOS = [
       {
         "serie": "6089",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6090",
@@ -7177,12 +5476,12 @@ const CONTRATOS = [
       {
         "serie": "6094",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6095",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6096",
@@ -7237,7 +5536,7 @@ const CONTRATOS = [
       {
         "serie": "6104",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6104",
@@ -7272,7 +5571,7 @@ const CONTRATOS = [
       {
         "serie": "6110",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6111",
@@ -7297,12 +5596,12 @@ const CONTRATOS = [
       {
         "serie": "6113",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6114",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6115",
@@ -7322,7 +5621,7 @@ const CONTRATOS = [
       {
         "serie": "6117",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6118",
@@ -7342,7 +5641,7 @@ const CONTRATOS = [
       {
         "serie": "6120",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6121",
@@ -7357,7 +5656,7 @@ const CONTRATOS = [
       {
         "serie": "6123",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6124",
@@ -7372,7 +5671,7 @@ const CONTRATOS = [
       {
         "serie": "6126",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6127",
@@ -7397,12 +5696,12 @@ const CONTRATOS = [
       {
         "serie": "6131",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6131",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6132",
@@ -7432,12 +5731,12 @@ const CONTRATOS = [
       {
         "serie": "6135",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6136",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6137",
@@ -7457,12 +5756,12 @@ const CONTRATOS = [
       {
         "serie": "6139",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6140",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6141",
@@ -7472,12 +5771,12 @@ const CONTRATOS = [
       {
         "serie": "6142",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6143",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6144",
@@ -7532,7 +5831,7 @@ const CONTRATOS = [
       {
         "serie": "6154",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6155",
@@ -7817,12 +6116,12 @@ const CONTRATOS = [
       {
         "serie": "6193",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6193",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6194",
@@ -7832,17 +6131,17 @@ const CONTRATOS = [
       {
         "serie": "6194",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6195",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6196",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6197",
@@ -7903,11 +6202,11 @@ const CONTRATOS = [
       541254,
       400016,
       382763,
-      453445,
-      58480
+      453705,
+      237602
     ],
     "cor": "#8b5cf6",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -7924,12 +6223,12 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 8,
     "totalFaixas": 32,
-    "fluxoHoje": 67043,
-    "lapMedio": 73.5,
-    "aprovMedio": 0.816,
+    "fluxoHoje": 279035,
+    "lapMedio": 82.6,
+    "aprovMedio": 0.814,
     "funcMedio": 99.9,
-    "faixasCrit": 10,
-    "faixasWarn": 17,
+    "faixasCrit": 5,
+    "faixasWarn": 22,
     "faixasOk": 5,
     "faixasOff": 0,
     "afericoesVenc60": 2,
@@ -7992,7 +6291,7 @@ const CONTRATOS = [
       {
         "serie": "4015",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "4016",
@@ -8042,17 +6341,17 @@ const CONTRATOS = [
       {
         "serie": "4018",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "4018",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "4018",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "4019",
@@ -8072,7 +6371,7 @@ const CONTRATOS = [
       {
         "serie": "4019",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "4020",
@@ -8119,10 +6418,10 @@ const CONTRATOS = [
       519088,
       478585,
       510924,
-      67043
+      279035
     ],
     "cor": "#f43f5e",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -8143,14 +6442,14 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 122,
     "totalFaixas": 217,
-    "fluxoHoje": 50737,
-    "lapMedio": 78.2,
-    "aprovMedio": 0.961,
-    "funcMedio": 85.2,
+    "fluxoHoje": 262180,
+    "lapMedio": 81.0,
+    "aprovMedio": 0.962,
+    "funcMedio": 85.9,
     "faixasCrit": 43,
-    "faixasWarn": 39,
-    "faixasOk": 74,
-    "faixasOff": 61,
+    "faixasWarn": 27,
+    "faixasOk": 87,
+    "faixasOff": 60,
     "afericoesVenc60": 85,
     "faixasSample": [
       {
@@ -8181,7 +6480,7 @@ const CONTRATOS = [
       {
         "serie": "6526",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6527",
@@ -8196,7 +6495,7 @@ const CONTRATOS = [
       {
         "serie": "6529",
         "id": "1",
-        "status": "off"
+        "status": "crit"
       },
       {
         "serie": "6530",
@@ -8316,12 +6615,12 @@ const CONTRATOS = [
       {
         "serie": "6545",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6545",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6546",
@@ -8476,7 +6775,7 @@ const CONTRATOS = [
       {
         "serie": "6561",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6562",
@@ -8501,7 +6800,7 @@ const CONTRATOS = [
       {
         "serie": "6564",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6564",
@@ -8511,12 +6810,12 @@ const CONTRATOS = [
       {
         "serie": "6565",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6565",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6566",
@@ -8591,7 +6890,7 @@ const CONTRATOS = [
       {
         "serie": "6575",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6575",
@@ -8616,17 +6915,17 @@ const CONTRATOS = [
       {
         "serie": "6578",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6578",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "6579",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6579",
@@ -8636,7 +6935,7 @@ const CONTRATOS = [
       {
         "serie": "6580",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6580",
@@ -8711,52 +7010,52 @@ const CONTRATOS = [
       {
         "serie": "6589",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6589",
         "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "6590",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6590",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "6591",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6591",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "6592",
+        "id": "1",
+        "status": "off"
+      },
+      {
+        "serie": "6592",
+        "id": "2",
+        "status": "off"
+      },
+      {
+        "serie": "6593",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "6593",
+        "id": "2",
         "status": "warn"
-      },
-      {
-        "serie": "6590",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6590",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6591",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6591",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6592",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6592",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6593",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6593",
-        "id": "2",
-        "status": "ok"
       },
       {
         "serie": "6594",
@@ -8826,7 +7125,7 @@ const CONTRATOS = [
       {
         "serie": "6602",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6603",
@@ -8921,7 +7220,7 @@ const CONTRATOS = [
       {
         "serie": "6612",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6613",
@@ -8991,7 +7290,7 @@ const CONTRATOS = [
       {
         "serie": "6619",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6619",
@@ -9236,7 +7535,7 @@ const CONTRATOS = [
       {
         "serie": "6643",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       }
     ],
     "fluxoSpark": [
@@ -9251,22 +7550,22 @@ const CONTRATOS = [
       597359,
       605550,
       584230,
-      585220,
+      585250,
       601171,
       454273,
       374587,
       474149,
-      483274,
-      505384,
-      540888,
-      580522,
-      455097,
-      414342,
-      523802,
-      50737
+      491785,
+      525819,
+      562542,
+      604986,
+      473882,
+      432181,
+      546308,
+      262180
     ],
     "cor": "#fb923c",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -9286,25 +7585,25 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 32,
     "totalFaixas": 50,
-    "fluxoHoje": 8231,
-    "lapMedio": 49.8,
+    "fluxoHoje": 45589,
+    "lapMedio": 68.1,
     "aprovMedio": 0,
-    "funcMedio": 73.0,
-    "faixasCrit": 28,
-    "faixasWarn": 4,
-    "faixasOk": 4,
+    "funcMedio": 73.2,
+    "faixasCrit": 20,
+    "faixasWarn": 9,
+    "faixasOk": 7,
     "faixasOff": 14,
     "afericoesVenc60": 25,
     "faixasSample": [
       {
         "serie": "796",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "796",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "797",
@@ -9319,7 +7618,7 @@ const CONTRATOS = [
       {
         "serie": "798",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "799",
@@ -9354,7 +7653,7 @@ const CONTRATOS = [
       {
         "serie": "804",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "805",
@@ -9369,7 +7668,7 @@ const CONTRATOS = [
       {
         "serie": "806",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "806",
@@ -9379,12 +7678,12 @@ const CONTRATOS = [
       {
         "serie": "807",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "807",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "808",
@@ -9399,7 +7698,7 @@ const CONTRATOS = [
       {
         "serie": "809",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "810",
@@ -9484,7 +7783,7 @@ const CONTRATOS = [
       {
         "serie": "820",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "820",
@@ -9570,11 +7869,11 @@ const CONTRATOS = [
       105860,
       89328,
       69835,
-      90105,
-      8231
+      90115,
+      45589
     ],
     "cor": "#38bdf8",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -9589,13 +7888,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 40,
     "totalFaixas": 89,
-    "fluxoHoje": 10165,
-    "lapMedio": 83.5,
-    "aprovMedio": 0.958,
+    "fluxoHoje": 130463,
+    "lapMedio": 90.1,
+    "aprovMedio": 0.96,
     "funcMedio": 99.4,
-    "faixasCrit": 5,
-    "faixasWarn": 16,
-    "faixasOk": 57,
+    "faixasCrit": 1,
+    "faixasWarn": 12,
+    "faixasOk": 65,
     "faixasOff": 11,
     "afericoesVenc60": 8,
     "faixasSample": [
@@ -9632,7 +7931,7 @@ const CONTRATOS = [
       {
         "serie": "513",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "513",
@@ -9707,7 +8006,7 @@ const CONTRATOS = [
       {
         "serie": "522",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "524",
@@ -9922,12 +8221,12 @@ const CONTRATOS = [
       {
         "serie": "692",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "692",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "693",
@@ -9987,7 +8286,7 @@ const CONTRATOS = [
       {
         "serie": "699",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "700",
@@ -9997,7 +8296,7 @@ const CONTRATOS = [
       {
         "serie": "700",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "701",
@@ -10007,12 +8306,12 @@ const CONTRATOS = [
       {
         "serie": "703",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "703",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "704",
@@ -10069,10 +8368,10 @@ const CONTRATOS = [
       269596,
       204495,
       283704,
-      10165
+      130463
     ],
     "cor": "#4ade80",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Tue)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -10087,25 +8386,25 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 113,
     "totalFaixas": 123,
-    "fluxoHoje": 21882,
-    "lapMedio": 61.7,
+    "fluxoHoje": 138424,
+    "lapMedio": 72.6,
     "aprovMedio": 0,
-    "funcMedio": 98.2,
-    "faixasCrit": 38,
-    "faixasWarn": 58,
-    "faixasOk": 27,
+    "funcMedio": 98.3,
+    "faixasCrit": 19,
+    "faixasWarn": 44,
+    "faixasOk": 60,
     "faixasOff": 0,
     "afericoesVenc60": 13,
     "faixasSample": [
       {
         "serie": "190",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "214",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "215",
@@ -10115,17 +8414,17 @@ const CONTRATOS = [
       {
         "serie": "217",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "218",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "220",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "222",
@@ -10145,7 +8444,7 @@ const CONTRATOS = [
       {
         "serie": "226",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "227",
@@ -10165,7 +8464,7 @@ const CONTRATOS = [
       {
         "serie": "230",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "231",
@@ -10175,7 +8474,7 @@ const CONTRATOS = [
       {
         "serie": "232",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "233",
@@ -10195,7 +8494,7 @@ const CONTRATOS = [
       {
         "serie": "236",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "237",
@@ -10205,17 +8504,17 @@ const CONTRATOS = [
       {
         "serie": "238",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "239",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "240",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "241",
@@ -10225,12 +8524,12 @@ const CONTRATOS = [
       {
         "serie": "242",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "243",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "244",
@@ -10250,12 +8549,12 @@ const CONTRATOS = [
       {
         "serie": "248",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "249",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "258",
@@ -10270,7 +8569,7 @@ const CONTRATOS = [
       {
         "serie": "260",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "261",
@@ -10285,27 +8584,27 @@ const CONTRATOS = [
       {
         "serie": "288",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "289",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "290",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "291",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "292",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "345",
@@ -10330,22 +8629,22 @@ const CONTRATOS = [
       {
         "serie": "749",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "753",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "770",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "771",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "794",
@@ -10360,17 +8659,17 @@ const CONTRATOS = [
       {
         "serie": "854",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6424",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6425",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6426",
@@ -10380,7 +8679,7 @@ const CONTRATOS = [
       {
         "serie": "6426",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6427",
@@ -10390,7 +8689,7 @@ const CONTRATOS = [
       {
         "serie": "6428",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6429",
@@ -10410,7 +8709,7 @@ const CONTRATOS = [
       {
         "serie": "6433",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6434",
@@ -10420,12 +8719,12 @@ const CONTRATOS = [
       {
         "serie": "6435",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6436",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6437",
@@ -10450,7 +8749,7 @@ const CONTRATOS = [
       {
         "serie": "6439",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6440",
@@ -10460,12 +8759,12 @@ const CONTRATOS = [
       {
         "serie": "6440",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6441",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6441",
@@ -10485,12 +8784,12 @@ const CONTRATOS = [
       {
         "serie": "6444",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6445",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6446",
@@ -10500,7 +8799,7 @@ const CONTRATOS = [
       {
         "serie": "6447",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6448",
@@ -10515,7 +8814,7 @@ const CONTRATOS = [
       {
         "serie": "6451",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6452",
@@ -10525,17 +8824,17 @@ const CONTRATOS = [
       {
         "serie": "6453",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6453",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6454",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6454",
@@ -10580,7 +8879,7 @@ const CONTRATOS = [
       {
         "serie": "6473",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6757",
@@ -10595,7 +8894,7 @@ const CONTRATOS = [
       {
         "serie": "6759",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6765",
@@ -10610,7 +8909,7 @@ const CONTRATOS = [
       {
         "serie": "6801",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6802",
@@ -10625,17 +8924,17 @@ const CONTRATOS = [
       {
         "serie": "6804",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6805",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6806",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6809",
@@ -10650,7 +8949,7 @@ const CONTRATOS = [
       {
         "serie": "6810",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6810",
@@ -10665,12 +8964,12 @@ const CONTRATOS = [
       {
         "serie": "7172",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7173",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7174",
@@ -10685,7 +8984,7 @@ const CONTRATOS = [
       {
         "serie": "7200",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7359",
@@ -10700,7 +8999,7 @@ const CONTRATOS = [
       {
         "serie": "7378",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7379",
@@ -10729,18 +9028,18 @@ const CONTRATOS = [
       315229,
       280407,
       247469,
-      283269,
+      283272,
       269126,
       271026,
       282495,
       300276,
       271405,
       240409,
-      284794,
-      21882
+      284956,
+      138424
     ],
     "cor": "#22d3a0",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -10758,10 +9057,10 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 18,
     "totalFaixas": 53,
-    "fluxoHoje": 34211,
-    "lapMedio": 80.9,
+    "fluxoHoje": 171709,
+    "lapMedio": 81.6,
     "aprovMedio": 0.946,
-    "funcMedio": 89.8,
+    "funcMedio": 90.2,
     "faixasCrit": 14,
     "faixasWarn": 6,
     "faixasOk": 23,
@@ -10891,7 +9190,7 @@ const CONTRATOS = [
       {
         "serie": "6413",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "6413",
@@ -10951,7 +9250,7 @@ const CONTRATOS = [
       {
         "serie": "6417",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "6417",
@@ -11057,11 +9356,11 @@ const CONTRATOS = [
       525938,
       487557,
       403328,
-      356914,
-      34211
+      376985,
+      171709
     ],
     "cor": "#f59e0b",
-    "atualizado": "24/03/2026 10:08",
+    "atualizado": "24/03/2026 15:08",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -11082,13 +9381,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 28,
     "totalFaixas": 43,
-    "fluxoHoje": 16808,
-    "lapMedio": 72.1,
-    "aprovMedio": 0.906,
-    "funcMedio": 93.6,
-    "faixasCrit": 11,
-    "faixasWarn": 22,
-    "faixasOk": 10,
+    "fluxoHoje": 94619,
+    "lapMedio": 73.7,
+    "aprovMedio": 0.913,
+    "funcMedio": 93.9,
+    "faixasCrit": 7,
+    "faixasWarn": 27,
+    "faixasOk": 9,
     "faixasOff": 0,
     "afericoesVenc60": 3,
     "faixasSample": [
@@ -11115,7 +9414,7 @@ const CONTRATOS = [
       {
         "serie": "548",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "548",
@@ -11125,7 +9424,7 @@ const CONTRATOS = [
       {
         "serie": "549",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "549",
@@ -11135,7 +9434,7 @@ const CONTRATOS = [
       {
         "serie": "550",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "550",
@@ -11155,12 +9454,12 @@ const CONTRATOS = [
       {
         "serie": "552",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "552",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "553",
@@ -11175,7 +9474,7 @@ const CONTRATOS = [
       {
         "serie": "554",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "554",
@@ -11205,7 +9504,7 @@ const CONTRATOS = [
       {
         "serie": "559",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "560",
@@ -11235,7 +9534,7 @@ const CONTRATOS = [
       {
         "serie": "564",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "565",
@@ -11245,7 +9544,7 @@ const CONTRATOS = [
       {
         "serie": "566",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "567",
@@ -11280,12 +9579,12 @@ const CONTRATOS = [
       {
         "serie": "570",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "570",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "571",
@@ -11331,11 +9630,11 @@ const CONTRATOS = [
       212410,
       200510,
       173890,
-      187408,
-      16808
+      187437,
+      94619
     ],
     "cor": "#8b5cf6",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -11350,13 +9649,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 31,
     "totalFaixas": 67,
-    "fluxoHoje": 13494,
-    "lapMedio": 85.4,
+    "fluxoHoje": 96237,
+    "lapMedio": 80.9,
     "aprovMedio": 0,
     "funcMedio": 100.0,
     "faixasCrit": 2,
-    "faixasWarn": 14,
-    "faixasOk": 49,
+    "faixasWarn": 27,
+    "faixasOk": 36,
     "faixasOff": 2,
     "afericoesVenc60": 8,
     "faixasSample": [
@@ -11373,7 +9672,7 @@ const CONTRATOS = [
       {
         "serie": "199",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "200",
@@ -11403,7 +9702,7 @@ const CONTRATOS = [
       {
         "serie": "201",
         "id": "3",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "202",
@@ -11418,17 +9717,17 @@ const CONTRATOS = [
       {
         "serie": "203",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "203",
         "id": "2",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "204",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "204",
@@ -11438,7 +9737,7 @@ const CONTRATOS = [
       {
         "serie": "205",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "205",
@@ -11483,7 +9782,7 @@ const CONTRATOS = [
       {
         "serie": "209",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "209",
@@ -11493,12 +9792,12 @@ const CONTRATOS = [
       {
         "serie": "210",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "210",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "211",
@@ -11513,12 +9812,12 @@ const CONTRATOS = [
       {
         "serie": "212",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "212",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "213",
@@ -11528,17 +9827,17 @@ const CONTRATOS = [
       {
         "serie": "213",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "214",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "214",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "215",
@@ -11563,12 +9862,12 @@ const CONTRATOS = [
       {
         "serie": "217",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "217",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "218",
@@ -11598,7 +9897,7 @@ const CONTRATOS = [
       {
         "serie": "220",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "221",
@@ -11623,7 +9922,7 @@ const CONTRATOS = [
       {
         "serie": "222",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "223",
@@ -11658,7 +9957,7 @@ const CONTRATOS = [
       {
         "serie": "225",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "226",
@@ -11693,7 +9992,7 @@ const CONTRATOS = [
       {
         "serie": "229",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       }
     ],
     "fluxoSpark": [
@@ -11720,10 +10019,10 @@ const CONTRATOS = [
       186491,
       142253,
       190191,
-      13494
+      96237
     ],
     "cor": "#f43f5e",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -11738,13 +10037,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 21,
     "totalFaixas": 53,
-    "fluxoHoje": 78660,
-    "lapMedio": 78.2,
+    "fluxoHoje": 322320,
+    "lapMedio": 77.4,
     "aprovMedio": 0,
     "funcMedio": 97.6,
-    "faixasCrit": 5,
-    "faixasWarn": 20,
-    "faixasOk": 26,
+    "faixasCrit": 3,
+    "faixasWarn": 25,
+    "faixasOk": 23,
     "faixasOff": 2,
     "afericoesVenc60": 0,
     "faixasSample": [
@@ -11761,22 +10060,22 @@ const CONTRATOS = [
       {
         "serie": "6038",
         "id": "3",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6038",
         "id": "4",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6373",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "6373",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "6374",
@@ -11901,7 +10200,7 @@ const CONTRATOS = [
       {
         "serie": "7023",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7023",
@@ -11931,7 +10230,7 @@ const CONTRATOS = [
       {
         "serie": "7025",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7025",
@@ -11961,7 +10260,7 @@ const CONTRATOS = [
       {
         "serie": "7027",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7027",
@@ -11986,7 +10285,7 @@ const CONTRATOS = [
       {
         "serie": "7029",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7029",
@@ -11996,17 +10295,17 @@ const CONTRATOS = [
       {
         "serie": "7029",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7030",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7030",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7030",
@@ -12038,10 +10337,10 @@ const CONTRATOS = [
       496920,
       354376,
       554960,
-      78660
+      322320
     ],
     "cor": "#fb923c",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -12059,15 +10358,15 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 110,
     "totalFaixas": 182,
-    "fluxoHoje": 87492,
-    "lapMedio": 73.0,
-    "aprovMedio": 0.963,
+    "fluxoHoje": 459813,
+    "lapMedio": 80.7,
+    "aprovMedio": 0.964,
     "funcMedio": 94.7,
-    "faixasCrit": 38,
-    "faixasWarn": 67,
-    "faixasOk": 68,
+    "faixasCrit": 25,
+    "faixasWarn": 38,
+    "faixasOk": 110,
     "faixasOff": 9,
-    "afericoesVenc60": 7,
+    "afericoesVenc60": 6,
     "faixasSample": [
       {
         "serie": "481",
@@ -12087,7 +10386,7 @@ const CONTRATOS = [
       {
         "serie": "483",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "484",
@@ -12097,12 +10396,12 @@ const CONTRATOS = [
       {
         "serie": "484",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "486",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "487",
@@ -12112,7 +10411,7 @@ const CONTRATOS = [
       {
         "serie": "488",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "488",
@@ -12127,12 +10426,12 @@ const CONTRATOS = [
       {
         "serie": "493",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "494",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "494",
@@ -12147,7 +10446,7 @@ const CONTRATOS = [
       {
         "serie": "495",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "496",
@@ -12157,7 +10456,7 @@ const CONTRATOS = [
       {
         "serie": "496",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "497",
@@ -12167,7 +10466,7 @@ const CONTRATOS = [
       {
         "serie": "498",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "499",
@@ -12182,17 +10481,17 @@ const CONTRATOS = [
       {
         "serie": "501",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "502",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "503",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "504",
@@ -12202,7 +10501,7 @@ const CONTRATOS = [
       {
         "serie": "505",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "506",
@@ -12217,7 +10516,7 @@ const CONTRATOS = [
       {
         "serie": "508",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "603",
@@ -12232,12 +10531,12 @@ const CONTRATOS = [
       {
         "serie": "604",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "604",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "605",
@@ -12247,7 +10546,7 @@ const CONTRATOS = [
       {
         "serie": "605",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "606",
@@ -12287,7 +10586,7 @@ const CONTRATOS = [
       {
         "serie": "611",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "612",
@@ -12297,7 +10596,7 @@ const CONTRATOS = [
       {
         "serie": "614",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "615",
@@ -12307,7 +10606,7 @@ const CONTRATOS = [
       {
         "serie": "616",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "617",
@@ -12317,17 +10616,17 @@ const CONTRATOS = [
       {
         "serie": "618",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "619",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "620",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "621",
@@ -12342,52 +10641,52 @@ const CONTRATOS = [
       {
         "serie": "623",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "624",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "625",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "626",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "627",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "628",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "629",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "630",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "631",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "680",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "680",
@@ -12397,12 +10696,12 @@ const CONTRATOS = [
       {
         "serie": "681",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "681",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "713",
@@ -12467,12 +10766,12 @@ const CONTRATOS = [
       {
         "serie": "718",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "718",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "718",
@@ -12502,7 +10801,7 @@ const CONTRATOS = [
       {
         "serie": "720",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "721",
@@ -12512,7 +10811,7 @@ const CONTRATOS = [
       {
         "serie": "721",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "721",
@@ -12562,27 +10861,27 @@ const CONTRATOS = [
       {
         "serie": "724",
         "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "725",
-        "id": "1",
         "status": "warn"
       },
       {
         "serie": "725",
-        "id": "2",
-        "status": "crit"
+        "id": "1",
+        "status": "ok"
       },
       {
-        "serie": "726",
-        "id": "1",
+        "serie": "725",
+        "id": "2",
         "status": "warn"
       },
       {
         "serie": "726",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "726",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "727",
@@ -12592,7 +10891,7 @@ const CONTRATOS = [
       {
         "serie": "727",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7336",
@@ -12692,12 +10991,12 @@ const CONTRATOS = [
       {
         "serie": "7345",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7345",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7346",
@@ -12722,7 +11021,7 @@ const CONTRATOS = [
       {
         "serie": "7348",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7349",
@@ -12737,12 +11036,12 @@ const CONTRATOS = [
       {
         "serie": "7350",
         "id": "1",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "7350",
         "id": "2",
-        "status": "crit"
+        "status": "ok"
       },
       {
         "serie": "7351",
@@ -12757,12 +11056,12 @@ const CONTRATOS = [
       {
         "serie": "7354",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7354",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7355",
@@ -12817,29 +11116,29 @@ const CONTRATOS = [
       {
         "serie": "7369",
         "id": "2",
+        "status": "warn"
+      },
+      {
+        "serie": "7370",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7370",
+        "id": "2",
+        "status": "ok"
+      },
+      {
+        "serie": "7371",
+        "id": "1",
+        "status": "ok"
+      },
+      {
+        "serie": "7371",
+        "id": "2",
         "status": "crit"
       },
       {
-        "serie": "7370",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7370",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7371",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7371",
-        "id": "2",
-        "status": "warn"
-      },
-      {
         "serie": "7372",
         "id": "1",
         "status": "ok"
@@ -12847,7 +11146,7 @@ const CONTRATOS = [
       {
         "serie": "7372",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7373",
@@ -12872,7 +11171,7 @@ const CONTRATOS = [
       {
         "serie": "7397",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7397",
@@ -12937,7 +11236,7 @@ const CONTRATOS = [
       {
         "serie": "7450",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7451",
@@ -12947,7 +11246,7 @@ const CONTRATOS = [
       {
         "serie": "7451",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "7452",
@@ -13004,10 +11303,10 @@ const CONTRATOS = [
       827864,
       725083,
       925573,
-      87492
+      459813
     ],
     "cor": "#38bdf8",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Tue)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -13024,13 +11323,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 40,
     "totalFaixas": 85,
-    "fluxoHoje": 6728,
-    "lapMedio": 47.1,
-    "aprovMedio": 0.521,
+    "fluxoHoje": 87642,
+    "lapMedio": 68.3,
+    "aprovMedio": 0.519,
     "funcMedio": 96.3,
-    "faixasCrit": 75,
-    "faixasWarn": 8,
-    "faixasOk": 2,
+    "faixasCrit": 72,
+    "faixasWarn": 12,
+    "faixasOk": 1,
     "faixasOff": 0,
     "afericoesVenc60": 27,
     "faixasSample": [
@@ -13087,7 +11386,7 @@ const CONTRATOS = [
       {
         "serie": "449",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "449",
@@ -13137,17 +11436,17 @@ const CONTRATOS = [
       {
         "serie": "454",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "454",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "454",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "455",
@@ -13177,22 +11476,22 @@ const CONTRATOS = [
       {
         "serie": "457",
         "id": "1",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "457",
         "id": "2",
-        "status": "warn"
+        "status": "crit"
       },
       {
         "serie": "458",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "458",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "459",
@@ -13202,7 +11501,7 @@ const CONTRATOS = [
       {
         "serie": "459",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "460",
@@ -13277,7 +11576,7 @@ const CONTRATOS = [
       {
         "serie": "465",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "466",
@@ -13483,11 +11782,11 @@ const CONTRATOS = [
       203735,
       194992,
       139305,
-      200654,
-      6728
+      202365,
+      87642
     ],
     "cor": "#0ea5e9",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -13506,20 +11805,20 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 28,
     "totalFaixas": 54,
-    "fluxoHoje": 27060,
-    "lapMedio": 85.7,
+    "fluxoHoje": 130293,
+    "lapMedio": 82.7,
     "aprovMedio": 0.984,
     "funcMedio": 83.0,
-    "faixasCrit": 23,
-    "faixasWarn": 8,
-    "faixasOk": 23,
+    "faixasCrit": 24,
+    "faixasWarn": 11,
+    "faixasOk": 19,
     "faixasOff": 0,
     "afericoesVenc60": 0,
     "faixasSample": [
       {
         "serie": "7515",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7515",
@@ -13549,7 +11848,7 @@ const CONTRATOS = [
       {
         "serie": "7518",
         "id": "1",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "7518",
@@ -13579,7 +11878,7 @@ const CONTRATOS = [
       {
         "serie": "7521",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7521",
@@ -13589,7 +11888,7 @@ const CONTRATOS = [
       {
         "serie": "7522",
         "id": "1",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7522",
@@ -13604,7 +11903,7 @@ const CONTRATOS = [
       {
         "serie": "7523",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "7524",
@@ -13619,7 +11918,7 @@ const CONTRATOS = [
       {
         "serie": "7525",
         "id": "1",
-        "status": "ok"
+        "status": "crit"
       },
       {
         "serie": "7525",
@@ -13811,10 +12110,10 @@ const CONTRATOS = [
       234813,
       235451,
       272191,
-      27060
+      130293
     ],
     "cor": "#22d3a0",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:09",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -13834,8 +12133,8 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 7,
     "totalFaixas": 13,
-    "fluxoHoje": 12040,
-    "lapMedio": 91.3,
+    "fluxoHoje": 48223,
+    "lapMedio": 94.5,
     "aprovMedio": 0,
     "funcMedio": 100.0,
     "faixasCrit": 0,
@@ -13934,746 +12233,10 @@ const CONTRATOS = [
       106695,
       86937,
       99564,
-      12040
+      48223
     ],
     "cor": "#f59e0b",
-    "atualizado": "24/03/2026 10:09",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "SEINFRA",
-    "nome": "SEINFRA",
-    "arquivo": "dashboard_SEINFRA.html",
-    "rodovias": [],
-    "uf": "PR",
-    "totalEquip": 36,
-    "totalFaixas": 52,
-    "fluxoHoje": 31167,
-    "lapMedio": 80.7,
-    "aprovMedio": 1.0,
-    "funcMedio": 94.4,
-    "faixasCrit": 9,
-    "faixasWarn": 15,
-    "faixasOk": 27,
-    "faixasOff": 1,
-    "afericoesVenc60": 19,
-    "faixasSample": [
-      {
-        "serie": "6218",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6218",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6219",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6219",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6220",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6220",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6221",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6221",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6222",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6222",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6223",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6223",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6224",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6225",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6226",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6227",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6227",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6228",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6228",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6229",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6230",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6231",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6232",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6232",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6233",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6234",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6235",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6236",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6237",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6462",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6463",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6464",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6465",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6468",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6468",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6469",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6469",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6470",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6471",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7137",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7137",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7138",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7138",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7153",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7153",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7209",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "7210",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7210",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "7211",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7212",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7212",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7213",
-        "id": "1",
-        "status": "warn"
-      }
-    ],
-    "fluxoSpark": [
-      249289,
-      275926,
-      253808,
-      252736,
-      262324,
-      318206,
-      298032,
-      272320,
-      285609,
-      283388,
-      277341,
-      294390,
-      349371,
-      331161,
-      310140,
-      299089,
-      281727,
-      274909,
-      275069,
-      330862,
-      320096,
-      291614,
-      293956,
-      31167
-    ],
-    "cor": "#8b5cf6",
-    "atualizado": "24/03/2026 10:09",
-    "referencia": "D-1 (24 Ter)",
-    "limAprovOk": 90.0,
-    "limAprovWarn": 70.0,
-    "limFuncOk": 95,
-    "limFuncWarn": 80
-  },
-  {
-    "id": "SERGET-CAIABA",
-    "nome": "SERGET-CAIABA",
-    "arquivo": "dashboard_SERGET-CAIABA.html",
-    "rodovias": [],
-    "uf": "PR",
-    "totalEquip": 30,
-    "totalFaixas": 74,
-    "fluxoHoje": 3478,
-    "lapMedio": 73.0,
-    "aprovMedio": 1.0,
-    "funcMedio": 88.8,
-    "faixasCrit": 13,
-    "faixasWarn": 22,
-    "faixasOk": 24,
-    "faixasOff": 15,
-    "afericoesVenc60": 19,
-    "faixasSample": [
-      {
-        "serie": "230",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "230",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "231",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "231",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "233",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "233",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "234",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "234",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "235",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "235",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "235",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "236",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "236",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "236",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "237",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "237",
-        "id": "4",
-        "status": "warn"
-      },
-      {
-        "serie": "361",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "361",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "361",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "362",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "362",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "363",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "363",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "364",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "364",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "365",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "365",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "367",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "367",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "368",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "368",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "409",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "409",
-        "id": "4",
-        "status": "crit"
-      },
-      {
-        "serie": "429",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "429",
-        "id": "4",
-        "status": "warn"
-      },
-      {
-        "serie": "632",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "632",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "633",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "633",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6011",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6011",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6808",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6808",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6808",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6891",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "6891",
-        "id": "2",
-        "status": "warn"
-      },
-      {
-        "serie": "6891",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "6892",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6892",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6892",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6893",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6893",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6893",
-        "id": "3",
-        "status": "off"
-      },
-      {
-        "serie": "6894",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6894",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6894",
-        "id": "3",
-        "status": "off"
-      },
-      {
-        "serie": "6895",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6895",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6895",
-        "id": "3",
-        "status": "off"
-      },
-      {
-        "serie": "6898",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "6898",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "6898",
-        "id": "3",
-        "status": "warn"
-      },
-      {
-        "serie": "6899",
-        "id": "1",
-        "status": "crit"
-      },
-      {
-        "serie": "6899",
-        "id": "2",
-        "status": "crit"
-      },
-      {
-        "serie": "6899",
-        "id": "3",
-        "status": "crit"
-      },
-      {
-        "serie": "6900",
-        "id": "1",
-        "status": "off"
-      },
-      {
-        "serie": "6900",
-        "id": "2",
-        "status": "off"
-      },
-      {
-        "serie": "6900",
-        "id": "3",
-        "status": "off"
-      },
-      {
-        "serie": "7394",
-        "id": "1",
-        "status": "ok"
-      },
-      {
-        "serie": "7394",
-        "id": "2",
-        "status": "ok"
-      },
-      {
-        "serie": "7394",
-        "id": "3",
-        "status": "ok"
-      },
-      {
-        "serie": "7394",
-        "id": "4",
-        "status": "crit"
-      },
-      {
-        "serie": "7396",
-        "id": "1",
-        "status": "warn"
-      },
-      {
-        "serie": "7396",
-        "id": "2",
-        "status": "warn"
-      }
-    ],
-    "fluxoSpark": [
-      142273,
-      218350,
-      234061,
-      235430,
-      216194,
-      210642,
-      186778,
-      143775,
-      201721,
-      210365,
-      201616,
-      195439,
-      209534,
-      194767,
-      142567,
-      203242,
-      202977,
-      205956,
-      209967,
-      220578,
-      198853,
-      139297,
-      95536,
-      3478
-    ],
-    "cor": "#f43f5e",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:10",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
@@ -14688,13 +12251,13 @@ const CONTRATOS = [
     "uf": "PR",
     "totalEquip": 75,
     "totalFaixas": 157,
-    "fluxoHoje": 56900,
-    "lapMedio": 80.4,
-    "aprovMedio": 0.84,
-    "funcMedio": 93.6,
-    "faixasCrit": 34,
-    "faixasWarn": 67,
-    "faixasOk": 36,
+    "fluxoHoje": 309032,
+    "lapMedio": 84.6,
+    "aprovMedio": 0.844,
+    "funcMedio": 93.7,
+    "faixasCrit": 24,
+    "faixasWarn": 72,
+    "faixasOk": 41,
     "faixasOff": 20,
     "afericoesVenc60": 20,
     "faixasSample": [
@@ -14746,7 +12309,7 @@ const CONTRATOS = [
       {
         "serie": "580",
         "id": "2",
-        "status": "ok"
+        "status": "warn"
       },
       {
         "serie": "581",
@@ -14851,7 +12414,7 @@ const CONTRATOS = [
       {
         "serie": "588",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "588",
@@ -14886,7 +12449,7 @@ const CONTRATOS = [
       {
         "serie": "591",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "592",
@@ -14946,7 +12509,7 @@ const CONTRATOS = [
       {
         "serie": "634",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "634",
@@ -14991,7 +12554,7 @@ const CONTRATOS = [
       {
         "serie": "638",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "639",
@@ -15046,7 +12609,7 @@ const CONTRATOS = [
       {
         "serie": "647",
         "id": "2",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "648",
@@ -15066,7 +12629,7 @@ const CONTRATOS = [
       {
         "serie": "649",
         "id": "2",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "650",
@@ -15081,7 +12644,7 @@ const CONTRATOS = [
       {
         "serie": "651",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "651",
@@ -15221,7 +12784,7 @@ const CONTRATOS = [
       {
         "serie": "663",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "663",
@@ -15241,7 +12804,7 @@ const CONTRATOS = [
       {
         "serie": "664",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "664",
@@ -15251,12 +12814,12 @@ const CONTRATOS = [
       {
         "serie": "664",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "664",
         "id": "4",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "665",
@@ -15271,12 +12834,12 @@ const CONTRATOS = [
       {
         "serie": "665",
         "id": "3",
-        "status": "warn"
+        "status": "ok"
       },
       {
         "serie": "665",
         "id": "4",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "666",
@@ -15321,7 +12884,7 @@ const CONTRATOS = [
       {
         "serie": "669",
         "id": "1",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "669",
@@ -15331,7 +12894,7 @@ const CONTRATOS = [
       {
         "serie": "669",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "670",
@@ -15411,7 +12974,7 @@ const CONTRATOS = [
       {
         "serie": "676",
         "id": "3",
-        "status": "crit"
+        "status": "warn"
       },
       {
         "serie": "677",
@@ -15507,11 +13070,11 @@ const CONTRATOS = [
       633406,
       519171,
       391525,
-      636033,
-      56900
+      649971,
+      309032
     ],
     "cor": "#fb923c",
-    "atualizado": "24/03/2026 10:09",
+    "atualizado": "24/03/2026 15:10",
     "referencia": "D-1 (24 Ter)",
     "limAprovOk": 90.0,
     "limAprovWarn": 70.0,
