@@ -431,14 +431,14 @@ async function reiniciarAgente() {
   btn.textContent = '⏳ Reiniciando...';
   try {
     var tk = localStorage.getItem(ATK) || sessionStorage.getItem(ATK) || '';
-    await fetch(AGENTURL + '/reiniciar', {method:'POST', headers:{'Content-Type':'application/json','X-Agent-Token':tk}, body:'{}'});
+    await fetch(AGENT_URL + '/reiniciar', {method:'POST', headers:{'Content-Type':'application/json','X-Agent-Token':tk}, body:'{}'});
     toast('Agente reiniciando... aguarde 5 segundos', 'inf');
     setTimeout(function() {
       var tentativas = 0;
       var intervalo = setInterval(async function() {
         tentativas++;
         try {
-          var r = await fetch(AGENTURL + '/ping');
+          var r = await fetch(AGENT_URL + '/ping');
           if (r.ok) {
             clearInterval(intervalo);
             btn.disabled = false;
