@@ -181,6 +181,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           <div class="card-title" id="titleContratos">🗂️ Contratos</div>
           <div style="display:flex;gap:8px">
             <button class="btn bg bs" onclick="carregarDados()">↺</button>
+            <button class="btn bg bs" onclick="abrirConfigContratos()" title="Configurar thresholds, relatórios e faixas por contrato">⚙ Configurar detalhes</button>
             <button class="btn bp bs" onclick="abrirModal(null)">+ Novo</button>
           </div>
         </div>
@@ -1614,6 +1615,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (agCtrl.value === 'selecionados') renderAgSelGrid();
   });
 });
+
+function abrirConfigContratos() {
+  window.open(AGENT_URL + '/app/configurar_contratos', '_blank');
+}
 
 // ── INÍCIO ──
 init();
