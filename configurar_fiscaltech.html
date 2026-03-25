@@ -303,6 +303,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
                 <input type="date" id="dlDataFim">
               </div>
             </div>
+            <script>
+              // Inicializa datas imediatamente — não depende do carregarDados()
+              (function(){
+                var hoje = new Date();
+                var ini  = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+                var pad  = function(n){return String(n).padStart(2,'0');};
+                var fmt  = function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());};
+                document.getElementById('dlDataIni').value = fmt(ini);
+                document.getElementById('dlDataFim').value = fmt(hoje);
+              })();
+            </script>
           </div>
           <!-- Botões de ação -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
@@ -1092,8 +1103,15 @@ function resetarDatas() {
   document.getElementById('dlDataFim').value = _hoje();
 }
 function _getDatas() {
-  var ini = document.getElementById('dlDataIni') ? document.getElementById('dlDataIni').value : '';
-  var fim = document.getElementById('dlDataFim') ? document.getElementById('dlDataFim').value : '';
+  var hoje = new Date();
+  var pad  = function(n){return String(n).padStart(2,'0');};
+  var fmt  = function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());};
+  var iniDefault = fmt(new Date(hoje.getFullYear(), hoje.getMonth(), 1));
+  var fimDefault = fmt(hoje);
+  var elIni = document.getElementById('dlDataIni');
+  var elFim = document.getElementById('dlDataFim');
+  var ini = (elIni && elIni.value) ? elIni.value : iniDefault;
+  var fim = (elFim && elFim.value) ? elFim.value : fimDefault;
   return {ini: ini, fim: fim};
 }
 
@@ -1109,8 +1127,8 @@ async function executar(tipo) {
   // Inclui datas do período (apenas para download/ciclo)
   if (tipo === 'baixar' || tipo === 'ciclo') {
     var datas = _getDatas();
-    if (datas.ini) body.data_ini = datas.ini;
-    if (datas.fim) body.data_fim = datas.fim;
+    body.data_ini = datas.ini;
+    body.data_fim = datas.fim;
   }
 
   // Se seleção parcial e não é publicar, usa rota de selecionados
