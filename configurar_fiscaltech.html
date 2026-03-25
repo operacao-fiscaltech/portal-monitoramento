@@ -487,6 +487,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 var AGENT_URL = "http://172.16.79.63:5001";
+// Fallback: usa IP salvo pelo login se disponível
+(function(){
+  var salvo = localStorage.getItem('agent_url') || sessionStorage.getItem('agent_url');
+  if (salvo && salvo.startsWith('http://')) AGENT_URL = salvo;
+})();
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -537,6 +542,7 @@ var _token  = '';
 var _config = {global:{},contratos:[]};
 var _users  = {};
 var _selContratados = new Set();
+var _selGridIniciado = false;  // flag: distingue "vazio intencional" de "primeira carga"
 var _logOffset = 0;
 var _pollLog   = null;
 
@@ -625,6 +631,7 @@ async function api(path, method, body) {
         if (ad.token) {
           _token = ad.token;
           localStorage.setItem(ATK, _token);
+          localStorage.setItem('agent_url', AGENT_URL);  // persiste IP para outras páginas
           opts.headers['X-Agent-Token'] = _token;
           r = await fetch(AGENT_URL + path, opts);
         }
@@ -707,6 +714,7 @@ async function confirmarReauth() {
       sAtual.nivel = d.nivel || sAtual.nivel || 'adm';
       sessionStorage.setItem(SK, JSON.stringify(sAtual));
       localStorage.setItem(ATK, d.token);
+      localStorage.setItem('agent_url', AGENT_URL);  // persiste IP
       document.getElementById('mReauth').classList.remove('show');
       if (_reauthResolve) { _reauthResolve(d.token); _reauthResolve = null; }
     } else {
@@ -948,7 +956,11 @@ function renderSelGrid() {
     grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>';
     return;
   }
-  if (_selContratados.size === 0) lista.forEach(function(c){_selContratados.add(c.id);});
+  // Só seleciona todos na primeira carga (não quando usuário clicou Nenhum)
+  if (!_selGridIniciado) {
+    lista.forEach(function(c){_selContratados.add(c.id);});
+    _selGridIniciado = true;
+  }
   grid.innerHTML = lista.map(function(c) {
     var on = _selContratados.has(c.id);
     return '<label style="display:flex;align-items:center;gap:6px;cursor:pointer">' +
