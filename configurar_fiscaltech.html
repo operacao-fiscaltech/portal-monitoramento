@@ -166,6 +166,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   <nav class="sidebar">
     <div class="nav active" onclick="mostrarSec('contratos',this)">🗂️ Contratos</div>
     <div class="nav" onclick="mostrarSec('automacao',this)">⚡ Automação</div>
+    <div class="nav" onclick="mostrarSec('agendamento',this)">🕐 Agendamento</div>
     <div class="nav" onclick="mostrarSec('usuarios',this)">👥 Usuários</div>
     <div class="nav" onclick="mostrarSec('github',this)">🐙 GitHub</div>
     <div class="nav" onclick="mostrarSec('logs',this)">📋 Logs</div>
@@ -192,6 +193,77 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       </div>
     </div>
 
+    <!-- AGENDAMENTO -->
+    <div class="sec" id="sec-agendamento">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🕐 Agendamento Automático</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn bp bs" onclick="salvarAgendamento()">Salvar</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="fg">
+            <div class="field fc">
+              <label>Modo</label>
+              <select id="agModo" onchange="toggleAgModo()">
+                <option value="intervalo">Intervalo fixo (a cada N horas)</option>
+                <option value="horarios">Horários específicos</option>
+              </select>
+            </div>
+            <div class="field" id="agIntervaloDiv">
+              <label>Intervalo (horas)</label>
+              <input type="number" id="agIntervalo" value="2" min="1" max="24" step="0.5">
+            </div>
+            <div class="field fc" id="agHorariosDiv" style="display:none">
+              <label>Horários específicos</label>
+              <div id="agHorariosList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+              <div style="display:flex;gap:6px;align-items:center">
+                <input type="time" id="agHorarioNovo" value="06:30" style="font-family:var(--mono);font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text)">
+                <button class="btn bg bs" onclick="adicionarHorario()" style="padding:5px 12px">+ Adicionar</button>
+              </div>
+              <input type="hidden" id="agHorarios">
+            </div>
+            <div class="field">
+              <label>Pausa entre Download e Atualização (segundos)</label>
+              <input type="number" id="agPausa" value="60" min="0" max="600">
+            </div>
+            <div class="field fc">
+              <label>Contratos a processar</label>
+              <select id="agContratos">
+                <option value="todos">Todos os contratos ativos</option>
+                <option value="selecionados">Selecionar contratos…</option>
+              </select>
+            </div>
+            <div class="field fc" id="agContratosSelDiv" style="display:none">
+              <label>Contratos selecionados</label>
+              <div class="sel-grid" id="agSelGrid" style="margin-top:6px"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600">
+              <input type="checkbox" id="agAtivo" style="width:16px;height:16px;accent-color:var(--accent2)">
+              Ativar agendamento automático
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">📊 Status do Agendador</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn bg bs" id="btnAgStart" onclick="controlarAgendador('iniciar')">▶ Iniciar</button>
+            <button class="btn bd bs" id="btnAgStop" onclick="controlarAgendador('parar')">■ Parar</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="agStatus" style="font-family:var(--mono);font-size:12px;color:var(--muted);padding:8px 0">
+            Carregando status…
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- AUTOMAÇÃO -->
     <div class="sec" id="sec-automacao">
       <div class="card">
@@ -200,16 +272,39 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           <div class="exec-st st-idle" id="execSt">⏸ Aguardando</div>
         </div>
         <div class="card-body">
+          <!-- Seleção de contratos com checkbox -->
           <div class="sel-panel">
             <div class="sel-head">
               <span class="sel-lbl">Contratos</span>
-              <div style="display:flex;gap:6px">
-                <button class="btn bg bs" onclick="selTodos()">Todos</button>
+              <div style="display:flex;gap:6px;align-items:center">
+                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">
+                  <input type="checkbox" id="chkTodos" onchange="chkTodosChange(this)" style="accent-color:var(--accent2);width:14px;height:14px;">
+                  Todos
+                </label>
+                <button class="btn bg bs" onclick="selTodos()">Selecionar todos</button>
                 <button class="btn bg bs" onclick="selNenhum()">Nenhum</button>
               </div>
             </div>
             <div class="sel-grid" id="selGrid"></div>
           </div>
+          <!-- Período do download -->
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:16px">
+            <div style="font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+              <span>📅 Período do Download</span>
+              <button class="btn bg bs" onclick="resetarDatas()" style="font-size:10px;padding:3px 10px">↺ Mês atual</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field">
+                <label>Data Início</label>
+                <input type="date" id="dlDataIni">
+              </div>
+              <div class="field">
+                <label>Data Fim</label>
+                <input type="date" id="dlDataFim">
+              </div>
+            </div>
+          </div>
+          <!-- Botões de ação -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
             <button class="btn bp" onclick="executar('ciclo')">🔄 Ciclo Completo<br><small style="font-weight:400;opacity:.8">Download + Atualizar</small></button>
             <button class="btn bg" onclick="executar('baixar')">⬇️ Só Download<br><small style="font-weight:400;opacity:.8">Baixar relatórios</small></button>
@@ -224,7 +319,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           <button class="btn bg bs" onclick="limparLog()">Limpar</button>
         </div>
         <div class="card-body" style="padding:12px">
-          <div class="log-box" id="logBox">Aguardando execução…</div>
+          <div class="log-box" id="logBox" style="height:800px">Aguardando execução…</div>
         </div>
       </div>
     </div>
@@ -275,7 +370,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           </div>
         </div>
         <div class="card-body" style="padding:12px">
-          <div class="log-box" id="logBoxAgente">Carregando…</div>
+          <div class="log-box" id="logBoxAgente" style="height:800px">Carregando…</div>
         </div>
       </div>
     </div>
@@ -293,7 +388,36 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <div class="field"><label>URL do Portal</label><input id="cUrl" placeholder="https://contrato.fiscaltech.ind.br"></div>
       <div class="field"><label>Concessão</label><input id="cConcessao" placeholder="EPR / DNIT…"></div>
       <div class="field"><label>UF</label>
-        <select id="cUf"><option value="">UF</option><option value="AC">AC</option><option value="AL">AL</option><option value="AM">AM</option><option value="AP">AP</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MG">MG</option><option value="MS">MS</option><option value="MT">MT</option><option value="PA">PA</option><option value="PB">PB</option><option value="PE">PE</option><option value="PI">PI</option><option value="PR">PR</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RO">RO</option><option value="RR">RR</option><option value="RS">RS</option><option value="SC">SC</option><option value="SE">SE</option><option value="SP">SP</option><option value="TO">TO</option></select>
+        <select id="cUf">
+          <option value="">Selecione o estado</option>
+          <option value="AC">AC — Acre</option>
+          <option value="AL">AL — Alagoas</option>
+          <option value="AM">AM — Amazonas</option>
+          <option value="AP">AP — Amapá</option>
+          <option value="BA">BA — Bahia</option>
+          <option value="CE">CE — Ceará</option>
+          <option value="DF">DF — Distrito Federal</option>
+          <option value="ES">ES — Espírito Santo</option>
+          <option value="GO">GO — Goiás</option>
+          <option value="MA">MA — Maranhão</option>
+          <option value="MG">MG — Minas Gerais</option>
+          <option value="MS">MS — Mato Grosso do Sul</option>
+          <option value="MT">MT — Mato Grosso</option>
+          <option value="PA">PA — Pará</option>
+          <option value="PB">PB — Paraíba</option>
+          <option value="PE">PE — Pernambuco</option>
+          <option value="PI">PI — Piauí</option>
+          <option value="PR">PR — Paraná</option>
+          <option value="RJ">RJ — Rio de Janeiro</option>
+          <option value="RN">RN — Rio Grande do Norte</option>
+          <option value="RO">RO — Rondônia</option>
+          <option value="RR">RR — Roraima</option>
+          <option value="RS">RS — Rio Grande do Sul</option>
+          <option value="SC">SC — Santa Catarina</option>
+          <option value="SE">SE — Sergipe</option>
+          <option value="SP">SP — São Paulo</option>
+          <option value="TO">TO — Tocantins</option>
+        </select>
       </div>
       <div class="field"><label>Status</label>
         <select id="cStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
@@ -691,6 +815,11 @@ function setOffline() {
 }
 
 async function carregarDados() {
+  // Inicializa datas ao primeiro carregamento
+  var dlIni = document.getElementById('dlDataIni');
+  if (dlIni && !dlIni.value) { dlIni.value = _inicioMes(); }
+  var dlFim = document.getElementById('dlDataFim');
+  if (dlFim && !dlFim.value) { dlFim.value = _hoje(); }
   try {
     var dc = await api('/config');
     _config = dc.config || {global:{},contratos:[]};
@@ -710,6 +839,7 @@ async function carregarDados() {
   renderSelGrid();
   renderUsers();
   renderGithub();
+  carregarAgendamento();
 }
 
 // ── NAVEGAÇÃO ──
@@ -814,20 +944,88 @@ async function removerContrato(idx) {
 function renderSelGrid() {
   var grid  = document.getElementById('selGrid');
   var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
-  if (!lista.length) { grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>'; return; }
+  if (!lista.length) {
+    grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>';
+    return;
+  }
   if (_selContratados.size === 0) lista.forEach(function(c){_selContratados.add(c.id);});
   grid.innerHTML = lista.map(function(c) {
     var on = _selContratados.has(c.id);
-    return '<div class="chip ' + (on?'on':'') + '" onclick="toggleSel(\'' + c.id + '\',this)">' + esc(c.id) + '</div>';
+    return '<label style="display:flex;align-items:center;gap:6px;cursor:pointer">' +
+      '<input type="checkbox" data-cid="' + esc(c.id) + '" ' + (on?'checked':'') +
+      ' style="accent-color:var(--accent2);width:13px;height:13px">' +
+      '<span class="chip ' + (on?'on':'') + '" style="margin:0;pointer-events:none">' + esc(c.id) + '</span>' +
+      '</label>';
   }).join('');
+  // Bind eventos via addEventListener — sem onclick inline
+  grid.querySelectorAll('input[type=checkbox]').forEach(function(chk) {
+    chk.addEventListener('change', function() {
+      var cid  = chk.getAttribute('data-cid');
+      var chip = chk.parentElement.querySelector('.chip');
+      if (chk.checked) {
+        _selContratados.add(cid);
+        if (chip) chip.classList.add('on');
+      } else {
+        _selContratados.delete(cid);
+        if (chip) chip.classList.remove('on');
+      }
+      _syncChkTodos();
+    });
+  });
+  _syncChkTodos();
 }
 
-function toggleSel(id, el) {
-  if (_selContratados.has(id)) { _selContratados.delete(id); el.classList.remove('on'); }
-  else { _selContratados.add(id); el.classList.add('on'); }
+function _syncChkTodos() {
+  var chk = document.getElementById('chkTodos');
+  if (!chk) return;
+  var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
+  var todos = lista.length > 0 && lista.every(function(c){return _selContratados.has(c.id);});
+  chk.checked = todos;
+  chk.indeterminate = !todos && _selContratados.size > 0;
 }
-function selTodos() { (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);}); renderSelGrid(); }
+
+function toggleSel(id, chkEl) {
+  if (_selContratados.has(id)) {
+    _selContratados.delete(id);
+    if (chkEl) chkEl.checked = false;
+  } else {
+    _selContratados.add(id);
+    if (chkEl) chkEl.checked = true;
+  }
+  // Atualiza classe do chip vizinho
+  var chips = document.querySelectorAll('#selGrid .chip');
+  chips.forEach(function(el){
+    var lbl = el.closest('label');
+    if (!lbl) return;
+    var inp = lbl.querySelector('input');
+    if (inp) el.classList.toggle('on', inp.checked);
+  });
+  _syncChkTodos();
+}
+function chkTodosChange(chk) {
+  if (chk.checked) selTodos(); else selNenhum();
+}
+function selTodos() {
+  (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);});
+  renderSelGrid();
+}
 function selNenhum() { _selContratados.clear(); renderSelGrid(); }
+
+// ── DATAS DOWNLOAD ──
+function _hoje() { return new Date().toISOString().slice(0,10); }
+function _inicioMes() {
+  var d = new Date(); d.setDate(1);
+  return d.toISOString().slice(0,10);
+}
+function resetarDatas() {
+  document.getElementById('dlDataIni').value = _inicioMes();
+  document.getElementById('dlDataFim').value = _hoje();
+}
+function _getDatas() {
+  var ini = document.getElementById('dlDataIni') ? document.getElementById('dlDataIni').value : '';
+  var fim = document.getElementById('dlDataFim') ? document.getElementById('dlDataFim').value : '';
+  return {ini: ini, fim: fim};
+}
 
 // ── AUTOMAÇÃO ──
 async function executar(tipo) {
@@ -837,10 +1035,18 @@ async function executar(tipo) {
   var mapa  = {ciclo:'executar/ciclo',baixar:'executar/baixar',atualizar:'executar/atualizar',publicar:'publicar'};
   var rota  = '/' + mapa[tipo];
   var body  = {};
+
+  // Inclui datas do período (apenas para download/ciclo)
+  if (tipo === 'baixar' || tipo === 'ciclo') {
+    var datas = _getDatas();
+    if (datas.ini) body.data_ini = datas.ini;
+    if (datas.fim) body.data_fim = datas.fim;
+  }
+
   // Se seleção parcial e não é publicar, usa rota de selecionados
   if (!eTodos && tipo !== 'publicar') {
     rota = rota + '/selecionados';
-    body = {contratos: ids};
+    body.contratos = ids;
   }
   try {
     await api(rota, 'POST', body);
@@ -1095,6 +1301,198 @@ function toast(msg, tipo) {
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+// ── LISTA DE HORÁRIOS ──────────────────────────────────────────────────────
+var _agHorarios = []; // array de strings "HH:MM"
+
+function _renderHorariosList() {
+  var lista = document.getElementById('agHorariosList');
+  if (!lista) return;
+  if (!_agHorarios.length) {
+    lista.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum horário adicionado.</span>';
+  } else {
+    lista.innerHTML = _agHorarios.map(function(h, i) {
+      return '<span style="display:inline-flex;align-items:center;gap:4px;background:var(--accent3);color:var(--accent2);' +
+        'border:1px solid var(--accent2);border-radius:20px;padding:2px 10px;font-family:var(--mono);font-size:12px;font-weight:600">' +
+        esc(h) +
+        '<button onclick="removerHorario(' + i + ')" style="background:none;border:none;cursor:pointer;color:var(--accent2);' +
+        'font-size:13px;padding:0 0 0 4px;line-height:1" title="Remover">×</button></span>';
+    }).join('');
+  }
+  // Atualiza hidden input (compatibilidade com leitura do valor)
+  var hidden = document.getElementById('agHorarios');
+  if (hidden) hidden.value = _agHorarios.join(',');
+}
+
+function adicionarHorario() {
+  var inp = document.getElementById('agHorarioNovo');
+  var val = inp ? inp.value.trim() : '';
+  if (!val || !/^\d{2}:\d{2}$/.test(val)) { toast('Horário inválido (use HH:MM)', 'err'); return; }
+  if (_agHorarios.indexOf(val) >= 0) { toast('Horário já adicionado', 'warn'); return; }
+  _agHorarios.push(val);
+  _agHorarios.sort();
+  _renderHorariosList();
+}
+
+function removerHorario(idx) {
+  _agHorarios.splice(idx, 1);
+  _renderHorariosList();
+}
+
+function toggleAgModo() {
+  var modo = document.getElementById('agModo').value;
+  document.getElementById('agIntervaloDiv').style.display = modo === 'intervalo' ? '' : 'none';
+  document.getElementById('agHorariosDiv').style.display  = modo === 'horarios'  ? '' : 'none';
+}
+
+// Renderiza chips de contratos na seção de agendamento
+function renderAgSelGrid() {
+  var grid  = document.getElementById('agSelGrid');
+  if (!grid) return;
+  var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
+  if (!lista.length) {
+    grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>';
+    return;
+  }
+  var agCfg = (_config.global||{}).agendamento || {};
+  var selIds = agCfg.contratos_ativos || lista.map(function(c){return c.id;});
+  grid.innerHTML = lista.map(function(c) {
+    var on = selIds.indexOf(c.id) >= 0;
+    return '<label style="display:flex;align-items:center;gap:6px;cursor:pointer">' +
+      '<input type="checkbox" ' + (on?'checked':'') + ' data-cid="' + esc(c.id) + '" style="accent-color:var(--accent2);width:13px;height:13px">' +
+      '<span class="chip ' + (on?'on':'') + '" style="margin:0;pointer-events:none">' + esc(c.id) + '</span>' +
+      '</label>';
+  }).join('');
+  // Sincroniza visual dos chips com checkbox
+  grid.querySelectorAll('input[type=checkbox]').forEach(function(chk) {
+    chk.addEventListener('change', function() {
+      var chip = chk.parentElement.querySelector('.chip');
+      if (chip) chip.classList.toggle('on', chk.checked);
+    });
+  });
+}
+
+// Preenche a UI do agendamento com os dados salvos no config
+function carregarAgendamento() {
+  var ag = (_config.global||{}).agendamento || {};
+  var modo = ag.modo || 'intervalo';
+  document.getElementById('agModo').value      = modo;
+  document.getElementById('agIntervalo').value = ag.intervalo_horas || 2;
+  document.getElementById('agPausa').value     = ag.pausa_pos_dl || 60;
+  document.getElementById('agAtivo').checked   = ag.ativo === true;
+  // Carrega lista de horários
+  _agHorarios = Array.isArray(ag.horarios) ? ag.horarios.slice() : [];
+  _renderHorariosList();
+  // Seleção de contratos a processar
+  var agCtrl = document.getElementById('agContratos');
+  if (agCtrl) {
+    var temSel = Array.isArray(ag.contratos_ativos) && ag.contratos_ativos.length > 0 &&
+                 ag.contratos_ativos[0] !== '__nenhum__';
+    agCtrl.value = temSel ? 'selecionados' : 'todos';
+    document.getElementById('agContratosSelDiv').style.display = temSel ? '' : 'none';
+  }
+  toggleAgModo();
+  renderAgSelGrid();
+  // Atualiza status
+  atualizarStatusAgendador();
+}
+
+async function atualizarStatusAgendador() {
+  try {
+    var r = await fetch(AGENT_URL + '/agendamento/status');
+    if (!r.ok) return;
+    var d = await r.json();
+    var el = document.getElementById('agStatus');
+    if (!el) return;
+    if (d.rodando) {
+      el.innerHTML = '<span style="color:var(--green)">● Rodando</span>' +
+        (d.proximo ? ' — Próximo: <strong>' + esc(d.proximo) + '</strong>' : '');
+    } else {
+      el.innerHTML = '<span style="color:var(--muted)">○ Parado</span>' +
+        (d.ultimo ? ' — Último ciclo: <strong>' + esc(d.ultimo) + '</strong>' : '');
+    }
+  } catch(e) {}
+}
+
+async function salvarAgendamento() {
+  var modo      = document.getElementById('agModo').value;
+  var intervalo = parseFloat(document.getElementById('agIntervalo').value) || 2;
+  var pausa     = parseInt(document.getElementById('agPausa').value) || 60;
+  var ativo     = document.getElementById('agAtivo').checked;
+
+  // Usa a lista _agHorarios (gerenciada pelos botões +/-)
+  var horarios  = _agHorarios.slice();
+
+  if (modo === 'horarios' && !horarios.length) {
+    toast('Adicione ao menos um horário', 'err'); return;
+  }
+
+  // Contratos selecionados
+  var agCtrl    = document.getElementById('agContratos');
+  var contratosSel = [];
+  if (agCtrl && agCtrl.value === 'selecionados') {
+    var grid = document.getElementById('agSelGrid');
+    if (grid) {
+      grid.querySelectorAll('input[type=checkbox]:checked').forEach(function(chk) {
+        contratosSel.push(chk.getAttribute('data-cid'));
+      });
+    }
+    if (!contratosSel.length) { toast('Selecione ao menos um contrato', 'err'); return; }
+  }
+
+  var agCfg = {
+    ativo:             ativo,
+    modo:              modo,
+    intervalo_horas:   intervalo,
+    horarios:          horarios,
+    pausa_pos_dl:      pausa,
+    contratos_ativos:  contratosSel.length ? contratosSel : [],
+  };
+
+  if (!_config.global) _config.global = {};
+  _config.global.agendamento = agCfg;
+
+  try {
+    await api('/salvar/config', 'POST', {config: _config});
+    toast('Agendamento salvo ✓', 'ok');
+    // Aplica imediatamente no agendador em execução
+    if (ativo) {
+      await api('/agendamento/iniciar', 'POST', {config: agCfg});
+      toast('Agendador iniciado ✓', 'ok');
+    } else {
+      await api('/agendamento/parar', 'POST', {});
+    }
+    atualizarStatusAgendador();
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+async function controlarAgendador(acao) {
+  try {
+    if (acao === 'iniciar') {
+      var agCfg = (_config.global||{}).agendamento || {};
+      if (!agCfg.ativo) {
+        agCfg.ativo = true;
+        document.getElementById('agAtivo').checked = true;
+      }
+      await api('/agendamento/iniciar', 'POST', {config: agCfg});
+      toast('Agendador iniciado ✓', 'ok');
+    } else {
+      await api('/agendamento/parar', 'POST', {});
+      toast('Agendador parado ✓', 'ok');
+    }
+    setTimeout(atualizarStatusAgendador, 800);
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+// Ao mudar o select "Contratos a processar" no agendamento
+document.addEventListener('DOMContentLoaded', function() {
+  var agCtrl = document.getElementById('agContratos');
+  if (agCtrl) agCtrl.addEventListener('change', function() {
+    var div = document.getElementById('agContratosSelDiv');
+    if (div) div.style.display = agCtrl.value === 'selecionados' ? '' : 'none';
+    if (agCtrl.value === 'selecionados') renderAgSelGrid();
+  });
+});
 
 // ── INÍCIO ──
 init();
