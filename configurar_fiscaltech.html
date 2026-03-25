@@ -62,6 +62,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .bd{background:var(--red);color:white}.bd:hover{background:#b91c1c}
 .bs{padding:6px 13px;font-size:12px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+.ag-h{padding:8px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;font-weight:700;
+  cursor:pointer;border:2px solid var(--border);background:var(--card2);color:var(--muted);transition:.15s}
+.ag-h:hover{border-color:var(--accent);color:var(--accent)}
+.ag-h.sel{background:var(--accent2);color:white;border-color:var(--accent2)}
+.ag-hor{padding:7px 14px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:600;
+  cursor:pointer;border:2px solid var(--border);background:var(--card2);color:var(--muted);
+  transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.ag-hor:hover{border-color:var(--accent);color:var(--accent)}
+.ag-hor.sel{background:var(--green-bg);color:var(--green);border-color:var(--green-b)}
+.ag-contrato{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;
+  border-radius:10px;border:1.5px solid var(--border);background:var(--card2);cursor:pointer;transition:.15s}
+.ag-contrato:hover{border-color:var(--accent-light);background:var(--accent3)}
+.ag-contrato.ativo{border-color:var(--green-b);background:var(--green-bg)}
+.ag-contrato.ativo .ag-cid{color:var(--green)}
+.ag-cid{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted)}
+.ag-cnome{font-size:12px;font-weight:600;color:var(--text)}
+.ag-toggle{width:34px;height:18px;border-radius:9px;background:var(--border);position:relative;
+  transition:.2s;flex-shrink:0}
+.ag-toggle.on{background:var(--green)}
+.ag-toggle::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;
+  background:white;top:3px;left:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.ag-toggle.on::after{left:19px}
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;
   color:var(--muted);padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card2)}
@@ -80,17 +102,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .nbadge{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700}
 .nb1{background:#f5f3ff;color:#7c3aed}.nb2{background:#eff6ff;color:#0066cc}.nb3{background:#ecfdf5;color:#059669}
 .log-box{background:#0d1117;border-radius:10px;padding:14px;font-family:var(--mono);font-size:11px;
-  line-height:1.8;height:520px;overflow-y:auto;color:#c9d1d9;white-space:pre-wrap;word-break:break-all}
+  line-height:1.7;height:320px;overflow-y:auto;color:#c9d1d9}
 .log-box::-webkit-scrollbar{width:5px}.log-box::-webkit-scrollbar-track{background:transparent}
 .log-box::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
-.log-line{display:flex;gap:8px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:baseline}
-.log-ts{color:#6e7681;font-size:10px;min-width:58px;flex-shrink:0}
-.log-nv{font-size:10px;font-weight:700;min-width:36px;flex-shrink:0;text-align:center;border-radius:3px;padding:0 3px}
-.log-nv.lok{color:#56d364;background:rgba(86,211,100,.1)}
-.log-nv.lerro{color:#f87171;background:rgba(248,113,113,.1)}
-.log-nv.lwarn{color:#e3b341;background:rgba(227,179,65,.1)}
-.log-nv.linfo{color:#79c0ff;background:rgba(121,192,255,.1)}
-.log-msg{color:#c9d1d9;flex:1;word-break:break-word}
 .lok{color:#56d364}.lerro{color:#f87171}.lwarn{color:#e3b341}.linfo{color:#79c0ff}
 .exec-st{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
 .st-idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
@@ -151,11 +165,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <button class="sync-btn" id="btnSync" onclick="sincronizar()" title="Sincronizar usuários e contratos no GitHub">
         <span class="sync-ico" id="syncIco">⟳</span> Sincronizar
       </button>
-      <button class="hbtn" id="btnReiniciar" onclick="reiniciarAgente()"
-              title="Reinicia o processo do agente (use se ele travar)"
-              style="background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)">
-        🔄 Reiniciar Agente
-      </button>
       <button class="hbtn hbtn-back" onclick="irPortal()">← Portal</button>
       <button class="hbtn hbtn-sair" onclick="sair()">Sair</button>
     </div>
@@ -166,6 +175,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
   <nav class="sidebar">
     <div class="nav active" onclick="mostrarSec('contratos',this)">🗂️ Contratos</div>
     <div class="nav" onclick="mostrarSec('automacao',this)">⚡ Automação</div>
+    <div class="nav" onclick="mostrarSec('agendamento',this)">🕐 Agendamento</div>
     <div class="nav" onclick="mostrarSec('usuarios',this)">👥 Usuários</div>
     <div class="nav" onclick="mostrarSec('github',this)">🐙 GitHub</div>
     <div class="nav" onclick="mostrarSec('logs',this)">📋 Logs</div>
@@ -202,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
         <div class="card-body">
           <div class="sel-panel">
             <div class="sel-head">
-              <span class="sel-lbl">Contratos</span>
+              <span class="sel-lbl">Contratos <span id="selBadge" style="color:var(--accent2);margin-left:4px"></span></span>
               <div style="display:flex;gap:6px">
                 <button class="btn bg bs" onclick="selTodos()">Todos</button>
                 <button class="btn bg bs" onclick="selNenhum()">Nenhum</button>
@@ -227,6 +237,123 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
           <div class="log-box" id="logBox">Aguardando execução…</div>
         </div>
       </div>
+    </div>
+
+    <!-- AGENDAMENTO -->
+    <div class="sec" id="sec-agendamento">
+
+      <!-- Status do Agendador -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🕐 Agendador Automático</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div id="agendSt" class="exec-st st-idle">⏸ Parado</div>
+            <button class="btn bp bs" id="btnAgendToggle" onclick="toggleAgendador()">▶ Iniciar</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Status</div>
+              <div id="agendStatusVal" style="font-size:18px;font-weight:800;color:var(--muted)">—</div>
+            </div>
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Próximo Ciclo</div>
+              <div id="agendProximo" style="font-size:14px;font-weight:700;color:var(--text)">—</div>
+            </div>
+            <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Último Ciclo</div>
+              <div id="agendUltimo" style="font-size:14px;font-weight:700;color:var(--text)">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuração do intervalo -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">⚙️ Configuração do Intervalo</div>
+          <button class="btn bp bs" onclick="salvarAgendamento()">💾 Salvar</button>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:16px">
+            <label style="font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:10px">Modo de Agendamento</label>
+            <div style="display:flex;gap:10px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;transition:.15s" id="lblModoIntervalo">
+                <input type="radio" name="agendModo" value="intervalo" id="radIntervalo" onchange="trocarModo()" style="accent-color:var(--accent)">
+                <div>
+                  <div style="font-size:13px;font-weight:700">Intervalo fixo</div>
+                  <div style="font-size:11px;color:var(--muted)">A cada X horas continuamente</div>
+                </div>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:8px;border:2px solid var(--border);flex:1;transition:.15s" id="lblModoHorarios">
+                <input type="radio" name="agendModo" value="horarios" id="radHorarios" onchange="trocarModo()" style="accent-color:var(--accent)">
+                <div>
+                  <div style="font-size:13px;font-weight:700">Horários fixos</div>
+                  <div style="font-size:11px;color:var(--muted)">Define horários específicos do dia</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Modo intervalo -->
+          <div id="painelIntervalo" style="margin-bottom:16px">
+            <label style="font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:8px">Intervalo entre ciclos</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn ag-h" data-h="1" onclick="selecionarIntervalo(this)">1h</button>
+              <button class="btn ag-h" data-h="2" onclick="selecionarIntervalo(this)">2h</button>
+              <button class="btn ag-h" data-h="3" onclick="selecionarIntervalo(this)">3h</button>
+              <button class="btn ag-h" data-h="4" onclick="selecionarIntervalo(this)">4h</button>
+              <button class="btn ag-h" data-h="6" onclick="selecionarIntervalo(this)">6h</button>
+              <button class="btn ag-h" data-h="8" onclick="selecionarIntervalo(this)">8h</button>
+              <button class="btn ag-h" data-h="12" onclick="selecionarIntervalo(this)">12h</button>
+              <button class="btn ag-h" data-h="24" onclick="selecionarIntervalo(this)">24h</button>
+            </div>
+          </div>
+
+          <!-- Modo horários fixos -->
+          <div id="painelHorarios" style="display:none;margin-bottom:16px">
+            <label style="font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:8px">Horários do dia (clique para ativar/desativar)</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap" id="gradeHorarios">
+              <!-- gerado por JS -->
+            </div>
+            <div style="margin-top:12px;display:flex;align-items:center;gap:8px">
+              <input type="time" id="novoHorario" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:12px;color:var(--text);background:var(--card2)">
+              <button class="btn bg bs" onclick="adicionarHorario()">+ Adicionar</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px">
+            <span style="font-size:18px">⏱️</span>
+            <div>
+              <div style="font-size:12px;font-weight:700">Pausa entre Download e Atualização</div>
+              <div style="font-size:11px;color:var(--muted)">Aguarda os arquivos serem gravados antes de gerar dashboards</div>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+              <input type="number" id="pausaPosDl" min="10" max="300" value="60"
+                style="width:70px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--mono);font-size:13px;text-align:center">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">seg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contratos ativos no agendamento -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🗂️ Contratos no Agendamento</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn bg bs" onclick="agendTodos(true)">Ativar todos</button>
+            <button class="btn bg bs" onclick="agendTodos(false)">Desativar todos</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="listaAgendContratos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+            Carregando…
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- USUÁRIOS -->
@@ -293,7 +420,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
       <div class="field"><label>URL do Portal</label><input id="cUrl" placeholder="https://contrato.fiscaltech.ind.br"></div>
       <div class="field"><label>Concessão</label><input id="cConcessao" placeholder="EPR / DNIT…"></div>
       <div class="field"><label>UF</label>
-        <select id="cUf"><option value="">UF</option><option value="AC">AC</option><option value="AL">AL</option><option value="AM">AM</option><option value="AP">AP</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MG">MG</option><option value="MS">MS</option><option value="MT">MT</option><option value="PA">PA</option><option value="PB">PB</option><option value="PE">PE</option><option value="PI">PI</option><option value="PR">PR</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RO">RO</option><option value="RR">RR</option><option value="RS">RS</option><option value="SC">SC</option><option value="SE">SE</option><option value="SP">SP</option><option value="TO">TO</option></select>
+        <select id="cUf">
+          <option value="AC">AC — Acre</option>
+          <option value="AL">AL — Alagoas</option>
+          <option value="AP">AP — Amapá</option>
+          <option value="AM">AM — Amazonas</option>
+          <option value="BA">BA — Bahia</option>
+          <option value="CE">CE — Ceará</option>
+          <option value="DF">DF — Distrito Federal</option>
+          <option value="ES">ES — Espírito Santo</option>
+          <option value="GO">GO — Goiás</option>
+          <option value="MA">MA — Maranhão</option>
+          <option value="MT">MT — Mato Grosso</option>
+          <option value="MS">MS — Mato Grosso do Sul</option>
+          <option value="MG">MG — Minas Gerais</option>
+          <option value="PA">PA — Pará</option>
+          <option value="PB">PB — Paraíba</option>
+          <option value="PR">PR — Paraná</option>
+          <option value="PE">PE — Pernambuco</option>
+          <option value="PI">PI — Piauí</option>
+          <option value="RJ">RJ — Rio de Janeiro</option>
+          <option value="RN">RN — Rio Grande do Norte</option>
+          <option value="RS">RS — Rio Grande do Sul</option>
+          <option value="RO">RO — Rondônia</option>
+          <option value="RR">RR — Roraima</option>
+          <option value="SC">SC — Santa Catarina</option>
+          <option value="SP">SP — São Paulo</option>
+          <option value="SE">SE — Sergipe</option>
+          <option value="TO">TO — Tocantins</option>
+        </select>
       </div>
       <div class="field"><label>Status</label>
         <select id="cStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
@@ -362,7 +517,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
-var AGENT_URL = "http://172.16.79.63:5001";
+var AGENT_URL = "http://10.10.10.222:5001";
+
+// Auto-detecta URL do agente baseado em onde está sendo acessado
+(function(){
+  var host = window.location.hostname;
+  var proto = window.location.protocol;
+  var port = window.location.port;
+  // Se acessado via ngrok ou qualquer host externo (não localhost/IP interno)
+  if (proto === 'https:' || (host !== 'localhost' && host !== '127.0.0.1' && !host.match(/^192\.168\.|^10\.|^172\.(1[6-9]|2[0-9]|3[01])\./))) {
+    // Usa o mesmo host/protocolo da página — ngrok já faz o proxy
+    AGENT_URL = proto + '//' + window.location.host;
+  } else if (port && port !== '80' && port !== '443') {
+    // Acesso local com porta — usa host:porta atual
+    AGENT_URL = proto + '//' + host + ':' + port;
+  }
+  console.log('[FT] AGENT_URL detectado:', AGENT_URL);
+})();
 
 // ── SHA-256 puro em JS ──
 function sha256(str) {
@@ -413,80 +584,43 @@ var _token  = '';
 var _config = {global:{},contratos:[]};
 var _users  = {};
 var _selContratados = new Set();
+var _selIniciado = false;
 var _logOffset = 0;
 var _pollLog   = null;
 
-function getSessao(){ try{return JSON.parse(sessionStorage.getItem(SK))||null;}catch(e){return null;} }
+function _isAgent(){ return window.location.protocol !== 'file:'; }
+function getSessao(){
+  try {
+    var s = JSON.parse(sessionStorage.getItem(SK));
+    if (s) return s;
+    // fallback: nova aba — copia do localStorage
+    s = JSON.parse(localStorage.getItem(SK));
+    if (s) { sessionStorage.setItem(SK, JSON.stringify(s)); return s; }
+  } catch(e) {}
+  return null;
+}
 function getToken() { return localStorage.getItem(ATK)||sessionStorage.getItem(ATK)||''; }
 
 function sair(){
   sessionStorage.clear();
-  window.location.href = window.location.port==='5001' ? '/app/login' : 'login.html';
-}
-
-async function reiniciarAgente() {
-  if (!confirm('Reiniciar o agente? Ele ficará offline por alguns segundos e voltará automaticamente.')) return;
-  var btn = document.getElementById('btnReiniciar');
-  btn.disabled = true;
-  btn.textContent = '⏳ Reiniciando...';
-  try {
-    var tk = localStorage.getItem(ATK) || sessionStorage.getItem(ATK) || '';
-    await fetch(AGENT_URL + '/reiniciar', {method:'POST', headers:{'Content-Type':'application/json','X-Agent-Token':tk}, body:'{}'});
-    toast('Agente reiniciando... aguarde 5 segundos', 'inf');
-    setTimeout(function() {
-      var tentativas = 0;
-      var intervalo = setInterval(async function() {
-        tentativas++;
-        try {
-          var r = await fetch(AGENT_URL + '/ping');
-          if (r.ok) {
-            clearInterval(intervalo);
-            btn.disabled = false;
-            btn.innerHTML = '🔄 Reiniciar Agente';
-            setOnline();
-            toast('Agente reiniciado com sucesso ✓', 'ok');
-          }
-        } catch(e) {
-          if (tentativas >= 15) {
-            clearInterval(intervalo);
-            btn.disabled = false;
-            btn.innerHTML = '🔄 Reiniciar Agente';
-            toast('Agente demorou para responder — verifique manualmente', 'err');
-          }
-        }
-      }, 2000);
-    }, 3000);
-  } catch(e) {
-    btn.disabled = false;
-    btn.innerHTML = '🔄 Reiniciar Agente';
-    toast('Erro ao reiniciar: ' + e.message, 'err');
-  }
+  localStorage.removeItem(SK);
+  window.location.href = _isAgent() ? '/app/login' : 'login.html';
 }
 function irPortal(){
-  window.location.href = window.location.port==='5001' ? '/app/portal' : 'portal.html';
+  window.location.href = _isAgent() ? '/app/portal' : 'portal.html';
 }
 
 // ── CHAMADA AO AGENTE ──
 async function api(path, method, body) {
   method = method || 'GET';
+  // Sempre pega o token mais atual do storage
+  if (!_token) _token = getToken();
   var opts = {
     method: method,
     headers: { 'Content-Type': 'application/json', 'X-Agent-Token': _token }
   };
   if (body) opts.body = JSON.stringify(body);
-  // Detecta Mixed Content (GitHub Pages HTTPS → agente HTTP)
-  if (window.location.protocol === 'https:' && AGENT_URL.startsWith('http:')) {
-    throw new Error('Acesso bloqueado pelo browser (Mixed Content). Abra o configurador pelo agente: ' + AGENT_URL + '/app/configurar');
-  }
-  var r;
-  try {
-    r = await fetch(AGENT_URL + path, opts);
-  } catch(e) {
-    if (e.message === 'Failed to fetch' || e.name === 'TypeError') {
-      throw new Error('Não foi possível conectar ao agente em ' + AGENT_URL + '. Verifique se o agente está rodando (porta 5001).');
-    }
-    throw e;
-  }
+  var r = await fetch(AGENT_URL + path, opts);
   if (r.status === 401) {
     // Token expirou — tenta re-autenticar
     var s = getSessao();
@@ -501,6 +635,7 @@ async function api(path, method, body) {
         if (ad.token) {
           _token = ad.token;
           localStorage.setItem(ATK, _token);
+          // Repete a chamada original
           opts.headers['X-Agent-Token'] = _token;
           r = await fetch(AGENT_URL + path, opts);
         }
@@ -604,80 +739,59 @@ document.addEventListener('keydown', function(e){
 });
 
 async function init() {
+  // Carrega token imediatamente
+  _token = getToken();
+
   var s = getSessao();
   if (!s) { window.location.href = _isAgent() ? '/app/login' : 'login.html'; return; }
   if (s.nivel === 'analista') { irPortal(); return; }
 
   document.getElementById('userLbl').textContent = '👤 ' + s.user + ' (' + s.nivel + ')';
-  console.log('[FT] AGENT_URL:', AGENT_URL, '| user:', s.user, '| hash:', !!s.h);
 
-  // Mixed Content: GitHub Pages (HTTPS) não pode chamar agente HTTP
-  if (window.location.protocol === 'https:' && AGENT_URL.startsWith('http:')) {
-    setOffline();
-    toast('Este configurador precisa ser aberto pelo agente local. Acesse: ' + AGENT_URL + '/app/configurar', 'err');
-    document.getElementById('main-wrap').innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;height:70vh">
-        <div style="background:#fff;border-radius:14px;padding:40px 48px;text-align:center;
-                    box-shadow:0 4px 24px rgba(0,0,0,.1);max-width:500px;border:1.5px solid #dde3ed">
-          <div style="font-size:48px;margin-bottom:16px">⚠️</div>
-          <div style="font-size:18px;font-weight:700;color:#0f1b2d;margin-bottom:10px">Abra pelo Agente Local</div>
-          <div style="font-size:13px;color:#6b7280;margin-bottom:24px;line-height:1.6">
-            O Configurador precisa se comunicar com o agente local.<br>
-            O acesso via GitHub Pages (HTTPS) bloqueia essa comunicação.<br><br>
-            <strong>Acesse diretamente pelo agente:</strong>
-          </div>
-          <a href="${AGENT_URL}/app/configurar"
-             style="display:inline-block;background:#0066cc;color:#fff;border-radius:8px;
-                    padding:11px 28px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:14px">
-            Abrir via Agente →
-          </a>
-          <div style="font-size:11px;color:#9ca3af;font-family:monospace">${AGENT_URL}/app/configurar</div>
-        </div>
-      </div>`;
-    return;
-  }
-
-  // Testa ping do agente
+  // Ping
   try {
     var pr = await fetch(AGENT_URL + '/ping');
-    if (!pr.ok) throw new Error('ping falhou');
-    setOnline();
-  } catch(e) {
-    setOffline();
-    toast('Agente offline em ' + AGENT_URL + ' — verifique se o agente está rodando', 'err');
-    return;
+    if (pr.ok) setOnline(); else setOffline();
+  } catch(e) { setOffline(); }
+
+  // Sempre tenta reautenticar para garantir token válido
+  if (s.h) {
+    try {
+      var ar = await fetch(AGENT_URL + '/auth', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: s.user, hash: s.h})
+      });
+      var ad = await ar.json();
+      if (ar.ok && ad.token) {
+        _token = ad.token;
+        localStorage.setItem(ATK, _token);
+      }
+    } catch(e) {}
   }
 
-  // Obtém token
-  _token = getToken();
-  console.log('[FT] Token do storage:', _token ? _token.substring(0,8)+'...' : 'VAZIO');
-
+  // Se ainda sem token, pede senha
   if (!_token) {
-    if (s.h) {
-      // Tem hash — tenta auth direto
-      try {
-        var ar = await fetch(AGENT_URL + '/auth', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({user: s.user, hash: s.h})
-        });
-        var ad = await ar.json();
-        if (ar.ok && ad.token) {
-          _token = ad.token;
-          localStorage.setItem(ATK, _token);
-        }
-      } catch(e) {}
-    }
-
-    // Ainda sem token — pede senha (sessão antiga sem hash)
-    if (!_token) {
-      _token = await pedirSenha();
-      if (!_token) return;
-    }
+    _token = await pedirSenha();
+    if (!_token) return;
   }
 
-  console.log('[FT] Token OK, carregando dados...');
   await carregarDados();
+  // Consulta status inicial ao abrir o configurador
+  try {
+    var st = await api('/status');
+    var el = document.getElementById('execSt');
+    if (el) {
+      if (st.rodando) {
+        el.className = 'exec-st st-run';
+        el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
+        iniciarPollLogs();
+      } else if (st.ultimo_ok) {
+        el.className = 'exec-st st-ok';
+        el.textContent = '✓ Último: ' + st.ultimo_ok.substring(11, 16);
+      }
+    }
+  } catch(e) {}
   iniciarPoll();
 }
 
@@ -710,6 +824,11 @@ async function carregarDados() {
   renderSelGrid();
   renderUsers();
   renderGithub();
+  // Carrega config de agendamento
+  if (_config.global && _config.global.agendamento) {
+    _agendConfig = Object.assign(_agendConfig, _config.global.agendamento);
+  }
+  renderAgendamento();
 }
 
 // ── NAVEGAÇÃO ──
@@ -718,7 +837,34 @@ function mostrarSec(id, el) {
   document.querySelectorAll('.nav').forEach(function(n){n.classList.remove('active');});
   document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
+  // Para poll de logs ao sair da seção de automação
+  if (id !== 'automacao' && _pollLogs) {
+    clearInterval(_pollLogs); _pollLogs = null;
+  }
   if (id === 'logs') carregarLogs();
+  if (id === 'agendamento') iniciarPollAgend();
+  else if (_agendPollTimer) { clearInterval(_agendPollTimer); _agendPollTimer = null; }
+  // Ao entrar em Automação, consulta status imediatamente
+  if (id === 'automacao') {
+    api('/status').then(function(st) {
+      var el2 = document.getElementById('execSt');
+      if (!el2) return;
+      if (st.rodando) {
+        el2.className = 'exec-st st-run';
+        el2.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
+        iniciarPollLogs();
+      } else if (st.erro) {
+        el2.className = 'exec-st st-err';
+        el2.textContent = '✗ Erro: ' + esc(st.erro).substring(0, 60);
+      } else if (st.ultimo_ok) {
+        el2.className = 'exec-st st-ok';
+        el2.textContent = '✓ Concluído às ' + st.ultimo_ok.substring(11, 16);
+      } else {
+        el2.className = 'exec-st st-idle';
+        el2.textContent = '⏸ Aguardando';
+      }
+    }).catch(function(){});
+  }
 }
 
 // ── CONTRATOS ──
@@ -815,19 +961,46 @@ function renderSelGrid() {
   var grid  = document.getElementById('selGrid');
   var lista = (_config.contratos||[]).filter(function(c){return c.status==='ativo';});
   if (!lista.length) { grid.innerHTML = '<span style="font-family:var(--mono);font-size:11px;color:var(--muted)">Nenhum contrato ativo.</span>'; return; }
-  if (_selContratados.size === 0) lista.forEach(function(c){_selContratados.add(c.id);});
+  // Inicializa com todos selecionados só na primeira vez
+  if (!_selIniciado) { lista.forEach(function(c){_selContratados.add(c.id);}); _selIniciado = true; }
+  var total = lista.length;
+  var selecionados = lista.filter(function(c){return _selContratados.has(c.id);}).length;
+  // Atualiza contador
+  var badge = document.getElementById('selBadge');
+  if (badge) badge.textContent = selecionados + '/' + total;
   grid.innerHTML = lista.map(function(c) {
     var on = _selContratados.has(c.id);
-    return '<div class="chip ' + (on?'on':'') + '" onclick="toggleSel(\'' + c.id + '\',this)">' + esc(c.id) + '</div>';
+    return '<label class="chip ' + (on?'on':'') + '" style="cursor:pointer;user-select:none">' +
+      '<input type="checkbox"' + (on?' checked':'') + ' style="display:none" onchange="toggleSel(\'' + c.id + '\',this.parentElement)">' +
+      '<span style="font-size:10px;margin-right:2px">' + (on?'☑':'☐') + '</span>' +
+      esc(c.id) + '</label>';
   }).join('');
 }
 
 function toggleSel(id, el) {
-  if (_selContratados.has(id)) { _selContratados.delete(id); el.classList.remove('on'); }
-  else { _selContratados.add(id); el.classList.add('on'); }
+  if (_selContratados.has(id)) {
+    _selContratados.delete(id);
+    el.classList.remove('on');
+    var icon = el.querySelector('span');
+    if (icon) icon.textContent = '☐';
+  } else {
+    _selContratados.add(id);
+    el.classList.add('on');
+    var icon = el.querySelector('span');
+    if (icon) icon.textContent = '☑';
+  }
+  var badge = document.getElementById('selBadge');
+  var total = (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).length;
+  if (badge) badge.textContent = _selContratados.size + '/' + total;
 }
-function selTodos() { (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);}); renderSelGrid(); }
-function selNenhum() { _selContratados.clear(); renderSelGrid(); }
+function selTodos() {
+  (_config.contratos||[]).filter(function(c){return c.status==='ativo';}).forEach(function(c){_selContratados.add(c.id);});
+  renderSelGrid();
+}
+function selNenhum() {
+  _selContratados.clear();
+  renderSelGrid();
+}
 
 // ── AUTOMAÇÃO ──
 async function executar(tipo) {
@@ -867,34 +1040,46 @@ async function carregarLogs() {
 function renderLog(logs, el, subst) {
   if (!logs || !logs.length) return;
   var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
-  var linhas = logs.map(function(l){
-    return '<div class="log-line ' + (map[l.nivel]||'linfo') + '"><span class="log-ts">' + esc(l.ts) + '</span><span class="log-nv ' + (map[l.nivel]||'linfo') + '">' + (l.nivel||'INFO') + '</span><span class="log-msg">' + esc(l.msg) + '</span></div>';
-  }).join('');
-  if (subst) el.innerHTML = linhas;
-  else el.innerHTML += linhas;
+  var html = logs.map(function(l){
+    return '<span class="' + (map[l.nivel]||'linfo') + '">[' + l.ts + '] ' + esc(l.msg) + '</span>';
+  }).join('\n');
+  if (subst) el.innerHTML = html;
+  else el.innerHTML += (el.innerHTML ? '\n' : '') + html;
   el.scrollTop = el.scrollHeight;
 }
 
 var _pollLogs = null;
+var _pollLogsParadas = 0; // conta ticks sem execução ativa para parar o poll
 function iniciarPollLogs() {
   if (_pollLogs) clearInterval(_pollLogs);
+  _pollLogsParadas = 0;
   _pollLogs = setInterval(async function(){
     try {
       var d  = await api('/logs?desde=' + _logOffset);
       if (d.logs && d.logs.length) { renderLog(d.logs, document.getElementById('logBox')); _logOffset = d.total; }
-      var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();});
+      var st = await api('/status');
       var el = document.getElementById('execSt');
+      if (!el) return;
       if (st.rodando) {
+        _pollLogsParadas = 0;
         el.className = 'exec-st st-run';
         el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
       } else if (st.erro) {
         el.className = 'exec-st st-err';
-        el.textContent = '✗ Erro na última execução';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✗ Erro: ' + esc(st.erro).substring(0, 60);
+        _pollLogsParadas++;
+        // Para o poll após 3 ticks sem execução para não consumir recursos
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
       } else if (st.ultimo_ok) {
         el.className = 'exec-st st-ok';
-        el.textContent = '✓ Concluído com sucesso';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✓ Concluído às ' + st.ultimo_ok.substring(11, 16);
+        _pollLogsParadas++;
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
+      } else {
+        el.className = 'exec-st st-idle';
+        el.textContent = '⏸ Aguardando';
+        _pollLogsParadas++;
+        if (_pollLogsParadas >= 3) { clearInterval(_pollLogs); _pollLogs = null; }
       }
     } catch(e) {}
   }, 2000);
@@ -903,7 +1088,7 @@ function iniciarPollLogs() {
 function iniciarPoll() {
   setInterval(async function(){
     try {
-      var r = await fetch(AGENT_URL + '/status');
+      var r = await fetch(AGENT_URL + '/ping');
       if (r.ok) setOnline(); else setOffline();
     } catch(e) { setOffline(); }
   }, 15000);
@@ -1094,6 +1279,203 @@ function toast(msg, tipo) {
 
 function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── AGENDAMENTO ──
+var _agendConfig = {
+  modo: 'intervalo',        // 'intervalo' | 'horarios'
+  intervalo_horas: 2,
+  horarios: [],
+  pausa_pos_dl: 60,
+  contratos_ativos: []      // [] = todos ativos
+};
+var _agendStatus = null;
+var _agendPollTimer = null;
+
+// Horários sugeridos pré-definidos
+var _horariosBase = ['06:00','07:00','08:00','09:00','10:00','11:00','12:00',
+                     '13:00','14:00','15:00','16:00','17:00','18:00'];
+
+function renderAgendamento() {
+  var cfg = _agendConfig;
+  // Modo
+  document.getElementById('radIntervalo').checked = cfg.modo === 'intervalo';
+  document.getElementById('radHorarios').checked  = cfg.modo === 'horarios';
+  trocarModo();
+  // Intervalo
+  document.querySelectorAll('.ag-h').forEach(function(b){
+    b.classList.toggle('sel', parseInt(b.dataset.h) === cfg.intervalo_horas);
+  });
+  // Pausa
+  document.getElementById('pausaPosDl').value = cfg.pausa_pos_dl || 60;
+  // Horários
+  renderGradeHorarios();
+  // Contratos
+  renderAgendContratos();
+}
+
+function trocarModo() {
+  var modo = document.querySelector('input[name="agendModo"]:checked');
+  if (!modo) return;
+  var isIntervalo = modo.value === 'intervalo';
+  document.getElementById('painelIntervalo').style.display = isIntervalo ? '' : 'none';
+  document.getElementById('painelHorarios').style.display  = isIntervalo ? 'none' : '';
+  document.getElementById('lblModoIntervalo').style.borderColor = isIntervalo ? 'var(--accent)' : 'var(--border)';
+  document.getElementById('lblModoHorarios').style.borderColor  = !isIntervalo ? 'var(--accent)' : 'var(--border)';
+  _agendConfig.modo = modo.value;
+}
+
+function selecionarIntervalo(btn) {
+  document.querySelectorAll('.ag-h').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  _agendConfig.intervalo_horas = parseInt(btn.dataset.h);
+}
+
+function renderGradeHorarios() {
+  var grade = document.getElementById('gradeHorarios');
+  var ativos = _agendConfig.horarios || [];
+  // Combina base + extras
+  var todos = _horariosBase.slice();
+  ativos.forEach(function(h){ if (!todos.includes(h)) todos.push(h); });
+  todos.sort();
+  grade.innerHTML = todos.map(function(h) {
+    var sel = ativos.includes(h);
+    return '<button class="ag-hor ' + (sel?'sel':'') + '" onclick="toggleHorario(\'' + h + '\',this)">' +
+           (sel ? '✓ ' : '') + h + '</button>';
+  }).join('');
+}
+
+function toggleHorario(h, btn) {
+  var idx = _agendConfig.horarios.indexOf(h);
+  if (idx >= 0) {
+    _agendConfig.horarios.splice(idx, 1);
+    btn.classList.remove('sel');
+    btn.innerHTML = h;
+  } else {
+    _agendConfig.horarios.push(h);
+    _agendConfig.horarios.sort();
+    btn.classList.add('sel');
+    btn.innerHTML = '✓ ' + h;
+  }
+}
+
+function adicionarHorario() {
+  var val = document.getElementById('novoHorario').value;
+  if (!val) return;
+  if (!_agendConfig.horarios.includes(val)) {
+    _agendConfig.horarios.push(val);
+    _agendConfig.horarios.sort();
+  }
+  document.getElementById('novoHorario').value = '';
+  renderGradeHorarios();
+}
+
+function renderAgendContratos() {
+  var lista = (_config && _config.contratos) ? _config.contratos.filter(function(c){ return c.status==='ativo'; }) : [];
+  var ativos = _agendConfig.contratos_ativos;
+  var el = document.getElementById('listaAgendContratos');
+  if (!lista.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px">Nenhum contrato ativo.</div>';
+    return;
+  }
+  el.innerHTML = lista.map(function(c) {
+    var on = ativos.length === 0 || ativos.includes(c.id);
+    return '<div class="ag-contrato ' + (on?'ativo':'') + '" onclick="toggleAgendContrato(\'' + c.id + '\',this)">' +
+      '<div><div class="ag-cnome">' + esc(c.nome||c.id) + '</div><div class="ag-cid">' + esc(c.id) + '</div></div>' +
+      '<div class="ag-toggle ' + (on?'on':'') + '"></div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleAgendContrato(id, el) {
+  var ativos = _agendConfig.contratos_ativos;
+  var lista = (_config && _config.contratos) ? _config.contratos.filter(function(c){ return c.status==='ativo'; }) : [];
+  // Se vazio = todos ativos, popula com todos menos este
+  if (ativos.length === 0) {
+    _agendConfig.contratos_ativos = lista.map(function(c){ return c.id; }).filter(function(id2){ return id2 !== id; });
+  } else {
+    var idx = ativos.indexOf(id);
+    if (idx >= 0) ativos.splice(idx, 1);
+    else ativos.push(id);
+    // Se todos estiverem ativos, volta para vazio (= todos)
+    if (ativos.length === lista.length) _agendConfig.contratos_ativos = [];
+  }
+  renderAgendContratos();
+}
+
+function agendTodos(ativar) {
+  _agendConfig.contratos_ativos = ativar ? [] : ['__nenhum__'];
+  renderAgendContratos();
+}
+
+async function salvarAgendamento() {
+  _agendConfig.modo         = document.querySelector('input[name="agendModo"]:checked').value;
+  _agendConfig.pausa_pos_dl = parseInt(document.getElementById('pausaPosDl').value) || 60;
+  _agendConfig.ativo        = _agendStatus && _agendStatus.rodando ? true : _agendConfig.ativo;
+  if (!_config.global) _config.global = {};
+  _config.global.agendamento = _agendConfig;
+  try {
+    await api('/salvar/config', 'POST', {config: _config});
+    toast('Agendamento salvo ✓', 'ok');
+    try { await api('/agendamento/recarregar', 'POST', {}); } catch(e) {}
+  } catch(e) { toast('Erro: ' + e.message, 'err'); }
+}
+
+async function toggleAgendador() {
+  var btn = document.getElementById('btnAgendToggle');
+  btn.disabled = true;
+  try {
+    var rodando = _agendStatus && _agendStatus.rodando;
+    if (rodando) {
+      await api('/agendamento/parar', 'POST', {});
+      _agendConfig.ativo = false;
+      toast('Agendador parado ✓', 'ok');
+    } else {
+      _agendConfig.ativo = true;
+      await salvarAgendamento();
+      await api('/agendamento/iniciar', 'POST', {config: _agendConfig});
+      toast('Agendador iniciado ✓', 'ok');
+    }
+    setTimeout(atualizarStatusAgend, 1000);
+  } catch(e) {
+    toast('Erro: ' + e.message, 'err');
+  }
+  btn.disabled = false;
+}
+
+async function atualizarStatusAgend() {
+  try {
+    // Usa api() para enviar X-Agent-Token automaticamente
+    var data = await api('/agendamento/status');
+    _agendStatus = data;
+    var rodando = data.rodando;
+    var st  = document.getElementById('agendSt');
+    var btn = document.getElementById('btnAgendToggle');
+    var svl = document.getElementById('agendStatusVal');
+    if (!st) return;
+    st.className   = 'exec-st ' + (rodando ? 'st-run' : 'st-idle');
+    st.textContent = rodando ? '▶ Rodando' : '⏸ Parado';
+    btn.textContent = rodando ? '⏹ Parar' : '▶ Iniciar';
+    btn.className   = rodando ? 'btn bd bs' : 'btn bp bs';
+    svl.textContent = rodando ? '▶ Ativo' : '—';
+    svl.style.color = rodando ? 'var(--green)' : 'var(--muted)';
+    document.getElementById('agendProximo').textContent = data.proximo || '—';
+    document.getElementById('agendUltimo').textContent  = data.ultimo  || '—';
+    if (data.config && Object.keys(data.config).length) {
+      _agendConfig = Object.assign(_agendConfig, data.config);
+      renderAgendamento();
+    }
+  } catch(e) {
+    // Falha silenciosa — agente pode estar offline
+    var st = document.getElementById('agendSt');
+    if (st) { st.className = 'exec-st st-err'; st.textContent = '⚠ Sem resposta do agente'; }
+  }
+}
+
+function iniciarPollAgend() {
+  if (_agendPollTimer) { clearInterval(_agendPollTimer); _agendPollTimer = null; }
+  atualizarStatusAgend(); // executa imediatamente
+  _agendPollTimer = setInterval(atualizarStatusAgend, 8000);
 }
 
 // ── INÍCIO ──
