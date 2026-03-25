@@ -498,10 +498,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 var AGENT_URL = "http://172.16.79.63:5001";
-// Fallback: usa IP salvo pelo login se disponível
+// Resolução de IP em cascata (prioridade decrescente):
+// 1. localStorage (IP salvo em sessão anterior bem-sucedida)
+// 2. localhost:5001 (se o agente está na mesma máquina que o browser — MAIS CONFIÁVEL)
+// 3. IP hardcoded injetado pelo agente
 (function(){
+  // Prioridade 1: localStorage
   var salvo = localStorage.getItem('agent_url') || sessionStorage.getItem('agent_url');
-  if (salvo && salvo.startsWith('http://')) AGENT_URL = salvo;
+  if (salvo && salvo.startsWith('http://') && !salvo.includes('172.16.79.63')) {
+    AGENT_URL = salvo;
+    return;
+  }
+  // Prioridade 2: qualquer IP salvo (incluindo o antigo, como fallback)
+  if (salvo && salvo.startsWith('http://')) {
+    AGENT_URL = salvo;
+  }
 })();
 
 // ── SHA-256 puro em JS ──
@@ -749,29 +760,38 @@ document.addEventListener('keydown', function(e){
 // ── AUTO-DESCOBERTA DO AGENTE ───────────────────────────────────────────────
 // Quando o AGENT_URL atual não responde, tenta encontrar o agente em outros IPs.
 async function _descobrirAgente() {
-  // Candidatos: localhost, 127.0.0.1, e IPs derivados do AGENT_URL atual
-  var candidatos = ['http://localhost:5001', 'http://127.0.0.1:5001'];
+  // Testa em ordem de prioridade
+  var porta = (AGENT_URL.match(/:(\d+)/) || ['','5001'])[1];
 
-  // Deriva IPs da mesma sub-rede do IP atual (ex: 172.16.79.X → testa alguns)
+  // PRIORIDADE 1: localhost (agente na mesma máquina que o browser)
+  var locais = [
+    'http://localhost:' + porta,
+    'http://127.0.0.1:' + porta,
+  ];
+
+  // PRIORIDADE 2: IPs da mesma sub-rede do IP atual
+  var subrede = [];
   try {
     var match = AGENT_URL.match(/http:\/\/(\d+\.\d+\.\d+)\.(\d+):(\d+)/);
     if (match) {
-      var base = match[1], porta = match[3];
-      // Testa os IPs mais comuns em redes Windows (gateway .1, .2, .100-105)
-      [1, 2, 10, 50, 100, 101, 102, 103, 104, 105, 110, 150, 200].forEach(function(n) {
-        if (String(n) !== match[2]) { // evita o IP que já falhou
-          candidatos.push('http://' + base + '.' + n + ':' + porta);
-        }
+      var base = match[1], portaAtual = match[3];
+      [1, 2, 10, 50, 100, 101, 102, 103, 104, 105, 110, 150, 200, 210, 220].forEach(function(n) {
+        subrede.push('http://' + base + '.' + n + ':' + portaAtual);
       });
     }
   } catch(e) {}
+
+  var candidatos = locais.concat(subrede);
 
   for (var i = 0; i < candidatos.length; i++) {
     try {
       var r = await fetch(candidatos[i] + '/ping', {signal: AbortSignal.timeout(1500)});
       if (r.ok) {
         var d = await r.json();
-        if (d && d.online) return candidatos[i];
+        if (d && d.online) {
+          console.log('[FT] Agente encontrado em:', candidatos[i]);
+          return candidatos[i];
+        }
       }
     } catch(e) {}
   }
