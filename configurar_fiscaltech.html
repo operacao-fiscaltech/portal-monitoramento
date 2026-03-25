@@ -498,21 +498,32 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 <script>
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 var AGENT_URL = "http://172.16.79.63:5001";
-// Resolução de IP em cascata (prioridade decrescente):
-// 1. localStorage (IP salvo em sessão anterior bem-sucedida)
-// 2. localhost:5001 (se o agente está na mesma máquina que o browser — MAIS CONFIÁVEL)
-// 3. IP hardcoded injetado pelo agente
-(function(){
-  // Prioridade 1: localStorage
+
+// Inicia detecção do IP real imediatamente — resultado usado no init()
+var _agentUrlPromise = (async function() {
+  var porta = '5001';
+  // 1. Tenta localhost (agente na mesma máquina que o browser)
+  var locais = ['http://localhost:' + porta, 'http://127.0.0.1:' + porta];
+  for (var i = 0; i < locais.length; i++) {
+    try {
+      var r = await fetch(locais[i] + '/ping', {signal: AbortSignal.timeout(800)});
+      if (r.ok) { var d = await r.json(); if (d && d.online) return locais[i]; }
+    } catch(e) {}
+  }
+  // 2. Usa localStorage se disponível e diferente do IP problemático
   var salvo = localStorage.getItem('agent_url') || sessionStorage.getItem('agent_url');
-  if (salvo && salvo.startsWith('http://') && !salvo.includes('172.16.79.63')) {
-    AGENT_URL = salvo;
-    return;
-  }
-  // Prioridade 2: qualquer IP salvo (incluindo o antigo, como fallback)
   if (salvo && salvo.startsWith('http://')) {
-    AGENT_URL = salvo;
+    try {
+      var r2 = await fetch(salvo + '/ping', {signal: AbortSignal.timeout(1500)});
+      if (r2.ok) { var d2 = await r2.json(); if (d2 && d2.online) return salvo; }
+    } catch(e) {}
   }
+  // 3. Tenta o IP hardcoded
+  try {
+    var r3 = await fetch(AGENT_URL + '/ping', {signal: AbortSignal.timeout(2000)});
+    if (r3.ok) return AGENT_URL;
+  } catch(e) {}
+  return AGENT_URL; // fallback — usará o IP hardcoded mesmo
 })();
 
 // ── SHA-256 puro em JS ──
@@ -819,6 +830,14 @@ async function init() {
   if (!s) { window.location.href = _isAgent() ? '/app/login' : 'login.html'; return; }
   if (s.nivel === 'analista') { irPortal(); return; }
 
+  // Aguarda detecção do IP real (iniciada no carregamento da página)
+  var urlDetectada = await _agentUrlPromise;
+  if (urlDetectada && urlDetectada !== AGENT_URL) {
+    AGENT_URL = urlDetectada;
+    localStorage.setItem('agent_url', urlDetectada);
+    console.log('[FT] IP do agente atualizado para:', urlDetectada);
+  }
+
   document.getElementById('userLbl').textContent = '👤 ' + s.user + ' (' + s.nivel + ')';
   console.log('[FT] AGENT_URL:', AGENT_URL, '| user:', s.user, '| hash:', !!s.h);
 
@@ -848,25 +867,19 @@ async function init() {
     return;
   }
 
-  // Testa ping do agente — com auto-descoberta se o IP atual falhar
+  // Testa ping com o IP já detectado pelo _agentUrlPromise
   try {
     var pr = await fetch(AGENT_URL + '/ping', {signal: AbortSignal.timeout(3000)});
-    if (!pr.ok) throw new Error('ping falhou');
-    setOnline();
-  } catch(e) {
-    // Tenta descobrir o agente em IPs alternativos
-    var novoUrl = await _descobrirAgente();
-    if (novoUrl) {
-      AGENT_URL = novoUrl;
-      localStorage.setItem('agent_url', novoUrl);
-      toast('Agente encontrado em ' + novoUrl + ' — atualizando...', 'inf');
+    if (pr.ok) {
       setOnline();
     } else {
-      setOffline();
-      toast('Agente offline em ' + AGENT_URL + ' — verifique se o agente está rodando', 'err');
-      _mostrarAjudaIP();
-      return;
+      throw new Error('ping falhou');
     }
+  } catch(e) {
+    setOffline();
+    toast('Agente offline em ' + AGENT_URL + ' — verifique se o agente está rodando', 'err');
+    _mostrarAjudaIP();
+    return;
   }
 
   // Obtém token
