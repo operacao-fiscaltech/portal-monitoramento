@@ -735,6 +735,54 @@ document.addEventListener('keydown', function(e){
   }
 });
 
+// ── AUTO-DESCOBERTA DO AGENTE ───────────────────────────────────────────────
+// Quando o AGENT_URL atual não responde, tenta encontrar o agente em outros IPs.
+async function _descobrirAgente() {
+  // Candidatos: localhost, 127.0.0.1, e IPs derivados do AGENT_URL atual
+  var candidatos = ['http://localhost:5001', 'http://127.0.0.1:5001'];
+
+  // Deriva IPs da mesma sub-rede do IP atual (ex: 172.16.79.X → testa alguns)
+  try {
+    var match = AGENT_URL.match(/http:\/\/(\d+\.\d+\.\d+)\.(\d+):(\d+)/);
+    if (match) {
+      var base = match[1], porta = match[3];
+      // Testa os IPs mais comuns em redes Windows (gateway .1, .2, .100-105)
+      [1, 2, 10, 50, 100, 101, 102, 103, 104, 105, 110, 150, 200].forEach(function(n) {
+        if (String(n) !== match[2]) { // evita o IP que já falhou
+          candidatos.push('http://' + base + '.' + n + ':' + porta);
+        }
+      });
+    }
+  } catch(e) {}
+
+  for (var i = 0; i < candidatos.length; i++) {
+    try {
+      var r = await fetch(candidatos[i] + '/ping', {signal: AbortSignal.timeout(1500)});
+      if (r.ok) {
+        var d = await r.json();
+        if (d && d.online) return candidatos[i];
+      }
+    } catch(e) {}
+  }
+  return null;
+}
+
+function _mostrarAjudaIP() {
+  var ipAtual = AGENT_URL;
+  var el = document.getElementById('main-wrap');
+  if (!el) return;
+  el.insertAdjacentHTML('afterbegin',
+    '<div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:16px 20px;margin:16px;font-size:13px">' +
+    '<strong>⚠️ Agente não encontrado em ' + esc(ipAtual) + '</strong><br><br>' +
+    'O IP da máquina pode ter mudado. Para descobrir o IP atual:<br>' +
+    '<code style="background:#f1f3f5;padding:4px 8px;border-radius:4px;font-size:12px;display:block;margin:8px 0">' +
+    'python -c "import socket; s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM); s.connect((\'8.8.8.8\',80)); print(s.getsockname()[0])"' +
+    '</code>' +
+    'Depois acesse: <strong>http://NOVO_IP:5001/app/configurar</strong>' +
+    '</div>'
+  );
+}
+
 async function init() {
   var s = getSessao();
   if (!s) { window.location.href = _isAgent() ? '/app/login' : 'login.html'; return; }
@@ -769,15 +817,25 @@ async function init() {
     return;
   }
 
-  // Testa ping do agente
+  // Testa ping do agente — com auto-descoberta se o IP atual falhar
   try {
-    var pr = await fetch(AGENT_URL + '/ping');
+    var pr = await fetch(AGENT_URL + '/ping', {signal: AbortSignal.timeout(3000)});
     if (!pr.ok) throw new Error('ping falhou');
     setOnline();
   } catch(e) {
-    setOffline();
-    toast('Agente offline em ' + AGENT_URL + ' — verifique se o agente está rodando', 'err');
-    return;
+    // Tenta descobrir o agente em IPs alternativos
+    var novoUrl = await _descobrirAgente();
+    if (novoUrl) {
+      AGENT_URL = novoUrl;
+      localStorage.setItem('agent_url', novoUrl);
+      toast('Agente encontrado em ' + novoUrl + ' — atualizando...', 'inf');
+      setOnline();
+    } else {
+      setOffline();
+      toast('Agente offline em ' + AGENT_URL + ' — verifique se o agente está rodando', 'err');
+      _mostrarAjudaIP();
+      return;
+    }
   }
 
   // Obtém token
