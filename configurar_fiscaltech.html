@@ -500,10 +500,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 // AGENT_URL: substituído automaticamente pelo agente ao servir este arquivo.
 var AGENT_URL = "http://172.16.79.63:5001";
 
-// Inicia detecção do IP real imediatamente — resultado usado no init()
+// PRIORIDADE MÁXIMA: se esta página está sendo servida pelo agente
+// (http://IP:5001/app/...), o host da URL é sempre o correto.
+(function(){
+  var loc = window.location;
+  if (loc.protocol === 'http:' && loc.port === '5001') {
+    AGENT_URL = 'http://' + loc.host;
+    localStorage.setItem('agent_url', AGENT_URL);
+  }
+})();
+
+// Detecção assíncrona — usada quando NÃO está sendo servido pelo agente
 var _agentUrlPromise = (async function() {
-  var porta = '5001';
-  // 1. Tenta localhost (agente na mesma máquina que o browser)
+  // Se servido pelo agente, retorna imediatamente
+  if (window.location.protocol === 'http:' && window.location.port === '5001') {
+    return AGENT_URL;
+  }
+  var porta = (AGENT_URL.match(/:(\d+)/) || ['','5001'])[1];
+  // 1. Tenta localhost
   var locais = ['http://localhost:' + porta, 'http://127.0.0.1:' + porta];
   for (var i = 0; i < locais.length; i++) {
     try {
@@ -511,7 +525,7 @@ var _agentUrlPromise = (async function() {
       if (r.ok) { var d = await r.json(); if (d && d.online) return locais[i]; }
     } catch(e) {}
   }
-  // 2. Usa localStorage se disponível e diferente do IP problemático
+  // 2. Usa localStorage
   var salvo = localStorage.getItem('agent_url') || sessionStorage.getItem('agent_url');
   if (salvo && salvo.startsWith('http://')) {
     try {
@@ -524,7 +538,7 @@ var _agentUrlPromise = (async function() {
     var r3 = await fetch(AGENT_URL + '/ping', {signal: AbortSignal.timeout(2000)});
     if (r3.ok) return AGENT_URL;
   } catch(e) {}
-  return AGENT_URL; // fallback — usará o IP hardcoded mesmo
+  return AGENT_URL; // fallback
 })();
 
 // ── SHA-256 puro em JS ──
