@@ -2069,14 +2069,24 @@ async function _tickMonitor() {
 
 function _processarLogsMonitor(logs) {
   // ── Padrões de contrato individual ────────────────────────────
-  var RX_INICIO    = /\[CONTRATO\]\s+Iniciando[:\s]+([^\s]+)/i;
-  var RX_INICIO2   = /Iniciando\s+contrato[:\s]+([^\s]+)/i;
-  var RX_SUBTAREFA = /\[CONTRATO\]\s+→\s*(\S.*)/;
+  // Padrão atualizar_todos.py: [CID] Processando contrato...
+  var RX_INICIO    = /^\[([A-Z0-9_\-]+)\]\s+Processando\s+contrato/i;
+  // Padrão legado: [CONTRATO] Iniciando: CID
+  var RX_INICIO2   = /\[CONTRATO\]\s+Iniciando[:\s]+([^\s]+)/i;
+  var RX_INICIO3   = /Iniciando\s+contrato[:\s]+([^\s]+)/i;
+  // Subtarefa: [CID] Lendo relatórios de: ...  ou  [CONTRATO] → X
+  var RX_SUBTAREFA = /^\[([A-Z0-9_\-]+)\]\s+Lendo\s+relat/i;
+  var RX_SUBTAREFA2= /\[CONTRATO\]\s+→\s*(\S.*)/;
+  // Gerado: dashboard_CID.html (N chars)
+  var RX_GERADO    = /Gerado:\s+.*dashboard_([A-Z0-9_\-]+)\.html/i;
+  // OK — dashboard_CID.html
+  var RX_OK_DASH   = /^\s+OK\s+[—-]+\s+dashboard_([A-Z0-9_\-]+)\.html/i;
+  // Conclusão via atualizar_todos: Concluído: X/Y OK (Z%)
   var RX_CONCL     = /Conclu[íi]do[:\s]+([\d]+)\/([\d]+)\s+OK\s*\(([\d.]+)%\)/i;
   var RX_RETRY     = /Retry/i;
   var RX_AVISO     = /\[AVISO\]/i;
   var RX_ERRO      = /ERRO|ERRO GERAL|Stacktrace|NoSuchElement|connectionFailure/i;
-  var RX_LABEL     = /\[([A-Z0-9_\-]+)\]/;
+  var RX_LABEL     = /^\[([A-Z0-9_\-]+)\]/;
 
   // ── Padrões do agendador ──────────────────────────────────────
   var RX_AG_INICIO  = /Agendador\s+[—-]+\s+iniciando\s+ciclo/i;
@@ -2158,23 +2168,60 @@ function _processarLogsMonitor(logs) {
     var mc = msg.match(RX_LABEL);
     if (mc) cid = mc[1];
 
-    // Início de contrato
-    var mIni = msg.match(RX_INICIO) || msg.match(RX_INICIO2);
+    // Início de contrato — "[CID] Processando contrato..."
+    var mIni = msg.match(RX_INICIO);
     if (mIni) {
       cid = mIni[1];
       if (!_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'run', eventos:[], resultado:null, subtarefa:''};
       _monContratos[cid].status = 'run';
       _monTimeline.unshift({ts:ts, msg:'▶ ' + cid + ' iniciou', tipo:'info'});
       if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    // Início legado
+    var mIni2 = msg.match(RX_INICIO2) || msg.match(RX_INICIO3);
+    if (mIni2) {
+      cid = mIni2[1];
+      if (!_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'run', eventos:[], resultado:null, subtarefa:''};
+      _monContratos[cid].status = 'run';
+      _monTimeline.unshift({ts:ts, msg:'▶ ' + cid + ' iniciou', tipo:'info'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
     }
 
-    // Subtarefa atual
+    // Subtarefa — "[CID] Lendo relatórios de: ..." ou "[CONTRATO] → X"
     var mSub = msg.match(RX_SUBTAREFA);
     if (mSub && cid && _monContratos[cid]) {
-      _monContratos[cid].subtarefa = mSub[1];
+      _monContratos[cid].subtarefa = 'Lendo relatórios';
+    }
+    var mSub2 = msg.match(RX_SUBTAREFA2);
+    if (mSub2 && cid && _monContratos[cid]) {
+      _monContratos[cid].subtarefa = mSub2[1];
     }
 
-    // Conclusão de contrato
+    // Dashboard gerado — "  Gerado: ...dashboard_CID.html (N chars)"
+    var mGerado = msg.match(RX_GERADO);
+    if (mGerado) {
+      var cidG = mGerado[1];
+      if (!_monContratos[cidG]) _monContratos[cidG] = {nome:cidG, status:'run', eventos:[], resultado:null, subtarefa:''};
+      _monContratos[cidG].subtarefa = 'Dashboard gerado';
+      return;
+    }
+
+    // OK final — "  OK — dashboard_CID.html"
+    var mOk = msg.match(RX_OK_DASH);
+    if (mOk) {
+      var cidOk = mOk[1];
+      if (!_monContratos[cidOk]) _monContratos[cidOk] = {nome:cidOk, status:'run', eventos:[], resultado:null, subtarefa:''};
+      var temErro = _monContratos[cidOk].eventos.some(function(e){return e.tipo==='err';});
+      _monContratos[cidOk].status = temErro ? 'warn' : 'ok';
+      _monContratos[cidOk].subtarefa = '';
+      _monTimeline.unshift({ts:ts, msg:(temErro ? '⚠' : '✓') + ' ' + cidOk + ' — dashboard OK', tipo: temErro ? 'warn' : 'ok'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+
+    // Conclusão via Concluído: X/Y OK (Z%) — padrão do baixar_relatorios
     var mConc = msg.match(RX_CONCL);
     if (mConc) {
       var ok    = parseInt(mConc[1]);
