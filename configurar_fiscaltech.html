@@ -91,6 +91,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .log-nv.lwarn{color:#e3b341;background:rgba(227,179,65,.1)}
 .log-nv.linfo{color:#79c0ff;background:rgba(121,192,255,.1)}
 .log-msg{color:#c9d1d9;flex:1;word-break:break-word}
+.log-msg strong{color:#e6edf3;font-weight:600}
 .lok{color:#56d364}.lerro{color:#f87171}.lwarn{color:#e3b341}.linfo{color:#79c0ff}
 .exec-st{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:600}
 .st-idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
@@ -1487,19 +1488,41 @@ function setLiveDot(on) {
 function renderLogAgente(logs) {
   var el = document.getElementById('logBoxAgente');
   if (!el) return;
-  var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
+  var mapNivel = {OK:'lok', ERRO:'lerro', WARN:'lwarn', INFO:'linfo'};
   var filtNivel = _logFiltroNivel;
   var filtTexto = (document.getElementById('logSearch') || {}).value || '';
   filtTexto = filtTexto.toLowerCase();
+
+  // Coloração semântica por conteúdo (além do nível)
+  function _clsMsg(nivel, msg) {
+    if (nivel === 'ERRO') return 'lerro';
+    if (nivel === 'WARN') return 'lwarn';
+    if (nivel === 'OK')   return 'lok';
+    var m = msg || '';
+    // OK / sucesso
+    if (/^\s*(OK\s+[—-]|✓|✅|Gerado:|Concluído:|portal\.html atualizado|\[GITHUB\].*OK)/i.test(m)) return 'lok';
+    // Erro / aviso
+    if (/ERRO|❌|⚠|timeout|não encontrada|NÃO será|\.part\b/i.test(m)) return 'lwarn';
+    // Cabeçalho de contrato [CID]
+    if (/^\[([A-Z0-9_\-]+)\]\s+(Processando|Lendo)/i.test(m)) return 'linfo';
+    // Separadores e headers
+    if (/^={3,}|^-{3,}|^\s*Fiscaltech|^Contratos:|^Template:/i.test(m)) return 'linfo';
+    return 'linfo';
+  }
+
   var html = logs.map(function(l) {
-    var cls = map[l.nivel] || 'linfo';
+    var cls = _clsMsg(l.nivel, l.msg);
     var ocultaNivel = filtNivel !== 'TODOS' && l.nivel !== filtNivel;
     var ocultaTexto = filtTexto && !((l.msg||'').toLowerCase().includes(filtTexto));
     var hidden = (ocultaNivel || ocultaTexto) ? ' hidden' : '';
+    // Destacar nome do contrato na linha
+    var msgHtml = esc(l.msg||'');
+    // Bold no [CID] no início da linha
+    msgHtml = msgHtml.replace(/^(\[[A-Z0-9_\-]+\])/i, '<strong>$1</strong>');
     return '<div class="log-line ' + cls + hidden + '" data-nivel="' + esc(l.nivel||'INFO') + '" data-msg="' + esc((l.msg||'').toLowerCase()) + '">' +
       '<span class="log-ts">' + esc(l.ts) + '</span>' +
       '<span class="log-nv ' + cls + '">' + esc(l.nivel||'INFO') + '</span>' +
-      '<span class="log-msg">' + esc(l.msg||'') + '</span>' +
+      '<span class="log-msg">' + msgHtml + '</span>' +
       '</div>';
   }).join('');
   el.innerHTML += html;
