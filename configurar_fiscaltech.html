@@ -1171,7 +1171,16 @@ function mostrarSec(id, el) {
   document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
   if (id === 'logs')    { iniciarPollLogs(); }
-  if (id === 'monitor') { iniciarMonitor(); }
+  if (id === 'monitor') {
+    // Reinicia monitor sempre que a aba é aberta, reprocessando logs existentes
+    resetarContratos();
+    if (!_monPollAtivo) iniciarMonitor();
+    else {
+      // Já ativo — rebusca logs desde o início para popular os cards
+      _monLogOffset = 0;
+      _tickMonitor();
+    }
+  }
   if (id === 'agendamento') { atualizarStatusAgendador(); }
 }
 
@@ -1435,6 +1444,19 @@ async function _tickLog() {
 
     if (d.logs && d.logs.length) {
       renderLogAgente(d.logs);
+      // Espelha no logBox da aba Automação também
+      var lb = document.getElementById('logBox');
+      if (lb) {
+        if (lb.textContent.trim() === 'Aguardando execução…') lb.innerHTML = '';
+        var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
+        lb.innerHTML += d.logs.map(function(l){
+          return '<div class="log-line ' + (map[l.nivel]||'linfo') + '">' +
+            '<span class="log-ts">' + esc(l.ts) + '</span>' +
+            '<span class="log-nv ' + (map[l.nivel]||'linfo') + '">' + esc(l.nivel||'INFO') + '</span>' +
+            '<span class="log-msg">' + esc(l.msg||'') + '</span></div>';
+        }).join('');
+        lb.scrollTop = lb.scrollHeight;
+      }
       _logOffsetAgente = d.total;
       _logUltimoRecebeu = Date.now();
     }
@@ -1580,7 +1602,7 @@ async function limparLogAgente() {
   var el = document.getElementById('logBoxAgente');
   if (el) el.innerHTML = '';
   var lb = document.getElementById('logBox');
-  if (lb) lb.innerHTML = '';
+  if (lb) lb.innerHTML = 'Aguardando execução…';
   _logOffsetAgente = 0;
   _logOffset = 0;
   _logTotalLinhas = 0;
@@ -2063,8 +2085,16 @@ function iniciarMonitor() {
 
 async function _tickMonitor() {
   try {
-    // Monitor só busca /status — logs chegam via atualizarMonitor() chamado pelo _tickLog
     var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();}).catch(function(){return {};});
+
+    // Busca logs novos desde _monLogOffset para processar eventos
+    var ld = await api('/logs?desde=' + _monLogOffset).catch(function(){return {logs:[], total:0};});
+    if (ld.total < _monLogOffset) _monLogOffset = 0;
+    if (ld.logs && ld.logs.length) {
+      _processarLogsMonitor(ld.logs);
+      _monLogOffset = ld.total;
+    }
+
     atualizarStatusAgendador();
     _renderMonResumo(st);
     _renderMonKpis();
@@ -2079,21 +2109,21 @@ async function _tickMonitor() {
 
 function _processarLogsMonitor(logs) {
   // ── Padrões de contrato individual ────────────────────────────
-  // [CID] ou [CID  ] (com espaços) — baixar_relatorios.py padeia o ID
-  var RX_LABEL     = /^\[([A-Z0-9_\-]+)\s*\]/;
+  // Sem ^ — as msgs do baixar_relatorios chegam com timestamp: "15:04:18  [CID  ] ..."
+  var RX_LABEL     = /\[([A-Z0-9_\-]+)\s*\]/;
   // Início: [CID] Processando contrato... (atualizar_todos)
-  //         [CID  ] Iniciando — URL... (baixar_relatorios)
-  var RX_INICIO    = /^\[([A-Z0-9_\-]+)\s*\]\s+(?:Processando\s+contrato|Iniciando\s+[—-])/i;
+  //         [CID  ] Iniciando — URL... (baixar_relatorios, com timestamp)
+  var RX_INICIO    = /\[([A-Z0-9_\-]+)\s*\]\s+(?:Processando\s+contrato|Iniciando\s+[—-])/i;
   var RX_INICIO2   = /\[CONTRATO\]\s+Iniciando[:\s]+([^\s]+)/i;
   var RX_INICIO3   = /Iniciando\s+contrato[:\s]+([^\s]+)/i;
   // Subtarefa
-  var RX_SUBTAREFA = /^\[([A-Z0-9_\-]+)\s*\]\s+Lendo\s+relat/i;
+  var RX_SUBTAREFA = /\[([A-Z0-9_\-]+)\s*\]\s+Lendo\s+relat/i;
   var RX_SUBTAREFA2= /\[CONTRATO\]\s+→\s*(\S.*)/;
-  // Dashboard gerado / OK
+  // Dashboard gerado / OK (atualizar_todos — sem timestamp)
   var RX_GERADO    = /Gerado:\s+.*dashboard_([A-Z0-9_\-]+)\.html/i;
-  var RX_OK_DASH   = /^\s+OK\s+[—-]+\s+dashboard_([A-Z0-9_\-]+)\.html/i;
-  // Conclusão do baixar_relatorios: Concluído: X/Y OK (Z%)
-  var RX_CONCL     = /Conclu[íi]do[:\s]+([\d]+)\/([\d]+)\s+OK\s*\(([\d.]+)%\)/i;
+  var RX_OK_DASH   = /OK\s+[—-]+\s+dashboard_([A-Z0-9_\-]+)\.html/i;
+  // Conclusão do baixar_relatorios: [CID] ✓ Concluído: X/Y OK (Z%) em N min
+  var RX_CONCL     = /\[([A-Z0-9_\-]+)\s*\].*?Conclu[íi]do:\s*([\d]+)\/([\d]+)\s+OK\s*\(([\d.]+)%\)/i;
   // Retry — apenas ↺ (não ✓ Retry OK que é sucesso)
   var RX_RETRY_FAIL = /↺\s*Retry/i;
   var RX_RETRY_OK   = /✓\s*Retry\s+OK/i;
@@ -2184,7 +2214,7 @@ function _processarLogsMonitor(logs) {
     // Início de contrato — "[CID] Processando contrato..."
     var mIni = msg.match(RX_INICIO);
     if (mIni) {
-      cid = mIni[1].trim();
+      cid = (mIni[1]||'').trim();
       if (!_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'run', eventos:[], resultado:null, subtarefa:''};
       _monContratos[cid].status = 'run';
       _monTimeline.unshift({ts:ts, msg:'▶ ' + cid + ' iniciou', tipo:'info'});
@@ -2204,8 +2234,10 @@ function _processarLogsMonitor(logs) {
 
     // Subtarefa — "[CID] Lendo relatórios de: ..." ou "[CONTRATO] → X"
     var mSub = msg.match(RX_SUBTAREFA);
-    if (mSub && cid && _monContratos[cid]) {
-      _monContratos[cid].subtarefa = 'Lendo relatórios';
+    if (mSub) {
+      var cidS = (mSub[1]||'').trim();
+      if (cidS && _monContratos[cidS]) _monContratos[cidS].subtarefa = 'Lendo relatórios';
+      else if (cid && _monContratos[cid]) _monContratos[cid].subtarefa = 'Lendo relatórios';
     }
     var mSub2 = msg.match(RX_SUBTAREFA2);
     if (mSub2 && cid && _monContratos[cid]) {
@@ -2234,28 +2266,27 @@ function _processarLogsMonitor(logs) {
       return;
     }
 
-    // Conclusão via Concluído: X/Y OK (Z%) — padrão do baixar_relatorios
+    // Conclusão: [CID] ✓ Concluído: X/Y OK (Z%) — padrão do baixar_relatorios
     var mConc = msg.match(RX_CONCL);
     if (mConc) {
-      var ok    = parseInt(mConc[1]);
-      var total = parseInt(mConc[2]);
-      var pct   = parseFloat(mConc[3]);
-      if (cid && !_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'idle', eventos:[], resultado:null, subtarefa:''};
-      if (cid) {
-        _monContratos[cid].resultado = {ok:ok, total:total, pct:pct};
-        var temErro = _monContratos[cid].eventos.some(function(e){return e.tipo==='err';});
-        if (ok === 0 && total === 0) {
-          _monContratos[cid].status = 'zero';
-          _monTimeline.unshift({ts:ts, msg:'✗ ' + cid + ' — sem sucesso (0/0)', tipo:'err'});
-        } else if (temErro || pct < 100) {
-          _monContratos[cid].status = 'warn';
-          _monTimeline.unshift({ts:ts, msg:'⚠ ' + cid + ' — parcial ' + ok + '/' + total + ' (' + pct + '%)', tipo:'warn'});
-        } else {
-          _monContratos[cid].status = 'ok';
-          _monTimeline.unshift({ts:ts, msg:'✓ ' + cid + ' — ' + ok + '/' + total + ' (100%)', tipo:'ok'});
-        }
-        if (_monTimeline.length > 50) _monTimeline.pop();
+      var cidC  = mConc[1].trim();
+      var ok    = parseInt(mConc[2]);
+      var total = parseInt(mConc[3]);
+      var pct   = parseFloat(mConc[4]);
+      if (!_monContratos[cidC]) _monContratos[cidC] = {nome:cidC, status:'idle', eventos:[], resultado:null, subtarefa:''};
+      _monContratos[cidC].resultado = {ok:ok, total:total, pct:pct};
+      var temErro = _monContratos[cidC].eventos.some(function(e){return e.tipo==='err';});
+      if (ok === 0 && total === 0) {
+        _monContratos[cidC].status = 'zero';
+        _monTimeline.unshift({ts:ts, msg:'✗ ' + cidC + ' — sem sucesso (0/0)', tipo:'err'});
+      } else if (temErro || pct < 100) {
+        _monContratos[cidC].status = 'warn';
+        _monTimeline.unshift({ts:ts, msg:'⚠ ' + cidC + ' — parcial ' + ok + '/' + total + ' (' + pct + '%)', tipo:'warn'});
+      } else {
+        _monContratos[cidC].status = 'ok';
+        _monTimeline.unshift({ts:ts, msg:'✓ ' + cidC + ' — ' + ok + '/' + total + ' (100%)', tipo:'ok'});
       }
+      if (_monTimeline.length > 50) _monTimeline.pop();
     }
 
     // Retry OK (sucesso após retry) — não conta como erro
