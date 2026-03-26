@@ -2049,7 +2049,7 @@ var _monContratos   = {};   // {cid: {nome, status, eventos:[], resultado, subta
 var _monTimeline    = [];   // [{ts, msg, tipo}]
 var _monPollTimer   = null;
 var _monPollAtivo   = false;
-var _monLogOffset   = 0;
+var _monLogOffset   = 0;   // offset para ressincronização do monitor
 var _monAgendFase   = 'idle';  // idle | ciclo | download | pausa | atualizacao | timeout
 var _monProximoCiclo = '';
 
@@ -2063,53 +2063,43 @@ function iniciarMonitor() {
 
 async function _tickMonitor() {
   try {
-    // Busca status geral
+    // Monitor só busca /status — logs chegam via atualizarMonitor() chamado pelo _tickLog
     var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();}).catch(function(){return {};});
-    // Busca logs novos
-    var ld = await api('/logs?desde=' + _monLogOffset).catch(function(){return {logs:[], total:0};});
-
-    if (ld.total < _monLogOffset) _monLogOffset = 0; // ressincroniza
-    if (ld.logs && ld.logs.length) {
-      _processarLogsMonitor(ld.logs);
-      _monLogOffset = ld.total;
-    }
-
-    // Atualiza agendador também
     atualizarStatusAgendador();
-
-    // Atualiza resumo
     _renderMonResumo(st);
     _renderMonKpis();
     _renderMonTimeline();
     _renderMonContratos();
-
     setLiveDot(true);
   } catch(e) {
     setLiveDot(false);
   }
-  if (_monPollAtivo) _monPollTimer = setTimeout(_tickMonitor, 2500);
+  if (_monPollAtivo) _monPollTimer = setTimeout(_tickMonitor, 3000);
 }
 
 function _processarLogsMonitor(logs) {
   // ── Padrões de contrato individual ────────────────────────────
-  // Padrão atualizar_todos.py: [CID] Processando contrato...
-  var RX_INICIO    = /^\[([A-Z0-9_\-]+)\]\s+Processando\s+contrato/i;
-  // Padrão legado: [CONTRATO] Iniciando: CID
+  // [CID] ou [CID  ] (com espaços) — baixar_relatorios.py padeia o ID
+  var RX_LABEL     = /^\[([A-Z0-9_\-]+)\s*\]/;
+  // Início: [CID] Processando contrato... (atualizar_todos)
+  //         [CID  ] Iniciando — URL... (baixar_relatorios)
+  var RX_INICIO    = /^\[([A-Z0-9_\-]+)\s*\]\s+(?:Processando\s+contrato|Iniciando\s+[—-])/i;
   var RX_INICIO2   = /\[CONTRATO\]\s+Iniciando[:\s]+([^\s]+)/i;
   var RX_INICIO3   = /Iniciando\s+contrato[:\s]+([^\s]+)/i;
-  // Subtarefa: [CID] Lendo relatórios de: ...  ou  [CONTRATO] → X
-  var RX_SUBTAREFA = /^\[([A-Z0-9_\-]+)\]\s+Lendo\s+relat/i;
+  // Subtarefa
+  var RX_SUBTAREFA = /^\[([A-Z0-9_\-]+)\s*\]\s+Lendo\s+relat/i;
   var RX_SUBTAREFA2= /\[CONTRATO\]\s+→\s*(\S.*)/;
-  // Gerado: dashboard_CID.html (N chars)
+  // Dashboard gerado / OK
   var RX_GERADO    = /Gerado:\s+.*dashboard_([A-Z0-9_\-]+)\.html/i;
-  // OK — dashboard_CID.html
   var RX_OK_DASH   = /^\s+OK\s+[—-]+\s+dashboard_([A-Z0-9_\-]+)\.html/i;
-  // Conclusão via atualizar_todos: Concluído: X/Y OK (Z%)
+  // Conclusão do baixar_relatorios: Concluído: X/Y OK (Z%)
   var RX_CONCL     = /Conclu[íi]do[:\s]+([\d]+)\/([\d]+)\s+OK\s*\(([\d.]+)%\)/i;
-  var RX_RETRY     = /Retry/i;
+  // Retry — apenas ↺ (não ✓ Retry OK que é sucesso)
+  var RX_RETRY_FAIL = /↺\s*Retry/i;
+  var RX_RETRY_OK   = /✓\s*Retry\s+OK/i;
+  var RX_RETRY_FINAL= /↺\s*Retry\s+final/i;
   var RX_AVISO     = /\[AVISO\]/i;
   var RX_ERRO      = /ERRO|ERRO GERAL|Stacktrace|NoSuchElement|connectionFailure/i;
-  var RX_LABEL     = /^\[([A-Z0-9_\-]+)\]/;
 
   // ── Padrões do agendador ──────────────────────────────────────
   var RX_AG_INICIO  = /Agendador\s+[—-]+\s+iniciando\s+ciclo/i;
@@ -2189,12 +2179,12 @@ function _processarLogsMonitor(logs) {
     // ── Eventos de contrato individual ───────────────────────────
     var cid = null;
     var mc = msg.match(RX_LABEL);
-    if (mc) cid = mc[1];
+    if (mc) cid = mc[1].trim();  // trim() para remover espaços do padding [LONDRINA  ]
 
     // Início de contrato — "[CID] Processando contrato..."
     var mIni = msg.match(RX_INICIO);
     if (mIni) {
-      cid = mIni[1];
+      cid = mIni[1].trim();
       if (!_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'run', eventos:[], resultado:null, subtarefa:''};
       _monContratos[cid].status = 'run';
       _monTimeline.unshift({ts:ts, msg:'▶ ' + cid + ' iniciou', tipo:'info'});
@@ -2268,10 +2258,23 @@ function _processarLogsMonitor(logs) {
       }
     }
 
-    // Retry
-    if (RX_RETRY.test(msg)) {
+    // Retry OK (sucesso após retry) — não conta como erro
+    if (RX_RETRY_OK.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'✓ ' + msg.slice(0,70), tipo:'ok'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    // Retry final (esgotou tentativas) — mais grave
+    if (RX_RETRY_FINAL.test(msg)) {
+      if (cid && _monContratos[cid]) _monContratos[cid].eventos.push({ts:ts, msg:msg, tipo:'err'});
+      _monTimeline.unshift({ts:ts, msg:'✗ ' + msg.slice(0,70), tipo:'err'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    // Retry normal
+    if (RX_RETRY_FAIL.test(msg)) {
       if (cid && _monContratos[cid]) _monContratos[cid].eventos.push({ts:ts, msg:msg, tipo:'warn'});
-      _monTimeline.unshift({ts:ts, msg:'↻ Retry: ' + msg.slice(0,60), tipo:'warn'});
+      _monTimeline.unshift({ts:ts, msg:'↻ ' + msg.slice(0,70), tipo:'warn'});
       if (_monTimeline.length > 50) _monTimeline.pop();
     }
 
@@ -2479,7 +2482,10 @@ function fecharPanel() {
 }
 
 function atualizarMonitor(logData) {
-  // chamado a cada tick do poll de logs
+  // Chamado pelo _tickLog a cada ciclo — processa logs novos e renderiza
+  if (logData && logData.logs && logData.logs.length) {
+    _processarLogsMonitor(logData.logs);
+  }
   _renderMonKpis();
   _renderMonTimeline();
   _renderMonContratos();
