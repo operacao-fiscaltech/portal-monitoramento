@@ -99,6 +99,72 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
 .st-err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
 .spin{animation:spin .8s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
+.mon-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:0}
+.mon-kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.mon-kpi:hover{border-color:var(--accent-light);box-shadow:0 2px 12px rgba(0,102,204,.1)}
+.mon-kpi-label{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.mon-kpi-val{font-size:26px;font-weight:800;color:var(--text);line-height:1}
+.mon-kpi-sub{font-family:var(--mono);font-size:10px;color:var(--muted2);margin-top:4px}
+.mon-kpi.kpi-run{border-color:var(--yellow-b);background:var(--yellow-bg)}
+.mon-kpi.kpi-run .mon-kpi-val{color:var(--yellow)}
+.mon-kpi.kpi-ok{border-color:var(--green-b);background:var(--green-bg)}
+.mon-kpi.kpi-ok .mon-kpi-val{color:var(--green)}
+.mon-kpi.kpi-err{border-color:var(--red-b);background:var(--red-bg)}
+.mon-kpi.kpi-err .mon-kpi-val{color:var(--red)}
+.mon-resumo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mon-item{display:flex;flex-direction:column;gap:3px;padding:12px 14px;background:var(--card2);border:1px solid var(--border);border-radius:10px}
+.mon-item-label{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.mon-item-val{font-size:13px;font-weight:600;color:var(--text);word-break:break-word}
+.mon-item-val.running{color:var(--yellow)}
+.tl-item{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-dot.ok{background:var(--green)}.tl-dot.err{background:var(--red)}.tl-dot.warn{background:var(--yellow)}.tl-dot.info{background:#60a5fa}
+.tl-body{flex:1}.tl-msg{font-size:12px;color:var(--text)}.tl-ts{font-family:var(--mono);font-size:10px;color:var(--muted2)}
+.ct-card{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card2);border:1px solid var(--border);border-radius:10px;transition:.12s}
+.ct-card:hover{border-color:var(--accent-light)}
+.ct-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ct-icon.ok{background:var(--green-bg)}.ct-icon.err{background:var(--red-bg)}.ct-icon.run{background:var(--yellow-bg)}.ct-icon.idle{background:var(--card2);border:1px solid var(--border)}
+.ct-info{flex:1;min-width:0}
+.ct-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct-sub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0}
+.ct-badge.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.ct-badge.err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.ct-badge.warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.ct-badge.run{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.ct-badge.idle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.ct-badge.zero{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.ct-badge.part{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.mon-grid-ct{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.panel-flutuante{position:fixed;top:0;right:0;height:100vh;width:380px;background:var(--surface);border-left:1px solid var(--border);z-index:200;overflow-y:auto;box-shadow:-4px 0 24px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .2s ease}
+.panel-flutuante.open{transform:translateX(0)}
+.panel-ov{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:199;display:none}
+.panel-ov.open{display:block}
+.pf-head{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:1}
+.pf-close{width:28px;height:28px;border-radius:6px;background:var(--card2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted)}
+.pf-close:hover{background:var(--red-bg);color:var(--red)}
+.pf-item{display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border)}
+.pf-item:last-child{border-bottom:none}
+.agend-status-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.agend-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-family:var(--mono);font-size:11px;font-weight:700}
+.agend-pill.ativo{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.agend-pill.inativo{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.agend-pill.rodando{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b)}
+.agend-meta{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.log-filter{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.log-filter-btn{padding:4px 10px;border-radius:6px;font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--muted);transition:.12s}
+.log-filter-btn.active{border-color:var(--accent);background:var(--accent3);color:var(--accent2)}
+.log-filter-btn.f-ok.active{border-color:var(--green-b);background:var(--green-bg);color:var(--green)}
+.log-filter-btn.f-err.active{border-color:var(--red-b);background:var(--red-bg);color:var(--red)}
+.log-filter-btn.f-warn.active{border-color:var(--yellow-b);background:var(--yellow-bg);color:var(--yellow)}
+.log-search{padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:11px;background:var(--card2);color:var(--text);outline:none;width:180px}
+.log-search:focus{border-color:var(--accent)}
+.log-line.hidden{display:none}
+.log-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease-in-out infinite;display:inline-block}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.log-live-dot.paused{background:var(--muted);animation:none}
+
 .sel-panel{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px}
 .sel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .sel-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -169,6 +235,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
     <div class="nav" onclick="mostrarSec('agendamento',this)">🕐 Agendamento</div>
     <div class="nav" onclick="mostrarSec('usuarios',this)">👥 Usuários</div>
     <div class="nav" onclick="mostrarSec('github',this)">🐙 GitHub</div>
+    <div class="nav" onclick="mostrarSec('monitor',this)">📡 Monitor</div>
     <div class="nav" onclick="mostrarSec('logs',this)">📋 Logs</div>
   </nav>
 
@@ -372,17 +439,146 @@ body{background:var(--bg);color:var(--text);font-family:var(--display);min-heigh
     </div>
 
     <!-- LOGS -->
+    <!-- MONITOR -->
+    <div class="sec" id="sec-monitor">
+      <!-- KPIs -->
+      <div class="mon-kpi-grid">
+        <div class="mon-kpi" id="kpiAcao">
+          <div class="mon-kpi-label">Ação atual</div>
+          <div class="mon-kpi-val" id="kpiAcaoVal" style="font-size:15px;margin-top:2px">—</div>
+          <div class="mon-kpi-sub" id="kpiAcaoSub">aguardando</div>
+        </div>
+        <div class="mon-kpi kpi-ok" onclick="abrirPanel('ok')" style="cursor:pointer">
+          <div class="mon-kpi-label">✓ Concluídos</div>
+          <div class="mon-kpi-val" id="kpiOk">0</div>
+          <div class="mon-kpi-sub">clique para detalhes</div>
+        </div>
+        <div class="mon-kpi kpi-run" onclick="abrirPanel('run')" style="cursor:pointer">
+          <div class="mon-kpi-label">⟳ Em andamento</div>
+          <div class="mon-kpi-val" id="kpiRun">0</div>
+          <div class="mon-kpi-sub">clique para detalhes</div>
+        </div>
+        <div class="mon-kpi kpi-err" onclick="abrirPanel('err')" style="cursor:pointer">
+          <div class="mon-kpi-label">⚠ Alerta / Erro</div>
+          <div class="mon-kpi-val" id="kpiErr">0</div>
+          <div class="mon-kpi-sub">clique para detalhes</div>
+        </div>
+      </div>
+
+      <!-- Resumo + Timeline -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card">
+          <div class="card-head"><div class="card-title">📊 Resumo da Execução</div></div>
+          <div class="card-body" style="padding:16px">
+            <div class="mon-resumo">
+              <div class="mon-item">
+                <span class="mon-item-label">Estado</span>
+                <span class="mon-item-val" id="monEstado">—</span>
+              </div>
+              <div class="mon-item">
+                <span class="mon-item-label">Último OK</span>
+                <span class="mon-item-val" id="monUltimoOk">—</span>
+              </div>
+              <div class="mon-item">
+                <span class="mon-item-label">Contrato atual</span>
+                <span class="mon-item-val" id="monContrato" style="font-size:12px">—</span>
+              </div>
+              <div class="mon-item">
+                <span class="mon-item-label">Subtarefa atual</span>
+                <span class="mon-item-val" id="monSubtarefa" style="font-size:12px">—</span>
+              </div>
+              <div class="mon-item" style="grid-column:1/-1">
+                <span class="mon-item-label">Script / Ação</span>
+                <span class="mon-item-val" id="monScript">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">🕐 Agendador</div>
+            <div id="agStatusBadge"></div>
+          </div>
+          <div class="card-body" style="padding:16px">
+            <div id="agStatusMon" style="display:flex;flex-direction:column;gap:10px">
+              <div class="agend-status-bar" id="agStatusBar">
+                <span class="agend-pill inativo" id="agPill">○ Inativo</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <div class="mon-item">
+                  <span class="mon-item-label">Próximo ciclo</span>
+                  <span class="mon-item-val" id="agProximo" style="font-size:12px">—</span>
+                </div>
+                <div class="mon-item">
+                  <span class="mon-item-label">Último ciclo</span>
+                  <span class="mon-item-val" id="agUltimo" style="font-size:12px">—</span>
+                </div>
+              </div>
+              <div id="agProximosGrupos" style="display:none">
+                <div style="font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Próximos grupos</div>
+                <div id="agGruposLista"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">📍 Eventos Recentes</div>
+          <button class="btn bg bs" onclick="limparTimeline()">Limpar</button>
+        </div>
+        <div class="card-body" style="padding:16px">
+          <div id="monTimeline" style="max-height:220px;overflow-y:auto">
+            <div style="color:var(--muted2);font-size:12px;text-align:center;padding:20px">Aguardando eventos…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contratos -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">🗂️ Progresso por Contrato</div>
+          <button class="btn bg bs" onclick="resetarContratos()">↺ Limpar</button>
+        </div>
+        <div class="card-body" style="padding:16px">
+          <div class="mon-grid-ct" id="monContratos">
+            <div style="color:var(--muted2);font-size:12px;grid-column:1/-1;text-align:center;padding:20px">Aguardando execução…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGS MELHORADO -->
     <div class="sec" id="sec-logs">
       <div class="card">
         <div class="card-head">
-          <div class="card-title">📋 Logs do Agente</div>
-          <div style="display:flex;gap:8px">
-            <button class="btn bg bs" onclick="carregarLogs()">↺ Atualizar</button>
-            <button class="btn bg bs" onclick="limparLog()">Limpar</button>
+          <div class="card-title" style="gap:10px">
+            📋 Logs ao Vivo
+            <span class="log-live-dot paused" id="logLiveDot"></span>
+            <span id="logLiveStatus" style="font-family:var(--mono);font-size:10px;color:var(--muted)">paused</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);cursor:pointer">
+              <input type="checkbox" id="logAutoScroll" checked style="accent-color:var(--accent2);width:12px;height:12px"> Auto-scroll
+            </label>
+            <button class="btn bg bs" onclick="limparLogAgente()">Limpar</button>
           </div>
         </div>
+        <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div class="log-filter">
+            <button class="log-filter-btn active" data-nivel="TODOS" onclick="setLogFiltro(this)">Todos</button>
+            <button class="log-filter-btn f-ok" data-nivel="OK" onclick="setLogFiltro(this)">OK</button>
+            <button class="log-filter-btn f-err" data-nivel="ERRO" onclick="setLogFiltro(this)">Erro</button>
+            <button class="log-filter-btn f-warn" data-nivel="WARN" onclick="setLogFiltro(this)">Aviso</button>
+            <button class="log-filter-btn" data-nivel="INFO" onclick="setLogFiltro(this)">Info</button>
+          </div>
+          <input type="text" class="log-search" id="logSearch" placeholder="Filtrar por texto…" oninput="aplicarFiltroLog()">
+          <span id="logCount" style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto">0 linhas</span>
+        </div>
         <div class="card-body" style="padding:12px">
-          <div class="log-box" id="logBoxAgente" style="height:800px">Carregando…</div>
+          <div class="log-box" id="logBoxAgente" style="height:700px">Aguardando logs…</div>
         </div>
       </div>
     </div>
@@ -973,7 +1169,9 @@ function mostrarSec(id, el) {
   document.querySelectorAll('.nav').forEach(function(n){n.classList.remove('active');});
   document.getElementById('sec-' + id).classList.add('on');
   el.classList.add('active');
-  if (id === 'logs') carregarLogs();
+  if (id === 'logs')    { iniciarPollLogs(); }
+  if (id === 'monitor') { iniciarMonitor(); }
+  if (id === 'agendamento') { atualizarStatusAgendador(); }
 }
 
 // ── CONTRATOS ──
@@ -1188,58 +1386,206 @@ async function executar(tipo) {
     await api(rota, 'POST', body);
     toast('Iniciado: ' + tipo, 'inf');
     _logOffset = 0;
+    _monLogOffset = 0;
     iniciarPollLogs();
+    if (!_monPollAtivo) iniciarMonitor();
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
 
 async function limparLog() {
-  try { await api('/logs/limpar', 'GET'); document.getElementById('logBox').textContent = ''; document.getElementById('logBoxAgente').textContent = ''; _logOffset = 0; }
-  catch(e) {}
-  toast('Logs limpos', 'inf');
+  await limparLogAgente();
 }
 
-// ── LOGS ──
-async function carregarLogs() {
+// ── LOGS — polling robusto via setTimeout ────────────────────────────────────
+var _logOffsetAgente = 0;
+var _logPollTimer    = null;
+var _logPollAtivo    = false;
+var _logReqPendente  = false;
+var _logUltimoRecebeu = 0;
+var _logFiltroNivel  = 'TODOS';
+var _logTotalLinhas  = 0;
+
+function carregarLogs() {
+  // Carga completa (desde=0)
+  _logOffsetAgente = 0;
+  var el = document.getElementById('logBoxAgente');
+  if (el) el.innerHTML = '';
+  _logTotalLinhas = 0;
+  _logPollAtivo = true;
+  _tickLog();
+}
+
+async function _tickLog() {
+  if (_logReqPendente) {
+    _logPollTimer = setTimeout(_tickLog, 1500);
+    return;
+  }
+  _logReqPendente = true;
   try {
-    var d = await api('/logs?desde=0');
-    renderLog(d.logs, document.getElementById('logBoxAgente'), true);
-  } catch(e) {}
+    var d = await api('/logs?desde=' + _logOffsetAgente);
+
+    // Ressincronização: se total caiu (logs foram limpos externamente)
+    if (d.total < _logOffsetAgente) {
+      _logOffsetAgente = 0;
+      var el = document.getElementById('logBoxAgente');
+      if (el) el.innerHTML = '';
+      _logTotalLinhas = 0;
+    }
+
+    if (d.logs && d.logs.length) {
+      renderLogAgente(d.logs);
+      _logOffsetAgente = d.total;
+      _logUltimoRecebeu = Date.now();
+    }
+
+    // Detecta congelamento: se execução ativa mas sem logs por 15s → ressincroniza
+    var agora = Date.now();
+    if (_logPollAtivo && _logUltimoRecebeu > 0 && (agora - _logUltimoRecebeu) > 15000) {
+      var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();}).catch(function(){return {};});
+      if (st.rodando) {
+        // Congelamento detectado — ressincroniza
+        _logOffsetAgente = Math.max(0, (d.total || 0) - 50);
+        _logUltimoRecebeu = agora;
+      }
+    }
+
+    atualizarExecSt();
+    atualizarMonitor(d);
+
+  } catch(e) {
+    setLiveDot(false);
+  } finally {
+    _logReqPendente = false;
+  }
+  if (_logPollAtivo) {
+    _logPollTimer = setTimeout(_tickLog, 2000);
+  }
+}
+
+function iniciarPollLogs() {
+  _logOffsetAgente = 0;
+  _logPollAtivo    = true;
+  _logUltimoRecebeu = Date.now();
+  if (_logPollTimer) clearTimeout(_logPollTimer);
+  _logPollTimer = setTimeout(_tickLog, 300);
+  setLiveDot(true);
+}
+
+function pararPollLogs() {
+  _logPollAtivo = false;
+  if (_logPollTimer) { clearTimeout(_logPollTimer); _logPollTimer = null; }
+  setLiveDot(false);
+}
+
+function setLiveDot(on) {
+  var dot = document.getElementById('logLiveDot');
+  var lbl = document.getElementById('logLiveStatus');
+  if (dot) dot.className = 'log-live-dot' + (on ? '' : ' paused');
+  if (lbl) lbl.textContent = on ? 'ao vivo' : 'paused';
+}
+
+function renderLogAgente(logs) {
+  var el = document.getElementById('logBoxAgente');
+  if (!el) return;
+  var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
+  var filtNivel = _logFiltroNivel;
+  var filtTexto = (document.getElementById('logSearch') || {}).value || '';
+  filtTexto = filtTexto.toLowerCase();
+  var html = logs.map(function(l) {
+    var cls = map[l.nivel] || 'linfo';
+    var ocultaNivel = filtNivel !== 'TODOS' && l.nivel !== filtNivel;
+    var ocultaTexto = filtTexto && !((l.msg||'').toLowerCase().includes(filtTexto));
+    var hidden = (ocultaNivel || ocultaTexto) ? ' hidden' : '';
+    return '<div class="log-line ' + cls + hidden + '" data-nivel="' + esc(l.nivel||'INFO') + '" data-msg="' + esc((l.msg||'').toLowerCase()) + '">' +
+      '<span class="log-ts">' + esc(l.ts) + '</span>' +
+      '<span class="log-nv ' + cls + '">' + esc(l.nivel||'INFO') + '</span>' +
+      '<span class="log-msg">' + esc(l.msg||'') + '</span>' +
+      '</div>';
+  }).join('');
+  el.innerHTML += html;
+  _logTotalLinhas += logs.length;
+  var cnt = document.getElementById('logCount');
+  if (cnt) cnt.textContent = _logTotalLinhas + ' linhas';
+  var chk = document.getElementById('logAutoScroll');
+  if (!chk || chk.checked) el.scrollTop = el.scrollHeight;
 }
 
 function renderLog(logs, el, subst) {
+  // Retrocompatibilidade (usada pelo logBox da automação)
   if (!logs || !logs.length) return;
   var map = {OK:'lok',ERRO:'lerro',WARN:'lwarn',INFO:'linfo'};
-  var linhas = logs.map(function(l){
-    return '<div class="log-line ' + (map[l.nivel]||'linfo') + '"><span class="log-ts">' + esc(l.ts) + '</span><span class="log-nv ' + (map[l.nivel]||'linfo') + '">' + (l.nivel||'INFO') + '</span><span class="log-msg">' + esc(l.msg) + '</span></div>';
+  var html = logs.map(function(l){
+    return '<div class="log-line ' + (map[l.nivel]||'linfo') + '"><span class="log-ts">' + esc(l.ts) + '</span><span class="log-nv ' + (map[l.nivel]||'linfo') + '">' + (l.nivel||'INFO') + '</span><span class="log-msg">' + esc(l.msg||'') + '</span></div>';
   }).join('');
-  if (subst) el.innerHTML = linhas;
-  else el.innerHTML += linhas;
+  if (subst) el.innerHTML = html;
+  else el.innerHTML += html;
   el.scrollTop = el.scrollHeight;
 }
 
-var _pollLogs = null;
-function iniciarPollLogs() {
-  if (_pollLogs) clearInterval(_pollLogs);
-  _pollLogs = setInterval(async function(){
-    try {
-      var d  = await api('/logs?desde=' + _logOffset);
-      if (d.logs && d.logs.length) { renderLog(d.logs, document.getElementById('logBox')); _logOffset = d.total; }
-      var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();});
-      var el = document.getElementById('execSt');
+function setLogFiltro(btn) {
+  document.querySelectorAll('.log-filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  _logFiltroNivel = btn.dataset.nivel;
+  aplicarFiltroLog();
+}
+
+function aplicarFiltroLog() {
+  var el = document.getElementById('logBoxAgente');
+  if (!el) return;
+  var filtNivel = _logFiltroNivel;
+  var filtTexto = ((document.getElementById('logSearch') || {}).value || '').toLowerCase();
+  var linhas = el.querySelectorAll('.log-line');
+  var visiveis = 0;
+  linhas.forEach(function(ln) {
+    var nivel = ln.dataset.nivel || 'INFO';
+    var msg   = ln.dataset.msg   || '';
+    var ocultaNivel = filtNivel !== 'TODOS' && nivel !== filtNivel;
+    var ocultaTexto = filtTexto && !msg.includes(filtTexto);
+    if (ocultaNivel || ocultaTexto) {
+      ln.classList.add('hidden');
+    } else {
+      ln.classList.remove('hidden');
+      visiveis++;
+    }
+  });
+  var cnt = document.getElementById('logCount');
+  if (cnt) cnt.textContent = visiveis + ' / ' + linhas.length + ' linhas';
+}
+
+async function limparLogAgente() {
+  try { await api('/logs/limpar', 'GET'); } catch(e) {}
+  var el = document.getElementById('logBoxAgente');
+  if (el) el.innerHTML = '';
+  var lb = document.getElementById('logBox');
+  if (lb) lb.innerHTML = '';
+  _logOffsetAgente = 0;
+  _logOffset = 0;
+  _logTotalLinhas = 0;
+  var cnt = document.getElementById('logCount');
+  if (cnt) cnt.textContent = '0 linhas';
+  toast('Logs limpos', 'inf');
+}
+
+async function atualizarExecSt() {
+  try {
+    var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();}).catch(function(){return null;});
+    if (!st) return;
+    var el = document.getElementById('execSt');
+    if (el) {
       if (st.rodando) {
         el.className = 'exec-st st-run';
         el.innerHTML = '<span class="spin">⟳</span> ' + esc(st.script_atual||'Executando…');
       } else if (st.erro) {
         el.className = 'exec-st st-err';
-        el.textContent = '✗ Erro na última execução';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✗ ' + esc(st.erro||'Erro');
+        pararPollLogs();
       } else if (st.ultimo_ok) {
         el.className = 'exec-st st-ok';
-        el.textContent = '✓ Concluído com sucesso';
-        clearInterval(_pollLogs); _pollLogs = null;
+        el.textContent = '✓ Concluído';
+        pararPollLogs();
       }
-    } catch(e) {}
-  }, 2000);
+    }
+  } catch(e) {}
 }
 
 function iniciarPoll() {
@@ -1538,14 +1884,55 @@ async function atualizarStatusAgendador() {
     var r = await fetch(AGENT_URL + '/agendamento/status');
     if (!r.ok) return;
     var d = await r.json();
+
+    // ── Card antigo (aba Agendamento) ──────────────────────────────
     var el = document.getElementById('agStatus');
-    if (!el) return;
-    if (d.rodando) {
-      el.innerHTML = '<span style="color:var(--green)">● Rodando</span>' +
-        (d.proximo ? ' — Próximo: <strong>' + esc(d.proximo) + '</strong>' : '');
-    } else {
-      el.innerHTML = '<span style="color:var(--muted)">○ Parado</span>' +
-        (d.ultimo ? ' — Último ciclo: <strong>' + esc(d.ultimo) + '</strong>' : '');
+    if (el) {
+      var ativo = d.config && d.config.ativo;
+      var statusLabel = d.rodando
+        ? '<span style="color:var(--yellow)">⟳ Rodando agora</span>'
+        : ativo
+          ? '<span style="color:var(--green)">● Ativo</span>'
+          : '<span style="color:var(--muted)">○ Inativo</span>';
+      var proximo = d.proximo ? ' — Próximo: <strong>' + esc(d.proximo) + '</strong>' : '';
+      var ultimo  = d.ultimo  ? ' — Último ciclo: <strong>' + esc(d.ultimo) + '</strong>' : '';
+      el.innerHTML = statusLabel + proximo + ultimo;
+    }
+
+    // ── Monitor (aba Monitor) ──────────────────────────────────────
+    var pill = document.getElementById('agPill');
+    if (pill) {
+      var ativo = d.config && d.config.ativo;
+      if (d.rodando) {
+        pill.className = 'agend-pill rodando';
+        pill.textContent = '⟳ Rodando';
+      } else if (ativo) {
+        pill.className = 'agend-pill ativo';
+        pill.textContent = '● Ativo';
+      } else {
+        pill.className = 'agend-pill inativo';
+        pill.textContent = '○ Inativo';
+      }
+    }
+    var elProx = document.getElementById('agProximo');
+    var elUlt  = document.getElementById('agUltimo');
+    if (elProx) elProx.textContent = d.proximo || '—';
+    if (elUlt)  elUlt.textContent  = d.ultimo  || '—';
+
+    // Grupos do modo hr_dl
+    var grpDiv = document.getElementById('agProximosGrupos');
+    var grpList = document.getElementById('agGruposLista');
+    if (grpDiv && grpList && d.proximos_grupos && d.proximos_grupos.length) {
+      grpDiv.style.display = '';
+      grpList.innerHTML = d.proximos_grupos.map(function(g) {
+        return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border)">' +
+          '<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent2);min-width:44px">' + esc(g.horario) + '</span>' +
+          '<span style="font-family:var(--mono);font-size:10px;color:var(--muted)">' + esc(g.proximo) + '</span>' +
+          '<span style="font-size:11px;color:var(--text);flex:1;text-align:right">' + esc((g.contratos||[]).join(', ')) + '</span>' +
+          '</div>';
+      }).join('');
+    } else if (grpDiv) {
+      grpDiv.style.display = 'none';
     }
   } catch(e) {}
 }
@@ -1634,8 +2021,415 @@ function abrirConfigContratos() {
   window.open(AGENT_URL + '/app/configurar_contratos', '_blank');
 }
 
+// ── MONITOR ─────────────────────────────────────────────────────────────────
+var _monContratos   = {};   // {cid: {nome, status, eventos:[], resultado, subtarefa}}
+var _monTimeline    = [];   // [{ts, msg, tipo}]
+var _monPollTimer   = null;
+var _monPollAtivo   = false;
+var _monLogOffset   = 0;
+var _monAgendFase   = 'idle';  // idle | ciclo | download | pausa | atualizacao | timeout
+var _monProximoCiclo = '';
+
+function iniciarMonitor() {
+  _monPollAtivo = true;
+  _monLogOffset = 0;
+  _monContratos = {};
+  _monTimeline  = [];
+  _tickMonitor();
+}
+
+async function _tickMonitor() {
+  try {
+    // Busca status geral
+    var st = await fetch(AGENT_URL + '/status').then(function(r){return r.json();}).catch(function(){return {};});
+    // Busca logs novos
+    var ld = await api('/logs?desde=' + _monLogOffset).catch(function(){return {logs:[], total:0};});
+
+    if (ld.total < _monLogOffset) _monLogOffset = 0; // ressincroniza
+    if (ld.logs && ld.logs.length) {
+      _processarLogsMonitor(ld.logs);
+      _monLogOffset = ld.total;
+    }
+
+    // Atualiza agendador também
+    atualizarStatusAgendador();
+
+    // Atualiza resumo
+    _renderMonResumo(st);
+    _renderMonKpis();
+    _renderMonTimeline();
+    _renderMonContratos();
+
+    setLiveDot(true);
+  } catch(e) {
+    setLiveDot(false);
+  }
+  if (_monPollAtivo) _monPollTimer = setTimeout(_tickMonitor, 2500);
+}
+
+function _processarLogsMonitor(logs) {
+  // ── Padrões de contrato individual ────────────────────────────
+  var RX_INICIO    = /\[CONTRATO\]\s+Iniciando[:\s]+([^\s]+)/i;
+  var RX_INICIO2   = /Iniciando\s+contrato[:\s]+([^\s]+)/i;
+  var RX_SUBTAREFA = /\[CONTRATO\]\s+→\s*(\S.*)/;
+  var RX_CONCL     = /Conclu[íi]do[:\s]+([\d]+)\/([\d]+)\s+OK\s*\(([\d.]+)%\)/i;
+  var RX_RETRY     = /Retry/i;
+  var RX_AVISO     = /\[AVISO\]/i;
+  var RX_ERRO      = /ERRO|ERRO GERAL|Stacktrace|NoSuchElement|connectionFailure/i;
+  var RX_LABEL     = /\[([A-Z0-9_\-]+)\]/;
+
+  // ── Padrões do agendador ──────────────────────────────────────
+  var RX_AG_INICIO  = /Agendador\s+[—-]+\s+iniciando\s+ciclo/i;
+  var RX_AG_DL_INI  = /Agendador\s+[—-]+\s+Download\s+iniciado/i;
+  var RX_AG_DL_OK   = /Agendador\s+[—-]+\s+Download\s+conclu/i;
+  var RX_AG_DL_TOUT = /Agendador\s+[—-]+\s+Download\s+timeout/i;
+  var RX_AG_PAUSA   = /Agendador\s+[—-]+\s+pausa/i;
+  var RX_AG_AT_INI  = /Agendador\s+[—-]+\s+Atualiza[çc][ãa]o\s+iniciada/i;
+  var RX_AG_AT_OK   = /Agendador\s+[—-]+\s+Atualiza[çc][ãa]o\s+conclu/i;
+  var RX_AG_FIM     = /Agendador\s+[—-]+\s+ciclo\s+conclu/i;
+  var RX_AG_PROXIMO = /Agendador\s+[—-]+\s+pr[óo]ximo\s+ciclo[:\s]+(.+)/i;
+  var RX_AG_ERRO    = /Agendador\s+[—-]+\s+(erro|Erro)/i;
+
+  logs.forEach(function(l) {
+    var msg = l.msg || '';
+    var ts  = l.ts  || '';
+
+    // ── Eventos do agendador (timeline global, não por contrato) ─
+    if (RX_AG_INICIO.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'🕐 Agendador — iniciando ciclo', tipo:'info'});
+      _monAgendFase = 'ciclo';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_DL_INI.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'⬇ Agendador — Download iniciado', tipo:'info'});
+      _monAgendFase = 'download';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_DL_TOUT.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'⚠ Agendador — Download timeout (2h)', tipo:'warn'});
+      _monAgendFase = 'timeout';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_DL_OK.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'✓ Agendador — Download concluído', tipo:'ok'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_PAUSA.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'⏱ Agendador — pausa pós-download', tipo:'info'});
+      _monAgendFase = 'pausa';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_AT_INI.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'📊 Agendador — Atualização iniciada', tipo:'info'});
+      _monAgendFase = 'atualizacao';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_AT_OK.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'✓ Agendador — Atualização concluída', tipo:'ok'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_FIM.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'✅ Agendador — ciclo concluído', tipo:'ok'});
+      _monAgendFase = 'idle';
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    if (RX_AG_ERRO.test(msg)) {
+      _monTimeline.unshift({ts:ts, msg:'✗ Agendador — ' + msg.slice(0,60), tipo:'err'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+      return;
+    }
+    var mProx = msg.match(RX_AG_PROXIMO);
+    if (mProx) {
+      _monProximoCiclo = mProx[1].trim();
+      // Não adiciona na timeline — fica só no card de agendamento
+      return;
+    }
+
+    // ── Eventos de contrato individual ───────────────────────────
+    var cid = null;
+    var mc = msg.match(RX_LABEL);
+    if (mc) cid = mc[1];
+
+    // Início de contrato
+    var mIni = msg.match(RX_INICIO) || msg.match(RX_INICIO2);
+    if (mIni) {
+      cid = mIni[1];
+      if (!_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'run', eventos:[], resultado:null, subtarefa:''};
+      _monContratos[cid].status = 'run';
+      _monTimeline.unshift({ts:ts, msg:'▶ ' + cid + ' iniciou', tipo:'info'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+    }
+
+    // Subtarefa atual
+    var mSub = msg.match(RX_SUBTAREFA);
+    if (mSub && cid && _monContratos[cid]) {
+      _monContratos[cid].subtarefa = mSub[1];
+    }
+
+    // Conclusão de contrato
+    var mConc = msg.match(RX_CONCL);
+    if (mConc) {
+      var ok    = parseInt(mConc[1]);
+      var total = parseInt(mConc[2]);
+      var pct   = parseFloat(mConc[3]);
+      if (cid && !_monContratos[cid]) _monContratos[cid] = {nome:cid, status:'idle', eventos:[], resultado:null, subtarefa:''};
+      if (cid) {
+        _monContratos[cid].resultado = {ok:ok, total:total, pct:pct};
+        var temErro = _monContratos[cid].eventos.some(function(e){return e.tipo==='err';});
+        if (ok === 0 && total === 0) {
+          _monContratos[cid].status = 'zero';
+          _monTimeline.unshift({ts:ts, msg:'✗ ' + cid + ' — sem sucesso (0/0)', tipo:'err'});
+        } else if (temErro || pct < 100) {
+          _monContratos[cid].status = 'warn';
+          _monTimeline.unshift({ts:ts, msg:'⚠ ' + cid + ' — parcial ' + ok + '/' + total + ' (' + pct + '%)', tipo:'warn'});
+        } else {
+          _monContratos[cid].status = 'ok';
+          _monTimeline.unshift({ts:ts, msg:'✓ ' + cid + ' — ' + ok + '/' + total + ' (100%)', tipo:'ok'});
+        }
+        if (_monTimeline.length > 50) _monTimeline.pop();
+      }
+    }
+
+    // Retry
+    if (RX_RETRY.test(msg)) {
+      if (cid && _monContratos[cid]) _monContratos[cid].eventos.push({ts:ts, msg:msg, tipo:'warn'});
+      _monTimeline.unshift({ts:ts, msg:'↻ Retry: ' + msg.slice(0,60), tipo:'warn'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+    }
+
+    // Erro
+    if (RX_ERRO.test(msg) && l.nivel === 'ERRO') {
+      if (cid && _monContratos[cid]) {
+        _monContratos[cid].eventos.push({ts:ts, msg:msg, tipo:'err'});
+        if (_monContratos[cid].status === 'run') _monContratos[cid].status = 'err';
+      }
+      _monTimeline.unshift({ts:ts, msg:'✗ ' + msg.slice(0,80), tipo:'err'});
+      if (_monTimeline.length > 50) _monTimeline.pop();
+    }
+
+    // Aviso
+    if (RX_AVISO.test(msg) || l.nivel === 'WARN') {
+      if (cid && _monContratos[cid]) _monContratos[cid].eventos.push({ts:ts, msg:msg, tipo:'warn'});
+    }
+  });
+}
+
+function _renderMonResumo(st) {
+  var elEstado   = document.getElementById('monEstado');
+  var elScript   = document.getElementById('monScript');
+  var elContrato = document.getElementById('monContrato');
+  var elSub      = document.getElementById('monSubtarefa');
+  var elUltimoOk = document.getElementById('monUltimoOk');
+
+  if (elEstado) {
+    if (st.rodando) {
+      elEstado.innerHTML = '<span class="running">⟳ Executando</span>';
+    } else if (st.erro) {
+      elEstado.innerHTML = '<span style="color:var(--red)">✗ Erro</span>';
+    } else if (_monAgendFase === 'download') {
+      elEstado.innerHTML = '<span style="color:var(--yellow)">⬇ Agendador — Download</span>';
+    } else if (_monAgendFase === 'atualizacao') {
+      elEstado.innerHTML = '<span style="color:var(--yellow)">📊 Agendador — Atualizando</span>';
+    } else if (_monAgendFase === 'pausa') {
+      elEstado.innerHTML = '<span style="color:var(--muted)">⏱ Agendador — Pausa</span>';
+    } else if (_monAgendFase === 'timeout') {
+      elEstado.innerHTML = '<span style="color:var(--yellow)">⚠ Agendador — Timeout DL</span>';
+    } else if (_monAgendFase === 'ciclo') {
+      elEstado.innerHTML = '<span style="color:var(--yellow)">🕐 Agendador — Iniciando</span>';
+    } else {
+      elEstado.innerHTML = '<span style="color:var(--muted)">○ Ocioso</span>';
+    }
+  }
+  if (elScript) {
+    var scriptLabel = st.script_atual || '';
+    if (!scriptLabel && _monAgendFase !== 'idle') {
+      var faseLabel = {ciclo:'Iniciando ciclo', download:'Download de relatórios',
+                       pausa:'Pausa pós-download', atualizacao:'Atualização dos dashboards',
+                       timeout:'Download timeout'};
+      scriptLabel = faseLabel[_monAgendFase] || '';
+    }
+    elScript.textContent = scriptLabel || '—';
+  }
+  if (elUltimoOk) elUltimoOk.textContent = st.ultimo_ok ? st.ultimo_ok.replace('T',' ').slice(0,16) : '—';
+
+  // Contrato e subtarefa: inferir do contrato mais recente em execução
+  var rodando = Object.keys(_monContratos).filter(function(k){return _monContratos[k].status==='run';});
+  if (elContrato) elContrato.textContent = rodando.length ? rodando[rodando.length-1] : '—';
+  if (elSub) {
+    if (rodando.length) {
+      var sub = _monContratos[rodando[rodando.length-1]].subtarefa;
+      elSub.textContent = sub || '—';
+    } else {
+      elSub.textContent = '—';
+    }
+  }
+
+  // Atualiza KPI ação
+  var kpiAcao = document.getElementById('kpiAcao');
+  var kpiAcaoVal = document.getElementById('kpiAcaoVal');
+  var kpiAcaoSub = document.getElementById('kpiAcaoSub');
+  if (kpiAcao && kpiAcaoVal) {
+    if (st.rodando) {
+      kpiAcao.className = 'mon-kpi kpi-run';
+      kpiAcaoVal.textContent = st.script_atual || 'Executando…';
+      if (kpiAcaoSub) kpiAcaoSub.textContent = 'em andamento';
+    } else {
+      kpiAcao.className = 'mon-kpi';
+      kpiAcaoVal.textContent = st.erro ? '✗ Erro' : (st.ultimo_ok ? '✓ Ocioso' : '—');
+      if (kpiAcaoSub) kpiAcaoSub.textContent = st.erro ? 'última execução com erro' : 'aguardando';
+    }
+  }
+}
+
+function _renderMonKpis() {
+  var cts = Object.values(_monContratos);
+  var nOk  = cts.filter(function(c){return c.status==='ok';}).length;
+  var nRun = cts.filter(function(c){return c.status==='run';}).length;
+  var nErr = cts.filter(function(c){return c.status==='err'||c.status==='warn'||c.status==='zero';}).length;
+  var elOk  = document.getElementById('kpiOk');
+  var elRun = document.getElementById('kpiRun');
+  var elErr = document.getElementById('kpiErr');
+  if (elOk)  elOk.textContent  = nOk;
+  if (elRun) elRun.textContent = nRun;
+  if (elErr) elErr.textContent = nErr;
+}
+
+function _renderMonTimeline() {
+  var el = document.getElementById('monTimeline');
+  if (!el) return;
+  if (!_monTimeline.length) {
+    el.innerHTML = '<div style="color:var(--muted2);font-size:12px;text-align:center;padding:20px">Aguardando eventos…</div>';
+    return;
+  }
+  var mapaCorPonto = {ok:'ok', err:'err', warn:'warn', info:'info'};
+  el.innerHTML = _monTimeline.slice(0,20).map(function(ev) {
+    return '<div class="tl-item">' +
+      '<div class="tl-dot ' + (mapaCorPonto[ev.tipo]||'info') + '"></div>' +
+      '<div class="tl-body"><div class="tl-msg">' + esc(ev.msg) + '</div>' +
+      '<div class="tl-ts">' + esc(ev.ts) + '</div></div></div>';
+  }).join('');
+}
+
+function _renderMonContratos() {
+  var el = document.getElementById('monContratos');
+  if (!el) return;
+  var cids = Object.keys(_monContratos);
+  if (!cids.length) {
+    el.innerHTML = '<div style="color:var(--muted2);font-size:12px;grid-column:1/-1;text-align:center;padding:20px">Aguardando execução…</div>';
+    return;
+  }
+  var icones = {ok:'✓', err:'✗', warn:'⚠', run:'⟳', zero:'✗', idle:'—'};
+  var badgeLabels = {
+    ok:'Concluído', err:'Falhou', warn:'Parcial', run:'Em andamento', zero:'Sem sucesso', idle:'Aguardando'
+  };
+  el.innerHTML = cids.map(function(cid) {
+    var ct = _monContratos[cid];
+    var st = ct.status;
+    var icone = icones[st] || '—';
+    var label = badgeLabels[st] || st;
+    var res = ct.resultado ? ct.resultado.ok + '/' + ct.resultado.total + ' (' + ct.resultado.pct + '%)' : '';
+    var sub = ct.subtarefa || (res || '');
+    return '<div class="ct-card">' +
+      '<div class="ct-icon ' + st + '">' + icone + '</div>' +
+      '<div class="ct-info">' +
+        '<div class="ct-name">' + esc(ct.nome) + '</div>' +
+        '<div class="ct-sub">' + esc(sub) + '</div>' +
+      '</div>' +
+      '<span class="ct-badge ' + st + '">' + label + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function resetarContratos() {
+  _monContratos   = {};
+  _monTimeline    = [];
+  _monAgendFase   = 'idle';
+  _monProximoCiclo = '';
+  _renderMonContratos();
+  _renderMonTimeline();
+  _renderMonKpis();
+}
+
+function limparTimeline() {
+  _monTimeline = [];
+  _renderMonTimeline();
+}
+
+// Painel flutuante
+function abrirPanel(tipo) {
+  var titulos = {ok:'✓ Contratos Concluídos', run:'⟳ Em Andamento', err:'⚠ Alerta / Erro'};
+  var descs   = {ok:'Contratos finalizados com sucesso neste ciclo.', run:'Contratos atualmente em processamento.', err:'Contratos com erro, falha, parcial ou alerta.'};
+  var pfTit   = document.getElementById('pfTitulo');
+  var pfDesc  = document.getElementById('pfDesc');
+  var pfLista = document.getElementById('pfLista');
+  if (pfTit)  pfTit.textContent  = titulos[tipo] || tipo;
+  if (pfDesc) pfDesc.textContent = descs[tipo]   || '';
+
+  var statusGrupo = {ok:['ok'], run:['run'], err:['err','warn','zero']};
+  var filtro = statusGrupo[tipo] || [tipo];
+  var cts = Object.values(_monContratos).filter(function(c){return filtro.includes(c.status);});
+  var badgeLabels = {ok:'Concluído', err:'Falhou', warn:'Parcial c/ alerta', run:'Em andamento', zero:'Sem sucesso', idle:'Aguardando'};
+  var badgeCls    = {ok:'ok', err:'err', warn:'warn', run:'run', zero:'err', idle:'idle'};
+
+  if (!pfLista) return;
+  if (!cts.length) {
+    pfLista.innerHTML = '<div style="padding:20px;color:var(--muted2);font-size:13px;text-align:center">Nenhum contrato neste grupo</div>';
+  } else {
+    pfLista.innerHTML = cts.map(function(ct) {
+      var res = ct.resultado ? ct.resultado.ok + '/' + ct.resultado.total + ' OK (' + ct.resultado.pct + '%)' : '';
+      var ultiEv = ct.eventos.length ? ct.eventos[ct.eventos.length-1].msg.slice(0,60) : (ct.subtarefa || '');
+      var bcls = badgeCls[ct.status] || 'idle';
+      var blbl = badgeLabels[ct.status] || ct.status;
+      return '<div class="pf-item">' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:13px;font-weight:700;color:var(--text)">' + esc(ct.nome) + '</div>' +
+          (res ? '<div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px">' + esc(res) + '</div>' : '') +
+          (ultiEv ? '<div style="font-size:11px;color:var(--muted2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(ultiEv) + '</div>' : '') +
+        '</div>' +
+        '<span class="ct-badge ' + bcls + '">' + blbl + '</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  document.getElementById('panelFlutuante').classList.add('open');
+  document.getElementById('panelOv').classList.add('open');
+}
+
+function fecharPanel() {
+  document.getElementById('panelFlutuante').classList.remove('open');
+  document.getElementById('panelOv').classList.remove('open');
+}
+
+function atualizarMonitor(logData) {
+  // chamado a cada tick do poll de logs
+  _renderMonKpis();
+  _renderMonTimeline();
+  _renderMonContratos();
+}
+
 // ── INÍCIO ──
 init();
 </script>
+
+<!-- Painel flutuante de contratos -->
+<div class="panel-ov" id="panelOv" onclick="fecharPanel()"></div>
+<div class="panel-flutuante" id="panelFlutuante">
+  <div class="pf-head">
+    <div>
+      <div id="pfTitulo" style="font-size:14px;font-weight:700;color:var(--text)">Contratos</div>
+      <div id="pfDesc" style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px"></div>
+    </div>
+    <div class="pf-close" onclick="fecharPanel()">✕</div>
+  </div>
+  <div id="pfLista" style="padding:8px 0"></div>
+</div>
 </body>
 </html>
